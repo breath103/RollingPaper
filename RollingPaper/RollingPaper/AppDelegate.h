@@ -7,13 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@class ViewController;
+#import <CoreData/CoreData.h>
+#import "UECoreData.h"
+@class RootViewController;
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
-
+@property (weak,nonatomic) UECoreData* coreData;
 @property (strong, nonatomic) UIWindow *window;
-
-@property (strong, nonatomic) ViewController *viewController;
+@property (strong, nonatomic) UINavigationController* navigationController;
+@property (strong, nonatomic) RootViewController *rootViewController;
 
 @end
