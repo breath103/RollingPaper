@@ -24,31 +24,32 @@
 @implementation RollingPaperListController
 @synthesize paperScrollView;
 @synthesize rollingPapers;
+@synthesize profileImage;
+@synthesize profileImageView;
+@synthesize paperCellControllers;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        paperCellControllers = [NSMutableArray new];
     }
     return self;
 }
--(void) viewDidAppear:(BOOL)animated
-{
-    self.navigationController.navigationBarHidden = TRUE;
-}
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    rollingPapers = [NSMutableArray new];
-    
+-(void) viewWillAppear:(BOOL)animated{
     // Do any additional setup after loading the view from its nib.
     ASIFormDataRequest* request = [NetworkTemplate requestForRollingPaperListWithUserIdx:[UserInfo getUserIdx]];
-
+    for(PaperCellController* controller in paperCellControllers){
+        [controller.view removeFromSuperview];
+        [controller removeFromParentViewController];
+    }
+    paperCellControllers = [NSMutableArray new];
+    
     [request setCompletionBlock:^{
         NSLog(@"%@",request.responseString);
         
         
-      //  [self performBlockInMainThread:^{
+        //  [self performBlockInMainThread:^{
         SBJSON* parser = [[SBJSON alloc]init];
         NSArray* paperArray = [parser objectWithString:request.responseString];
         int topBorder = 21;
@@ -67,19 +68,31 @@
             float viewHeight = cellController.view.frame.size.height;
             float viewWidth  = cellController.view.frame.size.width;
             UIViewSetOrigin(cellController.view, CGPointMake(cellContainerWidth/2 - viewWidth/2,topBorder +  (heightMargin + viewHeight) * index++));
-         
             
+            
+            [self.paperCellControllers addObject:cellController];
             [self addChildViewController:cellController];
             [self.paperScrollView addSubview:cellController.view];
-
+            
             CGSize contentSize = self.paperScrollView.contentSize;
             contentSize.height = topBorder + (heightMargin + viewHeight)*index;
             self.paperScrollView.contentSize = contentSize;
-
         }
-        // } waitUntilDone:TRUE];
     }];
     [request startAsynchronous];
+}
+-(void) viewDidAppear:(BOOL)animated
+{
+    self.navigationController.navigationBarHidden = TRUE;
+}
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    rollingPapers = [NSMutableArray new];
+    
+    if(profileImage){
+        profileImageView.image = profileImage;
+    }
 }
 -(void) PaperCellTouched:(PaperCellController *)paper
 {

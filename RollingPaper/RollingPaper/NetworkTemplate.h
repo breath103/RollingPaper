@@ -10,6 +10,7 @@
 #import <FacebookSDK/FacebookSDK.h>
 #import "ASI/ASIFormDataRequest.h"
 #import "ImageContent.h"
+#import "SoundContent.h"
 
 #define SERVER_IP   (@"172.16.10.194:8001")
 #define SERVER_HOST ([@"http://" stringByAppendingString:SERVER_IP])
@@ -38,7 +39,7 @@
 +(ASIFormDataRequest*) requestForUploadImageContentWithUserIdx : (NSString*) useridx
                                                         entity : (ImageContent*) entity
                                                          image : (NSData*) image;
-
-
-
++(ASIFormDataRequest*) requestForUploadSoundContentWithUserIdx : (NSString*) useridx
+                                                        entity : (SoundContent*) entity
+                                                         sound : (NSData*) image;
 @end

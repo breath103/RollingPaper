@@ -49,10 +49,10 @@
 @synthesize numberOfAlbums;
 @synthesize albumScrollView;
 
--(id) initWithDelegate : (id) delegate{
+-(id) initWithDelegate : (id) aDelegate{
     self = [self initWithNibName:@"AlbumPickerController" bundle:NULL];
     if(self){
-        self.delegate = delegate;
+        self.delegate = aDelegate;
     }
     return self;
 }

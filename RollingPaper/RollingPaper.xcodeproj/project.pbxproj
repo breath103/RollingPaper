@@ -7,6 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		07081EEC165FB49A005670B5 /* PaintingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 07081EEB165FB49A005670B5 /* PaintingView.m */; };
+		07081EEE165FB51E005670B5 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07081EED165FB51E005670B5 /* OpenGLES.framework */; };
+		07081EF0165FB541005670B5 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07081EEF165FB541005670B5 /* GLKit.framework */; };
+		07081EF2165FB5B8005670B5 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07081EF1165FB5B8005670B5 /* QuartzCore.framework */; };
+		07081EF4165FB7CA005670B5 /* Particle.png in Resources */ = {isa = PBXBuildFile; fileRef = 07081EF3165FB7CA005670B5 /* Particle.png */; };
+		07081EFD165FBA74005670B5 /* RollingPaperCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = 07081EF6165FBA74005670B5 /* RollingPaperCreator.m */; };
+		07081EFE165FBA74005670B5 /* RollingPaperCreator.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07081EF7165FBA74005670B5 /* RollingPaperCreator.xib */; };
+		07081EFF165FBA74005670B5 /* RollingPaperListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07081EF9165FBA74005670B5 /* RollingPaperListController.m */; };
+		07081F00165FBA74005670B5 /* RollingPaperListController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07081EFA165FBA74005670B5 /* RollingPaperListController.xib */; };
+		07081F01165FBA74005670B5 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07081EFC165FBA74005670B5 /* RootViewController.m */; };
+		07081F0A165FBB01005670B5 /* PaperViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07081F08165FBB01005670B5 /* PaperViewController.m */; };
+		07081F0B165FBB01005670B5 /* PaperViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07081F09165FBB01005670B5 /* PaperViewController.xib */; };
 		0725188E165E9E05001D6A06 /* main_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 0725188D165E9E05001D6A06 /* main_bg.png */; };
 		07251890165E9EFD001D6A06 /* main_paper_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 0725188F165E9EFD001D6A06 /* main_paper_bg.png */; };
 		0769651016457AA7002C25B6 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0769650F16457AA7002C25B6 /* FacebookSDK.framework */; };
@@ -38,8 +50,6 @@
 		0778B802163B7C4E0026B99A /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 0778B801163B7C4E0026B99A /* Default.png */; };
 		0778B804163B7C4E0026B99A /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0778B803163B7C4E0026B99A /* Default@2x.png */; };
 		0778B806163B7C4E0026B99A /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0778B805163B7C4E0026B99A /* Default-568h@2x.png */; };
-		0778B809163B7C4E0026B99A /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0778B808163B7C4E0026B99A /* RootViewController.m */; };
-		0778B80C163B7C4E0026B99A /* RootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0778B80A163B7C4E0026B99A /* RootViewController.xib */; };
 		07AB33A216458811000A27F7 /* libASI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 07AB339816458811000A27F7 /* libASI.a */; };
 		07AB33A416458BFC000A27F7 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07AB33A316458BFC000A27F7 /* FacebookSDK.framework */; };
 		07AB33C016465B15000A27F7 /* libSBJSON-mac64.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 07AB33B816465B15000A27F7 /* libSBJSON-mac64.a */; };
@@ -70,22 +80,38 @@
 		07B355B6165B47340094D7D7 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07B355B5165B47330094D7D7 /* CoreData.framework */; };
 		07B355B9165B4D360094D7D7 /* RollingPaper.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 07B355B7165B4D360094D7D7 /* RollingPaper.xcdatamodeld */; };
 		07B355F5165BB8AE0094D7D7 /* UECoreData.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B355F4165BB8AD0094D7D7 /* UECoreData.m */; };
-		07B355FC165BCE8A0094D7D7 /* RollingPaper.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B355FB165BCE8A0094D7D7 /* RollingPaper.m */; };
-		07B35607165BF7970094D7D7 /* ImageContent.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B35606165BF7970094D7D7 /* ImageContent.m */; };
 		07B3560A165BFAD90094D7D7 /* ImageContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B35609165BFAD90094D7D7 /* ImageContentView.m */; };
 		07B35619165C12CF0094D7D7 /* CGPointExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B35618165C12CB0094D7D7 /* CGPointExtension.m */; };
-		07E1E7DA1657AAE0009EABB5 /* RollingPaperCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E1E7D81657AAE0009EABB5 /* RollingPaperCreator.m */; };
-		07E1E7DE1657DF36009EABB5 /* RollingPaperCreator.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07E1E7DD1657DF36009EABB5 /* RollingPaperCreator.xib */; };
-		07E1E7E21657DF5F009EABB5 /* RollingPaperListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E1E7E01657DF5F009EABB5 /* RollingPaperListController.m */; };
-		07E1E7E31657DF5F009EABB5 /* RollingPaperListController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07E1E7E11657DF5F009EABB5 /* RollingPaperListController.xib */; };
-		07E1E7F1165806A5009EABB5 /* PaperViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E1E7EF165806A5009EABB5 /* PaperViewController.m */; };
-		07E1E7F2165806A5009EABB5 /* PaperViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07E1E7F0165806A5009EABB5 /* PaperViewController.xib */; };
+		07FBDDD7165FEF990011D581 /* UESoundRecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FBDDD6165FEF990011D581 /* UESoundRecoder.m */; };
+		07FBDDDA165FEFD10011D581 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07FBDDD9165FEFD10011D581 /* AVFoundation.framework */; };
+		07FBDDE0165FF28A0011D581 /* SoundContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FBDDDF165FF28A0011D581 /* SoundContentView.m */; };
+		07FBDDE2165FF4110011D581 /* sound_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 07FBDDE1165FF4110011D581 /* sound_icon.png */; };
+		07FBDDE5166004BE0011D581 /* ImageContent.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FBDDE4166004BD0011D581 /* ImageContent.m */; };
+		07FBDDE8166004BF0011D581 /* SoundContent.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FBDDE7166004BF0011D581 /* SoundContent.m */; };
+		07FBDDEB166004BF0011D581 /* RollingPaper.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FBDDEA166004BF0011D581 /* RollingPaper.m */; };
+		07FD933F165FD379008943B0 /* RootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07FD933E165FD379008943B0 /* RootViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		07081EEA165FB49A005670B5 /* PaintingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaintingView.h; sourceTree = "<group>"; };
+		07081EEB165FB49A005670B5 /* PaintingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaintingView.m; sourceTree = "<group>"; };
+		07081EED165FB51E005670B5 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		07081EEF165FB541005670B5 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		07081EF1165FB5B8005670B5 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		07081EF3165FB7CA005670B5 /* Particle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Particle.png; sourceTree = "<group>"; };
+		07081EF5165FBA74005670B5 /* RollingPaperCreator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RollingPaperCreator.h; sourceTree = "<group>"; };
+		07081EF6165FBA74005670B5 /* RollingPaperCreator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RollingPaperCreator.m; sourceTree = "<group>"; };
+		07081EF7165FBA74005670B5 /* RollingPaperCreator.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RollingPaperCreator.xib; sourceTree = "<group>"; };
+		07081EF8165FBA74005670B5 /* RollingPaperListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RollingPaperListController.h; sourceTree = "<group>"; };
+		07081EF9165FBA74005670B5 /* RollingPaperListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RollingPaperListController.m; sourceTree = "<group>"; };
+		07081EFA165FBA74005670B5 /* RollingPaperListController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RollingPaperListController.xib; sourceTree = "<group>"; };
+		07081EFB165FBA74005670B5 /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
+		07081EFC165FBA74005670B5 /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
+		07081F07165FBB01005670B5 /* PaperViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaperViewController.h; sourceTree = "<group>"; };
+		07081F08165FBB01005670B5 /* PaperViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaperViewController.m; sourceTree = "<group>"; };
+		07081F09165FBB01005670B5 /* PaperViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PaperViewController.xib; sourceTree = "<group>"; };
 		0725188D165E9E05001D6A06 /* main_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = main_bg.png; sourceTree = "<group>"; };
 		0725188F165E9EFD001D6A06 /* main_paper_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = main_paper_bg.png; sourceTree = "<group>"; };
-		0769650A16457963002C25B6 /* RootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
 		0769650F16457AA7002C25B6 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = ../../TravelTape/TravelTape/FacebookSDK.framework; sourceTree = "<group>"; };
 		0769651116457AD1002C25B6 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		0769651316457AD1002C25B6 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -120,8 +146,6 @@
 		0778B801163B7C4E0026B99A /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		0778B803163B7C4E0026B99A /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		0778B805163B7C4E0026B99A /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		0778B808163B7C4E0026B99A /* RootViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
-		0778B80B163B7C4E0026B99A /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/RootViewController.xib; sourceTree = "<group>"; };
 		07AB338216458811000A27F7 /* ASIAuthenticationDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIAuthenticationDialog.h; sourceTree = "<group>"; };
 		07AB338316458811000A27F7 /* ASICacheDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASICacheDelegate.h; sourceTree = "<group>"; };
 		07AB338416458811000A27F7 /* ASIDataCompressor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIDataCompressor.h; sourceTree = "<group>"; };
@@ -203,25 +227,25 @@
 		07B355B8165B4D360094D7D7 /* RollingPaper.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = RollingPaper.xcdatamodel; sourceTree = "<group>"; };
 		07B355F3165BB8AC0094D7D7 /* UECoreData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UECoreData.h; sourceTree = "<group>"; };
 		07B355F4165BB8AD0094D7D7 /* UECoreData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UECoreData.m; sourceTree = "<group>"; };
-		07B355FA165BCE8A0094D7D7 /* RollingPaper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RollingPaper.h; sourceTree = "<group>"; };
-		07B355FB165BCE8A0094D7D7 /* RollingPaper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RollingPaper.m; sourceTree = "<group>"; };
-		07B35605165BF7960094D7D7 /* ImageContent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageContent.h; sourceTree = "<group>"; };
-		07B35606165BF7970094D7D7 /* ImageContent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageContent.m; sourceTree = "<group>"; };
 		07B35608165BFAD80094D7D7 /* ImageContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageContentView.h; sourceTree = "<group>"; };
 		07B35609165BFAD90094D7D7 /* ImageContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageContentView.m; sourceTree = "<group>"; };
 		07B3560E165BFFAE0094D7D7 /* RollingPaperContentViewProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RollingPaperContentViewProtocol.h; sourceTree = "<group>"; };
 		07B35617165C12C80094D7D7 /* CGPointExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGPointExtension.h; sourceTree = "<group>"; };
 		07B35618165C12CB0094D7D7 /* CGPointExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGPointExtension.m; sourceTree = "<group>"; };
 		07B3561A165C143E0094D7D7 /* ccMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ccMacros.h; sourceTree = "<group>"; };
-		07E1E7D71657AAE0009EABB5 /* RollingPaperCreator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RollingPaperCreator.h; sourceTree = "<group>"; };
-		07E1E7D81657AAE0009EABB5 /* RollingPaperCreator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RollingPaperCreator.m; sourceTree = "<group>"; };
-		07E1E7DD1657DF36009EABB5 /* RollingPaperCreator.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RollingPaperCreator.xib; sourceTree = "<group>"; };
-		07E1E7DF1657DF5F009EABB5 /* RollingPaperListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RollingPaperListController.h; sourceTree = "<group>"; };
-		07E1E7E01657DF5F009EABB5 /* RollingPaperListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RollingPaperListController.m; sourceTree = "<group>"; };
-		07E1E7E11657DF5F009EABB5 /* RollingPaperListController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RollingPaperListController.xib; sourceTree = "<group>"; };
-		07E1E7EE165806A4009EABB5 /* PaperViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaperViewController.h; sourceTree = "<group>"; };
-		07E1E7EF165806A5009EABB5 /* PaperViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaperViewController.m; sourceTree = "<group>"; };
-		07E1E7F0165806A5009EABB5 /* PaperViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PaperViewController.xib; sourceTree = "<group>"; };
+		07FBDDD5165FEF990011D581 /* UESoundRecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UESoundRecoder.h; sourceTree = "<group>"; };
+		07FBDDD6165FEF990011D581 /* UESoundRecoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UESoundRecoder.m; sourceTree = "<group>"; };
+		07FBDDD9165FEFD10011D581 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		07FBDDDE165FF28A0011D581 /* SoundContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundContentView.h; sourceTree = "<group>"; };
+		07FBDDDF165FF28A0011D581 /* SoundContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SoundContentView.m; sourceTree = "<group>"; };
+		07FBDDE1165FF4110011D581 /* sound_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sound_icon.png; sourceTree = "<group>"; };
+		07FBDDE3166004BD0011D581 /* ImageContent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageContent.h; sourceTree = "<group>"; };
+		07FBDDE4166004BD0011D581 /* ImageContent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageContent.m; sourceTree = "<group>"; };
+		07FBDDE6166004BE0011D581 /* SoundContent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundContent.h; sourceTree = "<group>"; };
+		07FBDDE7166004BF0011D581 /* SoundContent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SoundContent.m; sourceTree = "<group>"; };
+		07FBDDE9166004BF0011D581 /* RollingPaper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RollingPaper.h; sourceTree = "<group>"; };
+		07FBDDEA166004BF0011D581 /* RollingPaper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RollingPaper.m; sourceTree = "<group>"; };
+		07FD933E165FD379008943B0 /* RootViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RootViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -229,6 +253,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				07FBDDDA165FEFD10011D581 /* AVFoundation.framework in Frameworks */,
+				07081EF2165FB5B8005670B5 /* QuartzCore.framework in Frameworks */,
+				07081EF0165FB541005670B5 /* GLKit.framework in Frameworks */,
+				07081EEE165FB51E005670B5 /* OpenGLES.framework in Frameworks */,
 				07B355B6165B47340094D7D7 /* CoreData.framework in Frameworks */,
 				07AB33A416458BFC000A27F7 /* FacebookSDK.framework in Frameworks */,
 				0778B7F0163B7C4E0026B99A /* UIKit.framework in Frameworks */,
@@ -279,6 +307,10 @@
 		0778B7EE163B7C4E0026B99A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				07FBDDD9165FEFD10011D581 /* AVFoundation.framework */,
+				07081EF1165FB5B8005670B5 /* QuartzCore.framework */,
+				07081EEF165FB541005670B5 /* GLKit.framework */,
+				07081EED165FB51E005670B5 /* OpenGLES.framework */,
 				07B355B5165B47330094D7D7 /* CoreData.framework */,
 				07AB33A316458BFC000A27F7 /* FacebookSDK.framework */,
 				07AB339816458811000A27F7 /* libASI.a */,
@@ -307,6 +339,8 @@
 		0778B7F5163B7C4E0026B99A /* RollingPaper */ = {
 			isa = PBXGroup;
 			children = (
+				07081EEA165FB49A005670B5 /* PaintingView.h */,
+				07081EEB165FB49A005670B5 /* PaintingView.m */,
 				07B3561A165C143E0094D7D7 /* ccMacros.h */,
 				07B35617165C12C80094D7D7 /* CGPointExtension.h */,
 				07B35618165C12CB0094D7D7 /* CGPointExtension.m */,
@@ -454,6 +488,8 @@
 				07B355B3165B41250094D7D7 /* UEEntitiyView.m */,
 				07B355F3165BB8AC0094D7D7 /* UECoreData.h */,
 				07B355F4165BB8AD0094D7D7 /* UECoreData.m */,
+				07FBDDD5165FEF990011D581 /* UESoundRecoder.h */,
+				07FBDDD6165FEF990011D581 /* UESoundRecoder.m */,
 			);
 			path = UELib;
 			sourceTree = "<group>";
@@ -461,10 +497,12 @@
 		07B3557D165A86840094D7D7 /* Entity */ = {
 			isa = PBXGroup;
 			children = (
-				07B355FA165BCE8A0094D7D7 /* RollingPaper.h */,
-				07B355FB165BCE8A0094D7D7 /* RollingPaper.m */,
-				07B35605165BF7960094D7D7 /* ImageContent.h */,
-				07B35606165BF7970094D7D7 /* ImageContent.m */,
+				07FBDDE3166004BD0011D581 /* ImageContent.h */,
+				07FBDDE4166004BD0011D581 /* ImageContent.m */,
+				07FBDDE6166004BE0011D581 /* SoundContent.h */,
+				07FBDDE7166004BF0011D581 /* SoundContent.m */,
+				07FBDDE9166004BF0011D581 /* RollingPaper.h */,
+				07FBDDEA166004BF0011D581 /* RollingPaper.m */,
 			);
 			name = Entity;
 			sourceTree = "<group>";
@@ -472,6 +510,8 @@
 		07B3558A165A9B790094D7D7 /* resources */ = {
 			isa = PBXGroup;
 			children = (
+				07FBDDE1165FF4110011D581 /* sound_icon.png */,
+				07081EF3165FB7CA005670B5 /* Particle.png */,
 				076E89F3165EB69900040F6F /* plus.png */,
 				076E89EA165EA2D100040F6F /* status_bar.png */,
 				076E89E7165EA26B00040F6F /* paper_cell_bg.png */,
@@ -508,6 +548,8 @@
 				076E89EE165EA92300040F6F /* PaperCellController.h */,
 				076E89EF165EA92300040F6F /* PaperCellController.m */,
 				076E89F0165EA92400040F6F /* PaperCellController.xib */,
+				07FBDDDE165FF28A0011D581 /* SoundContentView.h */,
+				07FBDDDF165FF28A0011D581 /* SoundContentView.m */,
 			);
 			name = EntityView;
 			sourceTree = "<group>";
@@ -515,18 +557,18 @@
 		07B355F6165BC1930094D7D7 /* NavigationViews */ = {
 			isa = PBXGroup;
 			children = (
-				0769650A16457963002C25B6 /* RootViewController.h */,
-				0778B808163B7C4E0026B99A /* RootViewController.m */,
-				0778B80A163B7C4E0026B99A /* RootViewController.xib */,
-				07E1E7D71657AAE0009EABB5 /* RollingPaperCreator.h */,
-				07E1E7D81657AAE0009EABB5 /* RollingPaperCreator.m */,
-				07E1E7DD1657DF36009EABB5 /* RollingPaperCreator.xib */,
-				07E1E7DF1657DF5F009EABB5 /* RollingPaperListController.h */,
-				07E1E7E01657DF5F009EABB5 /* RollingPaperListController.m */,
-				07E1E7E11657DF5F009EABB5 /* RollingPaperListController.xib */,
-				07E1E7EE165806A4009EABB5 /* PaperViewController.h */,
-				07E1E7EF165806A5009EABB5 /* PaperViewController.m */,
-				07E1E7F0165806A5009EABB5 /* PaperViewController.xib */,
+				07081F07165FBB01005670B5 /* PaperViewController.h */,
+				07081F08165FBB01005670B5 /* PaperViewController.m */,
+				07081F09165FBB01005670B5 /* PaperViewController.xib */,
+				07081EF5165FBA74005670B5 /* RollingPaperCreator.h */,
+				07081EF6165FBA74005670B5 /* RollingPaperCreator.m */,
+				07081EF7165FBA74005670B5 /* RollingPaperCreator.xib */,
+				07081EF8165FBA74005670B5 /* RollingPaperListController.h */,
+				07081EF9165FBA74005670B5 /* RollingPaperListController.m */,
+				07081EFA165FBA74005670B5 /* RollingPaperListController.xib */,
+				07081EFB165FBA74005670B5 /* RootViewController.h */,
+				07081EFC165FBA74005670B5 /* RootViewController.m */,
+				07FD933E165FD379008943B0 /* RootViewController.xib */,
 			);
 			name = NavigationViews;
 			sourceTree = "<group>";
@@ -586,10 +628,6 @@
 				0778B802163B7C4E0026B99A /* Default.png in Resources */,
 				0778B804163B7C4E0026B99A /* Default@2x.png in Resources */,
 				0778B806163B7C4E0026B99A /* Default-568h@2x.png in Resources */,
-				0778B80C163B7C4E0026B99A /* RootViewController.xib in Resources */,
-				07E1E7DE1657DF36009EABB5 /* RollingPaperCreator.xib in Resources */,
-				07E1E7E31657DF5F009EABB5 /* RollingPaperListController.xib in Resources */,
-				07E1E7F2165806A5009EABB5 /* PaperViewController.xib in Resources */,
 				07B3558E165A9B7A0094D7D7 /* app_roading4.png in Resources */,
 				07B3558F165A9B7A0094D7D7 /* logo_paper.png in Resources */,
 				07B35590165A9B7A0094D7D7 /* logo_plane.png in Resources */,
@@ -604,6 +642,12 @@
 				076E89EB165EA2D100040F6F /* status_bar.png in Resources */,
 				076E89F2165EA92400040F6F /* PaperCellController.xib in Resources */,
 				076E89F4165EB69900040F6F /* plus.png in Resources */,
+				07081EF4165FB7CA005670B5 /* Particle.png in Resources */,
+				07081EFE165FBA74005670B5 /* RollingPaperCreator.xib in Resources */,
+				07081F00165FBA74005670B5 /* RollingPaperListController.xib in Resources */,
+				07081F0B165FBB01005670B5 /* PaperViewController.xib in Resources */,
+				07FD933F165FD379008943B0 /* RootViewController.xib in Resources */,
+				07FBDDE2165FF4110011D581 /* sound_icon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -616,13 +660,9 @@
 			files = (
 				0778B7FC163B7C4E0026B99A /* main.m in Sources */,
 				0778B800163B7C4E0026B99A /* AppDelegate.m in Sources */,
-				0778B809163B7C4E0026B99A /* RootViewController.m in Sources */,
 				07AB33CA16466BDF000A27F7 /* UserInfo.m in Sources */,
 				07AB33CD1646797A000A27F7 /* NetworkTemplate.m in Sources */,
 				07AB33D116467D13000A27F7 /* NSObject+block.m in Sources */,
-				07E1E7DA1657AAE0009EABB5 /* RollingPaperCreator.m in Sources */,
-				07E1E7E21657DF5F009EABB5 /* RollingPaperListController.m in Sources */,
-				07E1E7F1165806A5009EABB5 /* PaperViewController.m in Sources */,
 				07B35574165A80CE0094D7D7 /* UEAssets.m in Sources */,
 				07B35575165A80CE0094D7D7 /* UEDataStructure.m in Sources */,
 				07B35576165A80CE0094D7D7 /* UEHTTPRequest.m in Sources */,
@@ -637,11 +677,19 @@
 				07B355B4165B41250094D7D7 /* UEEntitiyView.m in Sources */,
 				07B355B9165B4D360094D7D7 /* RollingPaper.xcdatamodeld in Sources */,
 				07B355F5165BB8AE0094D7D7 /* UECoreData.m in Sources */,
-				07B355FC165BCE8A0094D7D7 /* RollingPaper.m in Sources */,
-				07B35607165BF7970094D7D7 /* ImageContent.m in Sources */,
 				07B3560A165BFAD90094D7D7 /* ImageContentView.m in Sources */,
 				07B35619165C12CF0094D7D7 /* CGPointExtension.m in Sources */,
 				076E89F1165EA92400040F6F /* PaperCellController.m in Sources */,
+				07081EEC165FB49A005670B5 /* PaintingView.m in Sources */,
+				07081EFD165FBA74005670B5 /* RollingPaperCreator.m in Sources */,
+				07081EFF165FBA74005670B5 /* RollingPaperListController.m in Sources */,
+				07081F01165FBA74005670B5 /* RootViewController.m in Sources */,
+				07081F0A165FBB01005670B5 /* PaperViewController.m in Sources */,
+				07FBDDD7165FEF990011D581 /* UESoundRecoder.m in Sources */,
+				07FBDDE0165FF28A0011D581 /* SoundContentView.m in Sources */,
+				07FBDDE5166004BE0011D581 /* ImageContent.m in Sources */,
+				07FBDDE8166004BF0011D581 /* SoundContent.m in Sources */,
+				07FBDDEB166004BF0011D581 /* RollingPaper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -656,14 +704,6 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
-		0778B80A163B7C4E0026B99A /* RootViewController.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				0778B80B163B7C4E0026B99A /* en */,
-			);
-			name = RootViewController.xib;
-			sourceTree = "<group>";
-		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
@@ -676,7 +716,8 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: HYUNJEONG CHUNG (JJZRW524W5)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: HYUNJEONG CHUNG (JJZRW524W5)";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -691,6 +732,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = YES;
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -704,14 +747,18 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: HYUNJEONG CHUNG (JJZRW524W5)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: HYUNJEONG CHUNG (JJZRW524W5)";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -720,6 +767,7 @@
 		0778B810163B7C4E0026B99A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer: HYUNJEONG CHUNG (JJZRW524W5)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../TravelTape/TravelTape\"",
@@ -728,7 +776,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RollingPaper/RollingPaper-Prefix.pch";
 				INFOPLIST_FILE = "RollingPaper/RollingPaper-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/RollingPaper\"",
@@ -738,6 +786,7 @@
 					"\"$(SRCROOT)/RollingPaper/SBJSON\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "65A05CEE-F612-404B-B51D-B3E22C86ECBC";
 				SDKROOT = iphoneos;
 				WRAPPER_EXTENSION = app;
 			};
@@ -746,6 +795,7 @@
 		0778B811163B7C4E0026B99A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer: HYUNJEONG CHUNG (JJZRW524W5)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../TravelTape/TravelTape\"",
@@ -754,7 +804,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RollingPaper/RollingPaper-Prefix.pch";
 				INFOPLIST_FILE = "RollingPaper/RollingPaper-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/RollingPaper\"",
@@ -764,6 +814,7 @@
 					"\"$(SRCROOT)/RollingPaper/SBJSON\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "65A05CEE-F612-404B-B51D-B3E22C86ECBC";
 				SDKROOT = iphoneos;
 				WRAPPER_EXTENSION = app;
 			};

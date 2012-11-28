@@ -1,5 +1,5 @@
 //
-//  ImageContent.h
+//  SoundContent.h
 //  RollingPaper
 //
 //  Created by 이상현 on 12. 11. 24..
@@ -10,16 +10,13 @@
 #import <CoreData/CoreData.h>
 
 
-@interface ImageContent : NSManagedObject
+@interface SoundContent : NSManagedObject
 
-@property (nonatomic, retain) NSNumber * height;
 @property (nonatomic, retain) NSNumber * idx;
-@property (nonatomic, retain) NSString * image;
 @property (nonatomic, retain) NSNumber * paper_idx;
-@property (nonatomic, retain) NSNumber * rotation;
 @property (nonatomic, retain) NSNumber * user_idx;
-@property (nonatomic, retain) NSNumber * width;
 @property (nonatomic, retain) NSNumber * x;
 @property (nonatomic, retain) NSNumber * y;
+@property (nonatomic, retain) NSString * sound;
 
 @end

@@ -10,9 +10,11 @@
 #import "NetworkTemplate.h"
 #import "SBJSON.h"
 #import "ImageContent.h"
+#import "SoundContent.h"
 #import "UECoreData.h"
 #import "UELib/UEImageLibrary.h"
 #import "ImageContentView.h"
+#import "SoundContentView.h"
 #import "UserInfo.h"
 #import "macro.h"
 #import "CGPointExtension.h"
@@ -23,11 +25,13 @@
 @end
 
 @implementation PaperViewController
+@synthesize paintingView;
 @synthesize contentsViews;
 @synthesize albumPickerController;
 @synthesize photoPickerController;
 @synthesize entity;
 @synthesize friendPickerController;
+@synthesize recoder;
 -(id) initWithEntity : (RollingPaper*) aEntity
 {
     self = [self initWithNibName:@"PaperViewController" bundle:NULL];
@@ -65,6 +69,9 @@
     }];
     [request startAsynchronous];
 }
+-(void) viewDidAppear:(BOOL)animated{
+  //  self.paintingView.hidden = TRUE;
+}
 -(void) viewWillDisappear:(BOOL)animated{
     int i = 0;
     for( id<RollingPaperContentViewProtocol> view in self.contentsViews){
@@ -85,6 +92,12 @@
     }
     NSDictionary* textContents  = [categorizedContents objectForKey:@"text"];
     NSDictionary* soundContents = [categorizedContents objectForKey:@"sound"];
+    for(NSDictionary*p in soundContents){
+        SoundContent* soundEntity = (SoundContent*)[[UECoreData sharedInstance]insertNewObject:@"SoundContent" initWith:p];
+        SoundContentView* entityView = [[SoundContentView alloc] initWithEntity:soundEntity];
+        [self.view addSubview:entityView];
+        [contentsViews addObject:entityView];
+    }
 }
 - (void)didReceiveMemoryWarning
 {
@@ -100,6 +113,8 @@
 }
 
 - (IBAction)onTouchInvite:(id)sender {
+    
+   // NSLog(@"%@",[paintingView toImage]);
     if(!friendPickerController){
         friendPickerController = [[FBFriendPickerViewController alloc] init];
         friendPickerController.title = @"Pick Friends";
@@ -107,7 +122,9 @@
         
         [friendPickerController loadData];
         [friendPickerController clearSelection];
-        [self presentModalViewController:friendPickerController animated:YES];
+        [self presentViewController:friendPickerController animated:TRUE completion:^{
+        }];
+        //   [self presentModalViewController:friendPickerController animated:YES];
     }
 }
 -(void) albumPickerController:(AlbumPickerController *)albumPickerController onSelectAlbum:(AlbumView *)albumView
@@ -245,7 +262,10 @@ CGAffineTransform CGAffineTransformWithTouches(CGAffineTransform oldTransform,
     for (id<FBGraphUser> user in friendPickerController.selection) {
         [friendArray addObject: [user id]];
     }
-    [self dismissModalViewControllerAnimated:TRUE];
+    [self dismissViewControllerAnimated:TRUE completion:^{
+        friendPickerController = NULL;
+    }];
+    //  [self dismissModalViewControllerAnimated:TRUE];
     ASIFormDataRequest* request =  [NetworkTemplate requestForInviteFacebookFriends:friendArray
                                                                             ToPaper:[NSString stringWithFormat:@"%d",self.entity.idx.intValue]
                                                                           withUser:[UserInfo getUserIdx]];
@@ -269,4 +289,73 @@ CGAffineTransform CGAffineTransformWithTouches(CGAffineTransform oldTransform,
     return YES;
 }
 
+- (IBAction)onTouchSound:(id)sender {
+    if(!recoder){
+        recoder = [[UESoundRecoder alloc] init];
+        [recoder startRecoding];
+        self.soundButton.titleLabel.text = @"recoding..";
+    }
+    else{
+        [recoder stopRecording];
+        self.soundButton.titleLabel.text = @"sound";
+        
+        SoundContent* soundEntity = (SoundContent*)[[UECoreData sharedInstance]insertNewObject:@"SoundContent"];
+        soundEntity.idx       = NULL;
+        soundEntity.paper_idx = self.entity.idx;
+        soundEntity.user_idx  = [NSNumber numberWithInt:[UserInfo getUserIdx].intValue];
+        soundEntity.x         = [NSNumber numberWithFloat:self.view.frame.size.width/2 ];
+        soundEntity.y         = [NSNumber numberWithFloat:self.view.frame.size.height/2];
+        soundEntity.sound     = [recoder.soundFilePath mutableCopy];
+        
+        
+        SoundContentView* entityView = [[SoundContentView alloc] initWithEntity:soundEntity];
+        entityView.isNeedToSyncWithServer = TRUE;
+        [self.view addSubview:entityView];
+        [self.contentsViews addObject:entityView];
+        
+        transformTargetView = entityView;
+       // recoder = NULL;
+    }
+}
+
+- (IBAction)onTouchBrush:(id)sender {
+    [self.view bringSubviewToFront:paintingView];
+    if(self.paintingView.frame.origin.x >= 0){
+        UIImage* image = [paintingView glToUIImage];
+        NSLog(@"%@",image);
+        
+        CGImageRef cgImage = image.CGImage;
+        CGFloat width   = CGImageGetWidth(cgImage);
+        CGFloat height  = CGImageGetHeight(cgImage);
+        ImageContent* imageEntity =
+            (ImageContent*)[[UECoreData sharedInstance]insertNewObject:@"ImageContent"];
+        imageEntity.idx       = NULL;
+        imageEntity.paper_idx = self.entity.idx;
+        imageEntity.user_idx  = [NSNumber numberWithInt:[UserInfo getUserIdx].intValue];
+        imageEntity.x         = [NSNumber numberWithFloat:0];
+        imageEntity.y         = [NSNumber numberWithFloat:0];
+        imageEntity.rotation  = [NSNumber numberWithFloat:0.0f];
+        imageEntity.image     = NULL;
+        imageEntity.width     = [NSNumber numberWithFloat:width];
+        imageEntity.height    = [NSNumber numberWithFloat:height];
+        
+        ImageContentView* entityView = [[ImageContentView alloc] initWithEntity:imageEntity];
+        entityView.isNeedToSyncWithServer = TRUE;
+        entityView.image = image;
+        [self.view addSubview:entityView];
+        [self.contentsViews addObject:entityView];
+        
+        transformTargetView = entityView;
+
+        
+        UIViewSetX(paintingView, -10000);
+        [paintingView erase];
+    }
+    else {
+        [self.view bringSubviewToFront:paintingView];
+        UIViewSetX(paintingView, 0);
+        
+    }
+
+}
 @end

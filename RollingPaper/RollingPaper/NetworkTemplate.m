@@ -105,4 +105,22 @@
     [request addPostValue:[NSString stringWithFormat:@"%ld",timestamp] forKey:@"after_time"];
     return request;
 }
++(ASIFormDataRequest*) requestForUploadSoundContentWithUserIdx : (NSString*) useridx
+                                                        entity : (SoundContent*) entity
+                                                         sound : (NSData*) sound{
+    NSString* requestURL = [SERVER_HOST stringByAppendingString:@"/paper/addContent/sound"];
+    ASIFormDataRequest* request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:requestURL]];
+    
+    [request addPostValue:useridx           forKey:@"user_idx"];
+    [request addPostValue:entity.paper_idx  forKey:@"paper_idx"];
+    
+    [request setData : sound
+        withFileName : @"sound1.wav"
+      andContentType : @"audio/wav"
+              forKey : @"sound"];
+    
+    [request addPostValue:entity.x        forKey:@"x"];
+    [request addPostValue:entity.y        forKey:@"y"];
+    return request;
+}
 @end
