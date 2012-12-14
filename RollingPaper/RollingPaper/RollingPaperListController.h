@@ -9,11 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "PaperCellController.h"
 @interface RollingPaperListController : UIViewController<PaperCellDelegate>
+{
+    @private
+    NSMutableArray* paperCellControllers;
+}
 @property (weak, nonatomic) IBOutlet UIScrollView *paperScrollView;
-@property (strong,nonatomic) NSMutableArray* rollingPapers;
 @property (weak, nonatomic) IBOutlet UIImageView *profileImageView;
-@property (nonatomic,strong) UIImage* profileImage;
-@property (nonatomic,strong) NSMutableArray* paperCellControllers;
-- (IBAction)onTouchAddPaper:(id)sender;
+-(IBAction)onTouchAddPaper:(id)sender;
 
 @end

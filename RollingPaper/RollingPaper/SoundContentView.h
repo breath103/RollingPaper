@@ -13,9 +13,7 @@
 
 #define SOUND_CONTENT_WIDTH  (50.0f)
 #define SOUND_CONTENT_HEIGHT (50.0f)
-
-@interface SoundContentView : UIImageView<RollingPaperContentViewProtocol>
-{
+@interface SoundContentView : UIImageView<RollingPaperContentViewProtocol>{
     AVAudioPlayer* audioPlayer;
 }
 @property (strong,nonatomic) SoundContent* entity;

@@ -17,6 +17,8 @@
 
 
 
+
+
 struct UEUIMargin
 {
     int left;
@@ -46,4 +48,12 @@ typedef struct UEUIMargin UEUIMargin;
 
 +(void) createKeyboardButton : (UIView*) rootView : (UIView*) targetView;
 +(void) animateViewsToFitKeyboard : (UIView*) view ;
+
++(void) CGAffineTransformWithTouches : (UITouch *) firstTouch
+                                      secondTouch : (UITouch *) secondTouch
+                                            scale : (CGSize*) size
+                                         rotation : (NSNumber**) rotation;
++(CGAffineTransform) CGAffineTransformWithTouches : (CGAffineTransform) oldTransform
+                                       firstTouch : (UITouch *) firstTouch
+                                      secondTouch : (UITouch *) secondTouch;
 @end

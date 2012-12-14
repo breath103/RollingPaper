@@ -2,24 +2,20 @@
 //  ImageContent.h
 //  RollingPaper
 //
-//  Created by 이상현 on 12. 11. 24..
+//  Created by 이상현 on 12. 12. 14..
 //  Copyright (c) 2012년 상현 이. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
+#import "Content.h"
 
 
-@interface ImageContent : NSManagedObject
+@interface ImageContent : Content
 
-@property (nonatomic, retain) NSNumber * height;
 @property (nonatomic, retain) NSNumber * idx;
 @property (nonatomic, retain) NSString * image;
 @property (nonatomic, retain) NSNumber * paper_idx;
-@property (nonatomic, retain) NSNumber * rotation;
 @property (nonatomic, retain) NSNumber * user_idx;
-@property (nonatomic, retain) NSNumber * width;
-@property (nonatomic, retain) NSNumber * x;
-@property (nonatomic, retain) NSNumber * y;
 
 @end

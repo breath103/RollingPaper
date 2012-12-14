@@ -7,7 +7,7 @@
 //
 
 #import "UEImageLibrary.h"
-
+#import <QuartzCore/QuartzCore.h>
 
 @implementation UEImageLibrary
 
@@ -167,5 +167,24 @@
     NSData* jpegImage = UIImageJPEGRepresentation(image, compressionScale);
     return [UIImage imageWithData:jpegImage];
 }
++(UIImage*) imageFromView : (UIView*) view{
+    UIGraphicsBeginImageContext(view.bounds.size);
+    [view.layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage *viewImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    UIImageWriteToSavedPhotosAlbum(viewImage, nil, nil, nil);
+ 
+    return viewImage;
+}
++(BOOL) saveImage : (UIImage*) image
+           ToFile : (NSString*) fileName
+{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) ;
+    NSString *imagePath = [paths objectAtIndex:0] ;
+    NSString *filepath  = [NSString stringWithFormat:@"%@/%@", imagePath, fileName] ;
 
+    NSData *imageData   = [NSData dataWithData:UIImageJPEGRepresentation(image, 1.0f)];
+    [imageData writeToFile:filepath atomically:YES];
+    return TRUE;
+}
 @end

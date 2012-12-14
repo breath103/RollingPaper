@@ -24,7 +24,6 @@
     
     glBindRenderbufferOES(GL_RENDERBUFFER_OES, viewRenderbuffer);
     
-    
     glGetRenderbufferParameterivOES(GL_RENDERBUFFER_OES, GL_RENDERBUFFER_WIDTH_OES, &backingWidth1);
     glGetRenderbufferParameterivOES(GL_RENDERBUFFER_OES, GL_RENDERBUFFER_HEIGHT_OES, &backingHeight1);
     
@@ -66,13 +65,10 @@
     CFRelease(ref);
     CFRelease(colorspace);
     CGImageRelease(iref);
-    
     return image;
 }
 
 - (id)initWithCoder:(NSCoder*)coder {
-	
-	NSMutableArray*	recordedPaths;
 	CGImageRef		brushImage;
 	CGContextRef	brushContext;
 	GLubyte			*brushData;
@@ -85,27 +81,20 @@
         eaglLayer.drawableProperties = [NSDictionary dictionaryWithObjectsAndKeys:
                                             [NSNumber numberWithBool:YES], kEAGLDrawablePropertyRetainedBacking,
                                              kEAGLColorFormatRGBA8, kEAGLDrawablePropertyColorFormat, nil];
-        /*
-		eaglLayer.opaque =
-;
-		eaglLayer.drawableProperties = [NSDictionary dictionaryWithObjectsAndKeys:
-										[NSNumber numberWithBool:YES], kEAGLDrawablePropertyRetainedBacking, kEAGLColorFormatRGBA8, kEAGLDrawablePropertyColorFormat, nil];
-         */
-		
+    
 		context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES1];
-		
 		if (!context || ![EAGLContext setCurrentContext:context]) {
             self = NULL;
             return nil;
 		}
-		
 		brushImage = [UIImage imageNamed:@"Particle.png"].CGImage;
 		
-		width  = CGImageGetWidth(brushImage);
-		height = CGImageGetHeight(brushImage);
+		width  = CGImageGetWidth( brushImage );
+		height = CGImageGetHeight( brushImage );
 		
         if(brushImage) {
 			brushData = (GLubyte *) calloc(width * height * 4, sizeof(GLubyte));
+            
 			brushContext = CGBitmapContextCreate(brushData, width, height, 8, width * 4, CGImageGetColorSpace(brushImage), kCGImageAlphaPremultipliedLast);
 			CGContextDrawImage(brushContext, CGRectMake(0.0, 0.0, (CGFloat)width, (CGFloat)height), brushImage);
 			CGContextRelease(brushContext);
@@ -113,6 +102,7 @@
 			glBindTexture(GL_TEXTURE_2D, brushTexture);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, brushData);
+            
             free(brushData);
 		}
          

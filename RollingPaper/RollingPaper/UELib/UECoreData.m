@@ -14,8 +14,6 @@
     for( NSString* name in self.entity.propertiesByName.allKeys){
         // 실제데이터 모델에서 존재하는 프로퍼티들을 뽑는다.
         id value = [dict objectForKey:name];
-        NSLog(@"%@ : %@",name,value);
-        
         [self setValue:value forKey:name];
     }
 }
@@ -93,7 +91,8 @@
 // Returns the URL to the application's Documents directory.
 - (NSURL *)applicationDocumentsDirectory
 {
-    return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+    return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory
+                                                   inDomains:NSUserDomainMask] lastObject];
 }
 
 - (void)saveContext
@@ -109,7 +108,8 @@
 }
 
 - (NSManagedObject*) insertNewObject : (NSString*) entityName{
-    return [NSEntityDescription insertNewObjectForEntityForName:entityName inManagedObjectContext:self.managedObjectContext];
+    return [NSEntityDescription insertNewObjectForEntityForName:entityName
+                                         inManagedObjectContext:self.managedObjectContext];
 }
 
 - (NSManagedObject*) insertNewObject : (NSString*) entityName

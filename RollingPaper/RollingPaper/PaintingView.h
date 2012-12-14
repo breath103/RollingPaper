@@ -11,27 +11,24 @@
 
 @interface PaintingView : UIView
 {
-@private
+    @private
 	GLint backingWidth;
 	GLint backingHeight;
-	
 	EAGLContext *context;
-	
 	GLuint viewRenderbuffer, viewFramebuffer;
-	
 	GLuint depthRenderbuffer;
-	
-	GLuint	brushTexture;
+	GLuint brushTexture;
 	CGPoint	location;
 	CGPoint	previousLocation;
 	Boolean	firstTouch;
 	Boolean needsErase;	
 }
-
 @property(nonatomic, readwrite) CGPoint location;
 @property(nonatomic, readwrite) CGPoint previousLocation;
 
 - (void)erase;
-- (void)setBrushColorWithRed:(CGFloat)red green:(CGFloat)green blue:(CGFloat)blue;
+- (void)setBrushColorWithRed:(CGFloat)red
+                       green:(CGFloat)green
+                        blue:(CGFloat)blue;
 - (UIImage *) glToUIImage;
 @end

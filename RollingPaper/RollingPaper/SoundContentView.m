@@ -20,15 +20,17 @@
     if(self){
         self.entity = aEntity;
         self.userInteractionEnabled = TRUE;
-        self.frame = CGRectMake(entity.x.floatValue, entity.y.floatValue,
-                                SOUND_CONTENT_WIDTH,SOUND_CONTENT_HEIGHT);
+        self.frame = CGRectMake(entity.x.floatValue , entity.y.floatValue,
+                                SOUND_CONTENT_WIDTH , SOUND_CONTENT_HEIGHT);
         
         if(entity.sound){
             self.image = [UIImage imageNamed:@"sound_icon.png"];
             NSString* urlString = [entity.sound stringByReplacingOccurrencesOfString:@"localhost" withString:SERVER_IP];
-            NSLog(@"%@",urlString);
+            NSData* soundData = [self loadSoundFromLocalStorage:urlString];
+            if( !soundData ){
+                soundData = [self loadSoundFromURLAndSaveToLocalStorage:urlString];
+            }
             NSError* error;
-            NSData* soundData = [NSData dataWithContentsOfURL:[NSURL URLWithString:urlString]];
             audioPlayer = [[AVAudioPlayer alloc] initWithData:soundData
                                                         error:&error];
             NSLog(@"%@",error);
@@ -37,6 +39,36 @@
         [self addGestureRecognizer: tapGesture];
     }
     return self;
+}
+-(NSString*) urlToLocalFilePath : (NSString*) url{
+    NSArray* array = [url componentsSeparatedByString:@"/"];
+    return array[array.count-1];
+}
+-(NSData*) loadSoundFromLocalStorage : (NSString*) url{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString* filePath = [NSString stringWithFormat:@"%@/%@", documentsDirectory,url];
+    return [NSData dataWithContentsOfFile:filePath];
+}
+-(NSData*) loadSoundFromURLAndSaveToLocalStorage : (NSString*) url{
+    NSData* soundData = [NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
+    NSString* localPath = [self urlToLocalFilePath:url];
+    if ( soundData ){
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *documentsDirectory = [paths objectAtIndex:0];
+        NSString* filePath = [NSString stringWithFormat:@"%@/%@", documentsDirectory,localPath];
+        if([soundData writeToFile:filePath
+                       atomically:NO]){
+            NSLog(@"%@ saved",filePath);
+        }
+        else {
+            NSLog(@"%@ save fail",filePath);
+        }
+        return soundData;
+    }
+    else{
+        return NULL;
+    }
 }
 -(void) onTouchView{
     if(audioPlayer && !audioPlayer.playing){

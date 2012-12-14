@@ -2,7 +2,7 @@
 //  SoundContent.m
 //  RollingPaper
 //
-//  Created by 이상현 on 12. 11. 24..
+//  Created by 이상현 on 12. 12. 14..
 //  Copyright (c) 2012년 상현 이. All rights reserved.
 //
 
@@ -13,9 +13,7 @@
 
 @dynamic idx;
 @dynamic paper_idx;
-@dynamic user_idx;
-@dynamic x;
-@dynamic y;
 @dynamic sound;
+@dynamic user_idx;
 
 @end

@@ -20,4 +20,7 @@
 +(UIImageOrientation) irUIImageOrientationFromAssetOrientation : (ALAssetOrientation) anOrientation;
 +(UIImage*) convertToJPEG : (UIImage*) image
                 withScale : (double) compressionScale;
++(UIImage*) imageFromView : (UIView*) view;
++(BOOL) saveImage : (UIImage*) image
+           ToFile : (NSString*) fileName;
 @end

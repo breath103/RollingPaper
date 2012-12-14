@@ -27,8 +27,9 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     coreData = [UECoreData sharedInstance];
-        
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    
+    CGRect bounds = [[UIScreen mainScreen] bounds];
+    self.window = [[UIWindow alloc] initWithFrame:bounds];
     self.rootViewController = [[RootViewController alloc] initWithNibName:@"RootViewController" bundle:nil];
     self.navigationController = [[UINavigationController alloc] initWithRootViewController:self.rootViewController];
     self.navigationController.navigationBarHidden =TRUE;

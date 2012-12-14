@@ -36,12 +36,26 @@
     return self;
 }
 
+- (NSString*) ddayStringWithDate : (long long) timestamp {
+    NSDate* currentDate = [NSDate date];
+    NSDate* receiveDate = [NSDate dateWithTimeIntervalSince1970:timestamp];
+    int     ddayCount   = (int)[receiveDate timeIntervalSinceDate:currentDate] / 60 / 60 / 24;
+    
+    NSString* ddayString;
+    if(ddayCount == 0)     ddayString = @"D-DAY";
+    else if(ddayCount > 0) ddayString = [NSString stringWithFormat:@"D-%d",abs(ddayCount)];
+    else                   ddayString = [NSString stringWithFormat:@"D+%d",abs(ddayCount)];
+
+    return ddayString;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
-    self.ddayLabel.text = @"D-99";
+   
+    self.ddayLabel.text = [self ddayStringWithDate:self.entity.receive_time.longLongValue];
     self.titleLabel.text = self.entity.title;
+    
     UITapGestureRecognizer* tapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onTap)];
     [self.view addGestureRecognizer:tapGestureRecognizer];
 }

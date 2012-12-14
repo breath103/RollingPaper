@@ -33,7 +33,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
+        
     }
     return self;
 }
@@ -44,16 +44,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    NSLog(@"%@",@"RolligPaperCreator");
     self.navigationController.navigationBarHidden = FALSE;
  
     UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard)];
-    // For selecting cell.
     gestureRecognizer.cancelsTouchesInView = NO;
     [self.view addGestureRecognizer:gestureRecognizer];
-    
-    
-    // Do any additional setup after loading the view from its nib.
 }
 
 - (void)didReceiveMemoryWarning
@@ -63,12 +58,12 @@
 }
 
 - (void)viewDidUnload {
-    [self setTitleText:nil];
-    [self setEmailInput:nil];
-    [self setNoticeInput:nil];
-    [self setFbIdLabel:nil];
-    [self setReceiverName:nil];
-    [self setReceiveTime:nil];
+    [self setTitleText :nil];
+    [self setEmailInput :nil];
+    [self setNoticeInput :nil];
+    [self setFbIdLabel :nil];
+    [self setReceiverName :nil];
+    [self setReceiveTime :nil];
     [super viewDidUnload];
 }
 - (IBAction)onTouchSend:(id)sender {
@@ -77,9 +72,9 @@
                                                                                          title : titleText.text
                                                                                   target_email : emailInput.text
                                                                                         notice : noticeInput.text
-                                                                                   receiverFBid:fbIdLabel.text
-                                                                                   receiverName:receiverName.text
-                                                                                   receieveTime:receiveTime.text];
+                                                                                  receiverFBid : fbIdLabel.text
+                                                                                  receiverName : receiverName.text
+                                                                                  receieveTime : receiveTime.text];
         [request setCompletionBlock:^{
             NSLog(@"%@",request.responseString);
             [self performBlockInMainThread:^{
@@ -89,7 +84,6 @@
         [request setFailedBlock:^{
             NSLog(@"%@",@"fail");
         }];
-        
         [request startAsynchronous];
     }
 }
@@ -97,12 +91,13 @@
 - (IBAction)onTouchPickFriend:(id)sender {
     if(!friendPickerController){
         friendPickerController = [[FBFriendPickerViewController alloc] init];
-        friendPickerController.title = @"Pick Friends";
+        friendPickerController.title    = @"Pick Friends";
         friendPickerController.delegate = self;
         
         [friendPickerController loadData];
         [friendPickerController clearSelection];
-        [self presentModalViewController:friendPickerController animated:YES];
+        [self presentViewController:friendPickerController animated:YES completion:^{
+        }];
     }
 }
 
@@ -115,6 +110,7 @@
         fbIdLabel.text = user.id;
         receiverName.text = user.name;
     }
-    [self dismissModalViewControllerAnimated:TRUE];\
+    [self dismissViewControllerAnimated:YES completion:^{
+    }];
 }
 @end

@@ -71,14 +71,14 @@
     return self;
 }
 -(id)initWithAlbumAssetGroup : (ALAssetsGroup*) aAlbumAssetsGroup
-                    delegate : (id) delegate ;
+                    delegate : (id) aDelegate ;
 
 {
     self = [super initWithNibName:@"PhotoPickerController" bundle : NULL];
     if(self)
     {
         albumAssetsGroup = aAlbumAssetsGroup;
-        self.delegate = delegate;
+        self.delegate = aDelegate;
     }
     return self;
 }
@@ -108,7 +108,7 @@
                     [self.photoScrollView addSubview:photoView];
                 }
                 else {
-                    //NSLog(@"%@",assetType);
+                    NSLog(@"%@",assetType);
                 }
             }
             else {

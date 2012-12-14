@@ -12,7 +12,7 @@
 #import "ImageContent.h"
 #import "SoundContent.h"
 
-#define SERVER_IP   (@"172.16.10.194:8001")
+#define SERVER_IP   (@"210.122.0.164:8001")
 #define SERVER_HOST ([@"http://" stringByAppendingString:SERVER_IP])
 
 
@@ -29,6 +29,7 @@
                                                   receiverFBid : (NSString*) receiver_fb_id
                                                   receiverName : (NSString*) receiver_name
                                                   receieveTime : (NSString*) receiveTime;
+
 +(ASIFormDataRequest*) requestForRollingPaperListWithUserIdx : (NSString*) useridx;
 +(ASIFormDataRequest*) requestForRollingPaperContents : (NSString*) paper_idx
                                             afterTime : (long) timestamp;

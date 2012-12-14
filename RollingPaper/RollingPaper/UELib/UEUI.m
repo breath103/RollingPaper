@@ -8,6 +8,8 @@
 
 #import "UEUI.h"
 #import "macro.h"
+#import "ccMacros.h"
+#import "CGPointExtension.h"
 @implementation UEKeyboardBackgroundButton
 @synthesize targetView;
 -(id) initWithTargetView:(UIView *)view
@@ -68,8 +70,6 @@
 
 
 
-
-
 @implementation UEUI
 +(void) createKeyboardButton : (UIView*) rootView : (UIView*) targetView
 {
@@ -86,5 +86,82 @@
     [UIView beginAnimations:@"KeyboardAnimation" context:NULL];
         UIViewSetY(view, view.frame.origin.y - KEYBOARD_HEIGHT);
     [UIView commitAnimations];
+}
++(void) CGAffineTransformWithTouches : (UITouch *) firstTouch
+                                      secondTouch : (UITouch *) secondTouch
+                                            scale : (CGSize*) size
+                                         rotation : (NSNumber**) rotation
+{
+    CGPoint firstTouchLocation         = [firstTouch locationInView:nil];
+    CGPoint firstTouchPreviousLocaion  = [firstTouch previousLocationInView:nil];
+    CGPoint secondTouchLocation        = [secondTouch locationInView:nil];
+    CGPoint secondTouchPreviousLocaion = [secondTouch previousLocationInView:nil];
+    
+    CGFloat currentDistance  = ccpDistance(firstTouchLocation,secondTouchLocation);
+    CGFloat previousDistance = ccpDistance(firstTouchPreviousLocaion,secondTouchPreviousLocaion);
+    
+    CGFloat distanceRatio = currentDistance / previousDistance;
+    
+    size->width  = distanceRatio;
+    size->height = distanceRatio;
+    
+    CGPoint previousDifference = ccpSub(firstTouchPreviousLocaion, secondTouchPreviousLocaion);
+    CGFloat xDifferencePrevious = previousDifference.x;
+    
+    CGFloat previousRotation = acos(xDifferencePrevious / previousDistance);
+    if (previousDifference.y < 0) {
+        previousRotation *= -1;
+    }
+    
+    CGPoint currentDifference = ccpSub(firstTouchLocation, secondTouchLocation);
+    CGFloat xDifferenceCurrent = currentDifference.x;
+    
+    CGFloat currentRotation = acos(xDifferenceCurrent / currentDistance);
+    if (currentDifference.y < 0) {
+        currentRotation *= -1;
+    }
+    
+    CGFloat newAngle = currentRotation - previousRotation;
+    
+    (*rotation) = [NSNumber numberWithDouble:newAngle];
+}
++(CGAffineTransform) CGAffineTransformWithTouches : (CGAffineTransform) oldTransform
+                                       firstTouch : (UITouch *) firstTouch
+                                      secondTouch : (UITouch *) secondTouch{
+    
+    CGPoint firstTouchLocation         = [firstTouch locationInView:nil];
+    CGPoint firstTouchPreviousLocaion  = [firstTouch previousLocationInView:nil];
+    CGPoint secondTouchLocation        = [secondTouch locationInView:nil];
+    CGPoint secondTouchPreviousLocaion = [secondTouch previousLocationInView:nil];
+    
+    CGAffineTransform newTransform;
+    
+    CGFloat currentDistance  = ccpDistance(firstTouchLocation,secondTouchLocation);
+    CGFloat previousDistance = ccpDistance(firstTouchPreviousLocaion,secondTouchPreviousLocaion);
+    
+    CGFloat distanceRatio = currentDistance / previousDistance;
+    
+    newTransform = CGAffineTransformScale(oldTransform, distanceRatio, distanceRatio);
+    
+    CGPoint previousDifference = ccpSub(firstTouchPreviousLocaion, secondTouchPreviousLocaion);
+    CGFloat xDifferencePrevious = previousDifference.x;
+    
+    CGFloat previousRotation = acos(xDifferencePrevious / previousDistance);
+    if (previousDifference.y < 0) {
+        previousRotation *= -1;
+    }
+    
+    CGPoint currentDifference = ccpSub(firstTouchLocation, secondTouchLocation);
+    CGFloat xDifferenceCurrent = currentDifference.x;
+    
+    CGFloat currentRotation = acos(xDifferenceCurrent / currentDistance);
+    if (currentDifference.y < 0) {
+        currentRotation *= -1;
+    }
+    
+    CGFloat newAngle = currentRotation - previousRotation;
+    
+    newTransform = CGAffineTransformRotate(newTransform, newAngle);
+    return newTransform;
 }
 @end

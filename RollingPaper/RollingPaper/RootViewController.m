@@ -26,8 +26,6 @@
 @end
 
 @implementation RootViewController
-@synthesize facebookLoginButton;
-@synthesize profileImageView;
 @synthesize loadingImageView;
 @synthesize paperPlaneView;
 @synthesize paperImageView;
@@ -45,34 +43,19 @@
             paperPlaneView.alpha = 0.0f;
         } completion:^(BOOL finished) {
             paperPlaneView.hidden = TRUE;
-            
-            [self onTouchLoginWithFacebook:NULL];
-            /*
-            [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
-            [UIView animateWithDuration:1 animations:^{
-                loadingImageView.alpha = 0.0f;
-                paperImageView.alpha = 0.0f;
-            } completion:^(BOOL finished) {
-                paperImageView.hidden = TRUE;
-                loadingImageView.hidden = TRUE;
-                
-                [self onTouchLoginWithFacebook:NULL];
-            }];
-             */
-        }];
-    
+            [self onTouchLoginWithFacebook];
+        }];    
 }
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
 }
-
-- (IBAction)onTouchLoginWithFacebook:(id)sender {
-    // 페이스북 인증
-    NSLog(@"!!!!!!");
+- (void)showPaperList {
+    RollingPaperListController* controller = [[RollingPaperListController alloc] initWithNibName:@"RollingPaperListController" bundle:NULL];
+    [self.navigationController pushViewController:controller animated:TRUE];
+}
+- (void)onTouchLoginWithFacebook {
     if ( !FBSession.activeSession.isOpen) {
-        // if the session is closed, then we open it here, and establish a handler for state changes
-        // if the session isn't open, we open it here, which may cause UX to log in the user
         NSArray* permissions = [NSArray arrayWithObjects:@"user_photos",@"publish_stream",@"publish_actions",@"email",@"user_likes",@"user_birthday",
                                                          @"user_education_history",@"user_hometown",@"read_stream",@"user_about_me",
                                                          @"read_friendlists",@"offline_access", nil];
@@ -80,9 +63,9 @@
                                        allowLoginUI : YES
                                   completionHandler : ^(FBSession *session, FBSessionState status, NSError *error) {
                                       if (!error) {
-                                          // 페이스북 인증이 성공했다.
                                           [[FBRequest requestWithGraphPath:@"/me"
-                                                                parameters:[NSDictionary dictionaryWithObjectsAndKeys:@"id,picture,name,birthday,email",@"fields", nil]
+                                                                parameters:[NSDictionary dictionaryWithObjectsAndKeys:@"id,picture,name,birthday,email",
+                                                                                                                      @"fields",nil]
                                                                 HTTPMethod:@"GET"]
                                                 startWithCompletionHandler:^(FBRequestConnection *connection,id<FBGraphUser> me,NSError *error) {
                                               if(! error){
@@ -135,37 +118,18 @@
 
 
 -(void) onJoinSuccess : (NSDictionary*) userDict {
-    //새로 가입된 경우에는 이부분에 전화번호등의 추가적 정보 입력 및 서버에 등록이 들어가야 되지만 일단 다 스킵하고 바로 로그인
     [self onLoginSuccess:userDict]; 
 }
 -(void) onLoginSuccess : (NSDictionary*) userDict {
     [UserInfo setUserInfo:userDict];
     NSLog(@"%@",[UserInfo getUserInfo]);
-    profileImageView.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[userDict objectForKey:@"picture"]]] ];
-    [self onTouchList:NULL];
-}
--(void) facebookViewControllerDoneWasPressed : (id)sender{
-    for (id<FBGraphUser> user in friendPickerController.selection) {
-        NSLog(@"%@",user);
-    }
-    [self dismissModalViewControllerAnimated:TRUE];
+    [self showPaperList];
 }
 - (void)viewDidUnload {
-    [self setFacebookLoginButton:nil];
-    [self setProfileImageView:nil];
-    [self setPaperPlaneView:nil];
-    [self setPaperImageView:nil];
+    self.loadingImageView = NULL;
+    self.paperPlaneView   = NULL;
+    self.paperImageView   = NULL;
     [super viewDidUnload];
 }
-- (IBAction)onTouchList:(id)sender {
-    RollingPaperListController* controller = [[RollingPaperListController alloc] initWithNibName:@"RollingPaperListController" bundle:NULL];
-    controller.profileImage = [profileImageView image];
-    [self.navigationController pushViewController:controller animated:TRUE];
- 
-}
 
-- (IBAction)onTouchCreate:(id)sender {
-    RollingPaperCreator* controller = [[RollingPaperCreator alloc]initWithNibName:@"RollingPaperCreator" bundle:NULL];
-    [self.navigationController pushViewController:controller animated:TRUE];
-}
 @end

@@ -43,8 +43,6 @@
   
     [request addPostValue:useridx           forKey:@"user_idx"];
     [request addPostValue:entity.paper_idx  forKey:@"paper_idx"];
-    
- // [request addPostValue:image     forKey:@"image"];
     [request setData : image
         withFileName : @"photo1.png"
       andContentType : @"image/png"
@@ -55,7 +53,7 @@
     [request addPostValue:entity.width    forKey:@"width"];
     [request addPostValue:entity.height   forKey:@"height"];
     [request addPostValue:entity.rotation forKey:@"rotation"];
-    
+
     return request;
 }
 +(ASIFormDataRequest*) requestForCreateRollingPaperWithUserIdx : (NSString*) creator_idx

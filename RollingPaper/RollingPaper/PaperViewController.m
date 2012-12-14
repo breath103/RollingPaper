@@ -16,12 +16,13 @@
 #import "ImageContentView.h"
 #import "SoundContentView.h"
 #import "UserInfo.h"
-#import "macro.h"
 #import "CGPointExtension.h"
 #import "ccMacros.h"
+#import "UELib/UEUI.h"
+#import "macro.h"
+#import "RecoderViewController.h"
 
 @interface PaperViewController ()
-
 @end
 
 @implementation PaperViewController
@@ -29,15 +30,17 @@
 @synthesize contentsViews;
 @synthesize albumPickerController;
 @synthesize photoPickerController;
+@synthesize imagePickerController;
 @synthesize entity;
 @synthesize friendPickerController;
-@synthesize recoder;
+@synthesize recoderViewController;
 -(id) initWithEntity : (RollingPaper*) aEntity
 {
     self = [self initWithNibName:@"PaperViewController" bundle:NULL];
     if(self){
-        self.entity = aEntity;
+        self.entity   = aEntity;
         contentsViews = [[NSMutableArray alloc]init];
+        NSLog(@"참여자 %d",self.entity.participants_count.intValue);
     }
     return self;
 }
@@ -51,26 +54,28 @@
 
 - (void)viewDidLoad
 {
-    self.view.multipleTouchEnabled = TRUE;
-    
     [super viewDidLoad];
-    ASIFormDataRequest* request = [NetworkTemplate requestForRollingPaperContents:self.entity.idx.stringValue
-                                                                        afterTime:1];
+    
+    self.recoderViewController = [[RecoderViewController alloc]initWithDelegate:self];
+    
+    ASIFormDataRequest* request = [NetworkTemplate requestForRollingPaperContents : self.entity.idx.stringValue
+                                              afterTime : 1];
     [request setCompletionBlock:^{
         SBJSON* parser = [[SBJSON alloc]init];
         NSDictionary* categorizedContents = [parser objectWithString:request.responseString];
         NSLog(@"%@",categorizedContents);
-        [self performSelectorOnMainThread:@selector(onReceiveContentsResponse:)
-                               withObject:categorizedContents
-                            waitUntilDone:TRUE];
+        [self performSelectorOnMainThread : @selector(onReceiveContentsResponse:)
+                               withObject : categorizedContents
+                            waitUntilDone : TRUE];
     }];
     [request setFailedBlock:^{
         NSLog(@"--%@",request.error);
     }];
     [request startAsynchronous];
 }
+
 -(void) viewDidAppear:(BOOL)animated{
-  //  self.paintingView.hidden = TRUE;
+
 }
 -(void) viewWillDisappear:(BOOL)animated{
     int i = 0;
@@ -91,6 +96,8 @@
         [contentsViews addObject:entityView];
     }
     NSDictionary* textContents  = [categorizedContents objectForKey:@"text"];
+    
+    
     NSDictionary* soundContents = [categorizedContents objectForKey:@"sound"];
     for(NSDictionary*p in soundContents){
         SoundContent* soundEntity = (SoundContent*)[[UECoreData sharedInstance]insertNewObject:@"SoundContent" initWith:p];
@@ -98,6 +105,9 @@
         [self.view addSubview:entityView];
         [contentsViews addObject:entityView];
     }
+    
+    // 일단 받았음으로 받은 것을 현재 디바이스에 저장한다
+    
 }
 - (void)didReceiveMemoryWarning
 {
@@ -106,15 +116,30 @@
 
 - (IBAction)onAddImage:(id)sender {
     self.navigationController.navigationBarHidden = FALSE;
-    if(!albumPickerController){
-        albumPickerController = [[AlbumPickerController alloc]initWithDelegate:self];
+    if(!self.albumPickerController){
+        self.albumPickerController = [[AlbumPickerController alloc]initWithDelegate:self];
     }
-    [self.navigationController pushViewController:albumPickerController animated:TRUE];
+    if(!self.imagePickerController){
+        self.imagePickerController = [UIImagePickerController new];
+        self.imagePickerController.delegate = self;
+        if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]){
+            self.imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
+        }
+    }
+    [self presentModalViewController:self.imagePickerController animated:TRUE];
+    //    [self.navigationController pushViewController:albumPickerController animated:TRUE];
 }
 
-- (IBAction)onTouchInvite:(id)sender {
+-(void) imagePickerController : (UIImagePickerController *)picker
+didFinishPickingMediaWithInfo : (NSDictionary *)info{
+    UIImage* image = [info objectForKey: UIImagePickerControllerOriginalImage];
+    ImageContentView* entityView = [self createImageContentViewWithImage:image];
+    transformTargetView = entityView;
     
-   // NSLog(@"%@",[paintingView toImage]);
+    [self dismissViewControllerAnimated:TRUE completion:^{
+    }];
+}
+- (IBAction)onTouchInvite:(id)sender {
     if(!friendPickerController){
         friendPickerController = [[FBFriendPickerViewController alloc] init];
         friendPickerController.title = @"Pick Friends";
@@ -123,28 +148,38 @@
         [friendPickerController loadData];
         [friendPickerController clearSelection];
         [self presentViewController:friendPickerController animated:TRUE completion:^{
+        
         }];
-        //   [self presentModalViewController:friendPickerController animated:YES];
     }
 }
--(void) albumPickerController:(AlbumPickerController *)albumPickerController onSelectAlbum:(AlbumView *)albumView
+-(void) albumPickerController:(AlbumPickerController *)albumPickerController
+                onSelectAlbum:(AlbumView *)albumView
 {
     photoPickerController = [[PhotoPickerController alloc]initWithAlbumAssetGroup:albumView.albumAssetsGroup
                                                                          delegate:self ];
     [self.navigationController pushViewController:photoPickerController animated:TRUE];
 }
--(void) photoPickerController:(PhotoPickerController *)photoPickerController onSelectPhoto:(PhotoView *)photoView
+-(void) photoPickerController:(PhotoPickerController *)photoPickerController
+                onSelectPhoto:(PhotoView *)photoView
 {
-    UIImage* image = [UEImageLibrary imageFromAssetRepresentation:[photoView.photoAssets defaultRepresentation]];
+    ImageContentView* entityView = [self createImageContentViewWithImage:[UEImageLibrary imageFromAssetRepresentation:[photoView.photoAssets defaultRepresentation]]];
+    
+    transformTargetView = entityView;
+    self.navigationController.navigationBarHidden = TRUE;
+    [self.navigationController popToViewController:self animated:TRUE];
+}
+
+-(ImageContentView*) createImageContentViewWithImage: (UIImage*) image{
     CGImageRef cgImage = image.CGImage;
     CGFloat width   = CGImageGetWidth(cgImage);
     CGFloat height  = CGImageGetHeight(cgImage);
+    
     ImageContent* imageEntity = (ImageContent*)[[UECoreData sharedInstance]insertNewObject:@"ImageContent"];
     imageEntity.idx       = NULL;
     imageEntity.paper_idx = self.entity.idx;
     imageEntity.user_idx  = [NSNumber numberWithInt:[UserInfo getUserIdx].intValue];
-    imageEntity.x         = [NSNumber numberWithFloat:self.view.frame.size.width/2 ];
-    imageEntity.y         = [NSNumber numberWithFloat:self.view.frame.size.height/2];
+    imageEntity.x         = [NSNumber numberWithFloat:0.0f];
+    imageEntity.y         = [NSNumber numberWithFloat:0.0f];
     imageEntity.rotation  = [NSNumber numberWithFloat:0.0f];
     imageEntity.image     = NULL;
     imageEntity.width     = [NSNumber numberWithFloat:width];
@@ -156,80 +191,19 @@
     [self.view addSubview:entityView];
     [self.contentsViews addObject:entityView];
     
-    transformTargetView = entityView;
-    self.navigationController.navigationBarHidden = TRUE;
-    
-    [self.navigationController popToViewController:self animated:TRUE];
+   // transformTargetView = entityView;
+    return entityView;
 }
 
 
-
--(CGPoint) centerPointOfTouches : (NSSet*) touches{
-    CGPoint centerPoint = CGPointMake(0,0);
-    for(UITouch* touch in touches.allObjects){
-        centerPoint = CGPointAdd(centerPoint,[touch locationInView:self.view]);
-    }
-    return CGPointMultiply(centerPoint, 1.0f/touches.allObjects.count);
-}
--(float) rotationOfTouches : (NSSet*) touches{
-    if(touches.count >= 2){
-        NSArray* array = touches.allObjects;
-        CGPoint p1 = [(UITouch*)[array objectAtIndex:0] locationInView:self.view];
-        CGPoint p2 = [(UITouch*)[array objectAtIndex:1] locationInView:self.view];
-        return -ccpToAngle(ccpSub(p1, p2));
-    }
-    else {
-        return 0.0f;
-    }
-}
-CGAffineTransform CGAffineTransformWithTouches(CGAffineTransform oldTransform,
-                                               UITouch *firstTouch,
-                                               UITouch *secondTouch)
-{
-    
-    CGPoint firstTouchLocation         = [firstTouch locationInView:nil];
-    CGPoint firstTouchPreviousLocaion  = [firstTouch previousLocationInView:nil];
-    CGPoint secondTouchLocation        = [secondTouch locationInView:nil];
-    CGPoint secondTouchPreviousLocaion = [secondTouch previousLocationInView:nil];
-    
-    CGAffineTransform newTransform;
-    
-    CGFloat currentDistance  = ccpDistance(firstTouchLocation,secondTouchLocation);
-    CGFloat previousDistance = ccpDistance(firstTouchPreviousLocaion,secondTouchPreviousLocaion);
-    
-    CGFloat distanceRatio = currentDistance / previousDistance;
-    
-    newTransform = CGAffineTransformScale(oldTransform, distanceRatio, distanceRatio);
-    
-    
-    CGPoint previousDifference = ccpSub(firstTouchPreviousLocaion, secondTouchPreviousLocaion);
-    CGFloat xDifferencePrevious = previousDifference.x;
-    
-    CGFloat previousRotation = acos(xDifferencePrevious / previousDistance);
-    if (previousDifference.y < 0) {
-        previousRotation *= -1;
-    }
-    
-    CGPoint currentDifference = ccpSub(firstTouchLocation, secondTouchLocation);
-    CGFloat xDifferenceCurrent = currentDifference.x;
-    
-    CGFloat currentRotation = acos(xDifferenceCurrent / currentDistance);
-    if (currentDifference.y < 0) {
-        currentRotation *= -1;
-    }
-    
-    CGFloat newAngle = currentRotation - previousRotation;
-    
-    newTransform = CGAffineTransformRotate(newTransform, newAngle);
-    return newTransform;
-}
-
--(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+-(void)touchesBegan:(NSSet *)touches
+          withEvent:(UIEvent *)event
 {
     UITouch *touch = [touches anyObject];
     lastPoint = [touch locationInView:self.view];
 }
--(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
+-(void)touchesMoved:(NSSet *)touches
+          withEvent:(UIEvent *)event
 {
     NSSet *allTouches = [event allTouches];
     switch ([allTouches count])
@@ -239,10 +213,11 @@ CGAffineTransform CGAffineTransformWithTouches(CGAffineTransform oldTransform,
             UITouch *touch = [touches anyObject];
             CGPoint currentPoint = [touch locationInView:self.view];
             
-            CGAffineTransform transform = transformTargetView.transform;
-            transformTargetView.transform = CGAffineTransformMakeRotation(0);
-            transformTargetView.center = ccpAdd(transformTargetView.center , ccpSub(currentPoint, lastPoint));
-            transformTargetView.transform = transform;
+            NSNumber* x = (NSNumber *)[transformTargetView valueForKeyPath:@"layer.transform.translation.x"];
+            NSNumber* y = (NSNumber *)[transformTargetView valueForKeyPath:@"layer.transform.translation.y"];
+            CGPoint delta = ccpSub(currentPoint, lastPoint);
+            [transformTargetView setValue:[NSNumber numberWithDouble:x.doubleValue + delta.x] forKeyPath:@"layer.transform.translation.x"];
+            [transformTargetView setValue:[NSNumber numberWithDouble:y.doubleValue + delta.y] forKeyPath:@"layer.transform.translation.y"];
             
             lastPoint = currentPoint;
             break;
@@ -251,8 +226,21 @@ CGAffineTransform CGAffineTransformWithTouches(CGAffineTransform oldTransform,
         {
             UITouch *touch1 = [[[event allTouches] allObjects] objectAtIndex:0];
             UITouch *touch2 = [[[event allTouches] allObjects] objectAtIndex:1];
-            transformTargetView.transform = CGAffineTransformWithTouches(transformTargetView.transform, touch1, touch2);
-            NSLog(@"transform : %@",[transformTargetView valueForKeyPath:@"layer.transform"]);
+            
+            CGSize scale;
+            NSNumber* rotation;
+            [UEUI CGAffineTransformWithTouches:touch1
+                                   secondTouch:touch2
+                                         scale:&scale
+                                      rotation:&rotation];
+            NSNumber* prevScaleX = [transformTargetView valueForKeyPath:@"layer.transform.scale.x"];
+            NSNumber* prevScaleY = [transformTargetView valueForKeyPath:@"layer.transform.scale.y"];
+            [transformTargetView setValue:[NSNumber numberWithDouble:prevScaleX.doubleValue * scale.width]  forKeyPath:@"layer.transform.scale.x"];
+            [transformTargetView setValue:[NSNumber numberWithDouble:prevScaleY.doubleValue * scale.height] forKeyPath:@"layer.transform.scale.y"];
+            
+            NSNumber* prevRotation = [transformTargetView valueForKeyPath:@"layer.transform.rotation.z"];
+            [transformTargetView setValue:[NSNumber numberWithDouble:prevRotation.doubleValue + rotation.doubleValue] forKeyPath:@"layer.transform.rotation.z"];
+            
             break;
         }
     }
@@ -265,21 +253,23 @@ CGAffineTransform CGAffineTransformWithTouches(CGAffineTransform oldTransform,
     [self dismissViewControllerAnimated:TRUE completion:^{
         friendPickerController = NULL;
     }];
-    //  [self dismissModalViewControllerAnimated:TRUE];
-    ASIFormDataRequest* request =  [NetworkTemplate requestForInviteFacebookFriends:friendArray
-                                                                            ToPaper:[NSString stringWithFormat:@"%d",self.entity.idx.intValue]
-                                                                          withUser:[UserInfo getUserIdx]];
-    [request setCompletionBlock:^{
-        NSLog(@"%@",request.responseString);
-    }];
-    [request setFailedBlock:^{
-        NSLog(@"fail : %@",request);
-    }];
-    [request startAsynchronous];
+    @autoreleasepool {
+        ASIFormDataRequest* request =  [NetworkTemplate requestForInviteFacebookFriends : friendArray
+                                                                                ToPaper : [NSString stringWithFormat:@"%d",self.entity.idx.intValue]
+                                                                               withUser : [UserInfo getUserIdx]];
+        [request setCompletionBlock:^{
+            NSLog(@"%@",request.responseString);
+        }];
+        [request setFailedBlock:^{
+            NSLog(@"fail : %@",request);
+        }];
+        [request startAsynchronous];
+    }
 }
 - (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event
 {
-    if (event.type == UIEventTypeMotion && event.subtype == UIEventSubtypeMotionShake) {
+    if (event.type    == UIEventTypeMotion &&
+        event.subtype == UIEventSubtypeMotionShake) {
         [self.navigationController popViewControllerAnimated:TRUE];
     }
 }
@@ -289,33 +279,37 @@ CGAffineTransform CGAffineTransformWithTouches(CGAffineTransform oldTransform,
     return YES;
 }
 
-- (IBAction)onTouchSound:(id)sender {
-    if(!recoder){
-        recoder = [[UESoundRecoder alloc] init];
-        [recoder startRecoding];
-        self.soundButton.titleLabel.text = @"recoding..";
-    }
-    else{
-        [recoder stopRecording];
-        self.soundButton.titleLabel.text = @"sound";
-        
-        SoundContent* soundEntity = (SoundContent*)[[UECoreData sharedInstance]insertNewObject:@"SoundContent"];
-        soundEntity.idx       = NULL;
-        soundEntity.paper_idx = self.entity.idx;
-        soundEntity.user_idx  = [NSNumber numberWithInt:[UserInfo getUserIdx].intValue];
-        soundEntity.x         = [NSNumber numberWithFloat:self.view.frame.size.width/2 ];
-        soundEntity.y         = [NSNumber numberWithFloat:self.view.frame.size.height/2];
-        soundEntity.sound     = [recoder.soundFilePath mutableCopy];
-        
-        
-        SoundContentView* entityView = [[SoundContentView alloc] initWithEntity:soundEntity];
-        entityView.isNeedToSyncWithServer = TRUE;
-        [self.view addSubview:entityView];
-        [self.contentsViews addObject:entityView];
-        
-        transformTargetView = entityView;
-       // recoder = NULL;
-    }
+- (IBAction)onTouchSound:(id)sender {        
+    [self addChildViewController:self.recoderViewController];
+    [self.view addSubview:self.recoderViewController.view];
+    
+    self.recoderViewController.view.alpha = 0.0f;
+    [UIView animateWithDuration: 1.0f
+                     animations:^{
+                         self.recoderViewController.view.alpha = 1.0f;
+                     } completion:^(BOOL finished) {
+                         
+                     }];
+
+}
+-(void) RecoderViewController:(RecoderViewController *)recoder
+        onEndRecodingWithFile:(NSString *)file{
+    
+    SoundContent* soundEntity = (SoundContent*)[[UECoreData sharedInstance]insertNewObject:@"SoundContent"];
+    soundEntity.idx       = NULL;
+    soundEntity.paper_idx = self.entity.idx;
+    soundEntity.user_idx  = [NSNumber numberWithInt:[UserInfo getUserIdx].intValue];
+    soundEntity.x         = [NSNumber numberWithFloat:self.view.frame.size.width/2 ];
+    soundEntity.y         = [NSNumber numberWithFloat:self.view.frame.size.height/2];
+    soundEntity.sound     = [file mutableCopy];
+    
+    
+    SoundContentView* entityView = [[SoundContentView alloc] initWithEntity:soundEntity];
+    entityView.isNeedToSyncWithServer = TRUE;
+    [self.view addSubview:entityView];
+    [self.contentsViews addObject:entityView];
+    
+    transformTargetView = entityView;
 }
 
 - (IBAction)onTouchBrush:(id)sender {
@@ -327,8 +321,7 @@ CGAffineTransform CGAffineTransformWithTouches(CGAffineTransform oldTransform,
         CGImageRef cgImage = image.CGImage;
         CGFloat width   = CGImageGetWidth(cgImage);
         CGFloat height  = CGImageGetHeight(cgImage);
-        ImageContent* imageEntity =
-            (ImageContent*)[[UECoreData sharedInstance]insertNewObject:@"ImageContent"];
+        ImageContent* imageEntity = (ImageContent*)[[UECoreData sharedInstance]insertNewObject:@"ImageContent"];
         imageEntity.idx       = NULL;
         imageEntity.paper_idx = self.entity.idx;
         imageEntity.user_idx  = [NSNumber numberWithInt:[UserInfo getUserIdx].intValue];
@@ -354,8 +347,6 @@ CGAffineTransform CGAffineTransformWithTouches(CGAffineTransform oldTransform,
     else {
         [self.view bringSubviewToFront:paintingView];
         UIViewSetX(paintingView, 0);
-        
     }
-
 }
 @end

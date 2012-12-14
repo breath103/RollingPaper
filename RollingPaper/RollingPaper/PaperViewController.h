@@ -13,26 +13,31 @@
 #import "RollingPaperContentViewProtocol.h"
 #import <FacebookSDK/FacebookSDK.h>
 #import "PaintingView.h"
-#import "UESoundRecoder.h"
 
-@interface PaperViewController : UIViewController<AlbumPickerControllerDelegate,
-                                                  PhotoPickerControllerDelegate,
-                                                  FBFriendPickerDelegate>
-{
+#import "RecoderViewController.h"
+
+@interface PaperViewController : UIViewController <UIImagePickerControllerDelegate,//AlbumPickerControllerDelegate,//PhotoPickerControllerDelegate,
+                                                   RecoderViewControllerDelegate,
+                                                   FBFriendPickerDelegate>{
     UIView<RollingPaperContentViewProtocol>* transformTargetView;
     CGPoint lastPoint;
 }
-@property (nonatomic,strong) UESoundRecoder* recoder;
 @property (weak, nonatomic) IBOutlet UIButton *soundButton;
 @property (weak , nonatomic) IBOutlet PaintingView* paintingView;
 @property (strong, nonatomic) FBFriendPickerViewController* friendPickerController;
 @property (strong, nonatomic) NSMutableArray* contentsViews;
 @property (strong, nonatomic) RollingPaper* entity;
+
 @property (strong, nonatomic) AlbumPickerController* albumPickerController;
 @property (strong, nonatomic) PhotoPickerController* photoPickerController;
+@property (strong, nonatomic) UIImagePickerController* imagePickerController;
+
+@property (nonatomic,strong) RecoderViewController* recoderViewController;
+
 - (IBAction)onTouchSound:(id)sender;
 - (IBAction)onTouchBrush:(id)sender;
 - (IBAction)onAddImage:(id)sender;
 - (IBAction)onTouchInvite:(id)sender;
 -(id) initWithEntity : (RollingPaper*) entity;
+
 @end
