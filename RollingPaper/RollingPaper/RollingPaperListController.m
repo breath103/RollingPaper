@@ -39,9 +39,9 @@
         [controller.view removeFromSuperview];
         [controller removeFromParentViewController];
     }
-    paperCellControllers = [NSMutableArray new];
+    [paperCellControllers removeAllObjects];
     
-    SIFormDataRequest* request = [NetworkTemplate requestForRollingPaperListWithUserIdx:[UserInfo getUserIdx]];
+    ASIFormDataRequest* request = [NetworkTemplate requestForRollingPaperListWithUserIdx:[UserInfo getUserIdx]];
     [request setCompletionBlock:^{
         [self performBlockInMainThread:^{
             SBJSON* parser = [[SBJSON alloc]init];
@@ -73,7 +73,6 @@
                     NSLog(@"이미 있던 방 : %@",entity);
                 }
                  */
-                //Get All Madeleine
                 if([entity.is_sended compare:@"NONE"] == NSOrderedSame)
                 {
                     PaperCellController* cellController = [[PaperCellController alloc] initWithEntity : entity

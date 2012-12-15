@@ -7,31 +7,34 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "PhotoPickingView/PhotoPickerController.h"
-#import "PhotoPickingView/AlbumPickerController.h"
+#import <FacebookSDK/FacebookSDK.h>
+
 #import "RollingPaper.h"
 #import "RollingPaperContentViewProtocol.h"
-#import <FacebookSDK/FacebookSDK.h>
 #import "PaintingView.h"
 
 #import "RecoderViewController.h"
+#import "CameraViewController.h"
+#import "UIFreeTransformGestureRecognizer.h"
 
-@interface PaperViewController : UIViewController <UIImagePickerControllerDelegate,//AlbumPickerControllerDelegate,//PhotoPickerControllerDelegate,
+@interface PaperViewController : UIViewController <UIImagePickerControllerDelegate,
                                                    RecoderViewControllerDelegate,
+                                                   CameraViewControllerDelegate,
                                                    FBFriendPickerDelegate>{
-    UIView<RollingPaperContentViewProtocol>* transformTargetView;
-    CGPoint lastPoint;
+    UIPanGestureRecognizer* pan;
 }
+@property (nonatomic,strong) UIView<RollingPaperContentViewProtocol>* transformTargetView;
 @property (weak, nonatomic) IBOutlet UIButton *soundButton;
 @property (weak , nonatomic) IBOutlet PaintingView* paintingView;
 @property (strong, nonatomic) FBFriendPickerViewController* friendPickerController;
 @property (strong, nonatomic) NSMutableArray* contentsViews;
 @property (strong, nonatomic) RollingPaper* entity;
+@property (weak, nonatomic) IBOutlet UIView *menuDock;
+@property (weak, nonatomic) IBOutlet UIScrollView *contentsContainer;
 
-@property (strong, nonatomic) AlbumPickerController* albumPickerController;
-@property (strong, nonatomic) PhotoPickerController* photoPickerController;
-@property (strong, nonatomic) UIImagePickerController* imagePickerController;
+@property (nonatomic,strong) UIFreeTransformGestureRecognizer* freeTransformGestureRecognizer;
 
+@property (nonatomic,strong) CameraViewController* cameraViewController;
 @property (nonatomic,strong) RecoderViewController* recoderViewController;
 
 - (IBAction)onTouchSound:(id)sender;

@@ -11,6 +11,7 @@
 #import "SBJSON.h"
 #import "UserInfo.h"
 #import "UECoreData.h"
+#import "UEFileManager.h"
 @implementation SoundContentView
 @synthesize isNeedToSyncWithServer;
 @synthesize rotation;
@@ -26,14 +27,13 @@
         if(entity.sound){
             self.image = [UIImage imageNamed:@"sound_icon.png"];
             NSString* urlString = [entity.sound stringByReplacingOccurrencesOfString:@"localhost" withString:SERVER_IP];
-            NSData* soundData = [self loadSoundFromLocalStorage:urlString];
+            NSData* soundData = [UEFileManager readDataFromLocalFile:[self urlToLocalFilePath:urlString]];
             if( !soundData ){
+                NSLog(@"%@사운드가 로컬에 없음",urlString);
                 soundData = [self loadSoundFromURLAndSaveToLocalStorage:urlString];
             }
-            NSError* error;
             audioPlayer = [[AVAudioPlayer alloc] initWithData:soundData
-                                                        error:&error];
-            NSLog(@"%@",error);
+                                                        error:NULL];
         }
         UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onTouchView)];
         [self addGestureRecognizer: tapGesture];
@@ -42,31 +42,18 @@
 }
 -(NSString*) urlToLocalFilePath : (NSString*) url{
     NSArray* array = [url componentsSeparatedByString:@"/"];
-    return array[array.count-1];
-}
--(NSData*) loadSoundFromLocalStorage : (NSString*) url{
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    NSString* filePath = [NSString stringWithFormat:@"%@/%@", documentsDirectory,url];
-    return [NSData dataWithContentsOfFile:filePath];
+    return [array lastObject];
 }
 -(NSData*) loadSoundFromURLAndSaveToLocalStorage : (NSString*) url{
     NSData* soundData = [NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
     NSString* localPath = [self urlToLocalFilePath:url];
     if ( soundData ){
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        NSString *documentsDirectory = [paths objectAtIndex:0];
-        NSString* filePath = [NSString stringWithFormat:@"%@/%@", documentsDirectory,localPath];
-        if([soundData writeToFile:filePath
-                       atomically:NO]){
-            NSLog(@"%@ saved",filePath);
-        }
-        else {
-            NSLog(@"%@ save fail",filePath);
-        }
+        [UEFileManager writeData : soundData
+                     ToLocalFile : localPath];
         return soundData;
     }
     else{
+        NSLog(@"RollingPaper서버에서 리소스 조회 실패 : %@",url);
         return NULL;
     }
 }

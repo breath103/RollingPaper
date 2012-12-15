@@ -22,8 +22,6 @@
 -(void) assetsInGroup        : (ALAssetsGroup*)    group assetArray : (NSMutableArray*) aAssetArray;
 @end
 
-
-
 @class UEAssetsScanner;
 @protocol UEAssetsScannerDelegate <NSObject>
 -(void)UEAssetsScanner : (UEAssetsScanner*) scanner

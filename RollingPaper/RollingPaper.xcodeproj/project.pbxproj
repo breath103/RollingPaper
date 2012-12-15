@@ -85,6 +85,15 @@
 		07B355F5165BB8AE0094D7D7 /* UECoreData.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B355F4165BB8AD0094D7D7 /* UECoreData.m */; };
 		07B3560A165BFAD90094D7D7 /* ImageContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B35609165BFAD90094D7D7 /* ImageContentView.m */; };
 		07B35619165C12CF0094D7D7 /* CGPointExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B35618165C12CB0094D7D7 /* CGPointExtension.m */; };
+		07CD0783167B84E500358AD6 /* CameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07CD0781167B84E400358AD6 /* CameraViewController.m */; };
+		07CD0784167B84E500358AD6 /* CameraViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07CD0782167B84E500358AD6 /* CameraViewController.xib */; };
+		07CD07C0167C693C00358AD6 /* UIFreeTransformGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 07CD07BF167C693C00358AD6 /* UIFreeTransformGestureRecognizer.m */; };
+		07CD07C7167CBC1400358AD6 /* UEFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 07CD07C6167CBC1400358AD6 /* UEFileManager.m */; };
+		07CD07EA167D145400358AD6 /* camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 07CD07E6167D145400358AD6 /* camera.png */; };
+		07CD07EB167D145400358AD6 /* dock.png in Resources */ = {isa = PBXBuildFile; fileRef = 07CD07E7167D145400358AD6 /* dock.png */; };
+		07CD07EC167D145400358AD6 /* sharp.png in Resources */ = {isa = PBXBuildFile; fileRef = 07CD07E8167D145400358AD6 /* sharp.png */; };
+		07CD07ED167D145400358AD6 /* pencil.png in Resources */ = {isa = PBXBuildFile; fileRef = 07CD07E9167D145400358AD6 /* pencil.png */; };
+		07CD07EF167D153600358AD6 /* keyboard.png in Resources */ = {isa = PBXBuildFile; fileRef = 07CD07EE167D153600358AD6 /* keyboard.png */; };
 		07EC38361678CD0E00889E47 /* libSBJSON.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 07EC38341678CD0E00889E47 /* libSBJSON.a */; };
 		07EC386B1678CF2700889E47 /* libJSON-mac64.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 07EC386A1678CF2700889E47 /* libJSON-mac64.a */; };
 		07EC38701678CF8B00889E47 /* libASI-mac64.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 07EC386F1678CF8B00889E47 /* libASI-mac64.a */; };
@@ -244,6 +253,18 @@
 		07B35617165C12C80094D7D7 /* CGPointExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGPointExtension.h; sourceTree = "<group>"; };
 		07B35618165C12CB0094D7D7 /* CGPointExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGPointExtension.m; sourceTree = "<group>"; };
 		07B3561A165C143E0094D7D7 /* ccMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ccMacros.h; sourceTree = "<group>"; };
+		07CD0780167B84E400358AD6 /* CameraViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraViewController.h; sourceTree = "<group>"; };
+		07CD0781167B84E400358AD6 /* CameraViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CameraViewController.m; sourceTree = "<group>"; };
+		07CD0782167B84E500358AD6 /* CameraViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CameraViewController.xib; sourceTree = "<group>"; };
+		07CD07BE167C693B00358AD6 /* UIFreeTransformGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIFreeTransformGestureRecognizer.h; sourceTree = "<group>"; };
+		07CD07BF167C693C00358AD6 /* UIFreeTransformGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIFreeTransformGestureRecognizer.m; sourceTree = "<group>"; };
+		07CD07C5167CBC1400358AD6 /* UEFileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UEFileManager.h; sourceTree = "<group>"; };
+		07CD07C6167CBC1400358AD6 /* UEFileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UEFileManager.m; sourceTree = "<group>"; };
+		07CD07E6167D145400358AD6 /* camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera.png; sourceTree = "<group>"; };
+		07CD07E7167D145400358AD6 /* dock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dock.png; sourceTree = "<group>"; };
+		07CD07E8167D145400358AD6 /* sharp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sharp.png; sourceTree = "<group>"; };
+		07CD07E9167D145400358AD6 /* pencil.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pencil.png; sourceTree = "<group>"; };
+		07CD07EE167D153600358AD6 /* keyboard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = keyboard.png; sourceTree = "<group>"; };
 		07EC38341678CD0E00889E47 /* libSBJSON.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libSBJSON.a; sourceTree = "<group>"; };
 		07EC386A1678CF2700889E47 /* libJSON-mac64.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libJSON-mac64.a"; sourceTree = "<group>"; };
 		07EC386F1678CF8B00889E47 /* libASI-mac64.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libASI-mac64.a"; sourceTree = "<group>"; };
@@ -307,6 +328,11 @@
 				0795D1B5167B70D100272D34 /* RecoderViewController.h */,
 				0795D1B6167B70D200272D34 /* RecoderViewController.m */,
 				0795D1B7167B70D200272D34 /* RecoderViewController.xib */,
+				07CD0780167B84E400358AD6 /* CameraViewController.h */,
+				07CD0781167B84E400358AD6 /* CameraViewController.m */,
+				07CD0782167B84E500358AD6 /* CameraViewController.xib */,
+				07CD07BE167C693B00358AD6 /* UIFreeTransformGestureRecognizer.h */,
+				07CD07BF167C693C00358AD6 /* UIFreeTransformGestureRecognizer.m */,
 			);
 			name = PaperEditing;
 			sourceTree = "<group>";
@@ -520,6 +546,8 @@
 				07B355F4165BB8AD0094D7D7 /* UECoreData.m */,
 				07FBDDD5165FEF990011D581 /* UESoundRecoder.h */,
 				07FBDDD6165FEF990011D581 /* UESoundRecoder.m */,
+				07CD07C5167CBC1400358AD6 /* UEFileManager.h */,
+				07CD07C6167CBC1400358AD6 /* UEFileManager.m */,
 			);
 			path = UELib;
 			sourceTree = "<group>";
@@ -542,6 +570,7 @@
 		07B3558A165A9B790094D7D7 /* resources */ = {
 			isa = PBXGroup;
 			children = (
+				07CD07E5167D142700358AD6 /* paintingDock */,
 				0795D1BB167B752700272D34 /* recorder.png */,
 				07FBDDE1165FF4110011D581 /* sound_icon.png */,
 				07081EF3165FB7CA005670B5 /* Particle.png */,
@@ -602,6 +631,18 @@
 				07FD933E165FD379008943B0 /* RootViewController.xib */,
 			);
 			name = NavigationViews;
+			sourceTree = "<group>";
+		};
+		07CD07E5167D142700358AD6 /* paintingDock */ = {
+			isa = PBXGroup;
+			children = (
+				07CD07EE167D153600358AD6 /* keyboard.png */,
+				07CD07E6167D145400358AD6 /* camera.png */,
+				07CD07E7167D145400358AD6 /* dock.png */,
+				07CD07E8167D145400358AD6 /* sharp.png */,
+				07CD07E9167D145400358AD6 /* pencil.png */,
+			);
+			name = paintingDock;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -681,6 +722,12 @@
 				07AFD55B167303B700F19D64 /* RollingPaperListController.xib in Resources */,
 				0795D1B9167B70D200272D34 /* RecoderViewController.xib in Resources */,
 				0795D1BC167B752700272D34 /* recorder.png in Resources */,
+				07CD0784167B84E500358AD6 /* CameraViewController.xib in Resources */,
+				07CD07EA167D145400358AD6 /* camera.png in Resources */,
+				07CD07EB167D145400358AD6 /* dock.png in Resources */,
+				07CD07EC167D145400358AD6 /* sharp.png in Resources */,
+				07CD07ED167D145400358AD6 /* pencil.png in Resources */,
+				07CD07EF167D153600358AD6 /* keyboard.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -724,6 +771,9 @@
 				0717310A167B366C0032874A /* SoundContent.m in Sources */,
 				0717310D167B366D0032874A /* RollingPaper.m in Sources */,
 				0795D1B8167B70D200272D34 /* RecoderViewController.m in Sources */,
+				07CD0783167B84E500358AD6 /* CameraViewController.m in Sources */,
+				07CD07C0167C693C00358AD6 /* UIFreeTransformGestureRecognizer.m in Sources */,
+				07CD07C7167CBC1400358AD6 /* UEFileManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

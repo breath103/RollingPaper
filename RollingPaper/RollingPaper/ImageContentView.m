@@ -12,6 +12,7 @@
 #import "UserInfo.h"
 #import "UECoreData.h"
 #import "SBJSON.h"
+#import "UEFileManager.h"
 
 @implementation ImageContentView
 @synthesize isNeedToSyncWithServer;
@@ -24,11 +25,15 @@
         if(entity.image){
             NSString* urlString = [entity.image stringByReplacingOccurrencesOfString:@"localhost" withString:SERVER_IP];
             //우선 이미지를 파일에서 읽어본다
-            self.image = [self loadImageFromLocalStorage: [self urlToLocalFilePath:urlString]];
-            if(!self.image) //이미지가 로컬에 없는경우
+            NSData* imageData = [UEFileManager readDataFromLocalFile:
+                                 [self urlToLocalFilePath:urlString]];
+            if(!imageData) //이미지가 로컬에 없는경우
             {
                 NSLog(@"%@이미지가 로컬에 없음",urlString);
                 self.image = [self loadImageFromURLAndSaveToLocalStorage:urlString];
+            
+            }else{
+                self.image = [UIImage imageWithData:imageData];
             }
         }
         self.contentMode = UIViewContentModeScaleToFill;
@@ -40,32 +45,16 @@
 }
 -(NSString*) urlToLocalFilePath : (NSString*) url{
     NSArray* array = [url componentsSeparatedByString:@"/"];
-    return array[array.count-1];
-}
--(UIImage*) loadImageFromLocalStorage : (NSString*) url{
-    UIImage* image = NULL;
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    NSString* filePath = [NSString stringWithFormat:@"%@/%@", documentsDirectory,url];
-    image = [UIImage imageWithContentsOfFile:filePath];
-    return image;
+    return [array lastObject];
 }
 -(UIImage*) loadImageFromURLAndSaveToLocalStorage : (NSString*) url{
     UIImage* image = [UEImageLibrary imageWithURL:url];
     NSString* localPath = [self urlToLocalFilePath:url];
     if ( image )
     {
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        NSString *documentsDirectory = [paths objectAtIndex:0];
-        NSString* filePath = [NSString stringWithFormat:@"%@/%@", documentsDirectory,localPath];
         NSData *imageData = UIImagePNGRepresentation(image);
-        if([imageData writeToFile:filePath
-                       atomically:NO]){
-            NSLog(@"%@ saved",filePath);
-        }
-        else {
-            NSLog(@"%@ save fail",filePath);
-        }
+        [UEFileManager writeData : imageData
+                     ToLocalFile : localPath];
         return image;
     }
     else

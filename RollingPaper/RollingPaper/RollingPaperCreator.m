@@ -11,6 +11,7 @@
 #import "UserInfo.h"
 #import "NSObject+block.h"
 
+
 @interface RollingPaperCreator ()
 
 @end
@@ -24,6 +25,7 @@
 @synthesize fbIdLabel;
 @synthesize friendPickerController;
 -(void) viewDidAppear:(BOOL)animated{
+
     self.navigationController.navigationBarHidden = FALSE;
 }
 -(void) viewWillDisappear:(BOOL)animated{
@@ -93,6 +95,7 @@
         friendPickerController = [[FBFriendPickerViewController alloc] init];
         friendPickerController.title    = @"Pick Friends";
         friendPickerController.delegate = self;
+        friendPickerController.allowsMultipleSelection = FALSE;
         
         [friendPickerController loadData];
         [friendPickerController clearSelection];
