@@ -18,12 +18,16 @@
 		07081F01165FBA74005670B5 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07081EFC165FBA74005670B5 /* RootViewController.m */; };
 		07081F0A165FBB01005670B5 /* PaperViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07081F08165FBB01005670B5 /* PaperViewController.m */; };
 		07081F0B165FBB01005670B5 /* PaperViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07081F09165FBB01005670B5 /* PaperViewController.xib */; };
-		07173104167B366B0032874A /* Content.m in Sources */ = {isa = PBXBuildFile; fileRef = 07173103167B366B0032874A /* Content.m */; };
-		07173107167B366C0032874A /* ImageContent.m in Sources */ = {isa = PBXBuildFile; fileRef = 07173106167B366C0032874A /* ImageContent.m */; };
-		0717310A167B366C0032874A /* SoundContent.m in Sources */ = {isa = PBXBuildFile; fileRef = 07173109167B366C0032874A /* SoundContent.m */; };
-		0717310D167B366D0032874A /* RollingPaper.m in Sources */ = {isa = PBXBuildFile; fileRef = 0717310C167B366D0032874A /* RollingPaper.m */; };
 		0725188E165E9E05001D6A06 /* main_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 0725188D165E9E05001D6A06 /* main_bg.png */; };
 		07251890165E9EFD001D6A06 /* main_paper_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 0725188F165E9EFD001D6A06 /* main_paper_bg.png */; };
+		072829CA1681A9D400B488EF /* PencilcaseController.m in Sources */ = {isa = PBXBuildFile; fileRef = 072829C81681A9D400B488EF /* PencilcaseController.m */; };
+		072829CB1681A9D400B488EF /* PencilcaseController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 072829C91681A9D400B488EF /* PencilcaseController.xib */; };
+		072829D21682CE8500B488EF /* TextContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 072829D11682CE8400B488EF /* TextContentView.m */; };
+		072829D516832D3F00B488EF /* RollingPaper.m in Sources */ = {isa = PBXBuildFile; fileRef = 072829D416832D3E00B488EF /* RollingPaper.m */; };
+		072829D816832D4000B488EF /* SoundContent.m in Sources */ = {isa = PBXBuildFile; fileRef = 072829D716832D4000B488EF /* SoundContent.m */; };
+		072829DB16832D4100B488EF /* TextContent.m in Sources */ = {isa = PBXBuildFile; fileRef = 072829DA16832D4100B488EF /* TextContent.m */; };
+		072829DE16832D4100B488EF /* Content.m in Sources */ = {isa = PBXBuildFile; fileRef = 072829DD16832D4100B488EF /* Content.m */; };
+		072829E116832D4100B488EF /* ImageContent.m in Sources */ = {isa = PBXBuildFile; fileRef = 072829E016832D4100B488EF /* ImageContent.m */; };
 		0769651016457AA7002C25B6 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0769650F16457AA7002C25B6 /* FacebookSDK.framework */; };
 		0769652016457AD1002C25B6 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0769651116457AD1002C25B6 /* AdSupport.framework */; };
 		0769652216457AD1002C25B6 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0769651316457AD1002C25B6 /* libz.dylib */; };
@@ -44,6 +48,9 @@
 		076E89F1165EA92400040F6F /* PaperCellController.m in Sources */ = {isa = PBXBuildFile; fileRef = 076E89EF165EA92300040F6F /* PaperCellController.m */; };
 		076E89F2165EA92400040F6F /* PaperCellController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 076E89F0165EA92400040F6F /* PaperCellController.xib */; };
 		076E89F4165EB69900040F6F /* plus.png in Resources */ = {isa = PBXBuildFile; fileRef = 076E89F3165EB69900040F6F /* plus.png */; };
+		076FE3D8167F6E77006D6ABA /* DockController.m in Sources */ = {isa = PBXBuildFile; fileRef = 076FE3D6167F6E77006D6ABA /* DockController.m */; };
+		076FE3D9167F6E77006D6ABA /* DockController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 076FE3D7167F6E77006D6ABA /* DockController.xib */; };
+		076FE3DC167FB942006D6ABA /* TypewriterController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 076FE3DB167FB941006D6ABA /* TypewriterController.xib */; };
 		0778B7F0163B7C4E0026B99A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0778B7EF163B7C4E0026B99A /* UIKit.framework */; };
 		0778B7F2163B7C4E0026B99A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0778B7F1163B7C4E0026B99A /* Foundation.framework */; };
 		0778B7F4163B7C4E0026B99A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0778B7F3163B7C4E0026B99A /* CoreGraphics.framework */; };
@@ -53,8 +60,9 @@
 		0778B802163B7C4E0026B99A /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 0778B801163B7C4E0026B99A /* Default.png */; };
 		0778B804163B7C4E0026B99A /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0778B803163B7C4E0026B99A /* Default@2x.png */; };
 		0778B806163B7C4E0026B99A /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0778B805163B7C4E0026B99A /* Default-568h@2x.png */; };
-		0795D1B8167B70D200272D34 /* RecoderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0795D1B6167B70D200272D34 /* RecoderViewController.m */; };
-		0795D1B9167B70D200272D34 /* RecoderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0795D1B7167B70D200272D34 /* RecoderViewController.xib */; };
+		078CA9AC16810592007A3BFC /* FBFriendSearchPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 078CA9AB16810591007A3BFC /* FBFriendSearchPickerController.m */; };
+		0795D1B8167B70D200272D34 /* RecoderController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0795D1B6167B70D200272D34 /* RecoderController.m */; };
+		0795D1B9167B70D200272D34 /* RecoderController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0795D1B7167B70D200272D34 /* RecoderController.xib */; };
 		0795D1BC167B752700272D34 /* recorder.png in Resources */ = {isa = PBXBuildFile; fileRef = 0795D1BB167B752700272D34 /* recorder.png */; };
 		07AB33A416458BFC000A27F7 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07AB33A316458BFC000A27F7 /* FacebookSDK.framework */; };
 		07AB33CA16466BDF000A27F7 /* UserInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 07AB33C916466BDE000A27F7 /* UserInfo.m */; };
@@ -85,8 +93,6 @@
 		07B355F5165BB8AE0094D7D7 /* UECoreData.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B355F4165BB8AD0094D7D7 /* UECoreData.m */; };
 		07B3560A165BFAD90094D7D7 /* ImageContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B35609165BFAD90094D7D7 /* ImageContentView.m */; };
 		07B35619165C12CF0094D7D7 /* CGPointExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B35618165C12CB0094D7D7 /* CGPointExtension.m */; };
-		07CD0783167B84E500358AD6 /* CameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07CD0781167B84E400358AD6 /* CameraViewController.m */; };
-		07CD0784167B84E500358AD6 /* CameraViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07CD0782167B84E500358AD6 /* CameraViewController.xib */; };
 		07CD07C0167C693C00358AD6 /* UIFreeTransformGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 07CD07BF167C693C00358AD6 /* UIFreeTransformGestureRecognizer.m */; };
 		07CD07C7167CBC1400358AD6 /* UEFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 07CD07C6167CBC1400358AD6 /* UEFileManager.m */; };
 		07CD07EA167D145400358AD6 /* camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 07CD07E6167D145400358AD6 /* camera.png */; };
@@ -94,6 +100,16 @@
 		07CD07EC167D145400358AD6 /* sharp.png in Resources */ = {isa = PBXBuildFile; fileRef = 07CD07E8167D145400358AD6 /* sharp.png */; };
 		07CD07ED167D145400358AD6 /* pencil.png in Resources */ = {isa = PBXBuildFile; fileRef = 07CD07E9167D145400358AD6 /* pencil.png */; };
 		07CD07EF167D153600358AD6 /* keyboard.png in Resources */ = {isa = PBXBuildFile; fileRef = 07CD07EE167D153600358AD6 /* keyboard.png */; };
+		07CD07FE167D385800358AD6 /* microphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 07CD07FD167D385800358AD6 /* microphone.png */; };
+		07CD0806167D91DA00358AD6 /* TypewriterController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07CD0804167D91D700358AD6 /* TypewriterController.m */; };
+		07CD0811167D92D300358AD6 /* AVCamCaptureManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 07CD080A167D92D300358AD6 /* AVCamCaptureManager.m */; };
+		07CD0812167D92D300358AD6 /* AVCamRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 07CD080C167D92D300358AD6 /* AVCamRecorder.m */; };
+		07CD0813167D92D300358AD6 /* AVCamUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 07CD080E167D92D300358AD6 /* AVCamUtilities.m */; };
+		07CD0814167D92D300358AD6 /* CameraController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07CD0810167D92D300358AD6 /* CameraController.m */; };
+		07CD081A167D964D00358AD6 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07CD0819167D964C00358AD6 /* CoreMedia.framework */; };
+		07CD081C167D96A700358AD6 /* CameraController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07CD081B167D96A600358AD6 /* CameraController.xib */; };
+		07CD0824167DC11B00358AD6 /* AlbumController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07CD0822167DC11900358AD6 /* AlbumController.m */; };
+		07CD0825167DC11B00358AD6 /* AlbumController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07CD0823167DC11A00358AD6 /* AlbumController.xib */; };
 		07EC38361678CD0E00889E47 /* libSBJSON.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 07EC38341678CD0E00889E47 /* libSBJSON.a */; };
 		07EC386B1678CF2700889E47 /* libJSON-mac64.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 07EC386A1678CF2700889E47 /* libJSON-mac64.a */; };
 		07EC38701678CF8B00889E47 /* libASI-mac64.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 07EC386F1678CF8B00889E47 /* libASI-mac64.a */; };
@@ -122,16 +138,23 @@
 		07081F07165FBB01005670B5 /* PaperViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaperViewController.h; sourceTree = "<group>"; };
 		07081F08165FBB01005670B5 /* PaperViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaperViewController.m; sourceTree = "<group>"; };
 		07081F09165FBB01005670B5 /* PaperViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PaperViewController.xib; sourceTree = "<group>"; };
-		07173102167B366B0032874A /* Content.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Content.h; sourceTree = "<group>"; };
-		07173103167B366B0032874A /* Content.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Content.m; sourceTree = "<group>"; };
-		07173105167B366C0032874A /* ImageContent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageContent.h; sourceTree = "<group>"; };
-		07173106167B366C0032874A /* ImageContent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageContent.m; sourceTree = "<group>"; };
-		07173108167B366C0032874A /* SoundContent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundContent.h; sourceTree = "<group>"; };
-		07173109167B366C0032874A /* SoundContent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SoundContent.m; sourceTree = "<group>"; };
-		0717310B167B366D0032874A /* RollingPaper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RollingPaper.h; sourceTree = "<group>"; };
-		0717310C167B366D0032874A /* RollingPaper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RollingPaper.m; sourceTree = "<group>"; };
 		0725188D165E9E05001D6A06 /* main_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = main_bg.png; sourceTree = "<group>"; };
 		0725188F165E9EFD001D6A06 /* main_paper_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = main_paper_bg.png; sourceTree = "<group>"; };
+		072829C71681A9D400B488EF /* PencilcaseController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PencilcaseController.h; sourceTree = "<group>"; };
+		072829C81681A9D400B488EF /* PencilcaseController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PencilcaseController.m; sourceTree = "<group>"; };
+		072829C91681A9D400B488EF /* PencilcaseController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PencilcaseController.xib; sourceTree = "<group>"; };
+		072829D01682CE8400B488EF /* TextContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextContentView.h; sourceTree = "<group>"; };
+		072829D11682CE8400B488EF /* TextContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextContentView.m; sourceTree = "<group>"; };
+		072829D316832D3E00B488EF /* RollingPaper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RollingPaper.h; sourceTree = "<group>"; };
+		072829D416832D3E00B488EF /* RollingPaper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RollingPaper.m; sourceTree = "<group>"; };
+		072829D616832D4000B488EF /* SoundContent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundContent.h; sourceTree = "<group>"; };
+		072829D716832D4000B488EF /* SoundContent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SoundContent.m; sourceTree = "<group>"; };
+		072829D916832D4000B488EF /* TextContent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextContent.h; sourceTree = "<group>"; };
+		072829DA16832D4100B488EF /* TextContent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextContent.m; sourceTree = "<group>"; };
+		072829DC16832D4100B488EF /* Content.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Content.h; sourceTree = "<group>"; };
+		072829DD16832D4100B488EF /* Content.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Content.m; sourceTree = "<group>"; };
+		072829DF16832D4100B488EF /* ImageContent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageContent.h; sourceTree = "<group>"; };
+		072829E016832D4100B488EF /* ImageContent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageContent.m; sourceTree = "<group>"; };
 		0769650F16457AA7002C25B6 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = ../../TravelTape/TravelTape/FacebookSDK.framework; sourceTree = "<group>"; };
 		0769651116457AD1002C25B6 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		0769651316457AD1002C25B6 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -153,6 +176,10 @@
 		076E89EF165EA92300040F6F /* PaperCellController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaperCellController.m; sourceTree = "<group>"; };
 		076E89F0165EA92400040F6F /* PaperCellController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PaperCellController.xib; sourceTree = "<group>"; };
 		076E89F3165EB69900040F6F /* plus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plus.png; sourceTree = "<group>"; };
+		076FE3D5167F6E77006D6ABA /* DockController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DockController.h; sourceTree = "<group>"; };
+		076FE3D6167F6E77006D6ABA /* DockController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DockController.m; sourceTree = "<group>"; };
+		076FE3D7167F6E77006D6ABA /* DockController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DockController.xib; sourceTree = "<group>"; };
+		076FE3DB167FB941006D6ABA /* TypewriterController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TypewriterController.xib; sourceTree = "<group>"; };
 		0778B7EB163B7C4E0026B99A /* RollingPaper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RollingPaper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0778B7EF163B7C4E0026B99A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		0778B7F1163B7C4E0026B99A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -166,9 +193,11 @@
 		0778B801163B7C4E0026B99A /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		0778B803163B7C4E0026B99A /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		0778B805163B7C4E0026B99A /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		0795D1B5167B70D100272D34 /* RecoderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecoderViewController.h; sourceTree = "<group>"; };
-		0795D1B6167B70D200272D34 /* RecoderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecoderViewController.m; sourceTree = "<group>"; };
-		0795D1B7167B70D200272D34 /* RecoderViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RecoderViewController.xib; sourceTree = "<group>"; };
+		078CA9AA1681058F007A3BFC /* FBFriendSearchPickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBFriendSearchPickerController.h; sourceTree = "<group>"; };
+		078CA9AB16810591007A3BFC /* FBFriendSearchPickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBFriendSearchPickerController.m; sourceTree = "<group>"; };
+		0795D1B5167B70D100272D34 /* RecoderController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecoderController.h; sourceTree = "<group>"; };
+		0795D1B6167B70D200272D34 /* RecoderController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecoderController.m; sourceTree = "<group>"; };
+		0795D1B7167B70D200272D34 /* RecoderController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RecoderController.xib; sourceTree = "<group>"; };
 		0795D1BB167B752700272D34 /* recorder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = recorder.png; sourceTree = "<group>"; };
 		07AB338216458811000A27F7 /* ASIAuthenticationDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIAuthenticationDialog.h; sourceTree = "<group>"; };
 		07AB338316458811000A27F7 /* ASICacheDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASICacheDelegate.h; sourceTree = "<group>"; };
@@ -253,9 +282,6 @@
 		07B35617165C12C80094D7D7 /* CGPointExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGPointExtension.h; sourceTree = "<group>"; };
 		07B35618165C12CB0094D7D7 /* CGPointExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGPointExtension.m; sourceTree = "<group>"; };
 		07B3561A165C143E0094D7D7 /* ccMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ccMacros.h; sourceTree = "<group>"; };
-		07CD0780167B84E400358AD6 /* CameraViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraViewController.h; sourceTree = "<group>"; };
-		07CD0781167B84E400358AD6 /* CameraViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CameraViewController.m; sourceTree = "<group>"; };
-		07CD0782167B84E500358AD6 /* CameraViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CameraViewController.xib; sourceTree = "<group>"; };
 		07CD07BE167C693B00358AD6 /* UIFreeTransformGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIFreeTransformGestureRecognizer.h; sourceTree = "<group>"; };
 		07CD07BF167C693C00358AD6 /* UIFreeTransformGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIFreeTransformGestureRecognizer.m; sourceTree = "<group>"; };
 		07CD07C5167CBC1400358AD6 /* UEFileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UEFileManager.h; sourceTree = "<group>"; };
@@ -265,6 +291,22 @@
 		07CD07E8167D145400358AD6 /* sharp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sharp.png; sourceTree = "<group>"; };
 		07CD07E9167D145400358AD6 /* pencil.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pencil.png; sourceTree = "<group>"; };
 		07CD07EE167D153600358AD6 /* keyboard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = keyboard.png; sourceTree = "<group>"; };
+		07CD07FD167D385800358AD6 /* microphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = microphone.png; sourceTree = "<group>"; };
+		07CD0803167D91D600358AD6 /* TypewriterController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TypewriterController.h; sourceTree = "<group>"; };
+		07CD0804167D91D700358AD6 /* TypewriterController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TypewriterController.m; sourceTree = "<group>"; };
+		07CD0809167D92D300358AD6 /* AVCamCaptureManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AVCamCaptureManager.h; sourceTree = "<group>"; };
+		07CD080A167D92D300358AD6 /* AVCamCaptureManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AVCamCaptureManager.m; sourceTree = "<group>"; };
+		07CD080B167D92D300358AD6 /* AVCamRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AVCamRecorder.h; sourceTree = "<group>"; };
+		07CD080C167D92D300358AD6 /* AVCamRecorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AVCamRecorder.m; sourceTree = "<group>"; };
+		07CD080D167D92D300358AD6 /* AVCamUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AVCamUtilities.h; sourceTree = "<group>"; };
+		07CD080E167D92D300358AD6 /* AVCamUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AVCamUtilities.m; sourceTree = "<group>"; };
+		07CD080F167D92D300358AD6 /* CameraController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraController.h; sourceTree = "<group>"; };
+		07CD0810167D92D300358AD6 /* CameraController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CameraController.m; sourceTree = "<group>"; };
+		07CD0819167D964C00358AD6 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		07CD081B167D96A600358AD6 /* CameraController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CameraController.xib; sourceTree = "<group>"; };
+		07CD0821167DC11900358AD6 /* AlbumController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumController.h; sourceTree = "<group>"; };
+		07CD0822167DC11900358AD6 /* AlbumController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlbumController.m; sourceTree = "<group>"; };
+		07CD0823167DC11A00358AD6 /* AlbumController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlbumController.xib; sourceTree = "<group>"; };
 		07EC38341678CD0E00889E47 /* libSBJSON.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libSBJSON.a; sourceTree = "<group>"; };
 		07EC386A1678CF2700889E47 /* libJSON-mac64.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libJSON-mac64.a"; sourceTree = "<group>"; };
 		07EC386F1678CF8B00889E47 /* libASI-mac64.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libASI-mac64.a"; sourceTree = "<group>"; };
@@ -283,6 +325,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				07CD081A167D964D00358AD6 /* CoreMedia.framework in Frameworks */,
 				07FBDDDA165FEFD10011D581 /* AVFoundation.framework in Frameworks */,
 				07081EF2165FB5B8005670B5 /* QuartzCore.framework in Frameworks */,
 				07081EF0165FB541005670B5 /* GLKit.framework in Frameworks */,
@@ -320,19 +363,29 @@
 		070268D81673A76E0033408A /* PaperEditing */ = {
 			isa = PBXGroup;
 			children = (
+				07CD0808167D92C400358AD6 /* CameraVew */,
 				07081EEA165FB49A005670B5 /* PaintingView.h */,
 				07081EEB165FB49A005670B5 /* PaintingView.m */,
 				07081F07165FBB01005670B5 /* PaperViewController.h */,
 				07081F08165FBB01005670B5 /* PaperViewController.m */,
 				07081F09165FBB01005670B5 /* PaperViewController.xib */,
-				0795D1B5167B70D100272D34 /* RecoderViewController.h */,
-				0795D1B6167B70D200272D34 /* RecoderViewController.m */,
-				0795D1B7167B70D200272D34 /* RecoderViewController.xib */,
-				07CD0780167B84E400358AD6 /* CameraViewController.h */,
-				07CD0781167B84E400358AD6 /* CameraViewController.m */,
-				07CD0782167B84E500358AD6 /* CameraViewController.xib */,
 				07CD07BE167C693B00358AD6 /* UIFreeTransformGestureRecognizer.h */,
 				07CD07BF167C693C00358AD6 /* UIFreeTransformGestureRecognizer.m */,
+				0795D1B5167B70D100272D34 /* RecoderController.h */,
+				0795D1B6167B70D200272D34 /* RecoderController.m */,
+				0795D1B7167B70D200272D34 /* RecoderController.xib */,
+				07CD0821167DC11900358AD6 /* AlbumController.h */,
+				07CD0822167DC11900358AD6 /* AlbumController.m */,
+				07CD0823167DC11A00358AD6 /* AlbumController.xib */,
+				07CD0803167D91D600358AD6 /* TypewriterController.h */,
+				07CD0804167D91D700358AD6 /* TypewriterController.m */,
+				076FE3DB167FB941006D6ABA /* TypewriterController.xib */,
+				076FE3D5167F6E77006D6ABA /* DockController.h */,
+				076FE3D6167F6E77006D6ABA /* DockController.m */,
+				076FE3D7167F6E77006D6ABA /* DockController.xib */,
+				072829C71681A9D400B488EF /* PencilcaseController.h */,
+				072829C81681A9D400B488EF /* PencilcaseController.m */,
+				072829C91681A9D400B488EF /* PencilcaseController.xib */,
 			);
 			name = PaperEditing;
 			sourceTree = "<group>";
@@ -358,6 +411,7 @@
 		0778B7EE163B7C4E0026B99A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				07CD0819167D964C00358AD6 /* CoreMedia.framework */,
 				07FBDDD9165FEFD10011D581 /* AVFoundation.framework */,
 				07081EF1165FB5B8005670B5 /* QuartzCore.framework */,
 				07081EEF165FB541005670B5 /* GLKit.framework */,
@@ -555,14 +609,16 @@
 		07B3557D165A86840094D7D7 /* Entity */ = {
 			isa = PBXGroup;
 			children = (
-				07173102167B366B0032874A /* Content.h */,
-				07173103167B366B0032874A /* Content.m */,
-				07173105167B366C0032874A /* ImageContent.h */,
-				07173106167B366C0032874A /* ImageContent.m */,
-				07173108167B366C0032874A /* SoundContent.h */,
-				07173109167B366C0032874A /* SoundContent.m */,
-				0717310B167B366D0032874A /* RollingPaper.h */,
-				0717310C167B366D0032874A /* RollingPaper.m */,
+				072829D316832D3E00B488EF /* RollingPaper.h */,
+				072829D416832D3E00B488EF /* RollingPaper.m */,
+				072829D616832D4000B488EF /* SoundContent.h */,
+				072829D716832D4000B488EF /* SoundContent.m */,
+				072829D916832D4000B488EF /* TextContent.h */,
+				072829DA16832D4100B488EF /* TextContent.m */,
+				072829DC16832D4100B488EF /* Content.h */,
+				072829DD16832D4100B488EF /* Content.m */,
+				072829DF16832D4100B488EF /* ImageContent.h */,
+				072829E016832D4100B488EF /* ImageContent.m */,
 			);
 			name = Entity;
 			sourceTree = "<group>";
@@ -609,6 +665,8 @@
 				07B35609165BFAD90094D7D7 /* ImageContentView.m */,
 				07FBDDDE165FF28A0011D581 /* SoundContentView.h */,
 				07FBDDDF165FF28A0011D581 /* SoundContentView.m */,
+				072829D01682CE8400B488EF /* TextContentView.h */,
+				072829D11682CE8400B488EF /* TextContentView.m */,
 				076E89EE165EA92300040F6F /* PaperCellController.h */,
 				076E89EF165EA92300040F6F /* PaperCellController.m */,
 				076E89F0165EA92400040F6F /* PaperCellController.xib */,
@@ -629,6 +687,8 @@
 				07081EFB165FBA74005670B5 /* RootViewController.h */,
 				07081EFC165FBA74005670B5 /* RootViewController.m */,
 				07FD933E165FD379008943B0 /* RootViewController.xib */,
+				078CA9AA1681058F007A3BFC /* FBFriendSearchPickerController.h */,
+				078CA9AB16810591007A3BFC /* FBFriendSearchPickerController.m */,
 			);
 			name = NavigationViews;
 			sourceTree = "<group>";
@@ -636,6 +696,7 @@
 		07CD07E5167D142700358AD6 /* paintingDock */ = {
 			isa = PBXGroup;
 			children = (
+				07CD07FD167D385800358AD6 /* microphone.png */,
 				07CD07EE167D153600358AD6 /* keyboard.png */,
 				07CD07E6167D145400358AD6 /* camera.png */,
 				07CD07E7167D145400358AD6 /* dock.png */,
@@ -643,6 +704,22 @@
 				07CD07E9167D145400358AD6 /* pencil.png */,
 			);
 			name = paintingDock;
+			sourceTree = "<group>";
+		};
+		07CD0808167D92C400358AD6 /* CameraVew */ = {
+			isa = PBXGroup;
+			children = (
+				07CD0809167D92D300358AD6 /* AVCamCaptureManager.h */,
+				07CD080A167D92D300358AD6 /* AVCamCaptureManager.m */,
+				07CD080B167D92D300358AD6 /* AVCamRecorder.h */,
+				07CD080C167D92D300358AD6 /* AVCamRecorder.m */,
+				07CD080D167D92D300358AD6 /* AVCamUtilities.h */,
+				07CD080E167D92D300358AD6 /* AVCamUtilities.m */,
+				07CD080F167D92D300358AD6 /* CameraController.h */,
+				07CD0810167D92D300358AD6 /* CameraController.m */,
+				07CD081B167D96A600358AD6 /* CameraController.xib */,
+			);
+			name = CameraVew;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -720,14 +797,19 @@
 				07FD933F165FD379008943B0 /* RootViewController.xib in Resources */,
 				07FBDDE2165FF4110011D581 /* sound_icon.png in Resources */,
 				07AFD55B167303B700F19D64 /* RollingPaperListController.xib in Resources */,
-				0795D1B9167B70D200272D34 /* RecoderViewController.xib in Resources */,
+				0795D1B9167B70D200272D34 /* RecoderController.xib in Resources */,
 				0795D1BC167B752700272D34 /* recorder.png in Resources */,
-				07CD0784167B84E500358AD6 /* CameraViewController.xib in Resources */,
 				07CD07EA167D145400358AD6 /* camera.png in Resources */,
 				07CD07EB167D145400358AD6 /* dock.png in Resources */,
 				07CD07EC167D145400358AD6 /* sharp.png in Resources */,
 				07CD07ED167D145400358AD6 /* pencil.png in Resources */,
 				07CD07EF167D153600358AD6 /* keyboard.png in Resources */,
+				07CD07FE167D385800358AD6 /* microphone.png in Resources */,
+				07CD081C167D96A700358AD6 /* CameraController.xib in Resources */,
+				07CD0825167DC11B00358AD6 /* AlbumController.xib in Resources */,
+				076FE3D9167F6E77006D6ABA /* DockController.xib in Resources */,
+				076FE3DC167FB942006D6ABA /* TypewriterController.xib in Resources */,
+				072829CB1681A9D400B488EF /* PencilcaseController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -766,14 +848,24 @@
 				07081F0A165FBB01005670B5 /* PaperViewController.m in Sources */,
 				07FBDDD7165FEF990011D581 /* UESoundRecoder.m in Sources */,
 				07FBDDE0165FF28A0011D581 /* SoundContentView.m in Sources */,
-				07173104167B366B0032874A /* Content.m in Sources */,
-				07173107167B366C0032874A /* ImageContent.m in Sources */,
-				0717310A167B366C0032874A /* SoundContent.m in Sources */,
-				0717310D167B366D0032874A /* RollingPaper.m in Sources */,
-				0795D1B8167B70D200272D34 /* RecoderViewController.m in Sources */,
-				07CD0783167B84E500358AD6 /* CameraViewController.m in Sources */,
+				0795D1B8167B70D200272D34 /* RecoderController.m in Sources */,
 				07CD07C0167C693C00358AD6 /* UIFreeTransformGestureRecognizer.m in Sources */,
 				07CD07C7167CBC1400358AD6 /* UEFileManager.m in Sources */,
+				07CD0806167D91DA00358AD6 /* TypewriterController.m in Sources */,
+				07CD0811167D92D300358AD6 /* AVCamCaptureManager.m in Sources */,
+				07CD0812167D92D300358AD6 /* AVCamRecorder.m in Sources */,
+				07CD0813167D92D300358AD6 /* AVCamUtilities.m in Sources */,
+				07CD0814167D92D300358AD6 /* CameraController.m in Sources */,
+				07CD0824167DC11B00358AD6 /* AlbumController.m in Sources */,
+				076FE3D8167F6E77006D6ABA /* DockController.m in Sources */,
+				078CA9AC16810592007A3BFC /* FBFriendSearchPickerController.m in Sources */,
+				072829CA1681A9D400B488EF /* PencilcaseController.m in Sources */,
+				072829D21682CE8500B488EF /* TextContentView.m in Sources */,
+				072829D516832D3F00B488EF /* RollingPaper.m in Sources */,
+				072829D816832D4000B488EF /* SoundContent.m in Sources */,
+				072829DB16832D4100B488EF /* TextContent.m in Sources */,
+				072829DE16832D4100B488EF /* Content.m in Sources */,
+				072829E116832D4100B488EF /* ImageContent.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

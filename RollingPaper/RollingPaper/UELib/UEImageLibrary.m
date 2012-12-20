@@ -168,6 +168,7 @@
     return [UIImage imageWithData:jpegImage];
 }
 +(UIImage*) imageFromView : (UIView*) view{
+    /*
     UIGraphicsBeginImageContext(view.bounds.size);
     [view.layer renderInContext:UIGraphicsGetCurrentContext()];
     UIImage *viewImage = UIGraphicsGetImageFromCurrentImageContext();
@@ -175,6 +176,13 @@
     UIImageWriteToSavedPhotosAlbum(viewImage, nil, nil, nil);
  
     return viewImage;
+    */
+    
+    UIGraphicsBeginImageContextWithOptions(view.bounds.size, view.opaque, 0.0);
+    [view.layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage * img = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return img;
 }
 +(BOOL) saveImage : (UIImage*) image
            ToFile : (NSString*) fileName

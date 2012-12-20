@@ -45,6 +45,11 @@ typedef struct UEUIMargin UEUIMargin;
 
 
 @interface UEUI : NSObject
++(CGColorRef) CGColorWithRed : (CGFloat) red
+                       Green : (CGFloat) green
+                        Blue : (CGFloat) blue
+                       Alpha : (CGFloat) alpha;
++(void) ziggleAnimation : (UIView*) view;
 
 +(void) createKeyboardButton : (UIView*) rootView : (UIView*) targetView;
 +(void) animateViewsToFitKeyboard : (UIView*) view ;

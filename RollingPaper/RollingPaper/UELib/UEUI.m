@@ -10,6 +10,7 @@
 #import "macro.h"
 #import "ccMacros.h"
 #import "CGPointExtension.h"
+#import <QuartzCore/QuartzCore.h>
 @implementation UEKeyboardBackgroundButton
 @synthesize targetView;
 -(id) initWithTargetView:(UIView *)view
@@ -70,7 +71,65 @@
 
 
 
+
+#define degreesToRadians(x) (M_PI * (x) / 180.0)
+#define kAnimationRotateDeg 1.0
+
 @implementation UEUI
+
++(void) ziggleAnimation : (UIView*) view{
+    
+    NSInteger randomInt = arc4random()%500;
+    float r = (randomInt/500.0)+0.5;
+    
+    CGAffineTransform leftWobble = CGAffineTransformMakeRotation(degreesToRadians( (kAnimationRotateDeg * -1.0) - r ));
+    CGAffineTransform rightWobble = CGAffineTransformMakeRotation(degreesToRadians( kAnimationRotateDeg + r ));
+    
+    view.transform = leftWobble;  // starting point
+    
+    [view.layer setAnchorPoint:CGPointMake(0.5, 0.5)];
+    
+    [UIView animateWithDuration:0.1
+                          delay:0
+                        options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionRepeat | UIViewAnimationOptionAutoreverse
+                     animations:^{
+                         [UIView setAnimationRepeatCount:NSNotFound];
+                         view.transform = rightWobble; }
+                     completion:nil];
+     
+    /*
+    #define kAnimationTranslateX 10
+    #define kAnimationTranslateY 10
+    #define kAnimationRotateDeg 1.0
+    int count = 2;
+    CGAffineTransform leftWobble = CGAffineTransformMakeRotation(degreesToRadians( kAnimationRotateDeg * (count%2 ? +1 : -1 ) ));
+    CGAffineTransform rightWobble = CGAffineTransformMakeRotation(degreesToRadians( kAnimationRotateDeg * (count%2 ? -1 : +1 ) ));
+    CGAffineTransform moveTransform = CGAffineTransformTranslate(rightWobble, -kAnimationTranslateX, -kAnimationTranslateY);
+    CGAffineTransform conCatTransform = CGAffineTransformConcat(rightWobble, moveTransform);
+    
+    view.transform = leftWobble;  // starting point
+    
+    [UIView animateWithDuration:0.1
+                          delay:(count * 0.08)
+                        options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionRepeat | UIViewAnimationOptionAutoreverse
+                     animations:^{ view.transform = conCatTransform; }
+                     completion:nil];
+     */
+}
+
++(CGColorRef) CGColorWithRed : (CGFloat) red
+                       Green : (CGFloat) green
+                        Blue : (CGFloat) blue
+                       Alpha : (CGFloat) alpha{
+    CGFloat components[4] = {red,green,blue,alpha};
+    
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+    CGColorRef color = CGColorCreate(colorSpace, components);
+    CGColorSpaceRelease(colorSpace);
+    
+    return color;
+}
+
 +(void) createKeyboardButton : (UIView*) rootView : (UIView*) targetView
 {
     UEKeyboardBackgroundButton* bgButton = [[UEKeyboardBackgroundButton alloc] initWithTargetView:targetView];

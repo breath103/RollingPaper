@@ -8,16 +8,21 @@
 
 #import <UIKit/UIKit.h>
 #import <FacebookSDK/FacebookSDK.h>
+#import "FBFriendSearchPickerController.h"
 
-@interface RollingPaperCreator : UIViewController<FBFriendPickerDelegate>
+@interface RollingPaperCreator : UIViewController<FBFriendPickerDelegate,UISearchBarDelegate>
 
-@property (nonatomic,strong) FBFriendPickerViewController* friendPickerController;
+@property (nonatomic,strong) FBFriendSearchPickerController* friendPickerController;
 @property (weak, nonatomic) IBOutlet UITextField *titleText;
 @property (weak, nonatomic) IBOutlet UITextField *emailInput;
 @property (weak, nonatomic) IBOutlet UITextField *noticeInput;
 @property (weak, nonatomic) IBOutlet UILabel *fbIdLabel;
 @property (weak, nonatomic) IBOutlet UITextField *receiverName;
 @property (weak, nonatomic) IBOutlet UITextField *receiveTime;
+
+@property (retain, nonatomic) UISearchBar *searchBar;
+@property (retain, nonatomic) NSString *searchText;
+
 
 - (IBAction)onTouchSend:(id)sender;
 - (IBAction)onTouchPickFriend:(id)sender;

@@ -121,4 +121,36 @@
     [request addPostValue:entity.y        forKey:@"y"];
     return request;
 }
+
+
+
+
+// 컨텐츠 수정 관련 리퀘스트
++(ASIFormDataRequest*) requestForSynchronizeImageContent : (ImageContent*) entity{
+    NSString* requestURL = [SERVER_HOST stringByAppendingString:@"/paper/editContent/image"];
+    ASIFormDataRequest* request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:requestURL]];
+    [request addPostValue:entity.idx      forKey:@"idx"];
+    [request addPostValue:entity.rotation forKey:@"rotation"];
+    [request addPostValue:entity.width    forKey:@"width"];
+    [request addPostValue:entity.height   forKey:@"height"];
+    [request addPostValue:entity.x        forKey:@"x"];
+    [request addPostValue:entity.y        forKey:@"y"];
+    [request addPostValue:entity.image    forKey:@"image"];
+    return request;
+}
++(ASIFormDataRequest*) requestForSynchronizeSoundContent : (SoundContent*) entity{
+    NSString* requestURL = [SERVER_HOST stringByAppendingString:@"/paper/editContent/sound"];
+    ASIFormDataRequest* request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:requestURL]];
+    [request addPostValue:entity.idx      forKey:@"idx"];
+    [request addPostValue:entity.rotation forKey:@"rotation"];
+    [request addPostValue:entity.width    forKey:@"width"];
+    [request addPostValue:entity.height   forKey:@"height"];
+    [request addPostValue:entity.x        forKey:@"x"];
+    [request addPostValue:entity.y        forKey:@"y"];
+    [request addPostValue:entity.sound    forKey:@"sound"];
+    return request;
+}
+
+
+
 @end

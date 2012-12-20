@@ -20,7 +20,10 @@
 #import "ccMacros.h"
 #import "UELib/UEUI.h"
 #import "macro.h"
-#import "RecoderViewController.h"
+#import "RecoderController.h"
+#import "CameraController.h"
+#import "AlbumController.h"
+#import "PencilcaseController.h"
 
 @interface PaperViewController ()
 @end
@@ -30,13 +33,13 @@
 @synthesize contentsViews;
 @synthesize entity;
 @synthesize friendPickerController;
-@synthesize recoderViewController;
-@synthesize cameraViewController;
 @synthesize contentsContainer;
 @synthesize transformTargetView;
+@synthesize dockController;
+
 -(id) initWithEntity : (RollingPaper*) aEntity
 {
-    self = [self initWithNibName:@"PaperViewController" bundle:NULL];
+    self = [self initWithNibName:NSStringFromClass(self.class) bundle:NULL];
     if(self){
         self.entity   = aEntity;
         contentsViews = [[NSMutableArray alloc]init];
@@ -50,50 +53,45 @@
     if(transformTargetView){
         transformTargetView.layer.borderWidth = 0.0f;
     }
+    else{
+    }
     
     transformTargetView = aTransformTargetView;
-    transformTargetView.layer.borderWidth = BORDER;
-
-    CGFloat components[4] = {0.8f,0.7f,0.1f,1.0f};
-    transformTargetView.layer.borderColor = CGColorCreate(CGColorSpaceCreateDeviceRGB(), components);
+    
+    if(transformTargetView)
+    {
+        transformTargetView.layer.borderWidth = BORDER;
+        
+        CGFloat components[4] = {0.8f,0.7f,0.1f,1.0f};
+        transformTargetView.layer.borderColor = CGColorCreate(CGColorSpaceCreateDeviceRGB(), components);
+        self.freeTransformGestureRecognizer.enabled = TRUE;
+        self.dockController.panGestureRecognizer.enabled = FALSE;
+    }
+    else {
+        self.freeTransformGestureRecognizer.enabled = FALSE;
+        self.dockController.panGestureRecognizer.enabled = TRUE;
+    }
 }
 
 -(void) initContentsEditingToolControlers{
-    self.recoderViewController = [[RecoderViewController alloc]initWithDelegate:self];
-    self.cameraViewController  = [[CameraViewController  alloc]initWithDelegate:self];
-}
--(void) initLeftDockMenu{
-    pan = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(onDockGesture)];
-    pan.delegate = self.freeTransformGestureRecognizer;
-    [self.view addGestureRecognizer:pan];
-    
-}
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    [self initContentsEditingToolControlers];
     
     self.freeTransformGestureRecognizer =
     [[UIFreeTransformGestureRecognizer alloc] initWithTarget:self
                                                       action:@selector(onFreeTransformGesture)];
     self.freeTransformGestureRecognizer.delegate = self.freeTransformGestureRecognizer;
     [self.contentsContainer addGestureRecognizer:self.freeTransformGestureRecognizer];
-   
-    /*
-    UITapGestureRecognizer* tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onToggleDock)];
-    tapGestureRecognizer.numberOfTapsRequired    = 1;
-    tapGestureRecognizer.numberOfTouchesRequired = 2;
-    [self.view addGestureRecognizer:tapGestureRecognizer];
-    */
+}
+-(void) initLeftDockMenu{
+    self.dockController = [[DockController alloc]initWithDelegate:self];
+    [self addChildViewController:self.dockController];
     
+}
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    [self initContentsEditingToolControlers];
+    [self initLeftDockMenu];
     
-    
-    /*
-    
-    NSLog(@"%f",self.view.frame.size.height);
-    UIViewSetY(self.menuDock,self.view.frame.size.height);
-    [self.menuDock setHidden:TRUE];
-     */
     
     ASIFormDataRequest* request = [NetworkTemplate requestForRollingPaperContents : self.entity.idx.stringValue
                                                                         afterTime : 1];
@@ -111,72 +109,6 @@
     [request startAsynchronous];
 }
 
--(void) onDockGesture{
-    CGRect frame = self.menuDock.frame;
-    CGPoint translation = [pan translationInView:self.view];
-    if(frame.origin.x >= 0)
-    {
-        //나온 상태
-    }
-    else
-    {
-        frame.origin.x += translation.x;
-        if(frame.origin.x <= -frame.size.width)
-            frame.origin.x = -frame.size.width;
-        if(frame.origin.x >= 0)
-            frame.origin.x = 0;
-        self.menuDock.frame = frame;
-        
-        [pan setTranslation:CGPointMake(0, 0) inView:self.view];
-    }
-    if(pan.state == UIGestureRecognizerStateEnded){
-        [UIView animateWithDuration:0.3f animations:^{
-            CGRect frame = self.menuDock.frame;
-            frame.origin.x = -frame.size.width;
-            self.menuDock.frame = frame;
-        } completion:^(BOOL finished) {
-            
-        }];
-    }
-}
-
--(void) onFreeTransformGesture{
-    transformTargetView.center = ccpAdd(transformTargetView.center,
-                                        self.freeTransformGestureRecognizer.translation);
-    self.freeTransformGestureRecognizer.translation = CGPointZero;
-    
-    CGFloat scale = self.freeTransformGestureRecognizer.scale;
-    transformTargetView.transform = CGAffineTransformScale(transformTargetView.transform,scale, scale);
-    self.freeTransformGestureRecognizer.scale = 1.0f;
-    self.transformTargetView.layer.borderWidth *= 1.0f/scale;
-    
-    CGFloat rotation = self.freeTransformGestureRecognizer.rotation;
-    transformTargetView.transform = CGAffineTransformRotate(transformTargetView.transform,
-                                                            rotation);
-    self.freeTransformGestureRecognizer.rotation = 0.0f;
-}
-/*
--(void) onToggleDock{
-    if(self.menuDock.isHidden){
-        [self.menuDock setHidden:FALSE];
-        [UIView animateWithDuration:0.3f
-                         animations:^{
-                             UIViewSetY(self.menuDock, self.view.frame.size.height - self.menuDock.frame.size.height);
-                         }
-                         completion:^(BOOL finished) {
-                             
-                         }];
-    }else{
-        [UIView animateWithDuration:0.3f
-                         animations:^{
-                             UIViewSetY(self.menuDock, self.view.frame.size.height);
-                         }
-                         completion:^(BOOL finished) {
-                             [self.menuDock setHidden:TRUE];
-                         }];
-    }
-}
-*/
 -(void) viewDidAppear:(BOOL)animated{
 
 }
@@ -198,6 +130,47 @@
     [super didReceiveMemoryWarning];
 }
 
+
+-(void) onFreeTransformGesture{
+    NSLog(@"%f %f : %f %f",transformTargetView.center.x,transformTargetView.center.y,self.freeTransformGestureRecognizer.translation.x,self.freeTransformGestureRecognizer.translation.y);
+    
+    transformTargetView.center = ccpAdd(transformTargetView.center,
+                                        self.freeTransformGestureRecognizer.translation);
+    self.freeTransformGestureRecognizer.translation = CGPointZero;
+    
+    CGFloat scale = self.freeTransformGestureRecognizer.scale;
+
+    CGRect bounds = transformTargetView.bounds;
+    bounds.size.width  *= scale;
+    bounds.size.height *= scale;
+    transformTargetView.bounds = bounds;
+    
+    self.freeTransformGestureRecognizer.scale = 1.0f;
+    
+    
+    CGFloat rotation = self.freeTransformGestureRecognizer.rotation;
+    transformTargetView.transform = CGAffineTransformRotate(transformTargetView.transform,
+                                                            rotation);
+    self.freeTransformGestureRecognizer.rotation = 0.0f;
+    NSLog(@"%f %f",scale,rotation);
+    
+    if(transformTargetView){
+        transformTargetView.isNeedToSyncWithServer = TRUE;
+    }
+}
+-(void) onLongPressContent : (UILongPressGestureRecognizer*) gestureRecognizer{
+//    [UEUI ziggleAnimation:gestureRecognizer.view];
+    if(gestureRecognizer.state == UIGestureRecognizerStateBegan)
+    {
+        if(gestureRecognizer.view == transformTargetView)
+        {
+            [self setTransformTargetView:NULL];
+        }
+        else{
+            [self setTransformTargetView:gestureRecognizer.view];
+        }
+    }
+}
 -(void) onReceiveContentsResponse : (NSDictionary*) categorizedContents{
     NSDictionary* imageContents = [categorizedContents objectForKey:@"image"];
     for(NSDictionary*p in imageContents){
@@ -205,7 +178,15 @@
         ImageContentView* entityView = [[ImageContentView alloc] initWithEntity:imageEntity];
         [self.contentsContainer addSubview:entityView];
         [contentsViews addObject:entityView];
+        
+        entityView.userInteractionEnabled = TRUE;
+        UILongPressGestureRecognizer* longTapGestureRecognizer = [[UILongPressGestureRecognizer alloc]initWithTarget:self
+                                                                                                              action:@selector(onLongPressContent:)];
+        [entityView addGestureRecognizer:longTapGestureRecognizer];
+        longTapGestureRecognizer.delegate = self;
+        NSLog(@"%@",longTapGestureRecognizer);
     }
+    self.transformTargetView = [contentsViews lastObject];
     //NSDictionary* textContents  = [categorizedContents objectForKey:@"text"];
     
     
@@ -254,33 +235,7 @@
         [request startAsynchronous];
     }
 }
-- (IBAction)onTouchSound:(id)sender {        
-    [self addChildViewController:self.recoderViewController];
-    [self.view addSubview:self.recoderViewController.view];
-    
-    self.recoderViewController.view.alpha = 0.0f;
-    [UIView animateWithDuration: 1.0f
-                     animations:^{
-                         self.recoderViewController.view.alpha = 1.0f;
-                     } completion:^(BOOL finished) {
-                         
-                     }];
-}
 
-- (IBAction)onAddImage:(id)sender {
-    [self addChildViewController:self.cameraViewController];
-    [self.view addSubview:self.cameraViewController.view];
-    
-    self.cameraViewController.view.alpha = 0.0f;
-    [self.cameraViewController.view setHidden:FALSE];
-    
-    [UIView animateWithDuration: 1.0f
-                     animations:^{
-                         self.cameraViewController.view.alpha = 1.0f;
-                     } completion:^(BOOL finished) {
-                         
-                     }];
-}
 
 - (IBAction)onTouchBrush:(id)sender {
     [self.view bringSubviewToFront:paintingView];
@@ -319,8 +274,7 @@
     }
 }
 
--(void) CameraViewController : (CameraViewController *)recoder
-                 onpickImage : (UIImage *)image{
+-(void) onCreateImage : (UIImage *)image{
     CGImageRef cgImage = image.CGImage;
     CGFloat width   = CGImageGetWidth(cgImage);
     CGFloat height  = CGImageGetHeight(cgImage);
@@ -343,15 +297,107 @@
     [self.contentsViews addObject:entityView];
     
     self.transformTargetView = entityView;
-    
-    [UIView animateWithDuration: 1.0f
-                     animations:^{
-                         self.cameraViewController.view.alpha = 0.0f;
-                     } completion:^(BOOL finished) {
-                         [self.cameraViewController.view setHidden:TRUE];
-                     }];
 }
--(void) RecoderViewController : (RecoderViewController *)recoder
+-(BOOL) canBecomeFirstResponder{
+    return YES;
+}
+- (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event{
+    if (event.type    == UIEventTypeMotion &&
+        event.subtype == UIEventSubtypeMotionShake) {
+        [self.navigationController popViewControllerAnimated:TRUE];
+    }
+}
+- (void)viewDidUnload {
+    [self setContentsContainer:nil];
+    [super viewDidUnload];
+}
+
+-(BOOL) gestureRecognizer : (UIGestureRecognizer *)gestureRecognizer
+shouldRecognizeSimultaneouslyWithGestureRecognizer : (UIGestureRecognizer *)otherGestureRecognizer
+{
+    return YES;
+}
+
+-(void) dockController:(DockController *)dock
+              pickMenu:(DockMenuType)menuType
+              inButton:(UIButton *)button{
+    NSLog(@"%@ %d %@",dock,menuType,button);
+    switch (menuType) {
+        case DockMenuTypeCamera:{
+            CameraController* camViewController = [[CameraController alloc] initWithDelegate:self];
+            [self addChildViewController:camViewController];
+            [self.view addSubview:camViewController.view];
+        }break;
+        case DockMenuTypeAlbum:{
+            [UIView animateWithDuration:1.0f
+                             animations:^{
+                                 UIViewSetOrigin(button, CGPointMake(0, 0));
+                             } completion:^(BOOL finished) {
+                                 AlbumController* albumController = [[AlbumController alloc]initWithDelegate:self];
+                                 [self addChildViewController:albumController];
+                                 [self.view addSubview:albumController.view];
+                             }];
+        }break;
+        case DockMenuTypeKeyboard : {
+            TypewriterController* typewriterController = [[TypewriterController alloc]initWithDelegate:self];
+            [self addChildViewController:typewriterController];
+            [self.view addSubview:typewriterController.view];
+        }break;
+        case DockMenuTypeMicrophone: {
+            RecoderController* recoderController = [[RecoderController alloc] initWithDelegate:self];
+            [self addChildViewController:recoderController];
+            [self.view addSubview:recoderController.view];
+            recoderController.view.alpha = 0.0f;
+            [UIView animateWithDuration:0.4f animations:^{
+                recoderController.view.alpha = 1.0f;
+            }];
+        }break;
+        case DockMenuTypePencilcase: {
+            PencilcaseController* pencilcaseController =
+            [[PencilcaseController alloc]initWithNibName:@"PencilcaseController"
+                                                  bundle:NULL];
+            [self addChildViewController:pencilcaseController];
+            [self.view addSubview:pencilcaseController.view];
+            
+        }break; 
+        default:
+            break;
+    }
+}
+-(void) cameraController:(CameraController *)camera
+             onPickImage:(UIImage *)image{
+    if(image){
+        //이미지를 선택한경우
+        [self onCreateImage:image];
+    }
+    else {
+        //취소한경우
+    }
+    [camera removeFromParentViewController];
+    [camera.view removeFromSuperview];
+}
+-(void) albumController:(AlbumController *)albumController
+              pickImage:(UIImage *)image
+               withInfo:(NSDictionary *)infodict{
+    if(image){
+        //이미지를 선택한경우
+        [self onCreateImage:image];
+    }
+    else {
+        //취소한경우
+    }
+    [albumController removeFromParentViewController];
+    [albumController.view removeFromSuperview];
+}
+-(void) typewriterController:(TypewriterController *)typewriterController
+                endEditImage:(UIImage *)image{
+    
+    [self onCreateImage:image];
+    [typewriterController removeFromParentViewController];
+    [typewriterController.view removeFromSuperview];
+
+}
+-(void) RecoderViewController : (RecoderController *)recoder
         onEndRecodingWithFile : (NSString *)file{
     
     SoundContent* soundEntity = (SoundContent*)[[UECoreData sharedInstance]insertNewObject:@"SoundContent"];
@@ -367,22 +413,6 @@
     [self.view addSubview:entityView];
     [self.contentsViews addObject:entityView];
     
-    transformTargetView = entityView;
-}
-
-- (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event{
-    if (event.type    == UIEventTypeMotion &&
-        event.subtype == UIEventSubtypeMotionShake) {
-        [self.navigationController popViewControllerAnimated:TRUE];
-    }
-}
-- (BOOL)canBecomeFirstResponder{
-    return YES;
-}
-
-- (void)viewDidUnload {
-    [self setMenuDock:nil];
-    [self setContentsContainer:nil];
-    [super viewDidUnload];
+    self.transformTargetView = entityView;
 }
 @end

@@ -11,6 +11,11 @@
 
 #include <UIKit/UIKit.h>
 #define ARC4RANDOM_MAX      0x100000000
+
+
+#define FLOAT_TO_NSNUMBER(f) ([NSNumber numberWithFloat:(f)])
+
+
 CGPoint CGPointRotateWithCenter( CGPoint p1 ,CGPoint center,float angle_radian);
 CGPoint CGPointAdd(CGPoint p1,CGPoint p2); 
 CGPoint CGPointSubtract(CGPoint p1,CGPoint p2);
@@ -36,7 +41,6 @@ void 	UIViewSetOrigin(UIView* view, CGPoint origin);
 void 	UIViewSetWidth(UIView* view, int width);
 void 	UIViewSetHeight(UIView* view, int height);
 void 	UIViewSetSize(UIView* view, CGSize size);
-
 void ShowAlertView(NSString* title,NSString* message,NSString* button1,NSString* button2);
 
 UIView* ReadNib( NSString* name,NSObject* owner);

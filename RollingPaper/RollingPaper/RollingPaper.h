@@ -2,7 +2,7 @@
 //  RollingPaper.h
 //  RollingPaper
 //
-//  Created by 이상현 on 12. 12. 14..
+//  Created by 이상현 on 12. 12. 20..
 //  Copyright (c) 2012년 상현 이. All rights reserved.
 //
 
@@ -26,8 +26,10 @@
 @end
 
 @interface RollingPaper (CoreDataGeneratedAccessors)
-- (void) addContentsObject : (Content *)value;
-- (void) removeContentsObject : (Content *)value;
-- (void) addContents : (NSSet *)values;
-- (void) removeContents : (NSSet *)values;
+
+- (void)addContentsObject:(Content *)value;
+- (void)removeContentsObject:(Content *)value;
+- (void)addContents:(NSSet *)values;
+- (void)removeContents:(NSSet *)values;
+
 @end

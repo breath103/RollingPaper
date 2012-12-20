@@ -32,10 +32,19 @@
         <attribute name="sound" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="user_idx" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
     </entity>
+    <entity name="TextContent" representedClassName="TextContent" parentEntity="Content" syncable="YES">
+        <attribute name="color" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="font" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="idx" optional="YES" attributeType="Integer 64" defaultValueString="0" indexed="YES" syncable="YES"/>
+        <attribute name="paper_idx" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="user_idx" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+    </entity>
     <elements>
-        <element name="Content" positionX="-252" positionY="-153" width="128" height="133"/>
+        <element name="Content" positionX="-200" positionY="-135" width="128" height="133"/>
         <element name="ImageContent" positionX="-360" positionY="95" width="128" height="103"/>
-        <element name="RollingPaper" positionX="-162" positionY="81" width="128" height="193"/>
+        <element name="RollingPaper" positionX="-144" positionY="54" width="128" height="193"/>
         <element name="SoundContent" positionX="117" positionY="90" width="128" height="103"/>
+        <element name="TextContent" positionX="9" positionY="-106" width="128" height="133"/>
     </elements>
 </model>

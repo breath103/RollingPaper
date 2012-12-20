@@ -16,6 +16,9 @@
 #import "PaperViewController.h"
 #import "RollingPaperCreator.h"
 #import "macro.h"
+#import "CGPointExtension.h"
+#import <QuartzCore/QuartzCore.h>
+#import "UELib/UEUI.h"
 
 @interface RollingPaperListController ()
 
@@ -111,12 +114,39 @@
     if([UserInfo getUserInfo]){
         NSDictionary* userDict = [UserInfo getUserInfo];        
         profileImageView.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[userDict objectForKey:@"picture"]]]];;
+        profileImageView.layer.cornerRadius = profileImageView.frame.size.width/2.0f;
+        profileImageView.layer.masksToBounds = TRUE;
+        profileImageView.layer.borderWidth = 2.5f;
+        profileImageView.layer.borderColor = [UEUI CGColorWithRed:1.0f Green:1.0f Blue:1.0f Alpha:1.0f];
+        /*
+        CALayer* maskLayer = [CALayer layer];
+        maskLayer.frame = CGRectMake(0,0,yourMaskWidth ,yourMaskHeight);
+        maskLayer.contents = (__bridge id)[[UIImage imageNamed:@"yourMaskImage.png"] CGImage];
+    
+        // Apply the mask to your uiview layer
+        yourUIView.layer.mask = maskLayer;
+         */
     }
 }
 -(void) PaperCellTouched : (PaperCellController *) paper
 {
     PaperViewController* paperViewController = [[PaperViewController alloc] initWithEntity:paper.entity];
-    [self.navigationController pushViewController:paperViewController animated:TRUE];
+    [self.navigationController pushViewController:paperViewController animated:FALSE];
+   
+    /*
+    CGPoint previousViewCenter = paper.view.center;
+    
+    
+    
+    self.paperScrollView.clipsToBounds = FALSE;
+    [UIView animateWithDuration:1.0f animations:^{
+        CGSize currentViewSize = self.view.frame.size;
+        paper.view.center = ccp(currentViewSize.width/2,currentViewSize.height/2);
+        float targetScale = currentViewSize.height / paper.view.frame.size.height;
+        paper.view.transform = CGAffineTransformMakeScale(targetScale, targetScale);
+    } completion:^(BOOL finished) {
+    }];
+     */
 }
 
 - (void)didReceiveMemoryWarning

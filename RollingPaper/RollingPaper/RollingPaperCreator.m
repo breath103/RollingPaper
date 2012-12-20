@@ -24,6 +24,10 @@
 @synthesize receiveTime;
 @synthesize fbIdLabel;
 @synthesize friendPickerController;
+
+@synthesize searchBar;
+@synthesize searchText;
+
 -(void) viewDidAppear:(BOOL)animated{
 
     self.navigationController.navigationBarHidden = FALSE;
@@ -92,18 +96,24 @@
 
 - (IBAction)onTouchPickFriend:(id)sender {
     if(!friendPickerController){
-        friendPickerController = [[FBFriendPickerViewController alloc] init];
+        friendPickerController = [[FBFriendSearchPickerController alloc] init];
         friendPickerController.title    = @"Pick Friends";
         friendPickerController.delegate = self;
         friendPickerController.allowsMultipleSelection = FALSE;
         
         [friendPickerController loadData];
         [friendPickerController clearSelection];
-        [self presentViewController:friendPickerController animated:YES completion:^{
-        }];
     }
+    [self presentViewController:friendPickerController
+                       animated:YES
+                     completion:^{}];
 }
-
+- (BOOL)friendPickerViewController:(FBFriendPickerViewController *)friendPicker
+                 shouldIncludeUser:(id<FBGraphUser>)user
+{
+    return [friendPickerController delegateFriendPickerViewController:friendPicker
+                                                    shouldIncludeUser:user];
+}
 - (IBAction)onHideKeyboard:(id)sender {
     [self.view endEditing:TRUE];
 }

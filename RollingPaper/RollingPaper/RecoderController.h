@@ -9,13 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "UESoundRecoder.h"
 
-@class RecoderViewController;
+@class RecoderController;
 @protocol RecoderViewControllerDelegate<NSObject>
--(void) RecoderViewController : (RecoderViewController*) recoder
+-(void) RecoderViewController : (RecoderController*) recoder
         onEndRecodingWithFile : (NSString*) file;
 @end
 
-@interface RecoderViewController : UIViewController
+@interface RecoderController : UIViewController
 @property (nonatomic,strong) UESoundRecoder* recoder;
 @property (nonatomic,weak) id<RecoderViewControllerDelegate> delegate;
 @property (weak, nonatomic) IBOutlet UIButton *recodeButton;

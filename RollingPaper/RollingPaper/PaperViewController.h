@@ -13,34 +13,38 @@
 #import "RollingPaperContentViewProtocol.h"
 #import "PaintingView.h"
 
-#import "RecoderViewController.h"
-#import "CameraViewController.h"
 #import "UIFreeTransformGestureRecognizer.h"
 
-@interface PaperViewController : UIViewController <UIImagePickerControllerDelegate,
+#import "DockController.h"
+#import "CameraController.h"
+#import "AlbumController.h"
+#import "RecoderController.h"
+#import "TypewriterController.h"
+#import "PencilcaseController.h"
+
+@interface PaperViewController : UIViewController <UIGestureRecognizerDelegate,
+                                                   DockControllerDelegate,
+                                                   TypewriterControllerDelegate,
+                                                   CameraContorllerDelegate,
+                                                   AlbumControllerDelegate,
                                                    RecoderViewControllerDelegate,
-                                                   CameraViewControllerDelegate,
-                                                   FBFriendPickerDelegate>{
-    UIPanGestureRecognizer* pan;
-}
+                                                   FBFriendPickerDelegate>
 @property (nonatomic,strong) UIView<RollingPaperContentViewProtocol>* transformTargetView;
-@property (weak, nonatomic) IBOutlet UIButton *soundButton;
 @property (weak , nonatomic) IBOutlet PaintingView* paintingView;
 @property (strong, nonatomic) FBFriendPickerViewController* friendPickerController;
 @property (strong, nonatomic) NSMutableArray* contentsViews;
 @property (strong, nonatomic) RollingPaper* entity;
-@property (weak, nonatomic) IBOutlet UIView *menuDock;
+
 @property (weak, nonatomic) IBOutlet UIScrollView *contentsContainer;
 
 @property (nonatomic,strong) UIFreeTransformGestureRecognizer* freeTransformGestureRecognizer;
+@property (nonatomic,strong) DockController* dockController;
+@property (nonatomic,strong) CameraController* cameraController;
+@property (nonatomic,strong) AlbumController* albumController;
+@property (nonatomic,strong) RecoderController* recoderController;
+@property (nonatomic,strong) TypewriterController* typewriterController;
 
-@property (nonatomic,strong) CameraViewController* cameraViewController;
-@property (nonatomic,strong) RecoderViewController* recoderViewController;
-
-- (IBAction)onTouchSound:(id)sender;
-- (IBAction)onTouchBrush:(id)sender;
-- (IBAction)onAddImage:(id)sender;
-- (IBAction)onTouchInvite:(id)sender;
+-(void) onCreateImage : (UIImage *)image;
 -(id) initWithEntity : (RollingPaper*) entity;
 
 @end

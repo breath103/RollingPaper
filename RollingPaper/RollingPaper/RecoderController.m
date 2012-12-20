@@ -6,13 +6,13 @@
 //  Copyright (c) 2012년 상현 이. All rights reserved.
 //
 
-#import "RecoderViewController.h"
+#import "RecoderController.h"
 
-@implementation RecoderViewController
+@implementation RecoderController
 @synthesize recoder;
 @synthesize delegate;
 -(id) initWithDelegate : (id<RecoderViewControllerDelegate>) aDelegate{
-    self = [self initWithNibName:@"RecoderViewController" bundle:NULL];
+    self = [self initWithNibName:NSStringFromClass(self.class) bundle:NULL];
     if(self){
         self.recoder  = [[UESoundRecoder alloc]init];
         self.delegate = aDelegate;
@@ -34,11 +34,13 @@
 - (IBAction)onTouchButton:(id)sender {
     if( ! self.recoder.audioRecorder.isRecording){
         [self.recoder startRecoding];
-        [self.recodeButton setTitle:@"recording.." forState:UIControlStateNormal];
+        [self.recodeButton setTitle:@"recording.."
+                           forState:UIControlStateNormal];
     }
     else {
         [self.recoder stopRecording];
-        [self.recodeButton setTitle:@"Stoped" forState:UIControlStateNormal];
+        [self.recodeButton setTitle:@"Stoped"
+                           forState:UIControlStateNormal];
     
         [self.delegate RecoderViewController : self
                        onEndRecodingWithFile : self.recoder.soundFilePath];

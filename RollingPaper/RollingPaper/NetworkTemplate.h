@@ -43,4 +43,8 @@
 +(ASIFormDataRequest*) requestForUploadSoundContentWithUserIdx : (NSString*) useridx
                                                         entity : (SoundContent*) entity
                                                          sound : (NSData*) image;
+// 컨텐츠 수정 관련 리퀘스트
++(ASIFormDataRequest*) requestForSynchronizeImageContent : (ImageContent*) entity;
++(ASIFormDataRequest*) requestForSynchronizeSoundContent : (SoundContent*) entity;
+
 @end

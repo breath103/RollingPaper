@@ -13,6 +13,8 @@
 #import "UECoreData.h"
 #import "SBJSON.h"
 #import "UEFileManager.h"
+#import "macro.h"
+#import "CGPointExtension.h"
 
 @implementation ImageContentView
 @synthesize isNeedToSyncWithServer;
@@ -37,9 +39,7 @@
             }
         }
         self.contentMode = UIViewContentModeScaleToFill;
-        self.transform = CGAffineTransformTranslate(CGAffineTransformMakeRotation(entity.rotation.floatValue),
-                                                    entity.x.floatValue,
-                                                    entity.y.floatValue);
+        [self updateViewWithEntity];
     }
     return self;
 }
@@ -62,42 +62,65 @@
         return NULL;
     }
 }
+-(void) updateViewWithEntity{
+    self.center = ccp(self.entity.x.floatValue,self.entity.y.floatValue);
+    
+    CGRect bounds = self.bounds;
+    bounds.size = CGSizeMake(self.entity.width.floatValue,self.entity.height.floatValue);
+    self.bounds = bounds;
+    self.transform = CGAffineTransformMakeRotation(self.entity.rotation.floatValue);
+}
+-(void) updateEntityWithView{
+    NSNumber* angle  = (NSNumber *)[self valueForKeyPath:@"layer.transform.rotation.z"];
+    NSNumber* scale  = (NSNumber *)[self valueForKeyPath:@"layer.transform.scale.x"];
+
+    CGSize size = self.bounds.size;
+    size.width  *= scale.floatValue;
+    size.height *= scale.floatValue; //스케일 값을 곱해 실제 보이는 크기로 만든다.
+    
+    self.entity.rotation = angle;
+    self.entity.width    = FLOAT_TO_NSNUMBER(size.width);
+    self.entity.height   = FLOAT_TO_NSNUMBER(size.height);
+    self.entity.x        = FLOAT_TO_NSNUMBER(self.center.x);
+    self.entity.y        = FLOAT_TO_NSNUMBER(self.center.y);
+}
 -(void) syncEntityWithServer{
     if(isNeedToSyncWithServer) {
         // 서버로 이미지 컨텐츠를 전송하고,
         // 서버로부터 결과값을 받아와 다시 엔티티에 넣고 이를 coreData에 저장하는 코드가 여기 들어간다.
-        NSData* jpegImage = UIImagePNGRepresentation(self.image);
-        
-        NSNumber* angle  = (NSNumber *)[self valueForKeyPath:@"layer.transform.rotation.z"];
-        NSNumber* x      = (NSNumber *)[self valueForKeyPath:@"layer.transform.translation.x"];
-        NSNumber* y      = (NSNumber *)[self valueForKeyPath:@"layer.transform.translation.y"];
-        
-        float fAngle = -angle.floatValue + 90;
-        self.entity.rotation = angle;
-        
-        CGRect transformedBounds = CGRectApplyAffineTransform(self.bounds, self.transform);
-        
-        float rotatingScale = fabs(cos(fAngle)) + fabs(sin(fAngle)); // 회전하면서 키워진 바운드의 스케일.
-        
-        self.entity.width    = [NSNumber numberWithFloat:transformedBounds.size.width /rotatingScale];
-        self.entity.height   = [NSNumber numberWithFloat:transformedBounds.size.height/rotatingScale];
-        
-        //회전하면 원점이 로테이션한 뷰를 포함하는 사각형의 왼쪽위가 되기때문에 센터 포인트 기준으로 다시 계산해야 한다.
-        self.entity.x = x; //[NSNumber numberWithFloat:self.center.x - self.entity.width.floatValue/2];
-        self.entity.y = y; //[NSNumber numberWithFloat:self.center.y - self.entity.height.floatValue/2];
-        
-        ASIFormDataRequest* request = [NetworkTemplate requestForUploadImageContentWithUserIdx : [UserInfo getUserIdx]
-                                                                                        entity : self.entity
-                                                                                         image : jpegImage];
-        [request setCompletionBlock:^{
-            NSDictionary* dict = [[[SBJSON alloc] init] objectWithString:request.responseString];
-            [self.entity setValuesWithDictionary:dict];
-        }];
-        [request setFailedBlock:^{
-            NSLog(@"%@",@"fail!!!!");
-        }];
-        [request startSynchronous];
-        isNeedToSyncWithServer = false;
+        //우선 완전히 새로운 엔티티라 서버에 전송하는경우 
+        if(self.entity.image == NULL)
+        {
+            NSData* jpegImage = UIImagePNGRepresentation(self.image);
+            
+            [self updateEntityWithView];
+            ASIFormDataRequest* request = [NetworkTemplate requestForUploadImageContentWithUserIdx : [UserInfo getUserIdx]
+                                                                                            entity : self.entity
+                                                                                             image : jpegImage];
+            [request setCompletionBlock:^{
+                NSDictionary* dict = [[[SBJSON alloc] init] objectWithString:request.responseString];
+                [self.entity setValuesWithDictionary:dict];
+            }];
+            [request setFailedBlock:^{
+                NSLog(@"%@",@"fail!!!!");
+            }];
+            [request startSynchronous];
+            isNeedToSyncWithServer = false;
+        }
+        //원래 존재하는 엔티티인데, 값이 수정된경우
+        else{
+            [self updateEntityWithView];
+            ASIFormDataRequest* request = [NetworkTemplate requestForSynchronizeImageContent:self.entity];
+            [request setCompletionBlock:^{
+                NSDictionary* dict = [[[SBJSON alloc] init] objectWithString:request.responseString];
+                NSLog(@"%@",dict);
+            }];
+            [request setFailedBlock:^{
+                NSLog(@"%@",@"fail!!!!");
+            }];
+            [request startSynchronous];
+            isNeedToSyncWithServer = false;
+        }
     }
 }
 
