@@ -2,7 +2,7 @@
 //  RollingPaper.h
 //  RollingPaper
 //
-//  Created by 이상현 on 12. 12. 20..
+//  Created by 이상현 on 12. 12. 27..
 //  Copyright (c) 2012년 상현 이. All rights reserved.
 //
 
@@ -22,6 +22,8 @@
 @property (nonatomic, retain) NSString * receive_time;
 @property (nonatomic, retain) NSString * title;
 @property (nonatomic, retain) NSDate * update_time;
+@property (nonatomic, retain) NSNumber * width;
+@property (nonatomic, retain) NSNumber * height;
 @property (nonatomic, retain) NSSet *contents;
 @end
 

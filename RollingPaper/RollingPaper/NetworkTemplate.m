@@ -11,6 +11,14 @@
 
 
 @implementation NetworkTemplate
++(ASIFormDataRequest*) requestForPhoneAuth : (NSString*) phone{
+    NSString* phoneAuthURL = [SERVER_HOST stringByAppendingString:@"/user/phoneAuth"];
+    ASIFormDataRequest* request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:phoneAuthURL]];
+    
+    [request addPostValue:phone forKey:@"phone"];
+    
+    return request;
+}
 +(ASIFormDataRequest*) requestForFacebookJoinWithMe : (id<FBGraphUser>) me
                                         accessToken : (NSString*) accesstoken{
     NSLog(@"%@",SERVER_HOST);

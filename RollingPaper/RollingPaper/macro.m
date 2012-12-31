@@ -164,7 +164,14 @@ void ShowAlertView(NSString* title,NSString* message,NSString* button1,NSString*
                                              otherButtonTitles:button2, nil ];
     [alertView show];
 }
-
+/*
+CGRect CGRectMake(CGPoint p,CGSize s){
+    CGRect rect;
+    rect.origin = p;
+    rect.size = s;
+    return rect;
+}
+ */
 
 /*
 NSManagedObjectContext* getDefaultManagedObjectContext()

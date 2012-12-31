@@ -18,7 +18,6 @@
 
 @implementation ImageContentView
 @synthesize isNeedToSyncWithServer;
-@synthesize rotation;
 -(id) initWithEntity : (ImageContent*) entity{
     self = [self initWithFrame:CGRectMake(0,0,1,1)];
     if(self){
@@ -86,15 +85,12 @@
 }
 -(void) syncEntityWithServer{
     if(isNeedToSyncWithServer) {
-        // 서버로 이미지 컨텐츠를 전송하고,
-        // 서버로부터 결과값을 받아와 다시 엔티티에 넣고 이를 coreData에 저장하는 코드가 여기 들어간다.
-        //우선 완전히 새로운 엔티티라 서버에 전송하는경우 
         if(self.entity.image == NULL)
         {
             NSData* jpegImage = UIImagePNGRepresentation(self.image);
             
             [self updateEntityWithView];
-            ASIFormDataRequest* request = [NetworkTemplate requestForUploadImageContentWithUserIdx : [UserInfo getUserIdx]
+            ASIFormDataRequest* request = [NetworkTemplate requestForUploadImageContentWithUserIdx : [UserInfo getUserIdx].stringValue
                                                                                             entity : self.entity
                                                                                              image : jpegImage];
             [request setCompletionBlock:^{
@@ -122,6 +118,9 @@
             isNeedToSyncWithServer = false;
         }
     }
+}
+-(NSNumber*) getUserIdx{
+    return self.entity.user_idx;
 }
 
 @end

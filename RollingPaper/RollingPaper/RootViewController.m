@@ -19,6 +19,7 @@
 #import "BlockSupport/NSObject+block.h"
 #import "PaperViewController.h"
 #import "macro.h"
+#import "LoginMethodViewController.h"
 
 
 @interface RootViewController ()
@@ -43,7 +44,17 @@
             paperPlaneView.alpha = 0.0f;
         } completion:^(BOOL finished) {
             paperPlaneView.hidden = TRUE;
-            [self onTouchLoginWithFacebook];
+            
+            if([UserInfo getUserInfo]){
+                NSLog(@"다음 아이디로 이미 로그인 된 상태 : %@",[UserInfo getUserInfo]);
+                [self onTouchLoginWithFacebook];
+            }
+            else {
+                NSLog(@"아직 로그인 안됨");
+                LoginMethodViewController* loginViewController = [[LoginMethodViewController alloc] initWithNibName:NSStringFromClass(LoginMethodViewController.class)
+                                                                                                 bundle:NULL];
+                [self.navigationController pushViewController:loginViewController animated:TRUE];
+            }
         }];    
 }
 - (void)didReceiveMemoryWarning
@@ -61,9 +72,9 @@
                                        allowLoginUI : YES
                                   completionHandler : ^(FBSession *session, FBSessionState status, NSError *error) {
                                       NSLog(@"%@",session.accessToken);
-                                      if (!error)
-                                          [self onFacebookSessionActivated : session];
-                                      else {
+                                      if (!error){
+                                          [self onLoginSuccess:[UserInfo getUserInfo]];
+                                      }else {
                                           [[[UIAlertView alloc] initWithTitle:@"Error"
                                                                       message:error.localizedDescription
                                                                      delegate:nil
@@ -134,4 +145,18 @@
     [super viewDidUnload];
 }
 
+-(BOOL)shouldAutorotate
+{
+    return YES;
+}
+
+-(NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskPortraitUpsideDown;
+}
+
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
+{
+    return UIInterfaceOrientationPortrait;
+}
 @end

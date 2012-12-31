@@ -9,16 +9,18 @@
 #import "UserInfo.h"
 
 
-NSDictionary* userDict;
+//NSDictionary* userDict;
 
 @implementation UserInfo
 +(void) setUserInfo : (NSDictionary*) dict{
-    userDict = dict;
+    [[NSUserDefaults standardUserDefaults] setObject:dict
+                                              forKey:@"userinfo"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 +(NSDictionary*) getUserInfo {
-    return userDict;
+    return [[NSUserDefaults standardUserDefaults] objectForKey:@"userinfo"];
 }
-+(NSString*) getUserIdx{
++(NSNumber*) getUserIdx{
     return [[UserInfo getUserInfo] objectForKey:@"idx"];
 }
 

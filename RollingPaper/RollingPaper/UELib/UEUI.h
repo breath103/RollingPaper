@@ -50,10 +50,8 @@ typedef struct UEUIMargin UEUIMargin;
                         Blue : (CGFloat) blue
                        Alpha : (CGFloat) alpha;
 +(void) ziggleAnimation : (UIView*) view;
-
 +(void) createKeyboardButton : (UIView*) rootView : (UIView*) targetView;
 +(void) animateViewsToFitKeyboard : (UIView*) view ;
-
 +(void) CGAffineTransformWithTouches : (UITouch *) firstTouch
                                       secondTouch : (UITouch *) secondTouch
                                             scale : (CGSize*) size

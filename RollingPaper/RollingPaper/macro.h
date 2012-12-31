@@ -9,12 +9,20 @@
 #ifndef Ryokan_macro_h
 #define Ryokan_macro_h
 
-#include <UIKit/UIKit.h>
+#import <UIKit/UIKit.h>
 #define ARC4RANDOM_MAX      0x100000000
 
 
 #define FLOAT_TO_NSNUMBER(f) ([NSNumber numberWithFloat:(f)])
 
+#define APP_SCALE ([[UIScreen mainScreen] scale])
+#define APP_SCALE_TRANSFORM (CGAffineTransformMakeScale(APP_SCALE,APP_SCALE))
+#define APP_SCALE_I_TRANSFORM (CGAffineTransformMakeScale(1.0f/APP_SCALE,1.0f/APP_SCALE)) 
+#define UIBoundsToCGBounds(r) (CGRectApplyAffineTransform(r,APP_SCALE_TRANSFORM))
+#define CGBoundsToUIBounds(r) (CGRectApplyAffineTransform(r,APP_SCALE_I_TRANSFORM))
+#define UIColorRGBA(r,g,b,a) [UIColor colorWithRed:r green:g blue:b alpha:a]
+#define UIColorRGB(r,g,b) UIColorRGBA(r,g,b,1.0f)
+#define UIColorXRGB(r,g,b) UIColorRGBA(r/255.0f,g/255.0f,b/255.0f,1.0f)
 
 CGPoint CGPointRotateWithCenter( CGPoint p1 ,CGPoint center,float angle_radian);
 CGPoint CGPointAdd(CGPoint p1,CGPoint p2); 
@@ -35,13 +43,15 @@ NSMutableArray* ImagesWithFormatString( NSString* formatString,int minIndex,int 
 int 	randRange(int min,int max) ;
 double  randFloat();
 
+//CGPoint  CGRectMake(CGPoint p,CGSize s);
+
 void 	UIViewSetX(UIView* view, int x);
 void 	UIViewSetY(UIView* view, int y);
 void 	UIViewSetOrigin(UIView* view, CGPoint origin);
 void 	UIViewSetWidth(UIView* view, int width);
 void 	UIViewSetHeight(UIView* view, int height);
 void 	UIViewSetSize(UIView* view, CGSize size);
-void ShowAlertView(NSString* title,NSString* message,NSString* button1,NSString* button2);
+void    ShowAlertView(NSString* title,NSString* message,NSString* button1,NSString* button2);
 
 UIView* ReadNib( NSString* name,NSObject* owner);
 

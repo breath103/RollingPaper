@@ -13,14 +13,16 @@
 @synthesize translation;
 @synthesize rotation;
 @synthesize scale;
-- (id) initWithTarget:(id)target action:(SEL)action{
+- (id) initWithTarget:(id)target
+               action:(SEL)action{
     self = [super initWithTarget:target action:action];
     if(self){
         [self reset];
     }
     return self;
 }
-- (void)ignoreTouch:(UITouch*)touch forEvent:(UIEvent*)event{
+- (void)ignoreTouch:(UITouch*)touch
+           forEvent:(UIEvent*)event{
     
 }// if a touch isn't part of this gesture it can be passed to this method to be ignored. ignored touches won't be cancelled on the view even if cancelsTouchesInView is YES
 

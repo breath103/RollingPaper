@@ -17,7 +17,6 @@
 
 @implementation SoundContentView
 @synthesize isNeedToSyncWithServer;
-@synthesize rotation;
 @synthesize entity;
 -(id) initWithEntity : (SoundContent*) aEntity{
     self = [self initWithFrame:CGRectMake(0,0,1,1)];
@@ -96,7 +95,7 @@
     if(isNeedToSyncWithServer) {
         if(self.entity.sound == NULL){
             [self updateEntityWithView];
-            ASIFormDataRequest* request = [NetworkTemplate requestForUploadSoundContentWithUserIdx:[UserInfo getUserIdx]
+            ASIFormDataRequest* request = [NetworkTemplate requestForUploadSoundContentWithUserIdx:[UserInfo getUserIdx].stringValue
                                                                                             entity:self.entity
                                                                                              sound:[NSData dataWithContentsOfFile:self.entity.sound]];
             [request setCompletionBlock:^{
@@ -127,5 +126,7 @@
         
     }
 }
-
+-(NSNumber*) getUserIdx{
+    return self.entity.user_idx;
+}
 @end

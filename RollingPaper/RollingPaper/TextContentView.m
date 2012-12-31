@@ -78,5 +78,7 @@
     self.entity.x        = FLOAT_TO_NSNUMBER(self.center.x);
     self.entity.y        = FLOAT_TO_NSNUMBER(self.center.y);
 }
-
+-(NSNumber*) getUserIdx{
+    return self.entity.user_idx;
+}
 @end

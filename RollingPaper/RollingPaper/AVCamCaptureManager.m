@@ -11,9 +11,6 @@
 - (AVCaptureDevice *) frontFacingCamera;
 - (AVCaptureDevice *) backFacingCamera;
 - (AVCaptureDevice *) audioDevice;
-- (NSURL *) tempFileURL;
-- (void) removeFile:(NSURL *)outputFileURL;
-- (void) copyFileToDocuments:(NSURL *)fileURL;
 @end
 
 

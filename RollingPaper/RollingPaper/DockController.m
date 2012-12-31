@@ -97,7 +97,7 @@
     [self.delegate dockController:self
                          pickMenu:DockMenuTypeAlbum
                          inButton:sender];
-
+ 
 }
 - (IBAction)onTouchKeyboard:(id)sender{
     NSLog(@"Keyboard Menu");

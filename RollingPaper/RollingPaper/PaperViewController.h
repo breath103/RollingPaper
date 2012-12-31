@@ -11,7 +11,6 @@
 
 #import "RollingPaper.h"
 #import "RollingPaperContentViewProtocol.h"
-#import "PaintingView.h"
 
 #import "UIFreeTransformGestureRecognizer.h"
 
@@ -22,29 +21,36 @@
 #import "TypewriterController.h"
 #import "PencilcaseController.h"
 
+
+
+@class ImageContentView;
+
 @interface PaperViewController : UIViewController <UIGestureRecognizerDelegate,
+                                                   UIScrollViewDelegate,
                                                    DockControllerDelegate,
                                                    TypewriterControllerDelegate,
                                                    CameraContorllerDelegate,
                                                    AlbumControllerDelegate,
                                                    RecoderViewControllerDelegate,
+                                                   PencilcaseControllerDelegate,
                                                    FBFriendPickerDelegate>
 @property (nonatomic,strong) UIView<RollingPaperContentViewProtocol>* transformTargetView;
-@property (weak , nonatomic) IBOutlet PaintingView* paintingView;
 @property (strong, nonatomic) FBFriendPickerViewController* friendPickerController;
-@property (strong, nonatomic) NSMutableArray* contentsViews;
 @property (strong, nonatomic) RollingPaper* entity;
 
-@property (weak, nonatomic) IBOutlet UIScrollView *contentsContainer;
-
+@property (nonatomic,weak) IBOutlet UIScrollView *contentsContainer;
+@property (nonatomic,strong) UIView* contentsScrollContainer;
 @property (nonatomic,strong) UIFreeTransformGestureRecognizer* freeTransformGestureRecognizer;
 @property (nonatomic,strong) DockController* dockController;
+@property (nonatomic,readwrite) BOOL isEditingMode;
+/*
 @property (nonatomic,strong) CameraController* cameraController;
 @property (nonatomic,strong) AlbumController* albumController;
 @property (nonatomic,strong) RecoderController* recoderController;
 @property (nonatomic,strong) TypewriterController* typewriterController;
-
--(void) onCreateImage : (UIImage *)image;
+@property (nonatomic,strong) PencilcaseController* pencilcaseController;
+*/
+-(ImageContentView*) onCreateImage : (UIImage *)image;
 -(id) initWithEntity : (RollingPaper*) entity;
-
+-(NSArray*) contentsViews;
 @end

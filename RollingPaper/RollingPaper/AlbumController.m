@@ -25,10 +25,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.imagePickerController = [[UIImagePickerController alloc] init];
-    self.imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-    self.imagePickerController.allowsEditing = TRUE;
-    self.imagePickerController.delegate = self;
+    if(!self.imagePickerController){
+        self.imagePickerController = [[UIImagePickerController alloc] init];
+        self.imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        self.imagePickerController.allowsEditing = TRUE;
+        self.imagePickerController.delegate = self;
+    }
 
     [self presentViewController:self.imagePickerController
                        animated:TRUE

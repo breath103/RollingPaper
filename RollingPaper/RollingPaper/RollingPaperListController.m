@@ -19,6 +19,7 @@
 #import "CGPointExtension.h"
 #import <QuartzCore/QuartzCore.h>
 #import "UELib/UEUI.h"
+#import "UserSettingViewController.h"
 
 @interface RollingPaperListController ()
 
@@ -44,7 +45,7 @@
     }
     [paperCellControllers removeAllObjects];
     
-    ASIFormDataRequest* request = [NetworkTemplate requestForRollingPaperListWithUserIdx:[UserInfo getUserIdx]];
+    ASIFormDataRequest* request = [NetworkTemplate requestForRollingPaperListWithUserIdx:[UserInfo getUserIdx].stringValue];
     [request setCompletionBlock:^{
         [self performBlockInMainThread:^{
             SBJSON* parser = [[SBJSON alloc]init];
@@ -58,6 +59,7 @@
                 RollingPaper* entity = NULL;
                 entity = (RollingPaper*)[[UECoreData sharedInstance] insertNewObject : @"RollingPaper"
                                                                             initWith : p];
+                NSLog(@"%@",entity);
                 /*
                 NSFetchRequest* fetchRequest = [[NSFetchRequest alloc] init];
                 NSEntityDescription *entityDesc = [NSEntityDescription entityForName:@"RollingPaper"
@@ -118,35 +120,20 @@
         profileImageView.layer.masksToBounds = TRUE;
         profileImageView.layer.borderWidth = 2.5f;
         profileImageView.layer.borderColor = [UEUI CGColorWithRed:1.0f Green:1.0f Blue:1.0f Alpha:1.0f];
-        /*
-        CALayer* maskLayer = [CALayer layer];
-        maskLayer.frame = CGRectMake(0,0,yourMaskWidth ,yourMaskHeight);
-        maskLayer.contents = (__bridge id)[[UIImage imageNamed:@"yourMaskImage.png"] CGImage];
-    
-        // Apply the mask to your uiview layer
-        yourUIView.layer.mask = maskLayer;
-         */
+        UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onTapUserSetting)];
+        [profileImageView addGestureRecognizer:tapGesture];
     }
+}
+-(void) onTapUserSetting{
+    UserSettingViewController* settingViewController = [[UserSettingViewController alloc] initWithNibName:NSStringFromClass(UserSettingViewController.class)
+                                                                                                   bundle:NULL];
+    [self.navigationController pushViewController:settingViewController
+                                         animated:TRUE];
 }
 -(void) PaperCellTouched : (PaperCellController *) paper
 {
     PaperViewController* paperViewController = [[PaperViewController alloc] initWithEntity:paper.entity];
     [self.navigationController pushViewController:paperViewController animated:FALSE];
-   
-    /*
-    CGPoint previousViewCenter = paper.view.center;
-    
-    
-    
-    self.paperScrollView.clipsToBounds = FALSE;
-    [UIView animateWithDuration:1.0f animations:^{
-        CGSize currentViewSize = self.view.frame.size;
-        paper.view.center = ccp(currentViewSize.width/2,currentViewSize.height/2);
-        float targetScale = currentViewSize.height / paper.view.frame.size.height;
-        paper.view.transform = CGAffineTransformMakeScale(targetScale, targetScale);
-    } completion:^(BOOL finished) {
-    }];
-     */
 }
 
 - (void)didReceiveMemoryWarning
@@ -162,5 +149,20 @@
 - (IBAction)onTouchAddPaper:(id)sender {
     RollingPaperCreator* controller = [[RollingPaperCreator alloc]initWithNibName:@"RollingPaperCreator" bundle:NULL];
     [self.navigationController pushViewController:controller animated:TRUE];
+}
+
+
+-(BOOL)shouldAutorotate
+{
+    return YES;
+}
+-(NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskPortraitUpsideDown;
+}
+
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
+{
+    return UIInterfaceOrientationPortrait;
 }
 @end

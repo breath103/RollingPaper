@@ -10,6 +10,9 @@
 #import <FacebookSDK/FacebookSDK.h>
 #import "FBFriendSearchPickerController.h"
 
+
+
+
 @interface RollingPaperCreator : UIViewController<FBFriendPickerDelegate,UISearchBarDelegate>
 
 @property (nonatomic,strong) FBFriendSearchPickerController* friendPickerController;
@@ -18,14 +21,17 @@
 @property (weak, nonatomic) IBOutlet UITextField *noticeInput;
 @property (weak, nonatomic) IBOutlet UILabel *fbIdLabel;
 @property (weak, nonatomic) IBOutlet UITextField *receiverName;
+@property (weak, nonatomic) IBOutlet UITextField *receiveDate;
 @property (weak, nonatomic) IBOutlet UITextField *receiveTime;
-
-@property (retain, nonatomic) UISearchBar *searchBar;
-@property (retain, nonatomic) NSString *searchText;
-
+@property (weak, nonatomic) IBOutlet UIDatePicker *datePicker;
+@property (weak, nonatomic) IBOutlet UIDatePicker *timePicker;
+@property (nonatomic,weak) IBOutlet UIScrollView* scrollView;
 
 - (IBAction)onTouchSend:(id)sender;
 - (IBAction)onTouchPickFriend:(id)sender;
 - (IBAction)onHideKeyboard:(id)sender;
+- (IBAction)onPickDate:(UIDatePicker *)sender;
+- (IBAction)onPickTime:(UIDatePicker *)sender;
+- (IBAction)onTouchReceiveDate:(id)sender;
 
 @end

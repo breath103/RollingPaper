@@ -24,25 +24,27 @@
 #import "CameraController.h"
 #import "AlbumController.h"
 #import "PencilcaseController.h"
+#import "BlockSupport/NSObject+block.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface PaperViewController ()
 @end
 
 @implementation PaperViewController
-@synthesize paintingView;
-@synthesize contentsViews;
+//@synthesize contentsViews;
 @synthesize entity;
 @synthesize friendPickerController;
 @synthesize contentsContainer;
-@synthesize transformTargetView;
+@synthesize transformTargetView = _transformTargetView;
 @synthesize dockController;
+@synthesize contentsScrollContainer;
+@synthesize isEditingMode;
 
 -(id) initWithEntity : (RollingPaper*) aEntity
 {
     self = [self initWithNibName:NSStringFromClass(self.class) bundle:NULL];
     if(self){
         self.entity   = aEntity;
-        contentsViews = [[NSMutableArray alloc]init];
         NSLog(@"참여자 %d",self.entity.participants_count.intValue);
     }
     return self;
@@ -50,29 +52,35 @@
 
 #define BORDER (10.0f)
 - (void)setTransformTargetView:(UIView<RollingPaperContentViewProtocol> *)aTransformTargetView{
-    if(transformTargetView){
-        transformTargetView.layer.borderWidth = 0.0f;
+    if(_transformTargetView){
+        _transformTargetView.layer.borderWidth = 0.0f;
     }
-    else{
-    }
-    
-    transformTargetView = aTransformTargetView;
-    
-    if(transformTargetView)
+
+    _transformTargetView = aTransformTargetView;
+    if(_transformTargetView)
     {
-        transformTargetView.layer.borderWidth = BORDER;
-        
-        CGFloat components[4] = {0.8f,0.7f,0.1f,1.0f};
-        transformTargetView.layer.borderColor = CGColorCreate(CGColorSpaceCreateDeviceRGB(), components);
-        self.freeTransformGestureRecognizer.enabled = TRUE;
-        self.dockController.panGestureRecognizer.enabled = FALSE;
+        //해당 컨텐츠를 만든사람이 본인이라서 편집이 가능한경우에만 편집
+        if([[_transformTargetView getUserIdx] compare:[UserInfo getUserIdx]] == NSOrderedSame)
+        {
+            _transformTargetView.layer.borderWidth = BORDER;
+            _transformTargetView.layer.borderColor = [UIColor orangeColor].CGColor;
+            self.freeTransformGestureRecognizer.enabled = TRUE;
+            self.dockController.panGestureRecognizer.enabled = FALSE;
+            self.contentsContainer.scrollEnabled = NO;
+        }
+        else{
+            
+        }
     }
     else {
         self.freeTransformGestureRecognizer.enabled = FALSE;
         self.dockController.panGestureRecognizer.enabled = TRUE;
+        self.contentsContainer.scrollEnabled = YES;
     }
 }
-
+-(NSArray*) contentsViews{
+    return self.contentsScrollContainer.subviews;
+}
 -(void) initContentsEditingToolControlers{
     
     self.freeTransformGestureRecognizer =
@@ -91,7 +99,22 @@
     [super viewDidLoad];
     [self initContentsEditingToolControlers];
     [self initLeftDockMenu];
+    self.contentsContainer.contentSize = CGSizeMake(self.entity.width.floatValue,
+                                                    self.entity.height.floatValue);
     
+    self.contentsScrollContainer = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.entity.width.floatValue, self.entity.height.floatValue)];
+    self.contentsScrollContainer.backgroundColor = [UIColor blackColor];
+    self.contentsScrollContainer.userInteractionEnabled = TRUE;
+    UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self
+                                                                                action:@selector(onTapScrollBack:)];
+   // tapGesture.delegate = self;
+    [self.contentsScrollContainer addGestureRecognizer:tapGesture];
+    
+    
+    [self.contentsContainer addSubview:self.contentsScrollContainer];
+    
+    self.contentsContainer.scrollEnabled = FALSE;
+    self.contentsContainer.delegate = self;
     
     ASIFormDataRequest* request = [NetworkTemplate requestForRollingPaperContents : self.entity.idx.stringValue
                                                                         afterTime : 1];
@@ -107,10 +130,26 @@
         NSLog(@"--%@",request.error);
     }];
     [request startAsynchronous];
+
+    [self onChangeToEditingMode];
+    
+    self.transformTargetView = NULL;
+    
+    
+    [self.dockController show];
+}
+
+-(void) onTapScrollBack : (UITapGestureRecognizer*) tap{
+    if(tap.state == UIGestureRecognizerStateBegan){
+        self.transformTargetView = NULL;
+
+        NSLog(@"Long Background : %@",tap);
+        
+    }
 }
 
 -(void) viewDidAppear:(BOOL)animated{
-
+    
 }
 -(void) viewWillDisappear:(BOOL)animated{
     int i = 0;
@@ -121,6 +160,7 @@
         }
     }
     NSLog(@"%d개 업데이트 되었습니다",i);
+    
 }
 
 
@@ -132,38 +172,37 @@
 
 
 -(void) onFreeTransformGesture{
-    NSLog(@"%f %f : %f %f",transformTargetView.center.x,transformTargetView.center.y,self.freeTransformGestureRecognizer.translation.x,self.freeTransformGestureRecognizer.translation.y);
-    
-    transformTargetView.center = ccpAdd(transformTargetView.center,
-                                        self.freeTransformGestureRecognizer.translation);
+    self.transformTargetView.center = ccpAdd(self.transformTargetView.center,
+                                             self.freeTransformGestureRecognizer.translation);
     self.freeTransformGestureRecognizer.translation = CGPointZero;
     
     CGFloat scale = self.freeTransformGestureRecognizer.scale;
 
-    CGRect bounds = transformTargetView.bounds;
+    CGRect bounds = self.transformTargetView.bounds;
     bounds.size.width  *= scale;
     bounds.size.height *= scale;
-    transformTargetView.bounds = bounds;
+    self.transformTargetView.bounds = bounds;
     
     self.freeTransformGestureRecognizer.scale = 1.0f;
     
     
     CGFloat rotation = self.freeTransformGestureRecognizer.rotation;
-    transformTargetView.transform = CGAffineTransformRotate(transformTargetView.transform,
+    self.transformTargetView.transform = CGAffineTransformRotate(self.transformTargetView.transform,
                                                             rotation);
     self.freeTransformGestureRecognizer.rotation = 0.0f;
-    NSLog(@"%f %f",scale,rotation);
     
-    if(transformTargetView){
-        transformTargetView.isNeedToSyncWithServer = TRUE;
+    if(self.transformTargetView){
+        self.transformTargetView.isNeedToSyncWithServer = TRUE;
     }
 }
+
+
 -(void) onLongPressContent : (UILongPressGestureRecognizer*) gestureRecognizer{
-//    [UEUI ziggleAnimation:gestureRecognizer.view];
+ //   [UEUI ziggleAnimation:gestureRecognizer.view];
     if(gestureRecognizer.state == UIGestureRecognizerStateBegan)
     {
-        if(gestureRecognizer.view == transformTargetView)
-        {
+        NSLog(@"Long PressContent : %@",gestureRecognizer);
+        if(gestureRecognizer.view == self.transformTargetView){
             [self setTransformTargetView:NULL];
         }
         else{
@@ -171,31 +210,33 @@
         }
     }
 }
+
+
+-(void) addTransformTargetGestureToEntityView : (UIView*) view{
+    view.userInteractionEnabled = TRUE;
+    UILongPressGestureRecognizer* longTapGestureRecognizer = [[UILongPressGestureRecognizer alloc]initWithTarget:self
+                                                                                                          action:@selector(onLongPressContent:)];
+    [view addGestureRecognizer:longTapGestureRecognizer];
+    longTapGestureRecognizer.delegate = self;
+    NSLog(@"%@",longTapGestureRecognizer);
+}
 -(void) onReceiveContentsResponse : (NSDictionary*) categorizedContents{
     NSDictionary* imageContents = [categorizedContents objectForKey:@"image"];
     for(NSDictionary*p in imageContents){
         ImageContent* imageEntity = (ImageContent*)[[UECoreData sharedInstance]insertNewObject:@"ImageContent" initWith:p];
         ImageContentView* entityView = [[ImageContentView alloc] initWithEntity:imageEntity];
-        [self.contentsContainer addSubview:entityView];
-        [contentsViews addObject:entityView];
+        [self.contentsScrollContainer addSubview:entityView];
         
-        entityView.userInteractionEnabled = TRUE;
-        UILongPressGestureRecognizer* longTapGestureRecognizer = [[UILongPressGestureRecognizer alloc]initWithTarget:self
-                                                                                                              action:@selector(onLongPressContent:)];
-        [entityView addGestureRecognizer:longTapGestureRecognizer];
-        longTapGestureRecognizer.delegate = self;
-        NSLog(@"%@",longTapGestureRecognizer);
+        [self addTransformTargetGestureToEntityView:entityView];
     }
-    self.transformTargetView = [contentsViews lastObject];
+    //self.transformTargetView = [contentsViews lastObject];
     //NSDictionary* textContents  = [categorizedContents objectForKey:@"text"];
-    
     
     NSDictionary* soundContents = [categorizedContents objectForKey:@"sound"];
     for(NSDictionary*p in soundContents){
         SoundContent* soundEntity = (SoundContent*)[[UECoreData sharedInstance]insertNewObject:@"SoundContent" initWith:p];
         SoundContentView* entityView = [[SoundContentView alloc] initWithEntity:soundEntity];
-        [self.contentsContainer addSubview:entityView];
-        [contentsViews addObject:entityView];
+        [self.contentsScrollContainer addSubview:entityView];
     }
     // 일단 받았음으로 받은 것을 현재 디바이스에 저장한다
 }
@@ -225,7 +266,7 @@
     @autoreleasepool {
         ASIFormDataRequest* request =  [NetworkTemplate requestForInviteFacebookFriends : friendArray
                                                                                 ToPaper : [NSString stringWithFormat:@"%d",self.entity.idx.intValue]
-                                                                               withUser : [UserInfo getUserIdx]];
+                                                                               withUser : [UserInfo getUserIdx].stringValue];
         [request setCompletionBlock:^{
             NSLog(@"%@",request.responseString);
         }];
@@ -237,47 +278,11 @@
 }
 
 
-- (IBAction)onTouchBrush:(id)sender {
-    [self.view bringSubviewToFront:paintingView];
-    if(self.paintingView.frame.origin.x >= 0){
-        UIImage* image = [paintingView glToUIImage];
-        NSLog(@"%@",image);
-        
-        CGImageRef cgImage = image.CGImage;
-        CGFloat width   = CGImageGetWidth(cgImage);
-        CGFloat height  = CGImageGetHeight(cgImage);
-        ImageContent* imageEntity = (ImageContent*)[[UECoreData sharedInstance]insertNewObject:@"ImageContent"];
-        imageEntity.idx       = NULL;
-        imageEntity.paper_idx = self.entity.idx;
-        imageEntity.user_idx  = [NSNumber numberWithInt:[UserInfo getUserIdx].intValue];
-        imageEntity.x         = [NSNumber numberWithFloat:0];
-        imageEntity.y         = [NSNumber numberWithFloat:0];
-        imageEntity.rotation  = [NSNumber numberWithFloat:0.0f];
-        imageEntity.image     = NULL;
-        imageEntity.width     = [NSNumber numberWithFloat:width];
-        imageEntity.height    = [NSNumber numberWithFloat:height];
-        
-        ImageContentView* entityView = [[ImageContentView alloc] initWithEntity:imageEntity];
-        entityView.isNeedToSyncWithServer = TRUE;
-        entityView.image = image;
-        [self.contentsContainer addSubview:entityView];
-        [self.contentsViews addObject:entityView];
-        
-        transformTargetView = entityView;
-        
-        UIViewSetX(paintingView, -10000);
-        [paintingView erase];
-    }
-    else {
-        [self.view bringSubviewToFront:paintingView];
-        UIViewSetX(paintingView, 0);
-    }
-}
 
--(void) onCreateImage : (UIImage *)image{
+-(ImageContentView*) onCreateImage : (UIImage *)image{
     CGImageRef cgImage = image.CGImage;
-    CGFloat width   = CGImageGetWidth(cgImage);
-    CGFloat height  = CGImageGetHeight(cgImage);
+    CGFloat width   = CGImageGetWidth(cgImage) / APP_SCALE;
+    CGFloat height  = CGImageGetHeight(cgImage) / APP_SCALE;
     
     ImageContent* imageEntity = (ImageContent*)[[UECoreData sharedInstance]insertNewObject:@"ImageContent"];
     imageEntity.idx       = NULL;
@@ -293,10 +298,11 @@
     ImageContentView* entityView = [[ImageContentView alloc] initWithEntity:imageEntity];
     entityView.isNeedToSyncWithServer = TRUE;
     entityView.image = image;
-    [self.contentsContainer addSubview:entityView];
-    [self.contentsViews addObject:entityView];
+    [self.contentsScrollContainer addSubview:entityView];
+    [self addTransformTargetGestureToEntityView:entityView];
     
     self.transformTargetView = entityView;
+    return entityView;
 }
 -(BOOL) canBecomeFirstResponder{
     return YES;
@@ -312,16 +318,24 @@
     [super viewDidUnload];
 }
 
+
 -(BOOL) gestureRecognizer : (UIGestureRecognizer *)gestureRecognizer
 shouldRecognizeSimultaneouslyWithGestureRecognizer : (UIGestureRecognizer *)otherGestureRecognizer
 {
+    if (gestureRecognizer == [contentsScrollContainer.gestureRecognizers objectAtIndex:0] ||
+        otherGestureRecognizer == [contentsScrollContainer.gestureRecognizers objectAtIndex:0]) {
+        return NO;
+    }
     return YES;
 }
+
 
 -(void) dockController:(DockController *)dock
               pickMenu:(DockMenuType)menuType
               inButton:(UIButton *)button{
     NSLog(@"%@ %d %@",dock,menuType,button);
+    self.dockController.panGestureRecognizer.enabled = FALSE;
+    [dock hide];
     switch (menuType) {
         case DockMenuTypeCamera:{
             CameraController* camViewController = [[CameraController alloc] initWithDelegate:self];
@@ -353,13 +367,10 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer : (UIGestureRecognizer *)othe
             }];
         }break;
         case DockMenuTypePencilcase: {
-            PencilcaseController* pencilcaseController =
-            [[PencilcaseController alloc]initWithNibName:@"PencilcaseController"
-                                                  bundle:NULL];
+            PencilcaseController* pencilcaseController = [[PencilcaseController alloc]initWithDelegate:self];
             [self addChildViewController:pencilcaseController];
             [self.view addSubview:pencilcaseController.view];
-            
-        }break; 
+        }break;
         default:
             break;
     }
@@ -395,8 +406,27 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer : (UIGestureRecognizer *)othe
     [self onCreateImage:image];
     [typewriterController removeFromParentViewController];
     [typewriterController.view removeFromSuperview];
-
 }
+-(void) pencilcaseController:(PencilcaseController *)pencilcaseController
+             didEndDrawImage:(UIImage *)image
+                      inRect:(CGRect)rect 
+{
+    ImageContentView* createdImageView = [self onCreateImage:image];
+    [pencilcaseController removeFromParentViewController];
+    [pencilcaseController.view removeFromSuperview];
+    
+    
+    //브러쉬로 그리는 화면은 스크롤 위치가 포함 안되기 때문에 정리
+    rect.origin = ccpAdd(rect.origin, self.contentsContainer.contentOffset);
+    createdImageView.frame = rect;
+}
+-(void) pencilcaseControllerdidCancelDraw:(PencilcaseController *)pencilcaseController{
+    [pencilcaseController hideBottomDock];
+    
+    [pencilcaseController removeFromParentViewController];
+    [pencilcaseController.view removeFromSuperview];
+}
+
 -(void) RecoderViewController : (RecoderController *)recoder
         onEndRecodingWithFile : (NSString *)file{
     
@@ -410,9 +440,102 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer : (UIGestureRecognizer *)othe
     
     SoundContentView* entityView = [[SoundContentView alloc] initWithEntity:soundEntity];
     entityView.isNeedToSyncWithServer = TRUE;
-    [self.view addSubview:entityView];
-    [self.contentsViews addObject:entityView];
+   
+    [self.contentsScrollContainer addSubview:entityView];
+    [self addTransformTargetGestureToEntityView:entityView];
+    
     
     self.transformTargetView = entityView;
 }
+-(void) onChangeToInspectingMode{
+    isEditingMode = FALSE;
+    /* 일단 편집 제스쳐가 다 안먹히게 편집 */
+    self.freeTransformGestureRecognizer.enabled = FALSE;
+    self.dockController.panGestureRecognizer.enabled = FALSE;
+    /******************************/
+    
+    self.contentsContainer.maximumZoomScale = 1.0f;
+    CGSize scrollSize  = self.contentsContainer.frame.size;
+    CGSize contentSize = self.contentsContainer.contentSize;
+
+    self.contentsContainer.minimumZoomScale = 1.0/3;
+    self.contentsContainer.scrollEnabled = TRUE;
+    [self.contentsContainer zoomToRect:CGRectMake(0, 0, contentSize.width, contentSize.height)
+                              animated:TRUE];
+    
+    [[UIApplication sharedApplication] setStatusBarHidden:TRUE
+                                            withAnimation:UIStatusBarAnimationFade];
+    
+    NSLog(@"%f",self.contentsContainer.zoomScale);
+}
+-(void) onChangeToEditingMode {
+    isEditingMode = TRUE;
+    self.contentsContainer.scrollEnabled = FALSE;
+    self.transformTargetView = NULL;
+    [self.contentsContainer resignFirstResponder];
+   
+    [self.contentsContainer setZoomScale:1.0f animated:TRUE];
+    
+    //self.contentsContainer.minimumZoomScale =
+    //self.contentsContainer.maximumZoomScale = 1.0f;
+    
+    /*
+    self.contentsContainer.maximumZoomScale = 1.0f;
+    CGSize scrollSize  = self.contentsContainer.frame.size;
+    CGSize contentSize = self.contentsContainer.contentSize;
+    self.contentsContainer.scrollEnabled = TRUE;
+    [self.contentsContainer zoomToRect:CGRectMake(0, 0, contentSize.width, contentSize.height)
+                              animated:TRUE];
+    */
+    
+    
+    [[UIApplication sharedApplication] setStatusBarHidden:FALSE
+                                            withAnimation:UIStatusBarAnimationFade];
+}
+-(void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation{
+    
+}
+-(void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+                                         duration:(NSTimeInterval)duration{
+
+}
+-(void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+                                duration:(NSTimeInterval)duration{
+    if(UIInterfaceOrientationIsPortrait(self.interfaceOrientation) &&
+       UIInterfaceOrientationIsLandscape(toInterfaceOrientation) ){
+        NSLog(@"TO Inspecting Mode");
+        [self onChangeToInspectingMode];
+    }
+    else if(UIInterfaceOrientationIsLandscape(self.interfaceOrientation) &&
+            UIInterfaceOrientationIsPortrait(toInterfaceOrientation)){
+        NSLog(@"TO Editing Mode");
+        [self onChangeToEditingMode];
+    }
+    else
+        NSLog(@"%d %d",self.interfaceOrientation,toInterfaceOrientation);
+    
+}
+-(BOOL) shouldAutorotate{
+    return YES;
+}
+-(NSUInteger) supportedInterfaceOrientations{
+    return UIInterfaceOrientationMaskAll;
+}
+- (void)scrollViewDidZoom:(UIScrollView *)scrollView{}
+-(void) scrollViewDidEndZooming:(UIScrollView *)scrollView
+                       withView:(UIView *)view
+                        atScale:(float)scale{
+    if(isEditingMode){
+        [scrollView setZoomScale:1.0f animated:TRUE];
+    }
+}
+-(UIView*) viewForZoomingInScrollView:(UIScrollView *)scrollView{
+    return self.contentsScrollContainer;
+}
+/*
+-(BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation{
+    return YES;
+}
+ */
+
 @end

@@ -75,19 +75,17 @@
     }
 }
 -(void) searchBar:(UISearchBar *)aSearchBar
-    textDidChange:(NSString *)searchText
-{
+    textDidChange:(NSString *)searchText{
     self.searchText = aSearchBar.text;
     [self updateView];
 }
-- (void)searchBarSearchButtonClicked:(UISearchBar*)aSearchBar
-{
+- (void)searchBarSearchButtonClicked:(UISearchBar*)aSearchBar{
     [aSearchBar resignFirstResponder];
     self.searchText = aSearchBar.text;
     [self updateView];
 }
 
-- (void)searchBarCancelButtonClicked:(UISearchBar *) aSearchBar {
+- (void)searchBarCancelButtonClicked:(UISearchBar *)aSearchBar {
     self.searchText = nil;
     [aSearchBar resignFirstResponder];
 }

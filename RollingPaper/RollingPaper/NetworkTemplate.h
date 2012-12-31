@@ -21,6 +21,8 @@
 // 로그인 / 회원가입 관련 리퀘스트들
 +(ASIFormDataRequest*) requestForFacebookJoinWithMe : (id<FBGraphUser>) me
                                         accessToken : (NSString*) accesstoken;
++(ASIFormDataRequest*) requestForPhoneAuth : (NSString*) phone;
+
 // 방생성, 조회, 초대 관련 리퀘스트들
 +(ASIFormDataRequest*) requestForCreateRollingPaperWithUserIdx : (NSString*) creator_idx
                                                          title : (NSString*) title

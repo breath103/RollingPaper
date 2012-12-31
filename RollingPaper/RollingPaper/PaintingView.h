@@ -1,34 +1,58 @@
-#import <UIKit/UIKit.h>
-#import <OpenGLES/EAGL.h>
-#import <OpenGLES/ES1/gl.h>
-#import <OpenGLES/ES1/glext.h>
+//
+//  PaintingView.h
+//  TransformTest
+//
+//  Created by 이상현 on 12. 12. 26..
+//  Copyright (c) 2012년 상현 이. All rights reserved.
+//
 
-#define kBrushOpacity		(1.0 / 3.0)
-#define kBrushPixelStep		3
-#define kBrushScale			4
-#define kLuminosity			0.75
-#define kSaturation			1.0
+#import <UIKit/UIKit.h>
+#import <QuartzCore/QuartzCore.h>
+#define APP_SCALE ([[UIScreen mainScreen] scale])
+
+
+typedef enum TOOL_TYPE{
+    PENCIL,
+    BALLPEN,
+    NAMEPEN,
+    CRAYON,
+    LIGHTPEN,
+    TOOL_COUNT
+} TOOL_TYPE;
+
+@interface PathInfo : UIBezierPath{
+    
+}
+@property (nonatomic,strong) UIColor* lineColor;
+@property (nonatomic,readwrite) CGFloat lineAlpha;
+-(void) drawInContext : (CGContextRef) context;
+-(CGRect) boundingBox;
+@end
+
 
 @interface PaintingView : UIView
 {
-    @private
-	GLint backingWidth;
-	GLint backingHeight;
-	EAGLContext *context;
-	GLuint viewRenderbuffer, viewFramebuffer;
-	GLuint depthRenderbuffer;
-	GLuint brushTexture;
-	CGPoint	location;
-	CGPoint	previousLocation;
-	Boolean	firstTouch;
-	Boolean needsErase;	
+    CGPoint lastPoint;
 }
-@property(nonatomic, readwrite) CGPoint location;
-@property(nonatomic, readwrite) CGPoint previousLocation;
+@property (nonatomic, strong) UIColor *lineColor;
+@property (nonatomic,readwrite) CGFloat lineWidth;
+@property (nonatomic,readwrite) CGFloat lineAlpha;
+@property (nonatomic,readwrite) CGLineCap lineCapStyle;
+@property (nonatomic,readwrite) CGLineJoin lineJoinStyle;
 
-- (void)erase;
-- (void)setBrushColorWithRed:(CGFloat)red
-                       green:(CGFloat)green
-                        blue:(CGFloat)blue;
-- (UIImage *) glToUIImage;
+@property (nonatomic,assign) CGContextRef drawingContext;
+@property (nonatomic,assign) CGLayerRef drawingLayer;
+@property (nonatomic,assign) CGRect currentDirtyRect;
+@property (nonatomic,strong) PathInfo* currentDrawingPath;
+@property (nonatomic,strong) NSMutableArray* pathArray;
+@property (nonatomic,strong) NSMutableArray* removedPathArray;
+@property (nonatomic,readwrite) TOOL_TYPE toolType;
+-(CGRect) CGPaintedRect;
+-(CGRect) UIPaintedRect;
+-(UIImage*) toImage;
+-(void) undo;
+-(void) redo;
+-(BOOL) isCanUndo;
+-(BOOL) isCanRedo;
+-(void) clearWithAnimation : (BOOL) b;
 @end

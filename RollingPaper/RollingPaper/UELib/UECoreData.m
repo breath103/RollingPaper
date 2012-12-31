@@ -14,6 +14,10 @@
     for( NSString* name in self.entity.propertiesByName.allKeys){
         // 실제데이터 모델에서 존재하는 프로퍼티들을 뽑는다.
         id value = [dict objectForKey:name];
+        
+        if(value == [NSNull null])
+            value = NULL;
+    
         [self setValue:value forKey:name];
     }
 }

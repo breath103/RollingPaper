@@ -7,33 +7,35 @@
 //
 
 #import <UIKit/UIKit.h>
-
-typedef enum TOOL_TYPE{
-    PENCIL,
-    NAMEPEN,
-    LIGHTPEN,
-    MAGICPEN,
-    BALLPEN,
-    TOOL_COUNT
-} TOOL_TYPE;
+#import "PaintingView.h"
+#import "ColorPalette.h"
 
 @class PencilcaseController;
 
 @protocol PencilcaseControllerDelegate <NSObject>
 -(void) pencilcaseController : (PencilcaseController*) pencilcaseController
-             didEndDrawImage : (UIImage*) image;
+             didEndDrawImage : (UIImage*) image
+                      inRect : (CGRect) rect;
+-(void) pencilcaseControllerdidCancelDraw : (PencilcaseController *)pencilcaseController;
 @end
 
-@interface PencilcaseController : UIViewController
+@interface PencilcaseController : UIViewController<ColorPaletteDelegate>
 @property (nonatomic,strong) id<PencilcaseControllerDelegate> delegate;
+@property (nonatomic,strong) PaintingView* paintingView;
 @property (atomic,readonly) BOOL isInLeftPanningMode;
-@property (atomic,readonly) TOOL_TYPE currentTool;
 @property (nonatomic,strong) UIButton* selectedButton;
 @property (nonatomic,strong) NSMutableArray* toolButtons;
 @property (weak, nonatomic) IBOutlet UIView *bottomDock;
 @property (weak, nonatomic) IBOutlet UIButton *colorButton;
+@property (weak, nonatomic) IBOutlet ColorPalette *colorPalette;
+
 -(id) initWithDelegate : (id<PencilcaseControllerDelegate>) delegate;
+- (IBAction)onTouchEndPaint:(id)sender;
 - (IBAction)onTouchColor:(id)sender;
-@property (weak, nonatomic) IBOutlet UIButton *onTouchEndPaint;
 -(void) animateToLeftPanning;
+- (IBAction)onTouchUndo:(id)sender;
+- (IBAction)onTouchRedo:(id)sender;
+- (IBAction)onTouchClear:(id)sender;
+-(void) showBottomDock;
+-(void) hideBottomDock;
 @end

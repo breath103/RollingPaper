@@ -13,8 +13,7 @@
 @interface UserInfo : NSObject
 +(void) setUserInfo : (NSDictionary*) dict;
 +(NSDictionary*) getUserInfo;
-+(NSString*) getUserIdx;
-
++(NSNumber*) getUserIdx;
 
 /*
 @property (nonatomic,strong) NSString* name;

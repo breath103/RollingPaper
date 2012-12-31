@@ -17,6 +17,7 @@
     <entity name="RollingPaper" representedClassName="RollingPaper" syncable="YES">
         <attribute name="created_time" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="creator_idx" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="height" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="idx" optional="YES" attributeType="Integer 64" defaultValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="is_sended" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="notice" optional="YES" attributeType="String" syncable="YES"/>
@@ -24,6 +25,7 @@
         <attribute name="receive_time" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="update_time" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="width" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <relationship name="contents" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Content" inverseName="paper" inverseEntity="Content" syncable="YES"/>
     </entity>
     <entity name="SoundContent" representedClassName="SoundContent" parentEntity="Content" syncable="YES">
@@ -43,7 +45,7 @@
     <elements>
         <element name="Content" positionX="-200" positionY="-135" width="128" height="133"/>
         <element name="ImageContent" positionX="-360" positionY="95" width="128" height="103"/>
-        <element name="RollingPaper" positionX="-144" positionY="54" width="128" height="193"/>
+        <element name="RollingPaper" positionX="-144" positionY="54" width="128" height="223"/>
         <element name="SoundContent" positionX="117" positionY="90" width="128" height="103"/>
         <element name="TextContent" positionX="9" positionY="-106" width="128" height="133"/>
     </elements>
