@@ -29,24 +29,32 @@ typedef enum TOOL_TYPE{
 -(CGRect) boundingBox;
 @end
 
+@class PaintingView;
+@protocol PaintingViewDelegate <NSObject>
+-(void) paintingViewStartDrawing : (PaintingView*) paintingView;
+-(void) paintingViewEndDrawing : (PaintingView*) paintingView;
+
+@end
+
 
 @interface PaintingView : UIView
 {
     CGPoint lastPoint;
 }
 @property (nonatomic, strong) UIColor *lineColor;
-@property (nonatomic,readwrite) CGFloat lineWidth;
-@property (nonatomic,readwrite) CGFloat lineAlpha;
-@property (nonatomic,readwrite) CGLineCap lineCapStyle;
-@property (nonatomic,readwrite) CGLineJoin lineJoinStyle;
-
-@property (nonatomic,assign) CGContextRef drawingContext;
-@property (nonatomic,assign) CGLayerRef drawingLayer;
-@property (nonatomic,assign) CGRect currentDirtyRect;
-@property (nonatomic,strong) PathInfo* currentDrawingPath;
-@property (nonatomic,strong) NSMutableArray* pathArray;
-@property (nonatomic,strong) NSMutableArray* removedPathArray;
-@property (nonatomic,readwrite) TOOL_TYPE toolType;
+@property (nonatomic, readwrite) CGFloat lineWidth;
+@property (nonatomic, readwrite) CGFloat lineAlpha;
+@property (nonatomic, readwrite) CGLineCap lineCapStyle;
+@property (nonatomic, readwrite) CGLineJoin lineJoinStyle;
+@property (nonatomic, assign) CGContextRef drawingContext;
+@property (nonatomic, assign) CGLayerRef drawingLayer;
+@property (nonatomic, assign) CGRect currentDirtyRect;
+@property (nonatomic, strong) PathInfo* currentDrawingPath;
+@property (nonatomic, strong) NSMutableArray* pathArray;
+@property (nonatomic, strong) NSMutableArray* removedPathArray;
+@property (nonatomic, readwrite) TOOL_TYPE toolType;
+@property (nonatomic, weak) id<PaintingViewDelegate> delegate;
+@property (nonatomic, readwrite) BOOL enablePainting;
 -(CGRect) CGPaintedRect;
 -(CGRect) UIPaintedRect;
 -(UIImage*) toImage;

@@ -21,9 +21,11 @@
 @synthesize emailInput;
 @synthesize noticeInput;
 @synthesize receiverName;
-@synthesize fbIdLabel;
+
 @synthesize friendPickerController;
 @synthesize receiveTime;
+@synthesize contentContainer;
+@synthesize receiverFacebookID;
 
 -(void) viewDidAppear:(BOOL)animated{
 
@@ -45,6 +47,7 @@
     [self.view endEditing:TRUE];
 }
 -(void) scrollviewAutoContentSize{
+    /*
     CGFloat scrollViewHeight = 0.0f;
     for (UIView* view in self.scrollView.subviews)
     {
@@ -58,11 +61,12 @@
             }
         }
     }
-    [self.scrollView setContentSize:(CGSizeMake(self.scrollView.frame.size.width, scrollViewHeight))];
-    NSLog(@"%@",NSStringFromCGSize(self.scrollView.contentSize));
-    NSLog(@"%@",self.scrollView);
+     */
     
+    [self.scrollView addSubview:self.contentContainer];
+    self.scrollView.contentSize = self.contentContainer.frame.size;
     
+    /*
     for(int i=0;i<5;i++){
         UIButton* button = [UIButton buttonWithType:UIButtonTypeCustom];
         button.frame = CGRectMake(58 * i, 409.5,46,46);
@@ -76,7 +80,7 @@
         
         [self.scrollView addSubview:button];
     }
-    
+    */
     
 }
 - (void)viewDidLoad
@@ -84,18 +88,17 @@
     [super viewDidLoad];
     self.navigationController.navigationBarHidden = FALSE;
  
-    /*
-    UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard)];
+    UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                                        action:@selector(hideKeyboard)];
     gestureRecognizer.cancelsTouchesInView = NO;
     [self.view addGestureRecognizer:gestureRecognizer];
-    */
-     
+    
     [self scrollviewAutoContentSize];
     
-    //self.datePicker.minimumDate = [NSDate date];
-    
-    //self.receiveDate.inputView = self.datePicker;
-    //self.receiveTime.inputView = self.timePicker;
+    self.datePicker.minimumDate = [NSDate date];
+   
+    self.receiveDate.inputView = self.datePicker;
+    self.receiveTime.inputView = self.timePicker;
 }
 
 - (void)didReceiveMemoryWarning
@@ -108,7 +111,6 @@
     [self setTitleText :nil];
     [self setEmailInput :nil];
     [self setNoticeInput :nil];
-    [self setFbIdLabel :nil];
     [self setReceiverName :nil];
     [self setReceiveTime :nil];
     [self setDatePicker:nil];
@@ -136,7 +138,7 @@
                                                                                              title : titleText.text
                                                                                       target_email : emailInput.text
                                                                                             notice : noticeInput.text
-                                                                                      receiverFBid : fbIdLabel.text
+                                                                                      receiverFBid : receiverFacebookID
                                                                                       receiverName : receiverName.text
                                                                                       receieveTime : [self buildRequestDate]];
             [request setCompletionBlock:^{
@@ -180,9 +182,8 @@
 }
 
 - (IBAction)onPickDate:(UIDatePicker *)sender {
-    NSCalendar* calendar = [NSCalendar currentCalendar];
-    NSDateComponents* date = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit
-                                               fromDate:sender.date]; // Get necessary date components
+    NSDateComponents* date = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit
+                                                             fromDate:sender.date]; // Get necessary date components
     self.receiveDate.text = [NSString stringWithFormat:@"%d-%02d-%02d",date.year,date.month,date.day];
     NSLog(@"%@",self.receiveDate);
 }
@@ -197,23 +198,53 @@
 - (IBAction)onTouchReceiveDate:(id)sender {
     
 }
--(NSString*) facebookBirthdayToLocal : (NSString*) str{
-    NSArray* array = [str componentsSeparatedByString:@"/"];
-    return [NSString stringWithFormat:@"%@-%@-%@",[array objectAtIndex:2],[array objectAtIndex:0],[array objectAtIndex:1]];
+-(NSDate*) facebookDateToNSDate : (NSString*) str{
+    NSDateFormatter* dateFormatter = [[NSDateFormatter alloc]init];
+    [dateFormatter setDateFormat:@"MM/dd/yyyy"];
+    return [dateFormatter dateFromString:str];
 }
-
+-(NSString*) dateToFormatString : (NSDate*) date{
+    NSDateFormatter* dateFormatter = [[NSDateFormatter alloc]init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+    return [dateFormatter stringFromDate:date];
+}
+-(NSString*) facebookBirthdayToLocal : (NSString*) str{
+    NSDate* date = [self facebookDateToNSDate:str];
+    return [self dateToFormatString:date];
+}
+-(NSDate*) facebookBirthDayToCurrentBirthDay : (NSString* ) birthday{
+    NSDate* fbBirthday = [self facebookDateToNSDate:birthday];
+    
+    NSDateComponents* todayComponents = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit
+                                                                        fromDate:[NSDate date]];
+    NSDateComponents* fbBirthdayComponents = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit
+                                                                             fromDate:fbBirthday]; // Get necessary date components
+    //우선 년도를 현재 년도로 잡는다.
+    fbBirthdayComponents.year = todayComponents.year;
+    if( (fbBirthdayComponents.month < todayComponents.month) ||
+        (fbBirthdayComponents.month == todayComponents.month && fbBirthdayComponents.day < todayComponents.day) ){
+        //현재년도로 옮겼을때 날짜가 현재날짜보다 앞이라면, 즉 이미 지난 날짜라면
+        fbBirthdayComponents.year += 1;
+    }
+    return [[NSCalendar currentCalendar] dateFromComponents:fbBirthdayComponents];
+}
 -(NSString*) buildRequestDate{
     return [NSString stringWithFormat:@"%@ %@",self.receiveDate.text,self.receiveTime.text];
 }
 -(void) facebookViewControllerDoneWasPressed : (id)sender{
     for (id<FBGraphUser> user in friendPickerController.selection) {
-        NSLog(@"%@",user);
         FBRequest* request = [FBRequest requestForGraphPath:[user id]];
         [request startWithCompletionHandler:^(FBRequestConnection *connection, id<FBGraphUser> result, NSError *error) {
-             self.receiveDate.text = [self facebookBirthdayToLocal:[result birthday]];
-             self.receiveTime.text = @"00:00:00";
+            NSLog(@"%@",result);
+            if([result birthday]){
+                self.receiveDate.text = [self dateToFormatString:[self facebookBirthDayToCurrentBirthDay:[result birthday]]];
+                self.receiveTime.text = @"00:00:00";
+            }
+            else{
+                
+            }
         }];
-        fbIdLabel.text = user.id;
+        self.receiverFacebookID = user.id;
         receiverName.text = user.name;
     }
     [self dismissViewControllerAnimated:YES completion:^{

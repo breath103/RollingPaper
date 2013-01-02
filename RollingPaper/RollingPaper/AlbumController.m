@@ -57,9 +57,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info{
 }
 -(void) imagePickerControllerDidCancel:(UIImagePickerController *)picker{
     [self dismissViewControllerAnimated:TRUE completion:^{
-        [self.delegate albumController:self
-                             pickImage:NULL
-                              withInfo:NULL];
+        [self.delegate albumControllerCancelPickingImage:self];
     }];
 }
 @end

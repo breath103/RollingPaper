@@ -16,16 +16,17 @@
 @interface RollingPaperCreator : UIViewController<FBFriendPickerDelegate,UISearchBarDelegate>
 
 @property (nonatomic,strong) FBFriendSearchPickerController* friendPickerController;
+@property (weak, nonatomic)  IBOutlet UIView* contentContainer;
 @property (weak, nonatomic) IBOutlet UITextField *titleText;
 @property (weak, nonatomic) IBOutlet UITextField *emailInput;
 @property (weak, nonatomic) IBOutlet UITextField *noticeInput;
-@property (weak, nonatomic) IBOutlet UILabel *fbIdLabel;
 @property (weak, nonatomic) IBOutlet UITextField *receiverName;
 @property (weak, nonatomic) IBOutlet UITextField *receiveDate;
 @property (weak, nonatomic) IBOutlet UITextField *receiveTime;
 @property (weak, nonatomic) IBOutlet UIDatePicker *datePicker;
 @property (weak, nonatomic) IBOutlet UIDatePicker *timePicker;
 @property (nonatomic,weak) IBOutlet UIScrollView* scrollView;
+@property (nonatomic,strong) NSString* receiverFacebookID;
 
 - (IBAction)onTouchSend:(id)sender;
 - (IBAction)onTouchPickFriend:(id)sender;

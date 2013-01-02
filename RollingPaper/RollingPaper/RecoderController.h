@@ -11,7 +11,7 @@
 
 @class RecoderController;
 @protocol RecoderViewControllerDelegate<NSObject>
--(void) RecoderViewController : (RecoderController*) recoder
+-(void) recoderViewController : (RecoderController*) recoder
         onEndRecodingWithFile : (NSString*) file;
 @end
 

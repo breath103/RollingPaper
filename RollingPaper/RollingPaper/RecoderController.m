@@ -42,7 +42,7 @@
         [self.recodeButton setTitle:@"Stoped"
                            forState:UIControlStateNormal];
     
-        [self.delegate RecoderViewController : self
+        [self.delegate recoderViewController : self
                        onEndRecodingWithFile : self.recoder.soundFilePath];
         [UIView animateWithDuration:1.0f
                          animations:^{

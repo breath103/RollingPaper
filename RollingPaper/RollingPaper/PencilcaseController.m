@@ -73,6 +73,7 @@ NSString* TOOL_TYPE_STRING[TOOL_COUNT] = {
                                                  UIColorXRGB(255,0,102), nil];
     [self.colorPalette createColorButtonsWithColors:colors];
     NSLog(@"%@\%@",self.colorPalette,self.colorPalette.backgroundColor);
+    self.colorPalette.alpha = 0.0f;
 }
 - (void) initBottomDock{
     UIViewSetY(self.bottomDock,self.view.bounds.size.height);
@@ -87,6 +88,7 @@ NSString* TOOL_TYPE_STRING[TOOL_COUNT] = {
     [super viewDidLoad];
     
     self.paintingView = [[PaintingView alloc]initWithFrame:self.view.frame];
+    self.paintingView.delegate = self;
     [self.view addSubview:self.paintingView];
     [self.view sendSubviewToBack:self.paintingView];
     NSLog(@"%@",self.paintingView);
@@ -100,7 +102,7 @@ NSString* TOOL_TYPE_STRING[TOOL_COUNT] = {
     [self animateToLeftPanning];
 }
 -(IBAction)onToolTouched:(id)sender{
-    
+    [self hideColorPalette];
     if(isInLeftPanningMode){
         TOOL_TYPE newTool = (TOOL_TYPE)((UIButton*)sender).tag;
         [self.paintingView setToolType:newTool];
@@ -238,19 +240,37 @@ NSString* TOOL_TYPE_STRING[TOOL_COUNT] = {
 
 
 - (IBAction)onTouchColor:(id)sender {
-    //self.colorPaletteController.view.hidden = FALSE;
-    self.colorPalette.hidden = FALSE;
+    [self showColorPalette];
 }
 
 -(void) colorPalette : (ColorPalette *)palette
          selectColor : (UIColor *)color{
     self.paintingView.lineColor = color;
     
-    self.colorButton.backgroundColor = color;
+    [UIView animateWithDuration:0.3f animations:^{
+        self.colorButton.backgroundColor = color;
+        [self.selectedButton viewWithTag:1000].backgroundColor = color;
+    }];
+    
     
     NSLog(@"%@",color);
 }
 
+-(void) hideColorPalette{
+    [UIView animateWithDuration:0.3f animations:^{
+        self.colorPalette.alpha = 0.0f;
+    } completion:^(BOOL finished) {
+        self.colorPalette.hidden = TRUE;
+    }];
+}
+-(void) showColorPalette{
+    self.colorPalette.hidden = FALSE;
+    [UIView animateWithDuration:0.3f animations:^{
+        self.colorPalette.alpha = 1.0f;
+    } completion:^(BOOL finished) {
+    
+    }];
+}
 
 - (IBAction)onTouchEndPaint:(id)sender {
     //그림 완료를 눌렀을때의 액션
@@ -265,6 +285,14 @@ NSString* TOOL_TYPE_STRING[TOOL_COUNT] = {
         [self.delegate pencilcaseControllerdidCancelDraw:self];
     }
 }
+
+-(void) paintingViewEndDrawing:(PaintingView *)paintingView{
+    
+}
+-(void) paintingViewStartDrawing:(PaintingView *)paintingView{
+    [self hideColorPalette];
+}
+
 
 -(void) animateToLeftPanning{
     isInLeftPanningMode = true;

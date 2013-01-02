@@ -11,7 +11,7 @@
 @interface UIFreeTransformGestureRecognizer : UIGestureRecognizer<UIGestureRecognizerDelegate>
 {
     @private
-    BOOL isTouchChanged;
+        BOOL isTouchChanged;
 }
 @property (atomic) CGPoint translation;
 @property (atomic) CGFloat scale;

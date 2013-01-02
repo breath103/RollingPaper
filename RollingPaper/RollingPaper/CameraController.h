@@ -9,6 +9,7 @@
 @protocol CameraContorllerDelegate <NSObject>
 -(void) cameraController : (CameraController*) camera
              onPickImage : (UIImage*) image;
+-(void) cameraControllerCancelPicking : (CameraController*) camera;
 @end
 
 @interface CameraController : UIViewController {

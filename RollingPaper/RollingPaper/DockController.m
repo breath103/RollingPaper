@@ -28,8 +28,9 @@
 
 -(void) willMoveToParentViewController:(UIViewController *)parent{
     [self.parentViewController.view addSubview:self.view];
-    UIViewSetOrigin(self.view, CGPointMake(-self.view.frame.size.width,0));
-    self.panGestureRecognizer = [[ UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(onDockGesture:)];
+    UIViewSetOrigin(self.view, CGPointMake(-self.dockView.bounds.size.width,0));
+    self.panGestureRecognizer = [[ UIPanGestureRecognizer alloc] initWithTarget:self
+                                                                         action:@selector(onDockGesture:)];
     [parent.view addGestureRecognizer:self.panGestureRecognizer];
 }
 
@@ -48,7 +49,7 @@
 -(void) hide{
     isDockPoped = FALSE;
     [UIView animateWithDuration:0.1f animations:^{
-        UIViewSetX(self.view,-self.view.frame.size.width);
+        UIViewSetX(self.view,-self.dockView.bounds.size.width);
     } completion:^(BOOL finished) {
     }];
 }
@@ -117,6 +118,15 @@
     [self.delegate dockController : self
                          pickMenu : DockMenuTypePencilcase
                          inButton : sender];
+}
+
+- (IBAction)onTouchShowToggleButton:(id)sender {
+    if(isDockPoped){
+        [self hide];
+    }
+    else{
+        [self show];
+    }
 }
 
 

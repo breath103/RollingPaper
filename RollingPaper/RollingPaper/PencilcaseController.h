@@ -19,7 +19,7 @@
 -(void) pencilcaseControllerdidCancelDraw : (PencilcaseController *)pencilcaseController;
 @end
 
-@interface PencilcaseController : UIViewController<ColorPaletteDelegate>
+@interface PencilcaseController : UIViewController<ColorPaletteDelegate,PaintingViewDelegate>
 @property (nonatomic,strong) id<PencilcaseControllerDelegate> delegate;
 @property (nonatomic,strong) PaintingView* paintingView;
 @property (atomic,readonly) BOOL isInLeftPanningMode;

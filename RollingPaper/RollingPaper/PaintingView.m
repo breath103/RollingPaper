@@ -13,14 +13,10 @@
 
 /********************************************************/
 /*
-
     CGPath 등에 넣어지는 모든 값들은 우선 UITouch에서 받아와서 넣어지기 때문에 스케일이 적용되지 않은 사이즈이다.
     그려지는 비트맵과 CGLayer가 스케일이 적용되어져 있기 때문에 CGPath를 렌더링할때는 그냥 렌더링 하면되지만,
     결론적으로 CGLayer와 CFBitmapRef 모두 실제 크기는 레티나 디스플레이의 픽셀사이즈가 된다. 
     따라서 후에 이를 이미지화 하여 UIImage로 뽑았을때, UIImage의 크기는 레티나디스플레이의 픽셀사이즈 임으로 2배다
-    
-
-
 */
 /*******************************************************/
 
@@ -70,6 +66,8 @@
 @synthesize pathArray;
 @synthesize removedPathArray;
 @synthesize toolType = _toolType;
+@synthesize delegate;
+@synthesize enablePainting;
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -106,6 +104,9 @@
         removedPathArray = [NSMutableArray new];
         
         self.toolType = CRAYON;
+        
+        
+        self.enablePainting = TRUE;
     }
     return self;
 }
@@ -194,11 +195,15 @@
 -(void) touchesBegan:(NSSet *)touches
            withEvent:(UIEvent *)event
 {
-    currentDrawingPath = [[PathInfo alloc]init];
-    lastPoint = [((UITouch*)[touches anyObject]) locationInView:self];
-    self.currentDirtyRect = CGRectNull;
-    
-    [self handleTouchBeganForTool : touches];
+    if(self.enablePainting){
+        currentDrawingPath = [[PathInfo alloc]init];
+        lastPoint = [((UITouch*)[touches anyObject]) locationInView:self];
+        self.currentDirtyRect = CGRectNull;
+        
+        [self handleTouchBeganForTool : touches];
+        
+        [self.delegate paintingViewStartDrawing:self];
+    }
 }
 -(CGPoint) controlPointFromStart : (CGPoint) s
                              end : (CGPoint) e{
@@ -206,59 +211,65 @@
 }
 -(void) touchesMoved:(NSSet *)touches
            withEvent:(UIEvent *)event{
-    UITouch *touch = [touches anyObject];
-    
-    CGContextRef ctx = CGLayerGetContext(drawingLayer);
-    
-    CGPoint prevPoint    = [touch previousLocationInView:self];
-    CGPoint currentPoint = [touch locationInView:self];
-    
-    CGPoint mid1 = ccpMidpoint(lastPoint, prevPoint);
-    CGPoint mid2 = ccpMidpoint(prevPoint, currentPoint);
-    
-    [self.currentDrawingPath moveToPoint:mid1];
-    [self.currentDrawingPath addQuadCurveToPoint:mid2 controlPoint:prevPoint];
-    [self syncPaintInfo:self.currentDrawingPath];
-    
-    self.currentDirtyRect = [self.currentDrawingPath boundingBox];
-    
-    lastPoint = prevPoint;
-    
-
-    PathInfo* tempPath = [[PathInfo alloc]init];
-    [tempPath moveToPoint:mid1];
-    [tempPath addQuadCurveToPoint:mid2 controlPoint:prevPoint];
-    [self syncPaintInfo:tempPath];
-    
-    [tempPath drawInContext:ctx];
-    
-    //[self.currentDrawingPath drawInContext:ctx];
-    //   [currentDrawingPath drawInContext:ctx];
-    //  }
-    
-    [self setNeedsDisplayInRect:self.currentDirtyRect];
+    if(self.enablePainting){
+        UITouch *touch = [touches anyObject];
+        
+        CGContextRef ctx = CGLayerGetContext(drawingLayer);
+        
+        CGPoint prevPoint    = [touch previousLocationInView:self];
+        CGPoint currentPoint = [touch locationInView:self];
+        
+        CGPoint mid1 = ccpMidpoint(lastPoint, prevPoint);
+        CGPoint mid2 = ccpMidpoint(prevPoint, currentPoint);
+        
+        [self.currentDrawingPath moveToPoint:mid1];
+        [self.currentDrawingPath addQuadCurveToPoint:mid2 controlPoint:prevPoint];
+        [self syncPaintInfo:self.currentDrawingPath];
+        
+        self.currentDirtyRect = [self.currentDrawingPath boundingBox];
+        
+        lastPoint = prevPoint;
+        
+        
+        PathInfo* tempPath = [[PathInfo alloc]init];
+        [tempPath moveToPoint:mid1];
+        [tempPath addQuadCurveToPoint:mid2 controlPoint:prevPoint];
+        [self syncPaintInfo:tempPath];
+        
+        [tempPath drawInContext:ctx];
+        
+        //[self.currentDrawingPath drawInContext:ctx];
+        //   [currentDrawingPath drawInContext:ctx];
+        //  }
+        
+        [self setNeedsDisplayInRect:self.currentDirtyRect];
+    }
 }
 -(void) touchesEnded:(NSSet *)touches
            withEvent:(UIEvent *)event
 {
-    [self handleTouchEndForTool:touches];
-    
-    CGContextRef drawingLayerContext = CGLayerGetContext(drawingLayer);
-    CGContextClearRect(drawingLayerContext, self.bounds);
-    [self.currentDrawingPath drawInContext:drawingLayerContext];
-    
-    
-    // drawContext에 bounds의 위치, 크기로 drawLayer의 context에 그려진 라인을 출력한다.
-    CGContextSetAlpha(drawingContext, 1.0f);
-    CGContextDrawLayerInRect(drawingContext, self.bounds, drawingLayer);
-    // drawLayer의 context를 지우고 새로운 line을 그릴 준비를 한다.
-    CGContextClearRect(drawingLayerContext, self.bounds);
-    
-    [self.pathArray addObject:self.currentDrawingPath];
-    //새로 그림을 그린경우 기존의 REDO가능한 Path 들은 자연스럽게 삭제된다
-    [self.removedPathArray removeAllObjects];
-    
-    [self setNeedsDisplay];
+    if(self.enablePainting){
+        [self handleTouchEndForTool:touches];
+        
+        CGContextRef drawingLayerContext = CGLayerGetContext(drawingLayer);
+        CGContextClearRect(drawingLayerContext, self.bounds);
+        [self.currentDrawingPath drawInContext:drawingLayerContext];
+        
+        // drawContext에 bounds의 위치, 크기로 drawLayer의 context에 그려진 라인을 출력한다.
+        CGContextSetAlpha(drawingContext, 1.0f);
+        CGContextDrawLayerInRect(drawingContext, self.bounds, drawingLayer);
+        // drawLayer의 context를 지우고 새로운 line을 그릴 준비를 한다.
+        CGContextClearRect(drawingLayerContext, self.bounds);
+        
+        [self.pathArray addObject:self.currentDrawingPath];
+        //새로 그림을 그린경우 기존의 REDO가능한 Path 들은 자연스럽게 삭제된다
+        [self.removedPathArray removeAllObjects];
+        
+        [self setNeedsDisplay];
+        
+        
+        [self.delegate paintingViewEndDrawing:self];
+    }
 }
 - (void)drawRect:(CGRect)rect
 {

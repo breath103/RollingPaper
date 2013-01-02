@@ -28,6 +28,7 @@ typedef enum DockMenuType {
 @property (atomic,readonly) BOOL isDockPoped;
 @property (nonatomic,weak) id<DockControllerDelegate> delegate;
 @property (nonatomic,strong) UIPanGestureRecognizer* panGestureRecognizer;
+@property (nonatomic,strong) IBOutlet UIView* dockView;
 -(id) initWithDelegate : (id<DockControllerDelegate>) delegate;
 -(void) hide;
 -(void) show;
@@ -37,5 +38,6 @@ typedef enum DockMenuType {
 - (IBAction)onTouchKeyboard:(id)sender;
 - (IBAction)onTouchMicrophone:(id)sender;
 - (IBAction)onTouchPencilcase:(id)sender;
+- (IBAction)onTouchShowToggleButton:(id)sender;
 
 @end

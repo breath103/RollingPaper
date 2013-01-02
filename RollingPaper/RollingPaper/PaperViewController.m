@@ -27,6 +27,8 @@
 #import "BlockSupport/NSObject+block.h"
 #import <QuartzCore/QuartzCore.h>
 
+#define BORDER (10.0f)
+
 @interface PaperViewController ()
 @end
 
@@ -39,53 +41,16 @@
 @synthesize dockController;
 @synthesize contentsScrollContainer;
 @synthesize isEditingMode;
-
--(id) initWithEntity : (RollingPaper*) aEntity
-{
+-(id) initWithEntity : (RollingPaper*) aEntity{
     self = [self initWithNibName:NSStringFromClass(self.class) bundle:NULL];
     if(self){
-        self.entity   = aEntity;
-        NSLog(@"참여자 %d",self.entity.participants_count.intValue);
+        self.entity = aEntity;
     }
     return self;
 }
-
-#define BORDER (10.0f)
-- (void)setTransformTargetView:(UIView<RollingPaperContentViewProtocol> *)aTransformTargetView{
-    if(_transformTargetView){
-        _transformTargetView.layer.borderWidth = 0.0f;
-    }
-
-    _transformTargetView = aTransformTargetView;
-    if(_transformTargetView)
-    {
-        //해당 컨텐츠를 만든사람이 본인이라서 편집이 가능한경우에만 편집
-        if([[_transformTargetView getUserIdx] compare:[UserInfo getUserIdx]] == NSOrderedSame)
-        {
-            _transformTargetView.layer.borderWidth = BORDER;
-            _transformTargetView.layer.borderColor = [UIColor orangeColor].CGColor;
-            self.freeTransformGestureRecognizer.enabled = TRUE;
-            self.dockController.panGestureRecognizer.enabled = FALSE;
-            self.contentsContainer.scrollEnabled = NO;
-        }
-        else{
-            
-        }
-    }
-    else {
-        self.freeTransformGestureRecognizer.enabled = FALSE;
-        self.dockController.panGestureRecognizer.enabled = TRUE;
-        self.contentsContainer.scrollEnabled = YES;
-    }
-}
--(NSArray*) contentsViews{
-    return self.contentsScrollContainer.subviews;
-}
 -(void) initContentsEditingToolControlers{
-    
-    self.freeTransformGestureRecognizer =
-    [[UIFreeTransformGestureRecognizer alloc] initWithTarget:self
-                                                      action:@selector(onFreeTransformGesture)];
+    self.freeTransformGestureRecognizer = [[UIFreeTransformGestureRecognizer alloc] initWithTarget:self
+                                                                                            action:@selector(onFreeTransformGesture)];
     self.freeTransformGestureRecognizer.delegate = self.freeTransformGestureRecognizer;
     [self.contentsContainer addGestureRecognizer:self.freeTransformGestureRecognizer];
 }
@@ -94,28 +59,44 @@
     [self addChildViewController:self.dockController];
     
 }
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    [self initContentsEditingToolControlers];
-    [self initLeftDockMenu];
+-(void) initContentsScrollContainer{
     self.contentsContainer.contentSize = CGSizeMake(self.entity.width.floatValue,
                                                     self.entity.height.floatValue);
-    
-    self.contentsScrollContainer = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.entity.width.floatValue, self.entity.height.floatValue)];
+    self.contentsScrollContainer = [[UIView alloc] initWithFrame:CGRectMake(0, 0,
+                                                                            self.entity.width.floatValue,
+                                                                            self.entity.height.floatValue)];
     self.contentsScrollContainer.backgroundColor = [UIColor blackColor];
     self.contentsScrollContainer.userInteractionEnabled = TRUE;
     UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self
                                                                                 action:@selector(onTapScrollBack:)];
-   // tapGesture.delegate = self;
+    // tapGesture.delegate = self;
     [self.contentsScrollContainer addGestureRecognizer:tapGesture];
-    
-    
+
     [self.contentsContainer addSubview:self.contentsScrollContainer];
-    
     self.contentsContainer.scrollEnabled = FALSE;
     self.contentsContainer.delegate = self;
+}
+-(void) onReceiveContentsResponse : (NSDictionary*) categorizedContents{
+    NSDictionary* imageContents = [categorizedContents objectForKey:@"image"];
+    for(NSDictionary*p in imageContents){
+        ImageContent* imageEntity = (ImageContent*)[[UECoreData sharedInstance]insertNewObject:@"ImageContent" initWith:p];
+        ImageContentView* entityView = [[ImageContentView alloc] initWithEntity:imageEntity];
+        [self.contentsScrollContainer addSubview:entityView];
+        
+        [self addTransformTargetGestureToEntityView:entityView];
+    }
+    //self.transformTargetView = [contentsViews lastObject];
+    //NSDictionary* textContents  = [categorizedContents objectForKey:@"text"];
     
+    NSDictionary* soundContents = [categorizedContents objectForKey:@"sound"];
+    for(NSDictionary*p in soundContents){
+        SoundContent* soundEntity = (SoundContent*)[[UECoreData sharedInstance]insertNewObject:@"SoundContent" initWith:p];
+        SoundContentView* entityView = [[SoundContentView alloc] initWithEntity:soundEntity];
+        [self.contentsScrollContainer addSubview:entityView];
+    }
+    // 일단 받았음으로 받은 것을 현재 디바이스에 저장한다
+}
+-(void)loadAndShowContents{
     ASIFormDataRequest* request = [NetworkTemplate requestForRollingPaperContents : self.entity.idx.stringValue
                                                                         afterTime : 1];
     [request setCompletionBlock:^{
@@ -130,21 +111,27 @@
         NSLog(@"--%@",request.error);
     }];
     [request startAsynchronous];
+}
 
+-(void)viewDidLoad{
+    [super viewDidLoad];
+    [self initContentsEditingToolControlers];
+    [self initLeftDockMenu];
+    [self initContentsScrollContainer];
+    [self loadAndShowContents];
+   
     [self onChangeToEditingMode];
     
     self.transformTargetView = NULL;
     
-    
-    [self.dockController show];
+//    [self.dockController show];
 }
+
 
 -(void) onTapScrollBack : (UITapGestureRecognizer*) tap{
     if(tap.state == UIGestureRecognizerStateBegan){
         self.transformTargetView = NULL;
-
         NSLog(@"Long Background : %@",tap);
-        
     }
 }
 
@@ -160,17 +147,16 @@
         }
     }
     NSLog(@"%d개 업데이트 되었습니다",i);
-    
 }
-
-
-
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning{
     [super didReceiveMemoryWarning];
 }
 
+-(NSArray*) contentsViews{
+    return self.contentsScrollContainer.subviews;
+}
 
+#pragma mark FreeTransfromGesutreRecognizers 처리를 위한 함수들과 트랜스폼 타겟 뷰를 설정했을때 테두리 보여주는 부분
 -(void) onFreeTransformGesture{
     self.transformTargetView.center = ccpAdd(self.transformTargetView.center,
                                              self.freeTransformGestureRecognizer.translation);
@@ -195,8 +181,35 @@
         self.transformTargetView.isNeedToSyncWithServer = TRUE;
     }
 }
+-(void) setTransformTargetView:(UIView<RollingPaperContentViewProtocol> *)aTransformTargetView{
+    if(_transformTargetView){
+        _transformTargetView.layer.borderWidth = 0.0f;
+    }
+    
+    _transformTargetView = aTransformTargetView;
+    if(_transformTargetView)
+    {
+        //해당 컨텐츠를 만든사람이 본인이라서 편집이 가능한경우에만 편집
+        if([[_transformTargetView getUserIdx] compare:[UserInfo getUserIdx]] == NSOrderedSame)
+        {
+            _transformTargetView.layer.borderWidth = BORDER;
+            _transformTargetView.layer.borderColor = [UIColor orangeColor].CGColor;
+            self.freeTransformGestureRecognizer.enabled = TRUE;
+            self.dockController.panGestureRecognizer.enabled = FALSE;
+            self.contentsContainer.scrollEnabled = NO;
+        }
+        else{
+            
+        }
+    }
+    else {
+        self.freeTransformGestureRecognizer.enabled = FALSE;
+        self.dockController.panGestureRecognizer.enabled = TRUE;
+        self.contentsContainer.scrollEnabled = YES;
+    }
+}
 
-
+#pragma mark 컨텐츠를 롱탭하면 트랜스폼 타겟뷰로 걸리게 하는 제스쳐를 추가하는 부분과 콜백
 -(void) onLongPressContent : (UILongPressGestureRecognizer*) gestureRecognizer{
  //   [UEUI ziggleAnimation:gestureRecognizer.view];
     if(gestureRecognizer.state == UIGestureRecognizerStateBegan)
@@ -210,8 +223,6 @@
         }
     }
 }
-
-
 -(void) addTransformTargetGestureToEntityView : (UIView*) view{
     view.userInteractionEnabled = TRUE;
     UILongPressGestureRecognizer* longTapGestureRecognizer = [[UILongPressGestureRecognizer alloc]initWithTarget:self
@@ -219,26 +230,6 @@
     [view addGestureRecognizer:longTapGestureRecognizer];
     longTapGestureRecognizer.delegate = self;
     NSLog(@"%@",longTapGestureRecognizer);
-}
--(void) onReceiveContentsResponse : (NSDictionary*) categorizedContents{
-    NSDictionary* imageContents = [categorizedContents objectForKey:@"image"];
-    for(NSDictionary*p in imageContents){
-        ImageContent* imageEntity = (ImageContent*)[[UECoreData sharedInstance]insertNewObject:@"ImageContent" initWith:p];
-        ImageContentView* entityView = [[ImageContentView alloc] initWithEntity:imageEntity];
-        [self.contentsScrollContainer addSubview:entityView];
-        
-        [self addTransformTargetGestureToEntityView:entityView];
-    }
-    //self.transformTargetView = [contentsViews lastObject];
-    //NSDictionary* textContents  = [categorizedContents objectForKey:@"text"];
-    
-    NSDictionary* soundContents = [categorizedContents objectForKey:@"sound"];
-    for(NSDictionary*p in soundContents){
-        SoundContent* soundEntity = (SoundContent*)[[UECoreData sharedInstance]insertNewObject:@"SoundContent" initWith:p];
-        SoundContentView* entityView = [[SoundContentView alloc] initWithEntity:soundEntity];
-        [self.contentsScrollContainer addSubview:entityView];
-    }
-    // 일단 받았음으로 받은 것을 현재 디바이스에 저장한다
 }
 
 - (IBAction)onTouchInvite:(id)sender {
@@ -277,8 +268,24 @@
     }
 }
 
-
-
+-(SoundContentView*) onCreateSound : (NSString*) file{
+    
+    SoundContent* soundEntity = (SoundContent*)[[UECoreData sharedInstance]insertNewObject:@"SoundContent"];
+    soundEntity.idx       = NULL;
+    soundEntity.paper_idx = self.entity.idx;
+    soundEntity.user_idx  = [NSNumber numberWithInt:[UserInfo getUserIdx].intValue];
+    soundEntity.x         = [NSNumber numberWithFloat:self.view.frame.size.width /2];
+    soundEntity.y         = [NSNumber numberWithFloat:self.view.frame.size.height/2];
+    soundEntity.sound     = [file mutableCopy];
+    
+    SoundContentView* entityView = [[SoundContentView alloc] initWithEntity:soundEntity];
+    entityView.isNeedToSyncWithServer = TRUE;
+    [self.contentsScrollContainer addSubview:entityView];
+    [self addTransformTargetGestureToEntityView:entityView];
+    
+    self.transformTargetView = entityView;
+    return entityView;
+}
 -(ImageContentView*) onCreateImage : (UIImage *)image{
     CGImageRef cgImage = image.CGImage;
     CGFloat width   = CGImageGetWidth(cgImage) / APP_SCALE;
@@ -329,7 +336,7 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer : (UIGestureRecognizer *)othe
     return YES;
 }
 
-
+#pragma mark DockControllerDelegate
 -(void) dockController:(DockController *)dock
               pickMenu:(DockMenuType)menuType
               inButton:(UIButton *)button{
@@ -375,6 +382,7 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer : (UIGestureRecognizer *)othe
             break;
     }
 }
+#pragma mark CameraControllerDelegate 
 -(void) cameraController:(CameraController *)camera
              onPickImage:(UIImage *)image{
     if(image){
@@ -387,34 +395,32 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer : (UIGestureRecognizer *)othe
     [camera removeFromParentViewController];
     [camera.view removeFromSuperview];
 }
+#pragma mark AlbumControllerDelegate
 -(void) albumController:(AlbumController *)albumController
               pickImage:(UIImage *)image
                withInfo:(NSDictionary *)infodict{
-    if(image){
-        //이미지를 선택한경우
-        [self onCreateImage:image];
-    }
-    else {
-        //취소한경우
-    }
+    [self onCreateImage:image];
     [albumController removeFromParentViewController];
     [albumController.view removeFromSuperview];
 }
+-(void) albumControllerCancelPickingImage:(AlbumController *)albumController{
+    [albumController removeFromParentViewController];
+    [albumController.view removeFromSuperview];
+}
+#pragma mark TypewriterControllerDelegate
 -(void) typewriterController:(TypewriterController *)typewriterController
                 endEditImage:(UIImage *)image{
-    
     [self onCreateImage:image];
     [typewriterController removeFromParentViewController];
     [typewriterController.view removeFromSuperview];
 }
+#pragma mark PencilcaseControllerDelegate
 -(void) pencilcaseController:(PencilcaseController *)pencilcaseController
              didEndDrawImage:(UIImage *)image
-                      inRect:(CGRect)rect 
-{
+                      inRect:(CGRect)rect {
     ImageContentView* createdImageView = [self onCreateImage:image];
     [pencilcaseController removeFromParentViewController];
     [pencilcaseController.view removeFromSuperview];
-    
     
     //브러쉬로 그리는 화면은 스크롤 위치가 포함 안되기 때문에 정리
     rect.origin = ccpAdd(rect.origin, self.contentsContainer.contentOffset);
@@ -422,31 +428,23 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer : (UIGestureRecognizer *)othe
 }
 -(void) pencilcaseControllerdidCancelDraw:(PencilcaseController *)pencilcaseController{
     [pencilcaseController hideBottomDock];
-    
     [pencilcaseController removeFromParentViewController];
     [pencilcaseController.view removeFromSuperview];
 }
-
--(void) RecoderViewController : (RecoderController *)recoder
+#pragma mark RecoderControllerDelegate
+-(void) recoderViewController : (RecoderController *)recoderController
         onEndRecodingWithFile : (NSString *)file{
+    SoundContentView* createdSoundView = [self onCreateSound:file];
+    [recoderController removeFromParentViewController];
+    [recoderController.view removeFromSuperview];
     
-    SoundContent* soundEntity = (SoundContent*)[[UECoreData sharedInstance]insertNewObject:@"SoundContent"];
-    soundEntity.idx       = NULL;
-    soundEntity.paper_idx = self.entity.idx;
-    soundEntity.user_idx  = [NSNumber numberWithInt:[UserInfo getUserIdx].intValue];
-    soundEntity.x         = [NSNumber numberWithFloat:self.view.frame.size.width/2 ];
-    soundEntity.y         = [NSNumber numberWithFloat:self.view.frame.size.height/2];
-    soundEntity.sound     = [file mutableCopy];
-    
-    SoundContentView* entityView = [[SoundContentView alloc] initWithEntity:soundEntity];
-    entityView.isNeedToSyncWithServer = TRUE;
-   
-    [self.contentsScrollContainer addSubview:entityView];
-    [self addTransformTargetGestureToEntityView:entityView];
-    
-    
-    self.transformTargetView = entityView;
-}
+    UIViewSetOrigin(createdSoundView, CGPointMake(self.view.frame.origin.x/2, self.view.frame.origin.y/2));
+}                                          
+
+
+/*
+     화면을 돌렸을때 프로그램의 모드가 바뀌는것에 관련된 함수들
+ */
 -(void) onChangeToInspectingMode{
     isEditingMode = FALSE;
     /* 일단 편집 제스쳐가 다 안먹히게 편집 */
@@ -492,13 +490,9 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer : (UIGestureRecognizer *)othe
     [[UIApplication sharedApplication] setStatusBarHidden:FALSE
                                             withAnimation:UIStatusBarAnimationFade];
 }
--(void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation{
-    
-}
+-(void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation{}
 -(void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
-                                         duration:(NSTimeInterval)duration{
-
-}
+                                         duration:(NSTimeInterval)duration{}
 -(void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
                                 duration:(NSTimeInterval)duration{
     if(UIInterfaceOrientationIsPortrait(self.interfaceOrientation) &&
@@ -515,13 +509,13 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer : (UIGestureRecognizer *)othe
         NSLog(@"%d %d",self.interfaceOrientation,toInterfaceOrientation);
     
 }
--(BOOL) shouldAutorotate{
-    return YES;
-}
+-(BOOL) shouldAutorotate{ return YES; }
 -(NSUInteger) supportedInterfaceOrientations{
     return UIInterfaceOrientationMaskAll;
 }
-- (void)scrollViewDidZoom:(UIScrollView *)scrollView{}
+
+#pragma mark UIScrollViewDelegate
+-(void)scrollViewDidZoom:(UIScrollView *)scrollView{}
 -(void) scrollViewDidEndZooming:(UIScrollView *)scrollView
                        withView:(UIView *)view
                         atScale:(float)scale{
@@ -532,10 +526,6 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer : (UIGestureRecognizer *)othe
 -(UIView*) viewForZoomingInScrollView:(UIScrollView *)scrollView{
     return self.contentsScrollContainer;
 }
-/*
--(BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation{
-    return YES;
-}
- */
-
 @end
+
+
