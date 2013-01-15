@@ -65,8 +65,8 @@ static void *AVCamFocusModeObserverContext = &AVCamFocusModeObserverContext;
 			
 			CGRect bounds = [view bounds];
 			self.captureVideoPreviewLayer.frame = bounds;
-            
-			if (self.captureVideoPreviewLayer.isOrientationSupported) {
+        
+            if (self.captureVideoPreviewLayer.isOrientationSupported) {
                 self.captureVideoPreviewLayer.orientation = AVCaptureVideoOrientationPortrait;
 			}
 			self.captureVideoPreviewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;

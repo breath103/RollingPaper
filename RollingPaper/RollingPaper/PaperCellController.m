@@ -18,6 +18,7 @@
 @synthesize delegate;
 @synthesize ddayLabel;
 @synthesize titleLabel;
+@synthesize ddayUpdatingTimer;
 -(id) initWithEntity : (RollingPaper*) aEntity
             delegate : (id<PaperCellDelegate>) aDelegate{
     self = [self initWithNibName:@"PaperCellController" bundle:NULL];
@@ -75,11 +76,15 @@
     NSString* ddayString;
     if(ddayCount == 0){
         [self updateDDayLabelInTime];
-        [NSTimer scheduledTimerWithTimeInterval:1.0
-                                         target:self
-                                       selector:@selector(updateDDayLabelInTime)
-                                       userInfo:nil
-                                        repeats:YES];
+        if(self.ddayUpdatingTimer){
+            [self.ddayUpdatingTimer invalidate];
+            self.ddayUpdatingTimer = NULL;
+        }
+        self.ddayUpdatingTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
+                                                                  target:self
+                                                                selector:@selector(updateDDayLabelInTime)
+                                                                userInfo:nil
+                                                                 repeats:YES];
     }
     else if(ddayCount > 0)
         ddayString = [NSString stringWithFormat:@"D-%d",abs(ddayCount)];
@@ -89,24 +94,31 @@
     return ddayString;
 }
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-
-    [self startUpdateDDayLabel];
-// self.ddayLabel.text  = [self ddayStringWithDate:self.entity.receive_time.longLongValue];
-    self.titleLabel.text = self.entity.title;
-
+-(void) showShadow{
     self.view.layer.shadowRadius = 3.0;
     self.view.layer.shadowOffset = CGSizeMake(0,0);
     self.view.layer.shadowOpacity = 0.5;
     self.view.layer.shadowColor = [UIColor blackColor].CGColor;
     self.view.layer.shouldRasterize = YES;
     self.view.layer.rasterizationScale = [UIScreen mainScreen].scale;
+}
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+
+    [self showShadow];
     
     UITapGestureRecognizer* tapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onTap)];
     [self.view addGestureRecognizer:tapGestureRecognizer];
+    
+    [self refreshViewWithEntity];
 }
+
+-(void) refreshViewWithEntity{
+    [self startUpdateDDayLabel];
+    self.titleLabel.text = self.entity.title;
+}
+
 -(void) onTap {
     [self.delegate PaperCellTouched:self];
 }

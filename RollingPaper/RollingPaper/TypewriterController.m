@@ -10,8 +10,6 @@
 #import "macro.h"
 #import "UELib/UEImageLibrary.h"
 
-#define KEYBOARD_HEIGHT (216.0f)
-
 @interface TypewriterController ()
 
 @end
@@ -37,6 +35,17 @@
 {
     [super viewDidLoad];
     self.textView.delegate = self;
+    
+    self.colorPalette.delegate = self;
+    NSMutableArray* colors = [NSMutableArray arrayWithObjects: UIColorXRGB(0,0,0),
+                              UIColorXRGB(255,30,0),
+                              UIColorXRGB(246,207,40),
+                              UIColorXRGB(94,116,62),
+                              UIColorXRGB(58,81,96),
+                              UIColorXRGB(98,77,149),
+                              UIColorXRGB(255,0,102), nil];
+    [self.colorPalette createColorButtonsWithColors:colors];
+
 }
 - (void)didReceiveMemoryWarning
 {
@@ -45,6 +54,7 @@
 }
 - (void)viewDidUnload {
     [self setTextView:nil];
+    [self setColorPalette:nil];
     [super viewDidUnload];
 }
 
@@ -64,4 +74,9 @@
         
     }];
 }
+-(void) colorPalette:(ColorPalette *)palette
+         selectColor:(UIColor *)color{
+    
+}
+
 @end

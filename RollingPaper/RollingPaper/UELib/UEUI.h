@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#define KEYBOARD_HEIGHT (216.000000)
 
 @interface UEKeyboardBackgroundButton : UIButton
 @property (nonatomic,weak) UIView* targetView;

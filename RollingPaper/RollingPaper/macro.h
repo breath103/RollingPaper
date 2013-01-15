@@ -23,6 +23,14 @@
 #define UIColorRGBA(r,g,b,a) [UIColor colorWithRed:r green:g blue:b alpha:a]
 #define UIColorRGB(r,g,b) UIColorRGBA(r,g,b,1.0f)
 #define UIColorXRGB(r,g,b) UIColorRGBA(r/255.0f,g/255.0f,b/255.0f,1.0f)
+#define KEYBOARD_HEIGHT (216.0f)
+
+
+
+#define DEBUG_NETWORK_NOT_AVAILABLE
+
+
+
 
 CGPoint CGPointRotateWithCenter( CGPoint p1 ,CGPoint center,float angle_radian);
 CGPoint CGPointAdd(CGPoint p1,CGPoint p2); 
@@ -62,6 +70,11 @@ NSDictionary* parseJSON(NSString* str);
 @interface NSDictionary (StringMacro)
 -(NSString*) stringForKey : (id) key;
 @end
+
+@interface UIViewController(NibMacro)
+-(id) initWithDefaultNib;
+@end
+
 
 #ifndef BETWEEN//(min,x,max) 
 	#define BETWEEN(min,x,max) ( min<=x&&x<=max ) 

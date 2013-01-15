@@ -191,13 +191,21 @@ NSDictionary* parseJSON(NSString* str)
 
 
 @implementation NSDictionary (StringMacro)
-
 -(NSString*) stringForKey : (id) key
 {
     return (NSString*)[self objectForKey:key];
-    
+}
+@end
+
+@implementation UIViewController (NibMacro)
+-(id) initWithDefaultNib{
+    self = [self initWithNibName:NSStringFromClass(self.class)
+                          bundle:NULL];
+    if(self){
+        
+    }
+    return self;
 }
 
 @end
-
 

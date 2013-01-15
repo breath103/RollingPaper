@@ -16,7 +16,7 @@
 @interface RollingPaperCreator : UIViewController<FBFriendPickerDelegate,UISearchBarDelegate>
 
 @property (nonatomic,strong) FBFriendSearchPickerController* friendPickerController;
-@property (weak, nonatomic)  IBOutlet UIView* contentContainer;
+@property (weak, nonatomic) IBOutlet UIView* contentContainer;
 @property (weak, nonatomic) IBOutlet UITextField *titleText;
 @property (weak, nonatomic) IBOutlet UITextField *emailInput;
 @property (weak, nonatomic) IBOutlet UITextField *noticeInput;

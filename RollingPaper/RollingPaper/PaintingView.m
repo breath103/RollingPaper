@@ -245,9 +245,8 @@
         [self setNeedsDisplayInRect:self.currentDirtyRect];
     }
 }
--(void) touchesEnded:(NSSet *)touches
-           withEvent:(UIEvent *)event
-{
+-(void) onPaintEnd : (NSSet*) touches
+             Event : (UIEvent*) event{
     if(self.enablePainting){
         [self handleTouchEndForTool:touches];
         
@@ -267,9 +266,17 @@
         
         [self setNeedsDisplay];
         
-        
         [self.delegate paintingViewEndDrawing:self];
     }
+}
+-(void) touchesEnded:(NSSet *)touches
+           withEvent:(UIEvent *)event{
+    [self onPaintEnd:touches
+               Event:event];
+}
+-(void) touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event{
+    [self onPaintEnd:touches
+               Event:event];
 }
 - (void)drawRect:(CGRect)rect
 {

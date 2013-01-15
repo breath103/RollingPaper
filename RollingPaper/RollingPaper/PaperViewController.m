@@ -389,11 +389,11 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer : (UIGestureRecognizer *)othe
         //이미지를 선택한경우
         [self onCreateImage:image];
     }
-    else {
-        //취소한경우
-    }
     [camera removeFromParentViewController];
     [camera.view removeFromSuperview];
+}
+-(void) cameraControllerCancelPicking:(CameraController *)camera{
+    
 }
 #pragma mark AlbumControllerDelegate
 -(void) albumController:(AlbumController *)albumController
@@ -453,7 +453,7 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer : (UIGestureRecognizer *)othe
     /******************************/
     
     self.contentsContainer.maximumZoomScale = 1.0f;
-    CGSize scrollSize  = self.contentsContainer.frame.size;
+//    CGSize scrollSize  = self.contentsContainer.frame.size;
     CGSize contentSize = self.contentsContainer.contentSize;
 
     self.contentsContainer.minimumZoomScale = 1.0/3;

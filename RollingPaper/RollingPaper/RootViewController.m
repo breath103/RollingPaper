@@ -67,7 +67,10 @@
 }
 - (void)onTouchLoginWithFacebook {
     if ( !FBSession.activeSession.isOpen) {
-        NSArray* permissions = [NSArray arrayWithObjects:@"user_photos",@"publish_stream",@"publish_actions",@"email",@"user_likes",@"user_birthday",@"user_education_history",@"user_hometown",@"read_stream",@"user_about_me",@"read_friendlists",@"offline_access", nil];
+        NSArray* permissions = [NSArray arrayWithObjects:@"user_photos",@"publish_stream",@"publish_actions",@"email",
+                                                         @"user_likes",@"user_birthday",@"user_education_history",
+                                                         @"user_hometown",@"read_stream",@"user_about_me",
+                                                         @"read_friendlists",@"offline_access", nil];
         [FBSession openActiveSessionWithPermissions : permissions
                                        allowLoginUI : YES
                                   completionHandler : ^(FBSession *session, FBSessionState status, NSError *error) {
@@ -88,7 +91,6 @@
     FBRequest* fbRequest = [FBRequest requestWithGraphPath:@"/me"
                                                  parameters:[NSDictionary dictionaryWithObjectsAndKeys:@"id,picture,name,birthday,email",@"fields",nil]
                                                  HTTPMethod:@"GET"];
-     
     [fbRequest startWithCompletionHandler:^(FBRequestConnection *connection,id<FBGraphUser> me,NSError *error) {
          if(! error){
              ASIFormDataRequest* request = [NetworkTemplate requestForFacebookJoinWithMe:me

@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "ColorPalette.h"
 
 @class TypewriterController;
 
@@ -16,13 +16,15 @@
                 endEditImage : (UIImage*) image;
 @end
 
-@interface TypewriterController : UIViewController<UITextViewDelegate>
+@interface TypewriterController : UIViewController<UITextViewDelegate,
+    ColorPaletteDelegate>
 {
     @private
     BOOL isInEditing;
 }
 @property (nonatomic,weak) id<TypewriterControllerDelegate> delegate;
 @property (weak, nonatomic) IBOutlet UITextView *textView;
+@property (weak, nonatomic) IBOutlet ColorPalette *colorPalette;
 - (IBAction)onTouchEndType:(id)sender;
 -(id) initWithDelegate : (id<TypewriterControllerDelegate>) delegate;
 @end

@@ -14,7 +14,7 @@
 +(void) setUserInfo : (NSDictionary*) dict;
 +(NSDictionary*) getUserInfo;
 +(NSNumber*) getUserIdx;
-
++(UIImage*) getImageFromPictrueURL;
 /*
 @property (nonatomic,strong) NSString* name;
 @property (nonatomic,strong) NSString* email;

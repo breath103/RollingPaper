@@ -14,6 +14,7 @@
 
 @implementation AlbumController
 @synthesize delegate;
+@synthesize imagePickerController;
 -(id) initWithDelegate : (id<AlbumControllerDelegate>) aDelegate{
     self = [self initWithNibName:NSStringFromClass(AlbumController.class) bundle:NULL];
     if(self){
@@ -31,11 +32,9 @@
         self.imagePickerController.allowsEditing = TRUE;
         self.imagePickerController.delegate = self;
     }
-
     [self presentViewController:self.imagePickerController
                        animated:TRUE
                      completion:^{
-                         
                      }];
 }
 - (void)didReceiveMemoryWarning
@@ -43,6 +42,7 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+-(BOOL) shouldAutorotate {return false;}
 @end
 
 @implementation AlbumController (UIImagePickerControllerDelegate)

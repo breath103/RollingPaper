@@ -66,8 +66,15 @@
 }
 
 -(void) onSelectColor : (id) sender{
-    [self.delegate colorPalette:self
-                    selectColor:[sender backgroundColor]];
+    if([self.delegate respondsToSelector:@selector(colorPalette:)])
+    {
+        [self.delegate colorPalette:self
+                        selectColor:[sender backgroundColor]];
+    }
+    else{
+        //delegate가 잘못된경우
+        NSLog(@"%@",[sender background]);
+    }
 }
 
 /*

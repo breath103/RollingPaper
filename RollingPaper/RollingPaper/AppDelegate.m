@@ -24,14 +24,25 @@
 }
 
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
-    coreData = [UECoreData sharedInstance];
+- (BOOL)application:(UIApplication *)application
+didFinishLaunchingWithOptions:(NSDictionary *)launchOptions{
+    self.coreData = [UECoreData sharedInstance];
     
     CGRect bounds = [[UIScreen mainScreen] bounds];
     self.window = [[UIWindow alloc] initWithFrame:bounds];
-    self.rootViewController = [[RootViewController alloc] initWithNibName:@"RootViewController" bundle:nil];
+    self.rootViewController = [[RootViewController alloc] initWithDefaultNib];
     self.navigationController = [[UINavigationController alloc] initWithRootViewController:self.rootViewController];
+    //UIBarMetricsLandscapePhone
+    
+    UINavigationBar* navigationBar = self.navigationController.navigationBar;
+    [navigationBar setBackgroundImage:[UIImage imageNamed:@"status_bar"]
+                        forBarMetrics:UIBarMetricsDefault];
+    /*
+    UINavigationItem* navigationItem = self.navigationController.navigationItem;
+    NSLog(@"%@",navigationItem);
+    navigationItem.backBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"backButton"] style:UIBarButtonItemStyleBordered target:NULL action:NULL];
+    NSLog(@"%@",navigationItem);
+     */
     self.navigationController.navigationBarHidden =TRUE;
     self.window.rootViewController = self.navigationController;
     [self.window makeKeyAndVisible];
@@ -63,6 +74,13 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+- (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
+{
+    return UIInterfaceOrientationMaskLandscapeLeft|
+           UIInterfaceOrientationMaskLandscapeRight|
+           UIInterfaceOrientationMaskPortrait|
+           UIInterfaceOrientationMaskPortraitUpsideDown;
 }
 
 @end

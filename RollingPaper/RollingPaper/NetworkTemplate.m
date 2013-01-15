@@ -82,6 +82,7 @@
     [request addPostValue:receiver_name   forKey:@"r_name"];
     [request addPostValue:receiveTime     forKey:@"r_time"];
     
+    NSLog(@"%@",request.postBody);
     return request;
 }
 +(ASIFormDataRequest*) requestForRollingPaperListWithUserIdx : (NSString*) useridx{

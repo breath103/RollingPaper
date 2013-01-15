@@ -20,7 +20,8 @@
 @property (strong,nonatomic) IBOutlet UILabel* titleLabel;
 @property (weak,nonatomic) id<PaperCellDelegate> delegate;
 @property (strong,nonatomic) RollingPaper* entity;
-
+@property (nonatomic,strong) NSTimer* ddayUpdatingTimer;
 -(id) initWithEntity : (RollingPaper*) entity
             delegate : (id<PaperCellDelegate>) delegate;
+-(void) refreshViewWithEntity;
 @end

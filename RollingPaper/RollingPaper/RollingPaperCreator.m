@@ -46,26 +46,9 @@
 -(void) hideKeyboard{
     [self.view endEditing:TRUE];
 }
--(void) scrollviewAutoContentSize{
-    /*
-    CGFloat scrollViewHeight = 0.0f;
-    for (UIView* view in self.scrollView.subviews)
-    {
-        if (!view.hidden)
-        {
-            CGFloat y = view.frame.origin.y;
-            CGFloat h = view.frame.size.height;
-            if (y + h > scrollViewHeight)
-            {
-                scrollViewHeight = h + y;
-            }
-        }
-    }
-     */
-    
+-(void) initScrollView{
     [self.scrollView addSubview:self.contentContainer];
     self.scrollView.contentSize = self.contentContainer.frame.size;
-    
     /*
     for(int i=0;i<5;i++){
         UIButton* button = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -81,7 +64,6 @@
         [self.scrollView addSubview:button];
     }
     */
-    
 }
 - (void)viewDidLoad
 {
@@ -93,7 +75,7 @@
     gestureRecognizer.cancelsTouchesInView = NO;
     [self.view addGestureRecognizer:gestureRecognizer];
     
-    [self scrollviewAutoContentSize];
+    [self initScrollView];
     
     self.datePicker.minimumDate = [NSDate date];
    
@@ -119,7 +101,6 @@
     [super viewDidUnload];
 }
 - (BOOL) confirmInputs{
-    
     if(self.titleText.text.length <= 0){
         [[[UIAlertView alloc]initWithTitle:@"경고"
                                    message:@"제목을 입력해주세요"
@@ -149,12 +130,18 @@
             }];
             [request setFailedBlock:^{
                 NSLog(@"%@",@"fail");
+                [[[UIAlertView alloc] initWithTitle:@"실패"
+                                            message:@"롤링페이퍼 서버에 페이퍼 만들기 요청이 실패하였습니다.\n인터넷 연결상태를 확인해주세요"
+                                           delegate:nil
+                                  cancelButtonTitle:nil
+                                  otherButtonTitles:@"확인", nil] show];
             }];
             [request startAsynchronous];
         }
     }
     else{
         NSLog(@"입력폼에 문제가 있음");
+        
     }
 }
 
@@ -197,11 +184,6 @@
 }
 - (IBAction)onTouchReceiveDate:(id)sender {
     
-}
--(NSDate*) facebookDateToNSDate : (NSString*) str{
-    NSDateFormatter* dateFormatter = [[NSDateFormatter alloc]init];
-    [dateFormatter setDateFormat:@"MM/dd/yyyy"];
-    return [dateFormatter dateFromString:str];
 }
 -(NSString*) dateToFormatString : (NSDate*) date{
     NSDateFormatter* dateFormatter = [[NSDateFormatter alloc]init];
