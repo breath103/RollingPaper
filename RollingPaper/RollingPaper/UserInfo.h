@@ -14,15 +14,5 @@
 +(void) setUserInfo : (NSDictionary*) dict;
 +(NSDictionary*) getUserInfo;
 +(NSNumber*) getUserIdx;
-+(UIImage*) getImageFromPictrueURL;
-/*
-@property (nonatomic,strong) NSString* name;
-@property (nonatomic,strong) NSString* email;
-@property (nonatomic,strong) NSString* password;
-@property (nonatomic,strong) NSString* userid;
-
-+(UserInfo*) getUserInfoFromUserDefaults;
-
--(void) save;
-*/
++(UIImage*)  getImageFromPictrueURL;
 @end

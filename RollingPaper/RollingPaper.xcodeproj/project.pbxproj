@@ -22,7 +22,6 @@
 		072829CB1681A9D400B488EF /* PencilcaseController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 072829C91681A9D400B488EF /* PencilcaseController.xib */; };
 		072829D21682CE8500B488EF /* TextContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 072829D11682CE8400B488EF /* TextContentView.m */; };
 		072829D816832D4000B488EF /* SoundContent.m in Sources */ = {isa = PBXBuildFile; fileRef = 072829D716832D4000B488EF /* SoundContent.m */; };
-		072829DB16832D4100B488EF /* TextContent.m in Sources */ = {isa = PBXBuildFile; fileRef = 072829DA16832D4100B488EF /* TextContent.m */; };
 		072829DE16832D4100B488EF /* Content.m in Sources */ = {isa = PBXBuildFile; fileRef = 072829DD16832D4100B488EF /* Content.m */; };
 		072829E116832D4100B488EF /* ImageContent.m in Sources */ = {isa = PBXBuildFile; fileRef = 072829E016832D4100B488EF /* ImageContent.m */; };
 		072829F516839CD200B488EF /* LoadingProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 072829F416839CD200B488EF /* LoadingProgressView.m */; };
@@ -75,6 +74,9 @@
 		0778B802163B7C4E0026B99A /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 0778B801163B7C4E0026B99A /* Default.png */; };
 		0778B804163B7C4E0026B99A /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0778B803163B7C4E0026B99A /* Default@2x.png */; };
 		0778B806163B7C4E0026B99A /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0778B805163B7C4E0026B99A /* Default-568h@2x.png */; };
+		077A988916A512F600B864B9 /* TextContent.m in Sources */ = {isa = PBXBuildFile; fileRef = 077A988816A512F600B864B9 /* TextContent.m */; };
+		077A988D16A5132600B864B9 /* RollingPaper.m in Sources */ = {isa = PBXBuildFile; fileRef = 077A988C16A5132600B864B9 /* RollingPaper.m */; };
+		077A989016A518C200B864B9 /* PaperListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 077A988F16A518C200B864B9 /* PaperListController.m */; };
 		078CA9AC16810592007A3BFC /* FBFriendSearchPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 078CA9AB16810591007A3BFC /* FBFriendSearchPickerController.m */; };
 		0795D1B8167B70D200272D34 /* RecoderController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0795D1B6167B70D200272D34 /* RecoderController.m */; };
 		0795D1B9167B70D200272D34 /* RecoderController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0795D1B7167B70D200272D34 /* RecoderController.xib */; };
@@ -111,6 +113,10 @@
 		07B355F5165BB8AE0094D7D7 /* UECoreData.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B355F4165BB8AD0094D7D7 /* UECoreData.m */; };
 		07B3560A165BFAD90094D7D7 /* ImageContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B35609165BFAD90094D7D7 /* ImageContentView.m */; };
 		07B35619165C12CF0094D7D7 /* CGPointExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B35618165C12CB0094D7D7 /* CGPointExtension.m */; };
+		07BC507B16A542FA00F9060F /* previousArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 07BC507916A542FA00F9060F /* previousArrow.png */; };
+		07BC508116A54E9B00F9060F /* NSRandomSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BC508016A54E9B00F9060F /* NSRandomSupport.m */; };
+		07BC508516A5535300F9060F /* PaperSettingController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BC508316A5535200F9060F /* PaperSettingController.m */; };
+		07BC508616A5535300F9060F /* PaperSettingController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07BC508416A5535200F9060F /* PaperSettingController.xib */; };
 		07C168081697D6BB00891757 /* dockButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 07C168071697D6BB00891757 /* dockButton.png */; };
 		07CD07C0167C693C00358AD6 /* UIFreeTransformGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 07CD07BF167C693C00358AD6 /* UIFreeTransformGestureRecognizer.m */; };
 		07CD07C7167CBC1400358AD6 /* UEFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 07CD07C6167CBC1400358AD6 /* UEFileManager.m */; };
@@ -127,7 +133,6 @@
 		07CD081C167D96A700358AD6 /* CameraController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07CD081B167D96A600358AD6 /* CameraController.xib */; };
 		07CD0824167DC11B00358AD6 /* AlbumController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07CD0822167DC11900358AD6 /* AlbumController.m */; };
 		07CD0825167DC11B00358AD6 /* AlbumController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07CD0823167DC11A00358AD6 /* AlbumController.xib */; };
-		07EB9729168B66110017FDA6 /* RollingPaper.m in Sources */ = {isa = PBXBuildFile; fileRef = 07EB9728168B66110017FDA6 /* RollingPaper.m */; };
 		07EB974F168B83D40017FDA6 /* ballpen.png in Resources */ = {isa = PBXBuildFile; fileRef = 07EB9745168B83D30017FDA6 /* ballpen.png */; };
 		07EB9751168B83D40017FDA6 /* lightpen.png in Resources */ = {isa = PBXBuildFile; fileRef = 07EB9747168B83D30017FDA6 /* lightpen.png */; };
 		07EB9753168B83D40017FDA6 /* namepen.png in Resources */ = {isa = PBXBuildFile; fileRef = 07EB9749168B83D30017FDA6 /* namepen.png */; };
@@ -176,8 +181,6 @@
 		072829D11682CE8400B488EF /* TextContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextContentView.m; sourceTree = "<group>"; };
 		072829D616832D4000B488EF /* SoundContent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundContent.h; sourceTree = "<group>"; };
 		072829D716832D4000B488EF /* SoundContent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SoundContent.m; sourceTree = "<group>"; };
-		072829D916832D4000B488EF /* TextContent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextContent.h; sourceTree = "<group>"; };
-		072829DA16832D4100B488EF /* TextContent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextContent.m; sourceTree = "<group>"; };
 		072829DC16832D4100B488EF /* Content.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Content.h; sourceTree = "<group>"; };
 		072829DD16832D4100B488EF /* Content.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Content.m; sourceTree = "<group>"; };
 		072829DF16832D4100B488EF /* ImageContent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageContent.h; sourceTree = "<group>"; };
@@ -244,6 +247,12 @@
 		0778B801163B7C4E0026B99A /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		0778B803163B7C4E0026B99A /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		0778B805163B7C4E0026B99A /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		077A988716A512F600B864B9 /* TextContent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextContent.h; sourceTree = "<group>"; };
+		077A988816A512F600B864B9 /* TextContent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextContent.m; sourceTree = "<group>"; };
+		077A988B16A5132600B864B9 /* RollingPaper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RollingPaper.h; sourceTree = "<group>"; };
+		077A988C16A5132600B864B9 /* RollingPaper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RollingPaper.m; sourceTree = "<group>"; };
+		077A988E16A518C100B864B9 /* PaperListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaperListController.h; sourceTree = "<group>"; };
+		077A988F16A518C200B864B9 /* PaperListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaperListController.m; sourceTree = "<group>"; };
 		078CA9AA1681058F007A3BFC /* FBFriendSearchPickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBFriendSearchPickerController.h; sourceTree = "<group>"; };
 		078CA9AB16810591007A3BFC /* FBFriendSearchPickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBFriendSearchPickerController.m; sourceTree = "<group>"; };
 		0795D1B5167B70D100272D34 /* RecoderController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecoderController.h; sourceTree = "<group>"; };
@@ -338,6 +347,12 @@
 		07B35617165C12C80094D7D7 /* CGPointExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGPointExtension.h; sourceTree = "<group>"; };
 		07B35618165C12CB0094D7D7 /* CGPointExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGPointExtension.m; sourceTree = "<group>"; };
 		07B3561A165C143E0094D7D7 /* ccMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ccMacros.h; sourceTree = "<group>"; };
+		07BC507916A542FA00F9060F /* previousArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = previousArrow.png; sourceTree = "<group>"; };
+		07BC507F16A54E9B00F9060F /* NSRandomSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSRandomSupport.h; sourceTree = "<group>"; };
+		07BC508016A54E9B00F9060F /* NSRandomSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSRandomSupport.m; sourceTree = "<group>"; };
+		07BC508216A5535200F9060F /* PaperSettingController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaperSettingController.h; sourceTree = "<group>"; };
+		07BC508316A5535200F9060F /* PaperSettingController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaperSettingController.m; sourceTree = "<group>"; };
+		07BC508416A5535200F9060F /* PaperSettingController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PaperSettingController.xib; sourceTree = "<group>"; };
 		07C168071697D6BB00891757 /* dockButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dockButton.png; sourceTree = "<group>"; };
 		07CD07BE167C693B00358AD6 /* UIFreeTransformGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIFreeTransformGestureRecognizer.h; sourceTree = "<group>"; };
 		07CD07BF167C693C00358AD6 /* UIFreeTransformGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIFreeTransformGestureRecognizer.m; sourceTree = "<group>"; };
@@ -362,8 +377,6 @@
 		07CD0821167DC11900358AD6 /* AlbumController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumController.h; sourceTree = "<group>"; };
 		07CD0822167DC11900358AD6 /* AlbumController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlbumController.m; sourceTree = "<group>"; };
 		07CD0823167DC11A00358AD6 /* AlbumController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlbumController.xib; sourceTree = "<group>"; };
-		07EB9727168B66110017FDA6 /* RollingPaper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RollingPaper.h; sourceTree = "<group>"; };
-		07EB9728168B66110017FDA6 /* RollingPaper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RollingPaper.m; sourceTree = "<group>"; };
 		07EB9745168B83D30017FDA6 /* ballpen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ballpen.png; sourceTree = "<group>"; };
 		07EB9747168B83D30017FDA6 /* lightpen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lightpen.png; sourceTree = "<group>"; };
 		07EB9749168B83D30017FDA6 /* namepen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = namepen.png; sourceTree = "<group>"; };
@@ -432,9 +445,8 @@
 		070268D81673A76E0033408A /* PaperEditing */ = {
 			isa = PBXGroup;
 			children = (
+				07BC507E16A54C9800F9060F /* EditingComponentsView */,
 				07CD0808167D92C400358AD6 /* CameraVew */,
-				071E3A2D168A317E00A2A281 /* PaintingView.h */,
-				071E3A2C168A317E00A2A281 /* PaintingView.m */,
 				07081F07165FBB01005670B5 /* PaperViewController.h */,
 				07081F08165FBB01005670B5 /* PaperViewController.m */,
 				07081F09165FBB01005670B5 /* PaperViewController.xib */,
@@ -457,8 +469,8 @@
 				072829C91681A9D400B488EF /* PencilcaseController.xib */,
 				07629A52168E46FD00F413A7 /* ContentsScrollView.h */,
 				07629A53168E46FD00F413A7 /* ContentsScrollView.m */,
-				0729BEE2168F91BD002A300A /* ColorPalette.h */,
-				0729BEE3168F91BD002A300A /* ColorPalette.m */,
+				077A988E16A518C100B864B9 /* PaperListController.h */,
+				077A988F16A518C200B864B9 /* PaperListController.m */,
 			);
 			name = PaperEditing;
 			sourceTree = "<group>";
@@ -466,6 +478,7 @@
 		07629A65168F1E5800F413A7 /* shared */ = {
 			isa = PBXGroup;
 			children = (
+				07BC507916A542FA00F9060F /* previousArrow.png */,
 				07629A76168F2D4400F413A7 /* nextArrow.png */,
 				07629A6C168F23E100F413A7 /* paperCellBackground.png */,
 				07629A6A168F226600F413A7 /* bigtextfieldBackground.png */,
@@ -545,10 +558,6 @@
 				07AB338116458811000A27F7 /* ASI */,
 				07AB33B616465B15000A27F7 /* SBJSON */,
 				07AB33CE16467D13000A27F7 /* BlockSupport */,
-				07AB33C616466BC2000A27F7 /* UserInfo.h */,
-				07AB33C916466BDE000A27F7 /* UserInfo.m */,
-				07AB33CB16467979000A27F7 /* NetworkTemplate.h */,
-				07AB33CC16467979000A27F7 /* NetworkTemplate.m */,
 				0778B7FE163B7C4E0026B99A /* AppDelegate.h */,
 				0778B7FF163B7C4E0026B99A /* AppDelegate.m */,
 				07B3558A165A9B790094D7D7 /* resources */,
@@ -575,6 +584,10 @@
 		0798FD8F167B326800342879 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				07AB33C616466BC2000A27F7 /* UserInfo.h */,
+				07AB33C916466BDE000A27F7 /* UserInfo.m */,
+				07AB33CB16467979000A27F7 /* NetworkTemplate.h */,
+				07AB33CC16467979000A27F7 /* NetworkTemplate.m */,
 				07B3561A165C143E0094D7D7 /* ccMacros.h */,
 				07B35617165C12C80094D7D7 /* CGPointExtension.h */,
 				07B35618165C12CB0094D7D7 /* CGPointExtension.m */,
@@ -584,6 +597,8 @@
 				072829F416839CD200B488EF /* LoadingProgressView.m */,
 				079C2A17169B060D00FB7A9D /* FacebookHelper.h */,
 				079C2A18169B060D00FB7A9D /* FacebookHelper.m */,
+				07BC507F16A54E9B00F9060F /* NSRandomSupport.h */,
+				07BC508016A54E9B00F9060F /* NSRandomSupport.m */,
 			);
 			name = Helper;
 			sourceTree = "<group>";
@@ -708,14 +723,14 @@
 			children = (
 				072829D616832D4000B488EF /* SoundContent.h */,
 				072829D716832D4000B488EF /* SoundContent.m */,
-				072829D916832D4000B488EF /* TextContent.h */,
-				072829DA16832D4100B488EF /* TextContent.m */,
 				072829DC16832D4100B488EF /* Content.h */,
 				072829DD16832D4100B488EF /* Content.m */,
 				072829DF16832D4100B488EF /* ImageContent.h */,
 				072829E016832D4100B488EF /* ImageContent.m */,
-				07EB9727168B66110017FDA6 /* RollingPaper.h */,
-				07EB9728168B66110017FDA6 /* RollingPaper.m */,
+				077A988716A512F600B864B9 /* TextContent.h */,
+				077A988816A512F600B864B9 /* TextContent.m */,
+				077A988B16A5132600B864B9 /* RollingPaper.h */,
+				077A988C16A5132600B864B9 /* RollingPaper.m */,
 			);
 			name = Entity;
 			sourceTree = "<group>";
@@ -801,8 +816,22 @@
 				07A8DD721689DB4F00E1686A /* PaperSettingViewController.m */,
 				07A8DD731689DB4F00E1686A /* PaperSettingViewController.xib */,
 				07629A5E168F036E00F413A7 /* UINavigationControllerViewOrientation.m */,
+				07BC508216A5535200F9060F /* PaperSettingController.h */,
+				07BC508316A5535200F9060F /* PaperSettingController.m */,
+				07BC508416A5535200F9060F /* PaperSettingController.xib */,
 			);
 			name = NavigationViews;
+			sourceTree = "<group>";
+		};
+		07BC507E16A54C9800F9060F /* EditingComponentsView */ = {
+			isa = PBXGroup;
+			children = (
+				0729BEE2168F91BD002A300A /* ColorPalette.h */,
+				0729BEE3168F91BD002A300A /* ColorPalette.m */,
+				071E3A2D168A317E00A2A281 /* PaintingView.h */,
+				071E3A2C168A317E00A2A281 /* PaintingView.m */,
+			);
+			name = EditingComponentsView;
 			sourceTree = "<group>";
 		};
 		07CD07E5167D142700358AD6 /* paintingDock */ = {
@@ -973,6 +1002,8 @@
 				0749EFB816970956004350E5 /* main_background.png in Resources */,
 				0749EFB916970956004350E5 /* main_letherpad.png in Resources */,
 				07C168081697D6BB00891757 /* dockButton.png in Resources */,
+				07BC507B16A542FA00F9060F /* previousArrow.png in Resources */,
+				07BC508616A5535300F9060F /* PaperSettingController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1024,7 +1055,6 @@
 				072829CA1681A9D400B488EF /* PencilcaseController.m in Sources */,
 				072829D21682CE8500B488EF /* TextContentView.m in Sources */,
 				072829D816832D4000B488EF /* SoundContent.m in Sources */,
-				072829DB16832D4100B488EF /* TextContent.m in Sources */,
 				072829DE16832D4100B488EF /* Content.m in Sources */,
 				072829E116832D4100B488EF /* ImageContent.m in Sources */,
 				072829F516839CD200B488EF /* LoadingProgressView.m in Sources */,
@@ -1033,11 +1063,15 @@
 				075A1EBB1684BA5400BB4E3B /* UserSettingViewController.m in Sources */,
 				07A8DD741689DB4F00E1686A /* PaperSettingViewController.m in Sources */,
 				071E3A2E168A317E00A2A281 /* PaintingView.m in Sources */,
-				07EB9729168B66110017FDA6 /* RollingPaper.m in Sources */,
 				07629A54168E46FD00F413A7 /* ContentsScrollView.m in Sources */,
 				07629A5F168F036E00F413A7 /* UINavigationControllerViewOrientation.m in Sources */,
 				0729BEE4168F91BD002A300A /* ColorPalette.m in Sources */,
 				079C2A19169B060D00FB7A9D /* FacebookHelper.m in Sources */,
+				077A988916A512F600B864B9 /* TextContent.m in Sources */,
+				077A988D16A5132600B864B9 /* RollingPaper.m in Sources */,
+				077A989016A518C200B864B9 /* PaperListController.m in Sources */,
+				07BC508116A54E9B00F9060F /* NSRandomSupport.m in Sources */,
+				07BC508516A5535300F9060F /* PaperSettingController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

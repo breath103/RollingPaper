@@ -48,6 +48,11 @@
     }
     return self;
 }
+-(void) viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    //사용자가 한번 본 경우에는 해당 엔티티가 더이상 새로운 것이 아니기 때문에 NO로 변경
+    self.entity.is_new = [NSNumber numberWithBool:NO];
+}
 -(void) initContentsEditingToolControlers{
     self.freeTransformGestureRecognizer = [[UIFreeTransformGestureRecognizer alloc] initWithTarget:self
                                                                                             action:@selector(onFreeTransformGesture)];
@@ -135,9 +140,6 @@
     }
 }
 
--(void) viewDidAppear:(BOOL)animated{
-    
-}
 -(void) viewWillDisappear:(BOOL)animated{
     int i = 0;
     for( id<RollingPaperContentViewProtocol> view in self.contentsViews){

@@ -9,5 +9,5 @@
 #import <Foundation/Foundation.h>
 
 @interface FacebookHelper : NSObject
-
+-(NSDate*) facebookDateToNSDate : (NSString*) str;
 @end

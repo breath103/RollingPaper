@@ -33,6 +33,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    UIImageView* imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"nextArrow"]];
+    imageView.frame = CGRectMake(0, 0, 32/2, 39/2);
+    UIBarButtonItem* nextButton = [[UIBarButtonItem alloc] initWithCustomView:imageView];
+    self.navigationItem.rightBarButtonItem = nextButton;
+
+    
 }
 - (void)viewDidAppear:(BOOL)animated
 {

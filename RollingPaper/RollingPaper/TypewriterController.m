@@ -57,22 +57,30 @@
     [self setColorPalette:nil];
     [super viewDidUnload];
 }
-
+-(void) animateOnKeyboardShow : (BOOL) show{
+    if(show){
+        [UIView animateWithDuration:0.5f animations:^{
+            UIViewSetHeight(self.containerView, self.view.frame.size.height - KEYBOARD_HEIGHT);
+        } completion:^(BOOL finished) {
+            
+        }];
+    }
+    else{
+        [UIView animateWithDuration:0.5f animations:^{
+            UIViewSetHeight(self.containerView, self.view.frame.size.height);
+        } completion:^(BOOL finished) {
+            
+        }];
+    }   
+}
 -(void) textViewDidBeginEditing:(UITextView *)aTextView{
     isInEditing = TRUE;
-    [UIView animateWithDuration:0.5f animations:^{
-        UIViewSetHeight(aTextView, self.view.frame.size.height - KEYBOARD_HEIGHT);
-    } completion:^(BOOL finished) {
-        
-    }];
+    [self animateOnKeyboardShow:TRUE];
 }
 -(void) textViewDidEndEditing:(UITextView *)aTextView{
     isInEditing = FALSE;
-    [UIView animateWithDuration:0.5f animations:^{
-        UIViewSetHeight(aTextView, self.view.frame.size.height);
-    } completion:^(BOOL finished) {
-        
-    }];
+    [self animateOnKeyboardShow:FALSE];
+   
 }
 -(void) colorPalette:(ColorPalette *)palette
          selectColor:(UIColor *)color{

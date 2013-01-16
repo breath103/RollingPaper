@@ -14,6 +14,7 @@
 #import "UELib/UEUI.h"
 #import "UELib/UEImageLibrary.h"
 #import "PaintingView.h"
+#import "NSRandomSupport.h"
 
 /*
  연필 : X: -85.5  /  Y:182 /  W:216.5  / H: 23.5 / 30도
@@ -150,6 +151,9 @@ NSString* TOOL_TYPE_STRING[TOOL_COUNT] = {
 }
 -(void) initToolButtons{
     toolButtons = [[NSMutableArray alloc]initWithCapacity:TOOL_COUNT];
+    
+    NSMutableArray* defaultColors = [ColorPalette getDefaultColorArray];
+    
     for(int i=0;i<TOOL_COUNT;i++){
         UIButton* button = [self buttonWithToolType:i];
         button.tag = (TOOL_TYPE)i;
@@ -157,6 +161,9 @@ NSString* TOOL_TYPE_STRING[TOOL_COUNT] = {
         [button addTarget : self
                    action : @selector(onToolTouched:)
          forControlEvents : UIControlEventTouchUpInside];
+        
+
+        [button viewWithTag:1000].backgroundColor = [defaultColors randomObject];
         
         [self.view addSubview:button];
         [toolButtons addObject:button];

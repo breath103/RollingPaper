@@ -65,11 +65,15 @@
     }
     */
 }
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     self.navigationController.navigationBarHidden = FALSE;
- 
+    self.navigationItem.title = @"Rolling Paper 만들기";
+   
+    NSLog(@"%@",self.navigationController.navigationItem.rightBarButtonItem );
+    
     UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                                                         action:@selector(hideKeyboard)];
     gestureRecognizer.cancelsTouchesInView = NO;
@@ -82,7 +86,9 @@
     self.receiveDate.inputView = self.datePicker;
     self.receiveTime.inputView = self.timePicker;
 }
-
+-(void) onTouchNext{
+    [self onTouchSend:NULL];
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -190,6 +196,11 @@
     [dateFormatter setDateFormat:@"yyyy-MM-dd"];
     return [dateFormatter stringFromDate:date];
 }
+-(NSDate*) facebookDateToNSDate : (NSString*) str{
+    NSDateFormatter* dateFormatter = [[NSDateFormatter alloc]init];
+    [dateFormatter setDateFormat:@"MM/dd/yyyy"];
+    return [dateFormatter dateFromString:str];
+}
 -(NSString*) facebookBirthdayToLocal : (NSString*) str{
     NSDate* date = [self facebookDateToNSDate:str];
     return [self dateToFormatString:date];
@@ -212,6 +223,10 @@
 }
 -(NSString*) buildRequestDate{
     return [NSString stringWithFormat:@"%@ %@",self.receiveDate.text,self.receiveTime.text];
+}
+-(void) facebookViewControllerCancelWasPressed:(id)sender{
+    [self dismissViewControllerAnimated:YES completion:^{
+    }];
 }
 -(void) facebookViewControllerDoneWasPressed : (id)sender{
     for (id<FBGraphUser> user in friendPickerController.selection) {

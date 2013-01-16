@@ -57,12 +57,7 @@
 {
     if (self.searchBar == nil) {
         CGFloat searchBarHeight = 44.0;
-        self.searchBar =
-        [[UISearchBar alloc]
-         initWithFrame:
-         CGRectMake(0,0,
-                    self.view.bounds.size.width,
-                    searchBarHeight)];
+        self.searchBar = [[UISearchBar alloc] initWithFrame: CGRectMake(0,0,self.view.bounds.size.width,searchBarHeight)];
         self.searchBar.autoresizingMask = self.searchBar.autoresizingMask | UIViewAutoresizingFlexibleWidth;
         self.searchBar.delegate = self;
         // self.searchBar.showsCancelButton = YES;

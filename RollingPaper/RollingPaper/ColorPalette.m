@@ -9,6 +9,8 @@
 #import "ColorPalette.h"
 #import <QuartzCore/QuartzCore.h>
 
+
+
 @implementation ColorPalette
 @synthesize colors;
 @synthesize scrollView;
@@ -43,7 +45,7 @@
     for(UIColor* color in self.colors){
         UIButton* button = [UIButton buttonWithType:UIButtonTypeCustom];
         button.frame  = CGRectMake(0,0,colorSize.width,colorSize.height);
-        button.center = CGPointMake(15 + index++ * (colorSize.width + 10), self.bounds.size.height/2.0f);
+        button.center = CGPointMake(15 + index++ * (colorSize.width + 8), self.bounds.size.height/2.0f);
         
         button.layer.cornerRadius = (colorSize.width + colorSize.height) / 2.0f / 2.0f;
         button.layer.borderWidth  = 3.0f;
@@ -66,24 +68,25 @@
 }
 
 -(void) onSelectColor : (id) sender{
-    if([self.delegate respondsToSelector:@selector(colorPalette:)])
+    if(self.delegate)//[self.delegate respondsToSelector:@selector(colorPalette:)])
     {
         [self.delegate colorPalette:self
                         selectColor:[sender backgroundColor]];
     }
     else{
         //delegate가 잘못된경우
-        NSLog(@"%@",[sender background]);
+        NSLog(@"%@",[sender backgroundColor]);
     }
 }
-
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
++(NSMutableArray*) getDefaultColorArray
 {
-    // Drawing code
+    NSMutableArray* colors = [NSMutableArray arrayWithObjects: UIColorXRGB(0,0,0),
+                              UIColorXRGB(255,30,0),
+                              UIColorXRGB(246,207,40),
+                              UIColorXRGB(94,116,62),
+                              UIColorXRGB(58,81,96),
+                              UIColorXRGB(98,77,149),
+                              UIColorXRGB(255,0,102), nil];
+    return colors;
 }
-*/
-
 @end

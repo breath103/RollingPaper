@@ -12,10 +12,10 @@
 
 
 typedef enum TOOL_TYPE{
-    PENCIL,
+    COLORPENCIL,
     BALLPEN,
     NAMEPEN,
-    CRAYON,
+    MAGIC,
     LIGHTPEN,
     TOOL_COUNT
 } TOOL_TYPE;
@@ -40,6 +40,7 @@ typedef enum TOOL_TYPE{
 @interface PaintingView : UIView
 {
     CGPoint lastPoint;
+    CGPoint lastMid;
 }
 @property (nonatomic, strong) UIColor *lineColor;
 @property (nonatomic, readwrite) CGFloat lineWidth;

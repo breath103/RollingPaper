@@ -7,17 +7,18 @@
 //
 
 #import "PaintingView.h"
+#import "macro.h"
 #import "CGPointExtension.h"
 #import <QuartzCore/QuartzCore.h>
 
 
 /********************************************************/
 /*
-    CGPath 등에 넣어지는 모든 값들은 우선 UITouch에서 받아와서 넣어지기 때문에 스케일이 적용되지 않은 사이즈이다.
-    그려지는 비트맵과 CGLayer가 스케일이 적용되어져 있기 때문에 CGPath를 렌더링할때는 그냥 렌더링 하면되지만,
-    결론적으로 CGLayer와 CFBitmapRef 모두 실제 크기는 레티나 디스플레이의 픽셀사이즈가 된다. 
-    따라서 후에 이를 이미지화 하여 UIImage로 뽑았을때, UIImage의 크기는 레티나디스플레이의 픽셀사이즈 임으로 2배다
-*/
+ CGPath 등에 넣어지는 모든 값들은 우선 UITouch에서 받아와서 넣어지기 때문에 스케일이 적용되지 않은 사이즈이다.
+ 그려지는 비트맵과 CGLayer가 스케일이 적용되어져 있기 때문에 CGPath를 렌더링할때는 그냥 렌더링 하면되지만,
+ 결론적으로 CGLayer와 CFBitmapRef 모두 실제 크기는 레티나 디스플레이의 픽셀사이즈가 된다.
+ 따라서 후에 이를 이미지화 하여 UIImage로 뽑았을때, UIImage의 크기는 레티나디스플레이의 픽셀사이즈 임으로 2배다
+ */
 /*******************************************************/
 
 
@@ -103,7 +104,7 @@
         pathArray = [NSMutableArray new];
         removedPathArray = [NSMutableArray new];
         
-        self.toolType = CRAYON;
+        self.toolType = NAMEPEN;
         
         
         self.enablePainting = TRUE;
@@ -113,25 +114,45 @@
 
 -(void) setToolType:(TOOL_TYPE)toolType{
     _toolType = toolType;
- //   NSLog(@"---%d : %@",toolType,TOOL_TYPE_STRING[toolType]);
+    //   NSLog(@"---%d : %@",toolType,TOOL_TYPE_STRING[toolType]);
     switch (_toolType) {
-        case PENCIL :{
-            
+        case COLORPENCIL :{
+            self.lineWidth = 1.0f;
+            self.lineAlpha = 0.7f;
+            self.lineColor = [UIColor redColor];
+            self.lineColor = [self lighterColor:self.lineColor];
+            self.lineCapStyle = kCGLineCapButt;
+            self.lineJoinStyle = kCGLineJoinMiter;
         }break;
         case NAMEPEN :{
-            
-        }break; 
+            self.lineWidth = 6.0f;
+            self.lineAlpha = 1.0f;
+            self.lineColor = [UIColor blackColor];
+            self.lineColor = [self darkerColor:self.lineColor];
+            self.lineCapStyle = kCGLineCapRound;
+            self.lineJoinStyle = kCGLineJoinRound;
+        }break;
         case LIGHTPEN :{
-            
+            self.lineWidth = 24.0f;
+            self.lineAlpha = 0.7f;
+            self.lineColor = [UIColor yellowColor];
+            self.lineColor = [self lighterColor:self.lineColor];
+            self.lineCapStyle = kCGLineCapButt;
+            self.lineJoinStyle = kCGLineJoinMiter;
         }break;
         case BALLPEN :{
-            
+            self.lineWidth = 2.0f;
+            self.lineAlpha = 1.0f;
+            self.lineColor = [UIColor blackColor];
+            self.lineCapStyle = kCGLineCapButt;
+            self.lineJoinStyle = kCGLineJoinMiter;
         }break;
-        case CRAYON :{
-            self.lineWidth = 8.0f;
-            self.lineAlpha = 0.8f;
+        case MAGIC :{
+            self.lineWidth = 20.0f;
+            self.lineAlpha = 0.9f;
             self.lineColor = [UIColor blueColor];
-            self.lineCapStyle  = kCGLineCapButt;
+            self.lineColor = [self darkerColor:self.lineColor];
+            self.lineCapStyle  = kCGLineCapRound;
             self.lineJoinStyle = kCGLineJoinMiter;
         }break;
         default:{
@@ -149,7 +170,8 @@
 }
 -(void) handleTouchBeganForTool : (NSSet*) touches{
     switch (self.toolType) {
-        case CRAYON : {
+            
+        case MAGIC : {
             //매직펜의 경우 시작지점과 끝점에 좀더 큰 점 하나를 찍어주면 된다.
             UITouch *touch = [touches anyObject];
             CGPoint currentPoint = [touch locationInView:self];
@@ -160,11 +182,15 @@
             [self syncPaintInfo:startDot];
             startDot.lineJoinStyle = kCGLineJoinRound;
             startDot.lineCapStyle  = kCGLineCapRound;
-            startDot.lineWidth = self.lineWidth * 1.5;
+            startDot.lineColor = [self darkerColor:lineColor];
+            startDot.lineWidth = self.lineWidth * 1.05;
             
             [startDot drawInContext: drawingContext];
             
             [self.pathArray addObject:startDot];
+        }break;
+            
+        case LIGHTPEN : {
         }break;
             
         default:
@@ -173,20 +199,20 @@
 }
 -(void) handleTouchEndForTool : (NSSet*) touches{
     switch (self.toolType) {
-        case CRAYON : {
+        case MAGIC : {
             //매직펜의 경우 시작지점과 끝점에 좀더 큰 점 하나를 찍어주면 된다.
-            UITouch *touch = [touches anyObject];
+            //UITouch *touch = [touches anyObject];
             CGContextRef ctx = CGLayerGetContext(drawingLayer);
-            CGPoint currentPoint = [touch locationInView:self];
+            CGPoint currentPoint = lastMid;//[touch locationInView:self];
             
-            CGContextSetFillColorWithColor(ctx, self.lineColor.CGColor);
-            CGContextSetAlpha(ctx, self.lineAlpha);
-            float pointWidth = self.lineWidth * 1.5;
+            CGContextSetFillColorWithColor(ctx, [self darkerColor:lineColor].CGColor);
+            CGContextSetAlpha(ctx, 1.0);
+            float pointWidth = self.lineWidth * 1.05;
             currentPoint.x -= pointWidth / 2.0f;
             currentPoint.y -= pointWidth / 2.0f;
             CGContextFillEllipseInRect(ctx, CGRectMake(currentPoint.x,currentPoint.y,pointWidth,pointWidth));
         }break;
-    
+            
             
         default:
             break;
@@ -229,7 +255,7 @@
         self.currentDirtyRect = [self.currentDrawingPath boundingBox];
         
         lastPoint = prevPoint;
-        
+        lastMid = mid2;
         
         PathInfo* tempPath = [[PathInfo alloc]init];
         [tempPath moveToPoint:mid1];
@@ -245,14 +271,16 @@
         [self setNeedsDisplayInRect:self.currentDirtyRect];
     }
 }
--(void) onPaintEnd : (NSSet*) touches
-             Event : (UIEvent*) event{
+-(void) touchesEnded:(NSSet *)touches
+           withEvent:(UIEvent *)event
+{
     if(self.enablePainting){
-        [self handleTouchEndForTool:touches];
         
         CGContextRef drawingLayerContext = CGLayerGetContext(drawingLayer);
         CGContextClearRect(drawingLayerContext, self.bounds);
         [self.currentDrawingPath drawInContext:drawingLayerContext];
+        [self handleTouchEndForTool:touches];
+        
         
         // drawContext에 bounds의 위치, 크기로 drawLayer의 context에 그려진 라인을 출력한다.
         CGContextSetAlpha(drawingContext, 1.0f);
@@ -266,17 +294,9 @@
         
         [self setNeedsDisplay];
         
+        
         [self.delegate paintingViewEndDrawing:self];
     }
-}
--(void) touchesEnded:(NSSet *)touches
-           withEvent:(UIEvent *)event{
-    [self onPaintEnd:touches
-               Event:event];
-}
--(void) touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event{
-    [self onPaintEnd:touches
-               Event:event];
 }
 - (void)drawRect:(CGRect)rect
 {
@@ -285,15 +305,17 @@
     CGContextRef graphicContext = UIGraphicsGetCurrentContext();
     
     // 이미 그려저서 버퍼에 저장된 데이터를 그린다.
+    //CGContextSetShadowWithColor(graphicContext, CGSizeMake(0, 0), 1, [[UIColor redColor] CGColor]);
+    
     CGImageRef drawnLineImage = CGBitmapContextCreateImage(drawingContext);
-    CGContextSetAlpha(graphicContext, 1.0f);
+    CGContextSetAlpha(graphicContext, self.lineAlpha);
     CGContextClipToRect(graphicContext, self.bounds);
     CGContextDrawImage(graphicContext, self.bounds, drawnLineImage);
     CGImageRelease(drawnLineImage);
     
     // 현재 그려지고 있는 선을 그린다
     CGContextClipToRect(graphicContext, self.currentDirtyRect);
-    CGContextSetAlpha(graphicContext, 1.0f);
+    CGContextSetAlpha(graphicContext, self.lineAlpha);
     CGContextDrawLayerInRect(graphicContext, self.bounds, drawingLayer);
 }
 -(CGRect) CGPaintedRect{
@@ -311,7 +333,7 @@
     UIImage* returnImage = NULL;
     CGRect paintedRect = [self CGPaintedRect];
     if(CGRectIsNull(paintedRect)){
-    //    NSLog(@"그림이 안그려져 있는 상태 !!!!!");
+        //    NSLog(@"그림이 안그려져 있는 상태 !!!!!");
         returnImage = NULL;
     }
     else{
@@ -322,7 +344,7 @@
         returnImage = UIGraphicsGetImageFromCurrentImageContext();
         returnImage = [UIImage imageWithCGImage:CGImageCreateWithImageInRect(returnImage.CGImage,paintedRect)];
         UIGraphicsEndImageContext();
-   }
+    }
     return returnImage;
 }
 #pragma mark //이미지를 필요한만큼만 할당하도록 개선 필요
@@ -335,7 +357,7 @@
     UIImage * img = UIGraphicsGetImageFromCurrentImageContext();
     img = [UIImage imageWithCGImage:CGImageCreateWithImageInRect(img.CGImage,pathBounds)];
     UIGraphicsEndImageContext();
-
+    
     UIImageView* imageView = [[UIImageView alloc] initWithImage:img];
     imageView.contentMode = UIViewContentModeScaleToFill;
     imageView.frame = pathInfo.boundingBox;
@@ -380,7 +402,7 @@
         CGImageRef drawnLineImage = CGBitmapContextCreateImage(drawingContext);
         UIImage* image = [UIImage imageWithCGImage:drawnLineImage scale:APP_SCALE
                                        orientation:UIImageOrientationDownMirrored];
-       
+        
         UIImageView* imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
         imageView.image = image;
         [self addSubview:imageView];
@@ -409,25 +431,91 @@
         UIImageView* bufferImageView = [self imageViewFromPathInfo:target];
         [self addSubview:bufferImageView];
         bufferImageView.alpha = 0.0f;
-    
+        
         [UIView animateWithDuration:0.2f
                               delay:0
                             options:UIViewAnimationOptionAllowUserInteraction
                          animations:^{
-            bufferImageView.alpha = 1.0f;
-        } completion:^(BOOL finished) {
-            [bufferImageView removeFromSuperview];
-            
-            [self.pathArray addObject:target];
-            [self.removedPathArray removeObject:target];
-            
-            [self redrawAllPathArray];
-        }];
+                             bufferImageView.alpha = 1.0f;
+                         } completion:^(BOOL finished) {
+                             [bufferImageView removeFromSuperview];
+                             
+                             [self.pathArray addObject:target];
+                             [self.removedPathArray removeObject:target];
+                             
+                             [self redrawAllPathArray];
+                         }];
     }
     else{
         NSLog(@"Can't Redo");
     }
 }
+
+- (UIColor *)lighterColor:(UIColor *)Color;
+{
+    float h, s, b, a;
+    if ([Color getHue:&h saturation:&s brightness:&b alpha:&a])
+        return [UIColor colorWithHue:h
+                          saturation:s
+                          brightness:MIN(b * 1.3, 1.0)
+                               alpha:a];
+    return nil;
+}
+
+- (UIColor *)darkerColor:(UIColor *)Color;
+{
+    float h, s, b, a;
+    if ([Color getHue:&h saturation:&s brightness:&b alpha:&a])
+        return [UIColor colorWithHue:h
+                          saturation:s
+                          brightness:b * 0.75
+                               alpha:a];
+    return nil;
+}
+
+/*
+ - (UIColor *)colorByDarkeningColor:(CGColorRef)CGColor Drakness:(CGFloat)drakness;
+ {
+ // oldComponents is the array INSIDE the original color
+ // changing these changes the original, so we copy it
+ CGFloat *oldComponents = (CGFloat *)CGColorGetComponents(CGColor);
+ CGFloat newComponents[4];
+ 
+ int numComponents = CGColorGetNumberOfComponents(CGColor);
+ 
+ switch (numComponents)
+ {
+ case 2:
+ {
+ //grayscale
+ newComponents[0] = oldComponents[0]*drakness;
+ newComponents[1] = oldComponents[0]*drakness;
+ newComponents[2] = oldComponents[0]*drakness;
+ newComponents[3] = oldComponents[1];
+ break;
+ }
+ case 4:
+ {
+ //RGBA
+ newComponents[0] = oldComponents[0]*drakness;
+ newComponents[1] = oldComponents[1]*drakness;
+ newComponents[2] = oldComponents[2]*drakness;
+ newComponents[3] = oldComponents[3];
+ break;
+ }
+ }
+ 
+ CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+ CGColorRef newColor = CGColorCreate(colorSpace, newComponents);
+ CGColorSpaceRelease(colorSpace);
+ 
+ UIColor *retColor = [UIColor colorWithCGColor:newColor];
+ CGColorRelease(newColor);
+ 
+ return retColor;
+ }
+ */
+
 -(void) dealloc{
     CGLayerRelease(drawingLayer);
     CGContextRelease(drawingContext);

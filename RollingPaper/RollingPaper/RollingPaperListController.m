@@ -66,7 +66,7 @@
 -(NSMutableDictionary*) fetchAllRollingPaperWithIdxKey{
     NSManagedObjectContext* managedObjectContext = [UECoreData sharedInstance].managedObjectContext;
     NSFetchRequest* fetchRequest = [NSFetchRequest new];
-    NSEntityDescription *entityDesc = [NSEntityDescription entityForName:@"Madeleine" inManagedObjectContext:[UECoreData sharedInstance].managedObjectContext];
+    NSEntityDescription *entityDesc = [NSEntityDescription entityForName:@"RollingPaper" inManagedObjectContext:[UECoreData sharedInstance].managedObjectContext];
     [fetchRequest setEntity:entityDesc];
     
     NSMutableArray *entities = [[managedObjectContext executeFetchRequest:fetchRequest error:NULL] mutableCopy];
@@ -78,8 +78,6 @@
     return dict;
 }
 -(void) createPaperViewsFromArray : (NSArray*) paperDictArray{
-  
-    
     int topBorder    = 21;
     int heightMargin = 13;
     int index        = 0;
@@ -88,30 +86,17 @@
     
     [self removeAllPaperViews];
     
-   // NSMutableDictionary* storedPapers = [self fetchAllRollingPaperWithIdxKey];
+    NSMutableDictionary* storedPapers = [self fetchAllRollingPaperWithIdxKey];
     for(NSDictionary* p in paperDictArray){
         RollingPaper* entity = NULL;
         
-        /* //CoreData로부터 해당 아이디를 가진 RollingPaper가 저장되어있는지 확인
-        NSFetchRequest* fetchRequest = [[NSFetchRequest alloc] init];
-        NSEntityDescription *entityDesc = [NSEntityDescription entityForName:@"RollingPaper"
-                                                      inManagedObjectContext:[UECoreData sharedInstance].managedObjectContext];
-        [fetchRequest setEntity:entityDesc];
-        /////해당 방이 이미 로딩된적이 있는지 확인q
-        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"idx = %@",
-                                                        [p  objectForKey:@"idx"]]];
-        NSMutableArray *resultEntity = [[[UECoreData sharedInstance].managedObjectContext executeFetchRequest:fetchRequest error:NULL] mutableCopy];
-        if( !resultEntity  ||  resultEntity.count <= 0){ //검색결과가 없다, 즉 로딩된적이 없다
-            NSLog(@"새로 생성 %@ : %@",p,entity);
-        }
-        else {
-            entity = [resultEntity objectAtIndex:0];
-            NSLog(@"이미 있던 방 : %@",entity);
-        } */
+        entity = [storedPapers objectForKey:[p objectForKey:@"idx"]];
+        NSLog(@"%@",entity);
         
         if( ! entity ){
-            entity = entity = (RollingPaper*)[[UECoreData sharedInstance] insertNewObject : @"RollingPaper"
-                                                                                 initWith : p];
+            entity = (RollingPaper*)[[UECoreData sharedInstance] insertNewObject : @"RollingPaper"
+                                                                        initWith : p];
+            entity.is_new = [NSNumber numberWithBool:YES];
             NSLog(@"%@",entity);
         }
         

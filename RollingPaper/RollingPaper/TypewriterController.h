@@ -23,6 +23,7 @@
     BOOL isInEditing;
 }
 @property (nonatomic,weak) id<TypewriterControllerDelegate> delegate;
+@property (nonatomic,weak) IBOutlet UIView* containerView;
 @property (weak, nonatomic) IBOutlet UITextView *textView;
 @property (weak, nonatomic) IBOutlet ColorPalette *colorPalette;
 - (IBAction)onTouchEndType:(id)sender;

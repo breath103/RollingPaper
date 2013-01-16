@@ -37,6 +37,7 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions{
     UINavigationBar* navigationBar = self.navigationController.navigationBar;
     [navigationBar setBackgroundImage:[UIImage imageNamed:@"status_bar"]
                         forBarMetrics:UIBarMetricsDefault];
+
     /*
     UINavigationItem* navigationItem = self.navigationController.navigationItem;
     NSLog(@"%@",navigationItem);
@@ -57,12 +58,15 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions{
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
+    [[UECoreData sharedInstance]saveContext];
+
+    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
+    
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
 }
 
@@ -73,6 +77,7 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions{
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
+    [[UECoreData sharedInstance]saveContext];
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 - (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window

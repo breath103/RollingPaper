@@ -9,5 +9,9 @@
 #import "FacebookHelper.h"
 
 @implementation FacebookHelper
-
+-(NSDate*) facebookDateToNSDate : (NSString*) str{
+    NSDateFormatter* dateFormatter = [[NSDateFormatter alloc]init];
+    [dateFormatter setDateFormat:@"MM/dd/yyyy"];
+    return [dateFormatter dateFromString:str];
+}
 @end

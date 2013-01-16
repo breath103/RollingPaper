@@ -19,4 +19,6 @@
 @property (nonatomic,strong) NSMutableArray* colors;
 @property (nonatomic,strong) UIScrollView* scrollView;
 -(void) createColorButtonsWithColors : (NSMutableArray*) colors;
+
++(NSMutableArray*) getDefaultColorArray;
 @end
