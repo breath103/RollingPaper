@@ -59,3 +59,17 @@ typedef struct UEUIMargin UEUIMargin;
                                        firstTouch : (UITouch *) firstTouch
                                       secondTouch : (UITouch *) secondTouch;
 @end
+
+
+@interface UIView(AnimationMacro)
+-(void) fadeIn : (float) duration;
+-(void) fadeOut : (float) duration;
+-(BOOL) fadeToggle : (float) duration;
+@end
+
+
+
+
+
+
+

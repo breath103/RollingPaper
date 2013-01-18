@@ -14,6 +14,7 @@ typedef enum DockMenuType {
     DockMenuTypeKeyboard,
     DockMenuTypePencilcase,
     DockMenuTypeMicrophone,
+    DockMenuTypeSave
 } DockMenuType;
 
 @class DockController;
@@ -39,5 +40,6 @@ typedef enum DockMenuType {
 - (IBAction)onTouchMicrophone:(id)sender;
 - (IBAction)onTouchPencilcase:(id)sender;
 - (IBAction)onTouchShowToggleButton:(id)sender;
+- (IBAction)onTouchSave:(id)sender;
 
 @end

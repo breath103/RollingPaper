@@ -18,11 +18,18 @@
 
 -(NSUInteger)supportedInterfaceOrientations
 {
-    return [[self topViewController] supportedInterfaceOrientations];
+//    NSLog(@"%@",self.topViewController);
+    if(![self isKindOfClass:UIImagePickerController.class])
+        return [[self topViewController] supportedInterfaceOrientations];
+    else
+        return [super supportedInterfaceOrientations];
 }
-
 - (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
 {
-    return [[self topViewController] preferredInterfaceOrientationForPresentation];
+//    NSLog(@"%@",self.topViewController);
+    if(![self isKindOfClass:UIImagePickerController.class])
+        return [[self topViewController] preferredInterfaceOrientationForPresentation];
+    else
+        return [super preferredInterfaceOrientationForPresentation];
 }
 @end

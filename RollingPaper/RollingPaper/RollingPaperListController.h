@@ -16,5 +16,6 @@
 @property (weak, nonatomic) IBOutlet UIScrollView *paperScrollView;
 @property (weak, nonatomic) IBOutlet UIImageView *profileImageView;
 -(IBAction)onTouchAddPaper:(id)sender;
+- (IBAction)onTouchRefresh:(id)sender;
 
 @end

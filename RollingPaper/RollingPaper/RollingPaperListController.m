@@ -40,7 +40,11 @@
 }
 -(void) removeAllPaperViews{
     for(PaperCellController* controller in paperCellControllers){
-        [controller.view removeFromSuperview];
+        [UIView animateWithDuration:0.3f animations:^{
+            controller.view.alpha = 0.0f;
+        } completion:^(BOOL finished) {
+            [controller.view removeFromSuperview];
+        }];
         [controller removeFromParentViewController];
     }
     [paperCellControllers removeAllObjects];
@@ -99,6 +103,9 @@
             entity.is_new = [NSNumber numberWithBool:YES];
             NSLog(@"%@",entity);
         }
+        else{
+            [entity setValuesWithDictionary:p];
+        }
         
         if([entity.is_sended compare:@"NONE"] == NSOrderedSame)
         {
@@ -146,7 +153,6 @@
         UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onTapUserSetting)];
         [profileImageView addGestureRecognizer:tapGesture];
          */
-       
         [self refreshPaperList];
     }
     else{
@@ -187,11 +193,16 @@
     [self.navigationController pushViewController:controller animated:TRUE];
 }
 
+- (IBAction)onTouchRefresh:(id)sender {
+    [self refreshPaperList];
+}
+
 
 -(BOOL)shouldAutorotate
 {
     return YES;
 }
+/*
 -(NSUInteger)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;// | UIInterfaceOrientationMaskPortraitUpsideDown;
@@ -201,4 +212,5 @@
 {
     return UIInterfaceOrientationPortrait;
 }
+ */
 @end

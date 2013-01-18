@@ -7,6 +7,8 @@
 //
 
 #import "FBFriendSearchPickerController.h"
+#import "NetworkTemplate.h"
+#import "UserInfo.h"
 
 @implementation FBFriendSearchPickerController
 @synthesize searchBar;
@@ -25,6 +27,30 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     [self addSearchBarToFriendPickerView];
+    
+    UINavigationBar* navigationBar = self.navigationController.navigationBar;
+    UIToolbar* toolbar = NULL;
+    for(id view in self.view.subviews)
+        if( [view isKindOfClass:UIToolbar.class])
+            toolbar = view;
+
+    [toolbar setBackgroundImage:[UIImage imageNamed:@"status_bar"]
+             forToolbarPosition:UIToolbarPositionAny
+                     barMetrics:UIBarMetricsDefault];
+    
+    for(id view in toolbar.items){
+        NSLog(@"%@",view);
+    }
+    ASIFormDataRequest* request = [NetworkTemplate requestForSearchingFacebookFriendUsingRollingPaper:[UserInfo getUserIdx].stringValue];
+    [request setCompletionBlock:^{
+        NSDictionary* dict = parseJSON(request.responseString);
+        self.appUsingFriends = [dict objectForKey:@"friends"];
+        NSLog(@"%@",self.appUsingFriends);
+    }];
+    [request setFailedBlock:^{
+        
+    }];
+    [request startAsynchronous];
 }
 
 - (void)didReceiveMemoryWarning
@@ -34,21 +60,35 @@
 }
 
 
-
+-(BOOL) isAppUsingFriend : (NSString*) friend_id{
+    for(NSString* fb_id in self.appUsingFriends){
+        if([fb_id compare:friend_id] == NSOrderedSame)
+            return TRUE;
+    }
+    return FALSE;
+}
 -(BOOL) delegateFriendPickerViewController:(FBFriendPickerViewController *)friendPicker
                          shouldIncludeUser:(id<FBGraphUser>)user{
-    if (self.searchText && ![self.searchText isEqualToString:@""]) {
-        NSRange result = [user.name rangeOfString:self.searchText
-                                          options:NSCaseInsensitiveSearch];
-        if (result.location != NSNotFound) {
-            return YES;
+    
+    
+    if(1)// [self isAppUsingFriend:[user id]])
+    {
+        if (self.searchText && ![self.searchText isEqualToString:@""]) {
+            NSRange result = [user.name rangeOfString:self.searchText
+                                              options:NSCaseInsensitiveSearch];
+            if (result.location != NSNotFound) {
+                return YES;
+            } else {
+                return NO;
+            }
         } else {
-            return NO;
+            return YES;
         }
-    } else {
         return YES;
     }
-    return YES;
+    else{
+        return NO;
+    }
 }
 
 

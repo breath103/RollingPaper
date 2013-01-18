@@ -11,7 +11,8 @@
 @interface FBFriendSearchPickerController : FBFriendPickerViewController<UISearchBarDelegate>
 @property (nonatomic,strong) UISearchBar* searchBar;
 @property (nonatomic,strong) NSString*    searchText;
+@property (nonatomic,strong) NSArray*     appUsingFriends;
+
 -(BOOL) delegateFriendPickerViewController:(FBFriendPickerViewController *)friendPicker
                          shouldIncludeUser:(id<FBGraphUser>)user;
-
 @end

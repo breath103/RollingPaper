@@ -21,11 +21,13 @@
 #import "UELib/UEUI.h"
 #import "macro.h"
 #import "RecoderController.h"
-#import "CameraController.h"
+//#import "CameraController.h"
 #import "AlbumController.h"
 #import "PencilcaseController.h"
 #import "BlockSupport/NSObject+block.h"
 #import <QuartzCore/QuartzCore.h>
+#import "UEFileManager.h"
+
 
 #define BORDER (10.0f)
 
@@ -62,7 +64,6 @@
 -(void) initLeftDockMenu{
     self.dockController = [[DockController alloc]initWithDelegate:self];
     [self addChildViewController:self.dockController];
-    
 }
 -(void) initContentsScrollContainer{
     self.contentsContainer.contentSize = CGSizeMake(self.entity.width.floatValue,
@@ -70,7 +71,31 @@
     self.contentsScrollContainer = [[UIView alloc] initWithFrame:CGRectMake(0, 0,
                                                                             self.entity.width.floatValue,
                                                                             self.entity.height.floatValue)];
-    self.contentsScrollContainer.backgroundColor = [UIColor blackColor];
+//    NSLog(@"%@",entity.background);
+    
+    /////
+    NSData* backgroundData = [UEFileManager readDataFromLocalFile:[NSString stringWithFormat:@"paperbg_%@",entity.background]];
+    if(backgroundData){
+        NSLog(@"%@가 로컬에 있음",entity.background);
+        self.contentsScrollContainer.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageWithData:backgroundData]];
+    }
+    else{
+        NSLog(@"%@가 로컬에 없음",entity.background);
+        ASIHTTPRequest* request = [NetworkTemplate requestForBackgroundImage:entity.background];
+        [request setCompletionBlock:^{
+            UIImage* image = [UIImage imageWithData:request.responseData];
+            self.contentsScrollContainer.backgroundColor = [UIColor colorWithPatternImage:image];
+            [self.contentsScrollContainer setNeedsDisplay];
+            
+            [UEFileManager writeData:request.responseData ToLocalFile:[NSString stringWithFormat:@"paperbg_%@",entity.background]];
+        }];
+        [request setFailedBlock:^{
+            NSLog(@"%@",request);
+        }];
+        [request startAsynchronous];
+    }
+    ///
+    
     self.contentsScrollContainer.userInteractionEnabled = TRUE;
     UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self
                                                                                 action:@selector(onTapScrollBack:)];
@@ -124,12 +149,9 @@
     [self initLeftDockMenu];
     [self initContentsScrollContainer];
     [self loadAndShowContents];
-   
     [self onChangeToEditingMode];
     
     self.transformTargetView = NULL;
-    
-//    [self.dockController show];
 }
 
 
@@ -278,6 +300,8 @@
     soundEntity.user_idx  = [NSNumber numberWithInt:[UserInfo getUserIdx].intValue];
     soundEntity.x         = [NSNumber numberWithFloat:self.view.frame.size.width /2];
     soundEntity.y         = [NSNumber numberWithFloat:self.view.frame.size.height/2];
+    soundEntity.width     = [NSNumber numberWithFloat:SOUND_CONTENT_WIDTH];
+    soundEntity.height    = [NSNumber numberWithFloat:SOUND_CONTENT_HEIGHT];
     soundEntity.sound     = [file mutableCopy];
     
     SoundContentView* entityView = [[SoundContentView alloc] initWithEntity:soundEntity];
@@ -316,12 +340,14 @@
 -(BOOL) canBecomeFirstResponder{
     return YES;
 }
+/*
 - (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event{
     if (event.type    == UIEventTypeMotion &&
         event.subtype == UIEventSubtypeMotionShake) {
         [self.navigationController popViewControllerAnimated:TRUE];
     }
 }
+ */
 - (void)viewDidUnload {
     [self setContentsContainer:nil];
     [super viewDidUnload];
@@ -347,19 +373,28 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer : (UIGestureRecognizer *)othe
     [dock hide];
     switch (menuType) {
         case DockMenuTypeCamera:{
+            /*
             CameraController* camViewController = [[CameraController alloc] initWithDelegate:self];
             [self addChildViewController:camViewController];
             [self.view addSubview:camViewController.view];
+             */
+            UIImagePickerController* cameraController = [[UIImagePickerController alloc]init];
+            cameraController.sourceType = UIImagePickerControllerSourceTypeCamera;
+            cameraController.cameraCaptureMode = UIImagePickerControllerCameraCaptureModePhoto;
+            cameraController.cameraFlashMode = UIImagePickerControllerCameraFlashModeAuto;
+            cameraController.allowsEditing = TRUE;
+            cameraController.delegate = self;
+            
+            [self presentViewController:cameraController
+                               animated:TRUE
+                             completion:^{
+                                
+                             }];
         }break;
         case DockMenuTypeAlbum:{
-            [UIView animateWithDuration:1.0f
-                             animations:^{
-                                 UIViewSetOrigin(button, CGPointMake(0, 0));
-                             } completion:^(BOOL finished) {
-                                 AlbumController* albumController = [[AlbumController alloc]initWithDelegate:self];
-                                 [self addChildViewController:albumController];
-                                 [self.view addSubview:albumController.view];
-                             }];
+            AlbumController* albumController = [[AlbumController alloc]initWithDelegate:self];
+            [self addChildViewController:albumController];
+            [self.view addSubview:albumController.view];
         }break;
         case DockMenuTypeKeyboard : {
             TypewriterController* typewriterController = [[TypewriterController alloc]initWithDelegate:self];
@@ -380,11 +415,16 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer : (UIGestureRecognizer *)othe
             [self addChildViewController:pencilcaseController];
             [self.view addSubview:pencilcaseController.view];
         }break;
+        case DockMenuTypeSave : {
+            [self.navigationController popViewControllerAnimated:TRUE];
+        }break;
         default:
+            NSLog(@"Unhandled dock menu %d",menuType);
             break;
     }
 }
 #pragma mark CameraControllerDelegate 
+/*
 -(void) cameraController:(CameraController *)camera
              onPickImage:(UIImage *)image{
     if(image){
@@ -397,11 +437,30 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer : (UIGestureRecognizer *)othe
 -(void) cameraControllerCancelPicking:(CameraController *)camera{
     
 }
+ */
+-(void) imagePickerController : (UIImagePickerController *)picker
+didFinishPickingMediaWithInfo : (NSDictionary *)info{
+    ImageContentView* contentView = [self onCreateImage:[info objectForKey:UIImagePickerControllerEditedImage]];
+    contentView.center = ccpAdd(ccp(self.view.frame.size.width/2 ,
+                                    self.view.frame.size.height/2),self.contentsContainer.contentOffset);
+    
+    [self dismissViewControllerAnimated:TRUE completion:^{
+        
+    }];
+}
+-(void) imagePickerControllerDidCancel : (UIImagePickerController *)picker{
+    [self dismissViewControllerAnimated:TRUE completion:^{
+        
+    }];
+}
 #pragma mark AlbumControllerDelegate
 -(void) albumController:(AlbumController *)albumController
               pickImage:(UIImage *)image
                withInfo:(NSDictionary *)infodict{
-    [self onCreateImage:image];
+    ImageContentView* contentView = [self onCreateImage:image];
+    contentView.center = ccpAdd(ccp(self.view.frame.size.width/2 ,
+                                    self.view.frame.size.height/2),self.contentsContainer.contentOffset);
+    
     [albumController removeFromParentViewController];
     [albumController.view removeFromSuperview];
 }
@@ -439,9 +498,17 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer : (UIGestureRecognizer *)othe
     SoundContentView* createdSoundView = [self onCreateSound:file];
     [recoderController removeFromParentViewController];
     [recoderController.view removeFromSuperview];
-    
+
+    NSLog(@"%@",createdSoundView);
+    CGRect rect = createdSoundView.frame;
+    rect.size   = CGSizeMake(50, 50);
+    rect.origin = ccp(480/2, 320/2);
     UIViewSetOrigin(createdSoundView, CGPointMake(self.view.frame.origin.x/2, self.view.frame.origin.y/2));
-}                                          
+    //브러쉬로 그리는 화면은 스크롤 위치가 포함 안되기 때문에 정리
+    rect.origin = ccpAdd(rect.origin, self.contentsContainer.contentOffset);
+    createdSoundView.frame = rect;
+    NSLog(@"%@",createdSoundView);
+}
 
 
 /*
@@ -497,13 +564,13 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer : (UIGestureRecognizer *)othe
                                          duration:(NSTimeInterval)duration{}
 -(void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
                                 duration:(NSTimeInterval)duration{
-    if(UIInterfaceOrientationIsPortrait(self.interfaceOrientation) &&
-       UIInterfaceOrientationIsLandscape(toInterfaceOrientation) ){
+    if( UIInterfaceOrientationIsPortrait(self.interfaceOrientation) &&
+        UIInterfaceOrientationIsLandscape(toInterfaceOrientation) ){
         NSLog(@"TO Inspecting Mode");
         [self onChangeToInspectingMode];
     }
-    else if(UIInterfaceOrientationIsLandscape(self.interfaceOrientation) &&
-            UIInterfaceOrientationIsPortrait(toInterfaceOrientation)){
+    else if( UIInterfaceOrientationIsLandscape(self.interfaceOrientation) &&
+             UIInterfaceOrientationIsPortrait(toInterfaceOrientation)){
         NSLog(@"TO Editing Mode");
         [self onChangeToEditingMode];
     }
@@ -511,15 +578,22 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer : (UIGestureRecognizer *)othe
         NSLog(@"%d %d",self.interfaceOrientation,toInterfaceOrientation);
     
 }
--(BOOL) shouldAutorotate{ return YES; }
--(NSUInteger) supportedInterfaceOrientations{
+-(BOOL) shouldAutorotate{
+    return YES;
+}
+-(NSUInteger) supportedInterfaceOrientations
+{
     return UIInterfaceOrientationMaskAll;
+}
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
+{
+    return UIInterfaceOrientationPortrait;
 }
 
 #pragma mark UIScrollViewDelegate
 -(void)scrollViewDidZoom:(UIScrollView *)scrollView{}
 -(void) scrollViewDidEndZooming:(UIScrollView *)scrollView
-                       withView:(UIView *)view
+                       withView:(UIView *)view  
                         atScale:(float)scale{
     if(isEditingMode){
         [scrollView setZoomScale:1.0f animated:TRUE];
@@ -528,6 +602,9 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer : (UIGestureRecognizer *)othe
 -(UIView*) viewForZoomingInScrollView:(UIScrollView *)scrollView{
     return self.contentsScrollContainer;
 }
+
+
+
 @end
 
 

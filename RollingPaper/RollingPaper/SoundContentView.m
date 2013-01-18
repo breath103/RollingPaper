@@ -15,6 +15,8 @@
 #import "macro.h"
 #import "CGPointExtension.h"
 
+
+
 @implementation SoundContentView
 @synthesize isNeedToSyncWithServer;
 @synthesize entity;
@@ -23,7 +25,7 @@
     if(self){
         self.entity = aEntity;
         self.userInteractionEnabled = TRUE;
-        self.frame = CGRectMake(0,0,1,1);
+        self.frame = CGRectMake(0,0,SOUND_CONTENT_WIDTH,SOUND_CONTENT_HEIGHT);
         if(entity.sound){
             self.image = [UIImage imageNamed:@"sound_icon.png"];
             NSString* urlString = [entity.sound stringByReplacingOccurrencesOfString:@"localhost" withString:SERVER_IP];
@@ -70,10 +72,11 @@
     }
 }
 -(void) updateViewWithEntity{
-    self.center = ccp(self.entity.x.floatValue,self.entity.y.floatValue);
+    self.center = ccp( self.entity.x.floatValue,
+                       self.entity.y.floatValue );
     
     CGRect bounds = self.bounds;
-    bounds.size = CGSizeMake(self.entity.width.floatValue,self.entity.height.floatValue);
+    bounds.size = CGSizeMake(SOUND_CONTENT_WIDTH,SOUND_CONTENT_HEIGHT);
     self.bounds = bounds;
     self.transform = CGAffineTransformMakeRotation(self.entity.rotation.floatValue);
 }
@@ -93,7 +96,7 @@
 }
 -(void) syncEntityWithServer{
     if(isNeedToSyncWithServer) {
-        if(self.entity.sound == NULL){
+        if(self.entity.idx == NULL){
             [self updateEntityWithView];
             ASIFormDataRequest* request = [NetworkTemplate requestForUploadSoundContentWithUserIdx:[UserInfo getUserIdx].stringValue
                                                                                             entity:self.entity

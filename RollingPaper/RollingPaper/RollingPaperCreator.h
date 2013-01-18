@@ -27,6 +27,8 @@
 @property (weak, nonatomic) IBOutlet UIDatePicker *timePicker;
 @property (nonatomic,weak) IBOutlet UIScrollView* scrollView;
 @property (nonatomic,strong) NSString* receiverFacebookID;
+- (IBAction)onTouchPrevious:(id)sender;
+- (IBAction)onTouchNext:(id)sender;
 
 - (IBAction)onTouchSend:(id)sender;
 - (IBAction)onTouchPickFriend:(id)sender;

@@ -15,11 +15,21 @@
         onEndRecodingWithFile : (NSString*) file;
 @end
 
-@interface RecoderController : UIViewController
+@interface RecoderController : UIViewController<AVAudioPlayerDelegate>
 @property (nonatomic,strong) UESoundRecoder* recoder;
-@property (nonatomic,weak) id<RecoderViewControllerDelegate> delegate;
-@property (weak, nonatomic) IBOutlet UIButton *recodeButton;
+@property (nonatomic,weak)   id<RecoderViewControllerDelegate> delegate;
+@property (nonatomic,strong) AVAudioPlayer* audioPlayer;
+@property (weak, nonatomic) IBOutlet UIImageView *recodingCircle;
+@property (weak, nonatomic) IBOutlet UIImageView *recodingCircleGlow;
+@property (weak, nonatomic) IBOutlet UIButton *recodingButton;
+@property (weak, nonatomic) IBOutlet UIButton *playButton;
+@property (weak, nonatomic) IBOutlet UIButton *stopButton;
+
+- (IBAction)onTouchRecoding:(id)sender;
+- (IBAction)onTouchStop:(id)sender;
+- (IBAction)onTouchPlay:(id)sender;
+- (IBAction)onTouchDone:(id)sender;
+- (IBAction)onTouchCancel:(id)sender;
 
 -(id) initWithDelegate : (id<RecoderViewControllerDelegate>) aDelegate;
-- (IBAction)onTouchButton:(id)sender;
 @end

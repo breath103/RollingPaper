@@ -92,7 +92,6 @@
 								<string key="NSFrame">{{271, 4}, {33, 33}}</string>
 								<reference key="NSSuperview" ref="864168657"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<reference key="IBUIBackgroundColor" ref="468943403"/>
 								<bool key="IBUIOpaque">NO</bool>
@@ -429,6 +428,8 @@
 					<string key="className">PencilcaseController</string>
 					<string key="superclassName">UIViewController</string>
 					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="onSelectColor:">id</string>
+						<string key="onToolTouched:">id</string>
 						<string key="onTouchClear:">id</string>
 						<string key="onTouchColor:">id</string>
 						<string key="onTouchEndPaint:">id</string>
@@ -436,6 +437,14 @@
 						<string key="onTouchUndo:">id</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="onSelectColor:">
+							<string key="name">onSelectColor:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="onToolTouched:">
+							<string key="name">onToolTouched:</string>
+							<string key="candidateClassName">id</string>
+						</object>
 						<object class="IBActionInfo" key="onTouchClear:">
 							<string key="name">onTouchClear:</string>
 							<string key="candidateClassName">id</string>

@@ -16,16 +16,18 @@
                 endEditImage : (UIImage*) image;
 @end
 
-@interface TypewriterController : UIViewController<UITextViewDelegate,
-    ColorPaletteDelegate>
+@interface TypewriterController : UIViewController<UITextViewDelegate,ColorPaletteDelegate>
 {
     @private
     BOOL isInEditing;
 }
-@property (nonatomic,weak) id<TypewriterControllerDelegate> delegate;
-@property (nonatomic,weak) IBOutlet UIView* containerView;
-@property (weak, nonatomic) IBOutlet UITextView *textView;
+@property (weak,nonatomic) id<TypewriterControllerDelegate> delegate;
+@property (weak,nonatomic) IBOutlet UIButton *doneButton;
+@property (weak,nonatomic) IBOutlet UITextView *textView;
 @property (weak, nonatomic) IBOutlet ColorPalette *colorPalette;
-- (IBAction)onTouchEndType:(id)sender;
+@property (weak, nonatomic) IBOutlet UIView *fontPalette;
+-(IBAction)onTouchDone:(id)sender;
+- (IBAction)onTouchFontButton:(id)sender;
+- (IBAction)onTouchColor:(id)sender;
 -(id) initWithDelegate : (id<TypewriterControllerDelegate>) delegate;
 @end

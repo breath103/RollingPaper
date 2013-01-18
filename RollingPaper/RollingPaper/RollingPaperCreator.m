@@ -10,6 +10,7 @@
 #import "NetworkTemplate.h"
 #import "UserInfo.h"
 #import "NSObject+block.h"
+#import "UserInfo.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface RollingPaperCreator ()
@@ -27,13 +28,7 @@
 @synthesize contentContainer;
 @synthesize receiverFacebookID;
 
--(void) viewDidAppear:(BOOL)animated{
 
-    self.navigationController.navigationBarHidden = FALSE;
-}
--(void) viewWillDisappear:(BOOL)animated{
-    self.navigationController.navigationBarHidden = TRUE;
-}
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -69,15 +64,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.navigationController.navigationBarHidden = FALSE;
-    self.navigationItem.title = @"Rolling Paper 만들기";
-   
-    NSLog(@"%@",self.navigationController.navigationItem.rightBarButtonItem );
-    
     UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                                                         action:@selector(hideKeyboard)];
     gestureRecognizer.cancelsTouchesInView = NO;
     [self.view addGestureRecognizer:gestureRecognizer];
+    
+    [[NetworkTemplate requestForSearchingFacebookFriendUsingRollingPaper:[UserInfo getUserIdx].stringValue] startAsynchronous];
     
     [self initScrollView];
     
@@ -117,6 +109,14 @@
     }
     return TRUE;
 }
+- (IBAction)onTouchPrevious:(id)sender {
+    [self.navigationController popViewControllerAnimated:TRUE];
+}
+
+- (IBAction)onTouchNext:(id)sender {
+    [self onTouchSend:NULL];
+}
+
 - (IBAction)onTouchSend:(id)sender {
     if([self confirmInputs])
     {
@@ -154,7 +154,7 @@
 - (IBAction)onTouchPickFriend:(id)sender {
     if(!friendPickerController){
         friendPickerController = [[FBFriendSearchPickerController alloc] init];
-        friendPickerController.title    = @"Pick Friends";
+        friendPickerController.title    = @"친구 선택";
         friendPickerController.delegate = self;
         friendPickerController.allowsMultipleSelection = FALSE;
         

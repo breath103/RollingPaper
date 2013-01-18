@@ -2,7 +2,7 @@
 //  RollingPaper.m
 //  RollingPaper
 //
-//  Created by 이상현 on 13. 1. 15..
+//  Created by 이상현 on 13. 1. 17..
 //  Copyright (c) 2013년 상현 이. All rights reserved.
 //
 
@@ -16,6 +16,7 @@
 @dynamic creator_idx;
 @dynamic height;
 @dynamic idx;
+@dynamic is_new;
 @dynamic is_sended;
 @dynamic notice;
 @dynamic participants_count;
@@ -23,7 +24,7 @@
 @dynamic title;
 @dynamic update_time;
 @dynamic width;
-@dynamic is_new;
+@dynamic background;
 @dynamic contents;
 
 @end

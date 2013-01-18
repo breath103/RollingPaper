@@ -32,10 +32,12 @@
         self.imagePickerController.allowsEditing = TRUE;
         self.imagePickerController.delegate = self;
     }
+    self.definesPresentationContext = TRUE;
     [self presentViewController:self.imagePickerController
-                       animated:TRUE
-                     completion:^{
-                     }];
+                                            animated:TRUE
+                                          completion:^{
+                                            
+                                          }];
 }
 - (void)didReceiveMemoryWarning
 {
@@ -49,14 +51,14 @@
 -(void) imagePickerController:(UIImagePickerController *)picker
 didFinishPickingMediaWithInfo:(NSDictionary *)info{
     NSLog(@"%@",info);
-    [self dismissViewControllerAnimated:TRUE completion:^{
+    [self.parentViewController dismissViewControllerAnimated:TRUE completion:^{
         [self.delegate albumController:self
                              pickImage:[info objectForKey:UIImagePickerControllerEditedImage]
                               withInfo:info ];
     }];
 }
 -(void) imagePickerControllerDidCancel:(UIImagePickerController *)picker{
-    [self dismissViewControllerAnimated:TRUE completion:^{
+    [self.parentViewController dismissViewControllerAnimated:TRUE completion:^{
         [self.delegate albumControllerCancelPickingImage:self];
     }];
 }

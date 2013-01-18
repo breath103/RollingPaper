@@ -18,6 +18,8 @@
 @property (nonatomic,weak) id<ColorPaletteDelegate> delegate;
 @property (nonatomic,strong) NSMutableArray* colors;
 @property (nonatomic,strong) UIScrollView* scrollView;
+@property (nonatomic,readwrite) CGPoint offset;
+-(void) createDefaultColorButtons;
 -(void) createColorButtonsWithColors : (NSMutableArray*) colors;
 
 +(NSMutableArray*) getDefaultColorArray;

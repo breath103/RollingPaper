@@ -11,4 +11,5 @@
 @interface LoginMethodViewController : UIViewController
 
 - (IBAction)onTouchFacebookLogin:(id)sender;
+- (IBAction)onTouchLogin:(id)sender;
 @end

@@ -65,14 +65,8 @@ NSString* TOOL_TYPE_STRING[TOOL_COUNT] = {
 
 - (void) initColorPopover{
     self.colorPalette.delegate = self;
-    NSMutableArray* colors = [NSMutableArray arrayWithObjects: UIColorXRGB(0,0,0),
-                                                 UIColorXRGB(255,30,0),
-                                                 UIColorXRGB(246,207,40),
-                                                 UIColorXRGB(94,116,62),
-                                                 UIColorXRGB(58,81,96),
-                                                 UIColorXRGB(98,77,149),
-                                                 UIColorXRGB(255,0,102), nil];
-    [self.colorPalette createColorButtonsWithColors:colors];
+    self.colorPalette.offset = ccp(0,-6);
+    [self.colorPalette createDefaultColorButtons];
     NSLog(@"%@\%@",self.colorPalette,self.colorPalette.backgroundColor);
     self.colorPalette.alpha = 0.0f;
 }

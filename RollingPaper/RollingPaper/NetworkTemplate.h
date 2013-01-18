@@ -22,7 +22,6 @@
 +(ASIFormDataRequest*) requestForFacebookJoinWithMe : (id<FBGraphUser>) me
                                         accessToken : (NSString*) accesstoken;
 +(ASIFormDataRequest*) requestForPhoneAuth : (NSString*) phone;
-
 // 방생성, 조회, 초대 관련 리퀘스트들
 +(ASIFormDataRequest*) requestForCreateRollingPaperWithUserIdx : (NSString*) creator_idx
                                                          title : (NSString*) title
@@ -31,7 +30,6 @@
                                                   receiverFBid : (NSString*) receiver_fb_id
                                                   receiverName : (NSString*) receiver_name
                                                   receieveTime : (NSString*) receiveTime;
-
 +(ASIFormDataRequest*) requestForRollingPaperListWithUserIdx : (NSString*) useridx;
 +(ASIFormDataRequest*) requestForRollingPaperContents : (NSString*) paper_idx
                                             afterTime : (long) timestamp;
@@ -45,8 +43,11 @@
 +(ASIFormDataRequest*) requestForUploadSoundContentWithUserIdx : (NSString*) useridx
                                                         entity : (SoundContent*) entity
                                                          sound : (NSData*) image;
++(ASIFormDataRequest*) requestForSearchingFacebookFriendUsingRollingPaper : (NSString*) useridx;
 // 컨텐츠 수정 관련 리퀘스트
 +(ASIFormDataRequest*) requestForSynchronizeImageContent : (ImageContent*) entity;
 +(ASIFormDataRequest*) requestForSynchronizeSoundContent : (SoundContent*) entity;
+
++(ASIHTTPRequest*) requestForBackgroundImage : (NSString*) background;
 
 @end

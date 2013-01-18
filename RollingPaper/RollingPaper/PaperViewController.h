@@ -15,7 +15,7 @@
 #import "UIFreeTransformGestureRecognizer.h"
 
 #import "DockController.h"
-#import "CameraController.h"
+//#import "CameraController.h"
 #import "AlbumController.h"
 #import "RecoderController.h"
 #import "TypewriterController.h"
@@ -29,7 +29,8 @@
                                                    UIScrollViewDelegate,
                                                    DockControllerDelegate,
                                                    TypewriterControllerDelegate,
-                                                   CameraContorllerDelegate,
+                                                //   CameraContorllerDelegate,
+                                                   UIImagePickerControllerDelegate,
                                                    AlbumControllerDelegate,
                                                    RecoderViewControllerDelegate,
                                                    PencilcaseControllerDelegate,

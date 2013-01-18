@@ -37,15 +37,21 @@
         [self addSubview:self.scrollView];
     }
 }
-
+-(void) createDefaultColorButtons{
+    [self createColorButtonsWithColors:[ColorPalette getDefaultColorArray]];
+}
 -(void) createColorButtonsWithColors : (NSMutableArray*) aColors{
     self.colors = aColors;
     int index = 0;
     CGSize colorSize = CGSizeMake(29.5, 29.5);
+    CGRect scrollBounds = CGRectNull;
     for(UIColor* color in self.colors){
         UIButton* button = [UIButton buttonWithType:UIButtonTypeCustom];
         button.frame  = CGRectMake(0,0,colorSize.width,colorSize.height);
-        button.center = CGPointMake(15 + index++ * (colorSize.width + 8), self.bounds.size.height/2.0f);
+        button.center = CGPointMake(15 + index++ * (colorSize.width + 8) + self.offset.x,
+                                    self.bounds.size.height/2.0f + self.offset.y);
+        
+        scrollBounds = CGRectUnion(scrollBounds, button.frame);
         
         button.layer.cornerRadius = (colorSize.width + colorSize.height) / 2.0f / 2.0f;
         button.layer.borderWidth  = 3.0f;
@@ -65,6 +71,7 @@
         
         [self.scrollView  addSubview:button];
     }
+    self.scrollView.contentSize = scrollBounds.size;
 }
 
 -(void) onSelectColor : (id) sender{

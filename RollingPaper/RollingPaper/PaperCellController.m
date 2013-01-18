@@ -112,10 +112,14 @@
     [self.view addGestureRecognizer:tapGestureRecognizer];
     
     [self refreshViewWithEntity];
-    
+
     if(self.entity.is_new.boolValue){
         NSLog(@"%@ 는 New",self.entity);
-        self.view.backgroundColor = [UIColor redColor];
+    //    self.view.backgroundColor = [UIColor redColor];
+        self.indicatorForNew.hidden = FALSE;
+    }
+    else{
+        self.indicatorForNew.hidden = TRUE;
     }
 }
 

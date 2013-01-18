@@ -60,6 +60,9 @@
                                   }];
     }
 }
+
+- (IBAction)onTouchLogin:(id)sender {
+}
 -(void) onFacebookSessionActivated : (FBSession*) session{
     FBRequest* fbRequest = [FBRequest requestWithGraphPath:@"/me"
                                                 parameters:[NSDictionary dictionaryWithObjectsAndKeys:@"id,picture,name,birthday,email",@"fields",nil]

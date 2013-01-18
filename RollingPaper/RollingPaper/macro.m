@@ -11,6 +11,7 @@
 #include <math.h>
 
 #include "AppDelegate.h"
+#import "SBJsonParser.h"
 
 
 CGPoint CGPointRotateWithCenter( CGPoint p1 ,CGPoint center,float angle_radian)
@@ -163,6 +164,11 @@ void ShowAlertView(NSString* title,NSString* message,NSString* button1,NSString*
                                              cancelButtonTitle:button1 
                                              otherButtonTitles:button2, nil ];
     [alertView show];
+}
+NSDictionary* parseJSON(NSString* str)
+{
+    SBJsonParser* parser = [[SBJsonParser alloc]init];
+    return [parser objectWithString:str];
 }
 /*
 CGRect CGRectMake(CGPoint p,CGSize s){

@@ -160,6 +160,19 @@
     return request;
 }
 
++(ASIFormDataRequest*) requestForSearchingFacebookFriendUsingRollingPaper : (NSString*) user_idx{
+    NSString* requestURL = [SERVER_HOST stringByAppendingString:@"/user/isFacebookFriendUsingRollingPaper"];
+    ASIFormDataRequest* request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:requestURL]];
+    [request addPostValue:user_idx forKey:@"user_idx"];
+    return request;
+}
+
++(ASIHTTPRequest*) requestForBackgroundImage : (NSString*) background{
+    NSString* requestURL = [NSString stringWithFormat:@"%@/background/%@",SERVER_HOST,background];
+    NSLog(@"%@",requestURL);
+    ASIHTTPRequest* request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:requestURL]];
+    return request;
+}
 
 
 @end
