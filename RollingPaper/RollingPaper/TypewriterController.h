@@ -30,6 +30,7 @@
 @property (weak,nonatomic) IBOutlet UIButton *textAlignButton;
 @property (weak,nonatomic) IBOutlet UIView *colorPaletteContainer;
 @property (weak,nonatomic) IBOutlet UIView *textAlignContainer;
+@property (weak, nonatomic) IBOutlet UIButton *colorButton;
 - (IBAction)onTouchAlignButton:(id)sender;
 - (IBAction)onTouchDone:(id)sender;
 - (IBAction)onTouchCancel:(id)sender;

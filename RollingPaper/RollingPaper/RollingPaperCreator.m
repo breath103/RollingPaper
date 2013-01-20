@@ -51,6 +51,9 @@
     self.paperCellImage.layer.mask = maskLayer;
     [self.paperCellImage setNeedsDisplay];
 }
+-(void) createBackgroundButton : (NSString*) background {
+    
+}
 -(void) initScrollView{
     [self.scrollView addSubview:self.contentContainer];
     self.scrollView.contentSize = self.contentContainer.frame.size;
@@ -68,31 +71,33 @@
         float heightOffset = (self.paperBackgroundsScroll.frame.size.height - buttonSize.height * buttonColl) / (buttonColl + 1);
         for(NSString* background in backgroundList)
         {
-            [NetworkTemplate getBackgroundImage:background
-                                    withHandler:^(UIImage *image) {
-                                        UIButton* button = [UIButton buttonWithType:UIButtonTypeCustom];
-                                        button.frame = CGRectMake(widthOffset + (widthOffset+buttonSize.width) * i , heightOffset ,
-                                                                  buttonSize.width , buttonSize.height);
-                                        [button setTitle:background
-                                                forState:UIControlStateDisabled];
-                                        button.layer.cornerRadius = 4;
-                                        button.layer.shadowColor = [UIColor blackColor].CGColor;
-                                        button.layer.shouldRasterize = TRUE;
-                                        button.layer.shadowRadius = 1.0f;
-                                        button.layer.shadowOpacity = 0.5;
-                                        button.layer.shadowOffset  = CGSizeMake(3,3);
-                                        button.layer.rasterizationScale = [UIScreen mainScreen].scale;
-                                        button.backgroundColor = [UIColor colorWithPatternImage:image];
-                                        [button addTarget:self
-                                                   action:@selector(onBackgroundButtonTouched:)
-                                         forControlEvents:UIControlEventTouchUpInside];
-                                        
-                                        [self.paperBackgroundsScroll addSubview:button];
-                                        
-                                        if(i == 0){
-                                            [self onBackgroundButtonTouched:button];
-                                        }
-                                    }];
+            ^(int i){
+                [NetworkTemplate getBackgroundImage:background
+                                        withHandler:^(UIImage *image) {
+                                            UIButton* button = [UIButton buttonWithType:UIButtonTypeCustom];
+                                            button.frame = CGRectMake(widthOffset + (widthOffset+buttonSize.width) * i , heightOffset ,
+                                                                      buttonSize.width , buttonSize.height);
+                                            [button setTitle:background
+                                                    forState:UIControlStateDisabled];
+                                            button.layer.cornerRadius = 4;
+                                            button.layer.shadowColor = [UIColor blackColor].CGColor;
+                                            button.layer.shouldRasterize = TRUE;
+                                            button.layer.shadowRadius = 1.0f;
+                                            button.layer.shadowOpacity = 0.5;
+                                            button.layer.shadowOffset  = CGSizeMake(3,3);
+                                            button.layer.rasterizationScale = [UIScreen mainScreen].scale;
+                                            button.backgroundColor = [UIColor colorWithPatternImage:image];
+                                            [button addTarget:self
+                                                       action:@selector(onBackgroundButtonTouched:)
+                                             forControlEvents:UIControlEventTouchUpInside];
+                                            
+                                            [self.paperBackgroundsScroll addSubview:button];
+                                            
+                                            if(i == 0){
+                                                [self onBackgroundButtonTouched:button];
+                                            }
+                                        }];    
+            }(i);
             i++;
         }
         CGSize contentSize = self.paperBackgroundsScroll.contentSize;
@@ -141,6 +146,14 @@
         
     }
 }
+- (void)addNewParticipants{
+    float height = 33;
+    CGSize contentSize = self.scrollView.contentSize;
+    contentSize.height += height;
+    self.scrollView.contentSize = contentSize;
+    
+    UIViewSetY(self.bottomViewsContainer, self.bottomViewsContainer.frame.origin.y + height);
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -157,6 +170,8 @@
     self.datePicker.minimumDate = [NSDate date];
     self.receiveDate.inputView = self.datePicker;
     self.receiveTime.inputView = self.timePicker;
+    
+    
     
     NSLog(@"%@",self.entity);
     switch (self.controllerType) {
@@ -187,6 +202,10 @@
             break;
     }
     
+    
+    [self addNewParticipants];
+    [self addNewParticipants];
+    [self addNewParticipants];
 }
 
 - (id) initForCreating{
@@ -289,6 +308,10 @@
                         self.navigationController.delegate = self;
                         [self.navigationController pushViewController : paperViewController
                                                              animated : TRUE];
+                        
+                        if(self.listController)
+                            [self.listController refreshPaperList];
+                        
                     } waitUntilDone:TRUE];
                 }
              
@@ -320,7 +343,22 @@ clickedButtonAtIndex:(NSInteger)buttonIndex{
     if(buttonIndex == 0)
     {
         NSLog(@"방 삭제");
-        [self.navigationController popViewControllerAnimated:TRUE];
+        ASIFormDataRequest* request = [ NetworkTemplate requestForQuitRoomWithUserIdx : [UserInfo getUserIdx].stringValue
+                                                                                paper : self.entity.idx.stringValue];
+        [request setCompletionBlock:^{
+            NSLog(@"%@",request.responseString);
+            [self.navigationController popViewControllerAnimated:TRUE];
+            if(self.listController)
+               [self.listController refreshPaperList];
+        }];
+        [request setFailedBlock:^{
+            [[[UIAlertView alloc] initWithTitle:@"에러"
+                                        message:@"서버와의 통신에 실패했습니다.\n인터넷 연결 상태를 확인해주세요"
+                                       delegate:self
+                              cancelButtonTitle:nil
+                              otherButtonTitles:@"확인", @"취소",nil] show];
+        }];
+        [request startAsynchronous];
     }
     else{
         NSLog(@"취소");
@@ -380,6 +418,21 @@ clickedButtonAtIndex:(NSInteger)buttonIndex{
 - (IBAction)onTouchReceiveDate:(id)sender {
     
 }
+
+- (IBAction)onTouchInvite:(id)sender {
+    //if(!friendPickerController){
+        friendPickerController = [[FBFriendSearchPickerController alloc] init];
+        friendPickerController.title    = @"친구 선택";
+        friendPickerController.delegate = self;
+        friendPickerController.allowsMultipleSelection = TRUE;
+        
+        [friendPickerController loadData];
+        [friendPickerController clearSelection];
+    //}
+    [self presentViewController:friendPickerController
+                       animated:YES
+                     completion:^{}];
+}
 -(NSString*) dateToFormatString : (NSDate*) date{
     NSDateFormatter* dateFormatter = [[NSDateFormatter alloc]init];
     [dateFormatter setDateFormat:@"yyyy-MM-dd"];
@@ -435,5 +488,14 @@ clickedButtonAtIndex:(NSInteger)buttonIndex{
     }
     [self dismissViewControllerAnimated:YES completion:^{
     }];
+}
+-(NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;// | UIInterfaceOrientationMaskPortraitUpsideDown;
+}
+
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
+{
+    return UIInterfaceOrientationPortrait;
 }
 @end

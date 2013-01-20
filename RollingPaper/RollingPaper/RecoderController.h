@@ -10,9 +10,11 @@
 #import "UESoundRecoder.h"
 
 @class RecoderController;
+
 @protocol RecoderViewControllerDelegate<NSObject>
 -(void) recoderViewController : (RecoderController*) recoder
         onEndRecodingWithFile : (NSString*) file;
+-(void) recoderViewControllerCancelRecoding:(RecoderController *)recoder;
 @end
 
 @interface RecoderController : UIViewController<AVAudioPlayerDelegate>

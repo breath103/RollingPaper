@@ -179,6 +179,7 @@
 }
 -(void) paperCellSettingTouched:(PaperCellController *)paper{
     RollingPaperCreator* paperSettingView = [[RollingPaperCreator alloc] initForEditing:paper.entity];
+    paperSettingView.listController = self;
     [self.navigationController pushViewController:paperSettingView animated:TRUE];
 }
 
@@ -194,7 +195,8 @@
 }
 
 - (IBAction)onTouchAddPaper:(id)sender {
-    RollingPaperCreator* controller = [[RollingPaperCreator alloc]initWithNibName:@"RollingPaperCreator" bundle:NULL];
+    RollingPaperCreator* controller = [[RollingPaperCreator alloc]initForCreating];
+    controller.listController = self;
     [self.navigationController pushViewController:controller
                                          animated:TRUE];
 }
@@ -206,7 +208,7 @@
 {
     return YES;
 }
-/*
+
 -(NSUInteger)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;// | UIInterfaceOrientationMaskPortraitUpsideDown;
@@ -216,5 +218,4 @@
 {
     return UIInterfaceOrientationPortrait;
 }
- */
 @end

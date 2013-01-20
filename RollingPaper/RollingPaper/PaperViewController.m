@@ -365,7 +365,10 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer : (UIGestureRecognizer *)othe
               inButton:(UIButton *)button{
     NSLog(@"%@ %d %@",dock,menuType,button);
     self.dockController.panGestureRecognizer.enabled = FALSE;
+    
     [dock hide];
+    [dock hideIndicator];
+    
     switch (menuType) {
         case DockMenuTypeCamera:{
             /*
@@ -385,16 +388,28 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer : (UIGestureRecognizer *)othe
                              completion:^{
                                 
                              }];
+            
+            self.currentEditingViewController = cameraController;
         }break;
         case DockMenuTypeAlbum:{
             AlbumController* albumController = [[AlbumController alloc]initWithDelegate:self];
             [self addChildViewController:albumController];
             [self.view addSubview:albumController.view];
+            
+            self.currentEditingViewController = albumController;
         }break;
         case DockMenuTypeKeyboard : {
             TypewriterController* typewriterController = [[TypewriterController alloc]initWithDelegate:self];
             [self addChildViewController:typewriterController];
             [self.view addSubview:typewriterController.view];
+            UIViewSetY(typewriterController.view, self.view.frame.size.height);
+            [UIView animateWithDuration:0.3f animations:^{
+                UIViewSetY(typewriterController.view, 0);
+            } completion:^(BOOL finished) {
+                
+            }];
+            
+            self.currentEditingViewController = typewriterController;
         }break;
         case DockMenuTypeMicrophone: {
             RecoderController* recoderController = [[RecoderController alloc] initWithDelegate:self];
@@ -404,11 +419,15 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer : (UIGestureRecognizer *)othe
             [UIView animateWithDuration:0.4f animations:^{
                 recoderController.view.alpha = 1.0f;
             }];
+            
+            self.currentEditingViewController = recoderController;
         }break;
         case DockMenuTypePencilcase: {
             PencilcaseController* pencilcaseController = [[PencilcaseController alloc]initWithDelegate:self];
             [self addChildViewController:pencilcaseController];
             [self.view addSubview:pencilcaseController.view];
+            
+            self.currentEditingViewController = pencilcaseController;
         }break;
         case DockMenuTypeSave : {
             [self.navigationController popViewControllerAnimated:TRUE];
@@ -433,6 +452,11 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer : (UIGestureRecognizer *)othe
     
 }
  */
+
+-(void) onEditingViewDismissed{
+    [dockController showIndicator];
+    self.currentEditingViewController = NULL;
+}
 -(void) imagePickerController : (UIImagePickerController *)picker
 didFinishPickingMediaWithInfo : (NSDictionary *)info{
     ImageContentView* contentView = [self onCreateImage:[info objectForKey:UIImagePickerControllerEditedImage]];
@@ -442,11 +466,14 @@ didFinishPickingMediaWithInfo : (NSDictionary *)info{
     [self dismissViewControllerAnimated:TRUE completion:^{
         
     }];
+    [self onEditingViewDismissed];
 }
 -(void) imagePickerControllerDidCancel : (UIImagePickerController *)picker{
     [self dismissViewControllerAnimated:TRUE completion:^{
         
     }];
+    
+    [self onEditingViewDismissed];
 }
 #pragma mark AlbumControllerDelegate
 -(void) albumController:(AlbumController *)albumController
@@ -458,21 +485,34 @@ didFinishPickingMediaWithInfo : (NSDictionary *)info{
     
     [albumController removeFromParentViewController];
     [albumController.view removeFromSuperview];
+    
+    [self onEditingViewDismissed];
 }
 -(void) albumControllerCancelPickingImage:(AlbumController *)albumController{
     [albumController removeFromParentViewController];
     [albumController.view removeFromSuperview];
+    
+    
+    [self onEditingViewDismissed];
 }
 #pragma mark TypewriterControllerDelegate
 -(void) typewriterController:(TypewriterController *)typewriterController
                 endEditImage:(UIImage *)image{
-    [self onCreateImage:image];
+    ImageContentView* createdImageView = [self onCreateImage:image];
+    
     [typewriterController removeFromParentViewController];
     [typewriterController.view removeFromSuperview];
+    
+    createdImageView.center = ccpAdd(ccp(self.view.frame.size.width/2,self.view.frame.size.height/2),self.contentsContainer.contentOffset);
+    
+    [self onEditingViewDismissed];
 }
 -(void) typewriterControllerDidCancelTyping:(TypewriterController *)typewriterController{
     [typewriterController removeFromParentViewController];
     [typewriterController.view removeFromSuperview];
+    
+    
+    [self onEditingViewDismissed];
 }
 #pragma mark PencilcaseControllerDelegate
 -(void) pencilcaseController:(PencilcaseController *)pencilcaseController
@@ -485,11 +525,15 @@ didFinishPickingMediaWithInfo : (NSDictionary *)info{
     //브러쉬로 그리는 화면은 스크롤 위치가 포함 안되기 때문에 정리
     rect.origin = ccpAdd(rect.origin, self.contentsContainer.contentOffset);
     createdImageView.frame = rect;
+    
+    [self onEditingViewDismissed];
 }
 -(void) pencilcaseControllerdidCancelDraw:(PencilcaseController *)pencilcaseController{
     [pencilcaseController hideBottomDock];
     [pencilcaseController removeFromParentViewController];
     [pencilcaseController.view removeFromSuperview];
+    
+    [self onEditingViewDismissed];
 }
 #pragma mark RecoderControllerDelegate
 -(void) recoderViewController : (RecoderController *)recoderController
@@ -507,7 +551,23 @@ didFinishPickingMediaWithInfo : (NSDictionary *)info{
     rect.origin = ccpAdd(rect.origin, self.contentsContainer.contentOffset);
     createdSoundView.frame = rect;
     NSLog(@"%@",createdSoundView);
+    
+    
+    [self onEditingViewDismissed];
 }
+-(void) recoderViewControllerCancelRecoding:(RecoderController *)recoder
+{
+    [UIView animateWithDuration:0.2f
+                     animations:^{
+                         recoder.view.alpha = 0.0f;
+                     }completion:^(BOOL finished) {
+                         [recoder.view removeFromSuperview];
+                         [recoder removeFromParentViewController];
+                     }];
+    
+    [self onEditingViewDismissed];
+}
+
 
 
 /*
@@ -519,6 +579,9 @@ didFinishPickingMediaWithInfo : (NSDictionary *)info{
     self.freeTransformGestureRecognizer.enabled = FALSE;
     self.dockController.panGestureRecognizer.enabled = FALSE;
     /******************************/
+    
+    [self.dockController hide];
+    [self.dockController hideIndicator];
     
     self.contentsContainer.maximumZoomScale = 1.0f;
 //    CGSize scrollSize  = self.contentsContainer.frame.size;
@@ -541,6 +604,11 @@ didFinishPickingMediaWithInfo : (NSDictionary *)info{
     [self.contentsContainer resignFirstResponder];
    
     [self.contentsContainer setZoomScale:1.0f animated:TRUE];
+    self.contentsContainer.minimumZoomScale = 1.0f;
+    self.contentsContainer.maximumZoomScale = 1.0f;
+   
+   // [self.dockController show];
+    [self.dockController showIndicator];
     
     //self.contentsContainer.minimumZoomScale =
     //self.contentsContainer.maximumZoomScale = 1.0f;
@@ -553,8 +621,6 @@ didFinishPickingMediaWithInfo : (NSDictionary *)info{
     [self.contentsContainer zoomToRect:CGRectMake(0, 0, contentSize.width, contentSize.height)
                               animated:TRUE];
     */
-    
-    
     [[UIApplication sharedApplication] setStatusBarHidden:FALSE
                                             withAnimation:UIStatusBarAnimationFade];
 }
@@ -575,14 +641,17 @@ didFinishPickingMediaWithInfo : (NSDictionary *)info{
     }
     else
         NSLog(@"%d %d",self.interfaceOrientation,toInterfaceOrientation);
-    
 }
 -(BOOL) shouldAutorotate{
     return YES;
 }
 -(NSUInteger) supportedInterfaceOrientations
 {
-    return UIInterfaceOrientationMaskAll;
+    if(self.currentEditingViewController){
+        return UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskPortraitUpsideDown;
+    }
+    else
+        return UIInterfaceOrientationMaskAll;
 }
 - (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
 {

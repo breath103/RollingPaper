@@ -9,6 +9,7 @@
 #import "DockController.h"
 #import "macro.h"
 #import "ccMacros.h"
+#import "UELib/UEUI.h"
 
 @interface DockController ()
 
@@ -135,6 +136,12 @@
     else{
         [self show];
     }
+}
+-(void) hideIndicator{
+    [self.view fadeOut:0.1f];
+}
+-(void) showIndicator{
+    [self.view fadeIn:0.1f];
 }
 
 

@@ -10,6 +10,7 @@
 #import "macro.h"
 #import "UELib/UEImageLibrary.h"
 #import "UELib/UEUI.h"
+#import <QuartzCore/QuartzCore.h>
 
 
 #define DEFAULT_DURATION (0.3f)
@@ -69,10 +70,14 @@ int originalButtonTop;
     [self.colorPaletteContainer hideToTransparent];
     [self.textAlignContainer    hideToTransparent];
     
+    self.colorButton.layer.cornerRadius = self.colorButton.bounds.size.width / 2.0f;
+    self.colorButton.layer.borderWidth  = 3.0f;
+    self.colorButton.layer.borderColor  = [UIColor whiteColor].CGColor;
     
     NSArray* fontArray = [self fontArray];
     NSArray* fontNameArray = [self fontNameArray];
     int index = 0;
+    UIButton* lastButton = NULL;
     for(UIFont* font in fontArray){
         UIButton* button = [UIButton buttonWithType:UIButtonTypeCustom];
         button.frame = CGRectMake(15,16 + index * 28, 70, 17);
@@ -84,7 +89,8 @@ int originalButtonTop;
                 forState : UIControlStateNormal];
         [button setTitleColor : [UIColor blackColor]
                      forState : UIControlStateNormal];
-        NSLog(@"%@\n%@",button,button.titleLabel);
+        [button setTitleColor : [UIColor whiteColor]
+                      forState:UIControlStateHighlighted];
         [self.fontPalette addSubview:button];
         
         [button addTarget:self
@@ -92,10 +98,15 @@ int originalButtonTop;
          forControlEvents:UIControlEventTouchUpInside];
         
         index ++;
+        
+        
+        lastButton = button;
     }
+    [self onTouchFontText:lastButton];
 }
 -(IBAction) onTouchFontText:(UIButton*)sender{
     self.textView.font = sender.titleLabel.font;
+    self.textView.font = [UIFont fontWithName:self.textView.font.fontName size:28];
 }
 - (void) viewWillAppear:(BOOL)animated{
     [self.textView becomeFirstResponder];
@@ -111,9 +122,7 @@ int originalButtonTop;
 }
 -(void) textViewDidBeginEditing:(UITextView *)aTextView{
     isInEditing = TRUE;
-   // NSLog(@"%@",self.doneButton);
-    
-    
+   
     [self.fontPalette           fadeOut:DEFAULT_DURATION];
     [self.colorPaletteContainer fadeOut:DEFAULT_DURATION];
     [self.textAlignContainer    fadeOut:DEFAULT_DURATION];
@@ -134,10 +143,55 @@ int originalButtonTop;
         
     }];
 }
+- (UIImage*) buildImage{
+    UITextView* view = self.textView;
+    
+    UIColor* prevColor = self.view.backgroundColor;
+    self.view.backgroundColor = [UIColor clearColor];
+    
+    view.contentInset = UIEdgeInsetsZero;
+    view.contentOffset = CGPointZero;
+    
+    NSLog(@"%@",self.textView.text);
+    
+    
+    CGSize totalTextRect = CGSizeZero;
+    
+    for(NSString* line in [self.textView.text componentsSeparatedByString:@"\n"])
+    {
+     //   CGSize singleLineRect = [self.textView.text sizeWithFont:self.textView.font];
+        
+        CGSize textRect = [line sizeWithFont:self.textView.font
+                           constrainedToSize:self.textView.frame.size
+                               lineBreakMode:NSLineBreakByCharWrapping];
+      //  if(singleLineRect.width < textRect.width)
+      //      textRect.width = singleLineRect.width;
+        
+        totalTextRect.height += textRect.height;
+        if(totalTextRect.width < textRect.width){
+            totalTextRect.width = textRect.width;
+        }
+    }
+    view.editable = FALSE;
+    [view resignFirstResponder];
+    UIViewSetSize(view, totalTextRect);
+    
+    
+    UIGraphicsBeginImageContextWithOptions(view.bounds.size,
+                                           view.opaque,
+                                           [[UIScreen mainScreen] scale]);
+    [view.layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage * img = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    self.view.backgroundColor = prevColor;
+    
+    
+    return img;
+}
 - (IBAction)onTouchEndType:(id)sender {
-    UIImage* image = [UEImageLibrary imageFromView:self.textView];
     [self.delegate typewriterController : self
-                           endEditImage : image];
+                           endEditImage : [self buildImage]];
 }
 
 - (IBAction)onTouchAlignButton:(id)sender {
@@ -149,13 +203,7 @@ int originalButtonTop;
 }
 
 - (IBAction)onTouchDone:(id)sender {
-    if(self.textView.isFirstResponder){
-        //현재 편집중이였던경우
-        [self.textView resignFirstResponder];
-    }
-    else{
-        [self onTouchEndType:NULL];
-    }
+    [self onTouchEndType:NULL];
 }
 - (IBAction)onTouchFontButton:(id)sender {
     if([self.fontPalette  fadeToggle:DEFAULT_DURATION]){
@@ -186,6 +234,11 @@ int originalButtonTop;
 
 -(void) colorPalette:(ColorPalette *)palette
          selectColor:(UIColor *)color{
-    self.textView.textColor = color;
+    [UIView animateWithDuration:0.15f animations:^{
+        self.colorButton.backgroundColor = color;
+        self.textView.textColor = color;
+    } completion:^(BOOL finished) {
+        
+    }];
 }
 @end

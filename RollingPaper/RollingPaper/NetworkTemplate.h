@@ -55,7 +55,8 @@ typedef void (^BackgroundImageHandler)(UIImage* image);
 +(ASIHTTPRequest*) requestForPaperBackgroundImageList;
 +(ASIHTTPRequest*) requestForBackgroundImage : (NSString*) background;
 +(ASIFormDataRequest*) requestForSynchronizePaper : (RollingPaper*) entity;
-
++(ASIFormDataRequest*) requestForQuitRoomWithUserIdx : (NSString*) user_idx
+                                               paper : (NSString*) paper_idx;
 +(void) getBackgroundImage : (NSString*) background
                withHandler : (BackgroundImageHandler) handler;
 @end

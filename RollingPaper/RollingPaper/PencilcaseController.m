@@ -69,6 +69,7 @@ NSString* TOOL_TYPE_STRING[TOOL_COUNT] = {
     [self.colorPalette createDefaultColorButtons];
     NSLog(@"%@\%@",self.colorPalette,self.colorPalette.backgroundColor);
     self.colorPalette.alpha = 0.0f;
+    [self.colorPalette selectColor:[UIColor blackColor]];
 }
 - (void) initBottomDock{
     UIViewSetY(self.bottomDock,self.view.bounds.size.height);
@@ -76,11 +77,11 @@ NSString* TOOL_TYPE_STRING[TOOL_COUNT] = {
     colorButton.layer.cornerRadius = colorButton.bounds.size.width / 2.0f;
     colorButton.layer.borderWidth  = 3.0f;
     colorButton.layer.borderColor  = [UIColor whiteColor].CGColor;
-    
 }
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     
     self.paintingView = [[PaintingView alloc]initWithFrame:self.view.frame];
     self.paintingView.delegate = self;
@@ -102,6 +103,7 @@ NSString* TOOL_TYPE_STRING[TOOL_COUNT] = {
         TOOL_TYPE newTool = (TOOL_TYPE)((UIButton*)sender).tag;
         [self.paintingView setToolType:newTool];
         
+        self.paintingView.enablePainting = TRUE;
         
         if(selectedButton){
             [UIView animateWithDuration:1.0f animations:^{
@@ -112,7 +114,13 @@ NSString* TOOL_TYPE_STRING[TOOL_COUNT] = {
         [UIView animateWithDuration:0.5f animations:^{
             self.view.backgroundColor = [UIColor clearColor];
         }];
+        
         selectedButton = sender;
+        
+        [self colorPalette:self.colorPalette
+               selectColor:[self.selectedButton viewWithTag:1000].backgroundColor];
+    
+        
         [self showBottomDock];
         [UIView animateWithDuration:0.5f
                          animations:^{
@@ -141,13 +149,19 @@ NSString* TOOL_TYPE_STRING[TOOL_COUNT] = {
     }
     else{
         [self animateToLeftPanning];
+        self.paintingView.enablePainting = FALSE;
     }
 }
 -(void) initToolButtons{
     toolButtons = [[NSMutableArray alloc]initWithCapacity:TOOL_COUNT];
     
-    NSMutableArray* defaultColors = [ColorPalette getDefaultColorArray];
-    
+    NSMutableArray* defaultColors = [NSMutableArray arrayWithObjects:
+                                     UIColorXRGB(0,0,0),
+                                     UIColorXRGB(0,0,0),
+                                     UIColorXRGB(255,30,0),
+                                     UIColorXRGB(94,116,62),
+                                     UIColorXRGB(246,207,40)
+                                     , nil];
     for(int i=0;i<TOOL_COUNT;i++){
         UIButton* button = [self buttonWithToolType:i];
         button.tag = (TOOL_TYPE)i;
@@ -157,7 +171,7 @@ NSString* TOOL_TYPE_STRING[TOOL_COUNT] = {
          forControlEvents : UIControlEventTouchUpInside];
         
 
-        [button viewWithTag:1000].backgroundColor = [defaultColors randomObject];
+        [button viewWithTag:1000].backgroundColor = [defaultColors objectAtIndex:i];
         
         [self.view addSubview:button];
         [toolButtons addObject:button];
@@ -183,7 +197,7 @@ NSString* TOOL_TYPE_STRING[TOOL_COUNT] = {
     button.layer.anchorPoint = ccp(1,0.5);
     button.center = CGPointMake(-size.width, self.view.bounds.size.height/2);
     
-    if(mask_Image)
+    //if(mask_Image)
     {
         UIView* colorOverlayView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, size.width,size.height)];
         colorOverlayView.opaque = NO;
@@ -199,19 +213,14 @@ NSString* TOOL_TYPE_STRING[TOOL_COUNT] = {
     return button;
 }
 
--(IBAction)onSelectColor:(id)sender{
-    UIButton* button = sender;
-    NSLog(@"%@",button.backgroundColor);
-   // self.paintingView.currentTemplate.lineColor = button.backgroundColor;
-    self.paintingView.lineColor = button.backgroundColor;
+-(void) changeCurrentToolTintColor : (UIColor*) color{
+    self.paintingView.lineColor = color;
     [UIView animateWithDuration:0.5f animations:^{
-        [self.selectedButton viewWithTag:1000].backgroundColor = button.backgroundColor;
+        [self.selectedButton viewWithTag:1000].backgroundColor = color;
     } completion:^(BOOL finished) {
         
     }];
 }
-
-
 
 
 - (void)didReceiveMemoryWarning
@@ -247,13 +256,10 @@ NSString* TOOL_TYPE_STRING[TOOL_COUNT] = {
 -(void) colorPalette : (ColorPalette *)palette
          selectColor : (UIColor *)color{
     self.paintingView.lineColor = color;
-    
     [UIView animateWithDuration:0.3f animations:^{
         self.colorButton.backgroundColor = color;
         [self.selectedButton viewWithTag:1000].backgroundColor = color;
     }];
-    
-    
     NSLog(@"%@",color);
 }
 

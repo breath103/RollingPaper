@@ -124,13 +124,7 @@
 }
 
 - (IBAction)onTouchCancel:(id)sender {
-    [UIView animateWithDuration:1.0f
-                     animations:^{
-                         self.view.alpha = 0.0f;
-                     } completion:^(BOOL finished) {
-                         [self.view removeFromSuperview];
-                         [self removeFromParentViewController];
-                     }];
+    [self.delegate recoderViewControllerCancelRecoding:self];
 }
 
 - (IBAction)onAudioSliderChanged:(id)sender {
@@ -160,11 +154,9 @@
 {
     [super viewDidLoad];
     
-    
     [self hideButton:self.recodingCircle];
     [self hideButton:self.recodingCircleGlow];
     [self hideButton:self.stopButton];
-    
     [self hideButton:self.playerContainer];
     // Do any additional setup after loading the view from its nib.
 }

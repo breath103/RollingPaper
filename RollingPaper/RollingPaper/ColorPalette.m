@@ -74,15 +74,19 @@
     self.scrollView.contentSize = scrollBounds.size;
 }
 
--(void) onSelectColor : (id) sender{
+-(void) onSelectColor : (UIButton*) sender{
+    [self selectColor:sender.backgroundColor];
+}
+-(void) selectColor:(UIColor *)color{
+    self.lastSelectedColor = color;
     if(self.delegate)//[self.delegate respondsToSelector:@selector(colorPalette:)])
     {
         [self.delegate colorPalette:self
-                        selectColor:[sender backgroundColor]];
+                        selectColor:color];
     }
     else{
         //delegate가 잘못된경우
-        NSLog(@"%@",[sender backgroundColor]);
+        NSLog(@"%@",color);
     }
 }
 +(NSMutableArray*) getDefaultColorArray

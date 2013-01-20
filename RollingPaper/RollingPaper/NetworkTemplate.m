@@ -176,6 +176,15 @@
     return request;
 }
 
++(ASIFormDataRequest*) requestForQuitRoomWithUserIdx : (NSString*) user_idx
+                                               paper : (NSString*) paper_idx{
+    NSString* requestURL = [SERVER_HOST stringByAppendingString:@"/paper/quit"];
+    ASIFormDataRequest* request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:requestURL]];
+    [request addPostValue:user_idx forKey:@"user"];
+    [request addPostValue:paper_idx forKey:@"paper"];
+    return request;
+}
+
 +(ASIFormDataRequest*) requestForSearchingFacebookFriendUsingRollingPaper : (NSString*) user_idx{
     NSString* requestURL = [SERVER_HOST stringByAppendingString:@"/user/isFacebookFriendUsingRollingPaper"];
     ASIFormDataRequest* request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:requestURL]];

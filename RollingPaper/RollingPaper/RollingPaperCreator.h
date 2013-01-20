@@ -10,6 +10,7 @@
 #import <FacebookSDK/FacebookSDK.h>
 #import "RollingPaper.h"
 #import "FBFriendSearchPickerController.h"
+#import "RollingPaperListController.h"
 typedef enum ROLLING_PAPER_CONTROLLER_STYLE{
     PAPER_CONTROLLER_TYPE_CREATING,
     PAPER_CONTROLLER_TYPE_EDITING_CREATOR,
@@ -42,7 +43,9 @@ typedef enum ROLLING_PAPER_CONTROLLER_STYLE{
 @property (nonatomic,strong) RollingPaper* entity;
 @property (weak, nonatomic) IBOutlet UIButton *finishButton;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+@property (weak, nonatomic) IBOutlet UIView *bottomViewsContainer;
 
+@property (nonatomic,weak) RollingPaperListController* listController;
 - (id) initForCreating;
 - (id) initForEditing : (RollingPaper*) entity;
 
@@ -55,5 +58,6 @@ typedef enum ROLLING_PAPER_CONTROLLER_STYLE{
 - (IBAction)onPickDate:(UIDatePicker *)sender;
 - (IBAction)onPickTime:(UIDatePicker *)sender;
 - (IBAction)onTouchReceiveDate:(id)sender;
+- (IBAction)onTouchInvite:(id)sender;
 
 @end

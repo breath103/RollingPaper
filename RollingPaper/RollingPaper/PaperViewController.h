@@ -38,11 +38,11 @@
 @property (nonatomic,strong) UIView<RollingPaperContentViewProtocol>* transformTargetView;
 @property (strong, nonatomic) FBFriendPickerViewController* friendPickerController;
 @property (strong, nonatomic) RollingPaper* entity;
-
 @property (nonatomic,weak) IBOutlet UIScrollView *contentsContainer;
 @property (nonatomic,strong) UIView* contentsScrollContainer;
 @property (nonatomic,strong) UIFreeTransformGestureRecognizer* freeTransformGestureRecognizer;
 @property (nonatomic,strong) DockController* dockController;
+@property (nonatomic,strong) UIViewController* currentEditingViewController;
 @property (nonatomic,readwrite) BOOL isEditingMode;
 /*
 @property (nonatomic,strong) CameraController* cameraController;

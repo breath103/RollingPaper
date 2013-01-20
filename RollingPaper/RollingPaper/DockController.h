@@ -34,6 +34,10 @@ typedef enum DockMenuType {
 -(void) hide;
 -(void) show;
 -(void) onDockGesture : (UIPanGestureRecognizer*) gestureRecognizer;
+
+-(void) hideIndicator;
+-(void) showIndicator;
+
 - (IBAction)onTouchCamera:(id)sender;
 - (IBAction)onTouchAlbum :(id)sender;
 - (IBAction)onTouchKeyboard:(id)sender;

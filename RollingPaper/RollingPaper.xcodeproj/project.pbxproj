@@ -166,6 +166,7 @@
 		07BC508516A5535300F9060F /* PaperSettingController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BC508316A5535200F9060F /* PaperSettingController.m */; };
 		07BC508616A5535300F9060F /* PaperSettingController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07BC508416A5535200F9060F /* PaperSettingController.xib */; };
 		07C168081697D6BB00891757 /* dockButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 07C168071697D6BB00891757 /* dockButton.png */; };
+		07C32BAD16AC1194003FB62B /* UETextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 07C32BAC16AC1194003FB62B /* UETextField.m */; };
 		07CD07C0167C693C00358AD6 /* UIFreeTransformGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 07CD07BF167C693C00358AD6 /* UIFreeTransformGestureRecognizer.m */; };
 		07CD07C7167CBC1400358AD6 /* UEFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 07CD07C6167CBC1400358AD6 /* UEFileManager.m */; };
 		07CD07EA167D145400358AD6 /* camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 07CD07E6167D145400358AD6 /* camera.png */; };
@@ -450,6 +451,8 @@
 		07BC508316A5535200F9060F /* PaperSettingController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaperSettingController.m; sourceTree = "<group>"; };
 		07BC508416A5535200F9060F /* PaperSettingController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PaperSettingController.xib; sourceTree = "<group>"; };
 		07C168071697D6BB00891757 /* dockButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dockButton.png; sourceTree = "<group>"; };
+		07C32BAB16AC1194003FB62B /* UETextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UETextField.h; sourceTree = "<group>"; };
+		07C32BAC16AC1194003FB62B /* UETextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UETextField.m; sourceTree = "<group>"; };
 		07CD07BE167C693B00358AD6 /* UIFreeTransformGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIFreeTransformGestureRecognizer.h; sourceTree = "<group>"; };
 		07CD07BF167C693C00358AD6 /* UIFreeTransformGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIFreeTransformGestureRecognizer.m; sourceTree = "<group>"; };
 		07CD07C5167CBC1400358AD6 /* UEFileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UEFileManager.h; sourceTree = "<group>"; };
@@ -1014,6 +1017,8 @@
 				0729BEE3168F91BD002A300A /* ColorPalette.m */,
 				071E3A2D168A317E00A2A281 /* PaintingView.h */,
 				071E3A2C168A317E00A2A281 /* PaintingView.m */,
+				07C32BAB16AC1194003FB62B /* UETextField.h */,
+				07C32BAC16AC1194003FB62B /* UETextField.m */,
 			);
 			name = EditingComponentsView;
 			sourceTree = "<group>";
@@ -1304,6 +1309,7 @@
 				07BC508516A5535300F9060F /* PaperSettingController.m in Sources */,
 				071D89A316A7B68400839C4B /* RollingPaper.m in Sources */,
 				0724BCB616A9828C00BD7139 /* FriendPickerController.m in Sources */,
+				07C32BAD16AC1194003FB62B /* UETextField.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
