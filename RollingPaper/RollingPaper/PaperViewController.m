@@ -71,9 +71,7 @@
     self.contentsScrollContainer = [[UIView alloc] initWithFrame:CGRectMake(0, 0,
                                                                             self.entity.width.floatValue,
                                                                             self.entity.height.floatValue)];
-//    NSLog(@"%@",entity.background);
-    
-    /////
+
     NSData* backgroundData = [UEFileManager readDataFromLocalFile:[NSString stringWithFormat:@"paperbg_%@",entity.background]];
     if(backgroundData){
         NSLog(@"%@가 로컬에 있음",entity.background);
@@ -81,18 +79,13 @@
     }
     else{
         NSLog(@"%@가 로컬에 없음",entity.background);
-        ASIHTTPRequest* request = [NetworkTemplate requestForBackgroundImage:entity.background];
-        [request setCompletionBlock:^{
-            UIImage* image = [UIImage imageWithData:request.responseData];
-            self.contentsScrollContainer.backgroundColor = [UIColor colorWithPatternImage:image];
-            [self.contentsScrollContainer setNeedsDisplay];
-            
-            [UEFileManager writeData:request.responseData ToLocalFile:[NSString stringWithFormat:@"paperbg_%@",entity.background]];
-        }];
-        [request setFailedBlock:^{
-            NSLog(@"%@",request);
-        }];
-        [request startAsynchronous];
+        
+        [NetworkTemplate getBackgroundImage:entity.background
+                                withHandler:^(UIImage *image) {
+                                    self.contentsScrollContainer.backgroundColor = [UIColor colorWithPatternImage:image];
+                                    [self.contentsScrollContainer setNeedsDisplay];
+                                }];
+     
     }
     ///
     
@@ -145,6 +138,8 @@
 
 -(void)viewDidLoad{
     [super viewDidLoad];
+    
+    self.contentsContainer.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"main_background"]];
     [self initContentsEditingToolControlers];
     [self initLeftDockMenu];
     [self initContentsScrollContainer];
@@ -472,6 +467,10 @@ didFinishPickingMediaWithInfo : (NSDictionary *)info{
 -(void) typewriterController:(TypewriterController *)typewriterController
                 endEditImage:(UIImage *)image{
     [self onCreateImage:image];
+    [typewriterController removeFromParentViewController];
+    [typewriterController.view removeFromSuperview];
+}
+-(void) typewriterControllerDidCancelTyping:(TypewriterController *)typewriterController{
     [typewriterController removeFromParentViewController];
     [typewriterController.view removeFromSuperview];
 }

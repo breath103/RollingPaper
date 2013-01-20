@@ -117,7 +117,6 @@
 						<int key="objectID">1</int>
 						<reference key="object" ref="191373211"/>
 						<array class="NSMutableArray" key="children">
-							<reference ref="507575621"/>
 							<object class="IBNSLayoutConstraint" id="389308511">
 								<reference key="firstItem" ref="507575621"/>
 								<int key="firstAttribute">5</int>
@@ -182,6 +181,7 @@
 								<float key="scoringTypeFloat">29</float>
 								<int key="contentType">3</int>
 							</object>
+							<reference ref="507575621"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -261,20 +261,17 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">PaperViewController</string>
 					<string key="superclassName">UIViewController</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="onTouchBrush:">id</string>
-						<string key="onTouchInvite:">id</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="onTouchBrush:">
-							<string key="name">onTouchBrush:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="onTouchInvite:">
+					<object class="NSMutableDictionary" key="actions">
+						<string key="NS.key.0">onTouchInvite:</string>
+						<string key="NS.object.0">id</string>
+					</object>
+					<object class="NSMutableDictionary" key="actionInfosByName">
+						<string key="NS.key.0">onTouchInvite:</string>
+						<object class="IBActionInfo" key="NS.object.0">
 							<string key="name">onTouchInvite:</string>
 							<string key="candidateClassName">id</string>
 						</object>
-					</dictionary>
+					</object>
 					<object class="NSMutableDictionary" key="outlets">
 						<string key="NS.key.0">contentsContainer</string>
 						<string key="NS.object.0">UIScrollView</string>

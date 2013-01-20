@@ -100,8 +100,8 @@
                                                  HTTPMethod:@"GET"];
     [fbRequest startWithCompletionHandler:^(FBRequestConnection *connection,id<FBGraphUser> me,NSError *error) {
          if(! error){
-             ASIFormDataRequest* request = [NetworkTemplate requestForFacebookJoinWithMe:me
-                                                                             accessToken:session.accessToken];
+             ASIFormDataRequest* request = [NetworkTemplate requestForFacebookJoinWithMe : me
+                                                                             accessToken : session.accessToken];
              [request setCompletionBlock:^{
                  SBJsonParser* parser = [[SBJsonParser alloc] init];
                  NSDictionary* response = [parser objectWithString:request.responseString];

@@ -14,4 +14,5 @@
 @property (weak, nonatomic) IBOutlet UITextField *titleText;
 @property (weak, nonatomic) IBOutlet UITextField *receiveTime;
 -(id) initWithPaper : (RollingPaper*) entity;
+- (IBAction)onTouchBack:(id)sender;
 @end

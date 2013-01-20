@@ -9,6 +9,7 @@
 #import "NetworkTemplate.h"
 #import "SBJSON.h"
 
+#import "UEFileManager.h"
 
 @implementation NetworkTemplate
 +(ASIFormDataRequest*) requestForPhoneAuth : (NSString*) phone{
@@ -70,7 +71,8 @@
                                                         notice : (NSString*) notice
                                                   receiverFBid : (NSString*) receiver_fb_id
                                                   receiverName : (NSString*) receiver_name
-                                                  receieveTime : (NSString*) receiveTime{
+                                                  receieveTime : (NSString*) receiveTime
+                                                    background : (NSString*) background{
     NSString* targetURL = [SERVER_HOST stringByAppendingString:@"/paper/create"];
     ASIFormDataRequest* request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:targetURL]];
     
@@ -81,6 +83,7 @@
     [request addPostValue:receiver_fb_id  forKey:@"r_fb_id"];
     [request addPostValue:receiver_name   forKey:@"r_name"];
     [request addPostValue:receiveTime     forKey:@"r_time"];
+    [request addPostValue:background      forKey:@"background"];
     
     NSLog(@"%@",request.postBody);
     return request;
@@ -132,7 +135,20 @@
 }
 
 
-
++(ASIFormDataRequest*) requestForSynchronizePaper : (RollingPaper*) entity{
+    NSString* requestURL = [SERVER_HOST stringByAppendingString:@"/paper/edit"];
+    ASIFormDataRequest* request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:requestURL]];
+    /*
+    [request addPostValue:entity.idx      forKey:@"idx"];
+    [request addPostValue:entity.rotation forKey:@"rotation"];
+    [request addPostValue:entity.width    forKey:@"width"];
+    [request addPostValue:entity.height   forKey:@"height"];
+    [request addPostValue:entity.x        forKey:@"x"];
+    [request addPostValue:entity.y        forKey:@"y"];
+    [request addPostValue:entity.image    forKey:@"image"];
+     */
+    return request;
+}
 
 // 컨텐츠 수정 관련 리퀘스트
 +(ASIFormDataRequest*) requestForSynchronizeImageContent : (ImageContent*) entity{
@@ -167,12 +183,42 @@
     return request;
 }
 
+
+
++(ASIHTTPRequest*) requestForPaperBackgroundImageList{
+    NSString* requestURL = [SERVER_HOST stringByAppendingString:@"/paper/backgroundList"];
+    ASIHTTPRequest* request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:requestURL]];
+    return request;
+    
+}
 +(ASIHTTPRequest*) requestForBackgroundImage : (NSString*) background{
     NSString* requestURL = [NSString stringWithFormat:@"%@/background/%@",SERVER_HOST,background];
     NSLog(@"%@",requestURL);
     ASIHTTPRequest* request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:requestURL]];
     return request;
 }
-
++(void) getBackgroundImage : (NSString*) background
+               withHandler : (BackgroundImageHandler) handler{
+    NSString* BGlocalName = [NSString stringWithFormat:@"paperbg_%@",background];
+    ///
+    NSData* data = [UEFileManager readDataFromLocalFile:BGlocalName];
+    if(data)
+    {
+        handler([UIImage imageWithData:data]);
+    }
+    else{
+        ASIHTTPRequest* request = [NetworkTemplate requestForBackgroundImage:background];
+        [request setCompletionBlock:^{
+            UIImage* image = [UIImage imageWithData:request.responseData];
+            [UEFileManager writeData:request.responseData ToLocalFile:BGlocalName];
+            handler(image);
+        }];
+        [request setFailedBlock:^{
+            NSLog(@"%@",request);
+        }];
+        [request startAsynchronous];
+    }
+    ////
+    }
 
 @end

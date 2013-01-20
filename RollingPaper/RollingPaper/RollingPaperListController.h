@@ -17,5 +17,4 @@
 @property (weak, nonatomic) IBOutlet UIImageView *profileImageView;
 -(IBAction)onTouchAddPaper:(id)sender;
 - (IBAction)onTouchRefresh:(id)sender;
-
 @end

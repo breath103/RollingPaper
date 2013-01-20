@@ -228,6 +228,10 @@
 
 
 @implementation UIView(AnimationMacro)
+-(void) hideToTransparent{
+    self.alpha = 0.0f;
+    self.hidden = TRUE;
+}
 -(void) fadeIn : (float) duration{
     self.hidden = FALSE;
     [UIView animateWithDuration:duration animations:^{

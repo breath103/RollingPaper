@@ -7,6 +7,7 @@
 //
 
 #import "PaperSettingController.h"
+#import "NetworkTemplate.h"
 
 @interface PaperSettingController ()
 
@@ -14,6 +15,8 @@
 
 @implementation PaperSettingController
 @synthesize entity;
+
+
 -(id) initWithPaper : (RollingPaper*) aEntity{
     self = [self initWithNibName:NSStringFromClass(self.class)
                           bundle:NULL];
@@ -29,6 +32,18 @@
     return self;
 }
 
+- (IBAction)onTouchBack:(id)sender {
+    [self.navigationController popViewControllerAnimated:TRUE];
+}
+- (void) saveToServer{
+    ASIFormDataRequest* request = [NetworkTemplate requestForSynchronizePaper:self.entity];
+    [request setCompletionBlock:^{
+        
+    }];
+    [request setFailedBlock:^{
+        
+    }];
+}
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -42,7 +57,7 @@
     
 }
 -(void) syncEntityToView{
-    self.titleText.text = self.entity.title;
+    self.titleText.text   = self.entity.title;
     self.receiveTime.text = self.entity.receive_time;
 }
 - (void)viewDidLoad

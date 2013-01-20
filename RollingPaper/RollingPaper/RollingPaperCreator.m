@@ -12,6 +12,8 @@
 #import "NSObject+block.h"
 #import "UserInfo.h"
 #import <QuartzCore/QuartzCore.h>
+#import "PaperViewController.h"
+#import "UECoreData.h"
 
 @interface RollingPaperCreator ()
 
@@ -22,12 +24,10 @@
 @synthesize emailInput;
 @synthesize noticeInput;
 @synthesize receiverName;
-
 @synthesize friendPickerController;
 @synthesize receiveTime;
 @synthesize contentContainer;
 @synthesize receiverFacebookID;
-
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -38,29 +38,109 @@
     return self;
 }
 
+
 -(void) hideKeyboard{
     [self.view endEditing:TRUE];
+}
+-(void) initPaperCellPreview{
+    UIImage* mask_image = [ UIImage imageNamed:@"paper_cell_bg"];
+    CGSize size = self.paperCellImage.frame.size;
+    CALayer* maskLayer = [CALayer layer];
+    maskLayer.frame = CGRectMake(0,0,size.width,size.height);
+    maskLayer.contents = (__bridge id)[mask_image CGImage];
+    self.paperCellImage.layer.mask = maskLayer;
+    [self.paperCellImage setNeedsDisplay];
 }
 -(void) initScrollView{
     [self.scrollView addSubview:self.contentContainer];
     self.scrollView.contentSize = self.contentContainer.frame.size;
-    /*
-    for(int i=0;i<5;i++){
-        UIButton* button = [UIButton buttonWithType:UIButtonTypeCustom];
-        button.frame = CGRectMake(58 * i, 409.5,46,46);
-        button.layer.cornerRadius = 2.5;
-        button.layer.shadowColor = [UIColor blackColor].CGColor;
-        button.layer.shouldRasterize = TRUE;
-        button.layer.shadowRadius = 1.0f;
-        button.layer.shadowOpacity = 1.0f;
-        button.layer.rasterizationScale = [UIScreen mainScreen].scale;
-        button.backgroundColor = [UIColor brownColor];
+    
+    ASIHTTPRequest* request = [NetworkTemplate requestForPaperBackgroundImageList];
+    [request setCompletionBlock:^{
+        NSArray* backgroundList = [parseJSON(request.responseString) objectForKey:@"backgrounds"];
         
-        [self.scrollView addSubview:button];
-    }
-    */
+        int i = 0;
+        
+        CGSize buttonSize = CGSizeMake(44, 44);
+        int buttonRow = 5;
+        int buttonColl = 1;
+        float widthOffset = (self.paperBackgroundsScroll.frame.size.width - buttonSize.width * buttonRow) / (buttonRow+1);
+        float heightOffset = (self.paperBackgroundsScroll.frame.size.height - buttonSize.height * buttonColl) / (buttonColl + 1);
+        for(NSString* background in backgroundList)
+        {
+            [NetworkTemplate getBackgroundImage:background
+                                    withHandler:^(UIImage *image) {
+                                        UIButton* button = [UIButton buttonWithType:UIButtonTypeCustom];
+                                        button.frame = CGRectMake(widthOffset + (widthOffset+buttonSize.width) * i , heightOffset ,
+                                                                  buttonSize.width , buttonSize.height);
+                                        [button setTitle:background
+                                                forState:UIControlStateDisabled];
+                                        button.layer.cornerRadius = 4;
+                                        button.layer.shadowColor = [UIColor blackColor].CGColor;
+                                        button.layer.shouldRasterize = TRUE;
+                                        button.layer.shadowRadius = 1.0f;
+                                        button.layer.shadowOpacity = 0.5;
+                                        button.layer.shadowOffset  = CGSizeMake(3,3);
+                                        button.layer.rasterizationScale = [UIScreen mainScreen].scale;
+                                        button.backgroundColor = [UIColor colorWithPatternImage:image];
+                                        [button addTarget:self
+                                                   action:@selector(onBackgroundButtonTouched:)
+                                         forControlEvents:UIControlEventTouchUpInside];
+                                        
+                                        [self.paperBackgroundsScroll addSubview:button];
+                                        
+                                        if(i == 0){
+                                            [self onBackgroundButtonTouched:button];
+                                        }
+                                    }];
+            i++;
+        }
+        CGSize contentSize = self.paperBackgroundsScroll.contentSize;
+        contentSize.width = (buttonSize.width + widthOffset) * backgroundList.count + widthOffset;
+        contentSize.height = self.paperBackgroundsScroll.frame.size.height;
+        self.paperBackgroundsScroll.contentSize = contentSize;
+        NSLog(@"%@",self.paperBackgroundsScroll);
+        
+        
+        
+        if(self.controllerType !=PAPER_CONTROLLER_TYPE_CREATING){
+            for(UIButton* button in self.paperBackgroundsScroll.subviews){
+                if([button isKindOfClass:UIButton.class] &&
+                   [[button titleForState:UIControlStateDisabled] compare:self.entity.background] == NSOrderedSame)
+                {
+                    [self onBackgroundButtonTouched:button];
+                    break;
+                }
+            }
+        }
+    }];
+    [request setFailedBlock:^{
+        NSLog(@"%@",request);
+    }];
+    [request startAsynchronous];
 }
-
+- (void)onBackgroundButtonTouched : (UIButton*) sender{
+    self.paperCellImage.image = NULL;//image;
+    self.selectedBackgroundButton = sender;
+    [UIView animateWithDuration:0.2f animations:^{
+        self.paperCellImage.backgroundColor = sender.backgroundColor;///[UIColor colorWithPatternImage:[sender imageForState:UIControlStateDisabled]];
+    } completion:^(BOOL finished) {
+        
+    }];
+}
+- (void)syncPaperToView{
+    if(self.entity){
+        self.receiverName.text = self.entity.receiver_name;
+        self.titleText.text = self.entity.title;
+        self.noticeInput.text = self.entity.notice;
+    
+        NSDate* receiveDate = [NSDate dateWithTimeIntervalSince1970: [[NSNumberFormatter new]numberFromString:self.entity.receive_time].longLongValue ];
+        self.receiveDate.text = [self dateToString:receiveDate];
+        self.receiveTime.text = [self timeToString:receiveDate];
+        self.emailInput.text = self.entity.target_email;
+        
+    }
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -72,11 +152,64 @@
     [[NetworkTemplate requestForSearchingFacebookFriendUsingRollingPaper:[UserInfo getUserIdx].stringValue] startAsynchronous];
     
     [self initScrollView];
+    [self initPaperCellPreview];
     
     self.datePicker.minimumDate = [NSDate date];
-   
     self.receiveDate.inputView = self.datePicker;
     self.receiveTime.inputView = self.timePicker;
+    
+    NSLog(@"%@",self.entity);
+    switch (self.controllerType) {
+        case PAPER_CONTROLLER_TYPE_CREATING:{
+            self.titleLabel.text = @"RollingPaper 만들기";
+            [self.finishButton setTitle:@"완료" forState:UIControlStateNormal];
+            [self.finishButton addTarget:self
+                                  action:@selector(onTouchSend:)
+                        forControlEvents:UIControlEventTouchUpInside];
+        }break;
+        case PAPER_CONTROLLER_TYPE_EDITING_CREATOR:{
+            [self syncPaperToView];
+            self.titleLabel.text = @"RollingPaper 편집";
+            [self.finishButton setTitle:@"지우기" forState:UIControlStateNormal];
+            [self.finishButton addTarget:self
+                                  action:@selector(onTouchQuit:)
+                        forControlEvents:UIControlEventTouchUpInside];
+        }break;
+        case PAPER_CONTROLLER_TYPE_EDITING_PARTICIPANTS:{
+            [self syncPaperToView];
+            self.titleLabel.text = @"RollingPaper 편집";
+            [self.finishButton setTitle:@"나가기" forState:UIControlStateNormal];
+            [self.finishButton addTarget:self
+                                  action:@selector(onTouchQuit:)
+                        forControlEvents:UIControlEventTouchUpInside];
+        }break;
+        default:
+            break;
+    }
+    
+}
+
+- (id) initForCreating{
+    self = [self initWithDefaultNib];
+    if(self){
+        self.controllerType = PAPER_CONTROLLER_TYPE_CREATING;
+        self.entity = NULL;
+    }
+    return self;
+}
+- (id) initForEditing : (RollingPaper*) aEntity{
+    self = [self initWithDefaultNib];
+    if(self){
+        self.entity = aEntity;
+        if([[UserInfo getUserIdx] compare:self.entity.creator_idx] == NSOrderedSame)
+        {
+            self.controllerType = PAPER_CONTROLLER_TYPE_EDITING_CREATOR;
+        }
+        else{
+            self.controllerType = PAPER_CONTROLLER_TYPE_EDITING_PARTICIPANTS;
+        }
+    }
+    return self;
 }
 -(void) onTouchNext{
     [self onTouchSend:NULL];
@@ -127,12 +260,38 @@
                                                                                             notice : noticeInput.text
                                                                                       receiverFBid : receiverFacebookID
                                                                                       receiverName : receiverName.text
-                                                                                      receieveTime : [self buildRequestDate]];
+                                                                                      receieveTime : [self buildRequestDate]
+                                                                                        background : [self.selectedBackgroundButton titleForState:UIControlStateDisabled]];
             [request setCompletionBlock:^{
-                NSLog(@"%@",request.responseString);
-                [self performBlockInMainThread:^{
-                    [self.navigationController popViewControllerAnimated:TRUE];
-                } waitUntilDone:TRUE];
+                
+                NSDictionary* result = parseJSON(request.responseString);
+                
+                if([result objectForKey:@"error"])
+                {
+                    [[[UIAlertView alloc] initWithTitle:@"실패"
+                                                message:[NSString stringWithFormat: @"롤링페이퍼 서버에 페이퍼 만들기 요청이 실패하였습니다.\n%@",[result objectForKey:@"error"]]
+                                               delegate:nil
+                                      cancelButtonTitle:nil
+                                      otherButtonTitles:@"확인", nil] show];
+                }
+                else{
+                    [self performBlockInMainThread:^{
+                        
+                        //서버로 부터 새로 만들어진 페이퍼의 엔티티 정보를 받아와서 이를 가지고 엔티티를 만들고,
+                        RollingPaper* entity = (RollingPaper*)[[UECoreData sharedInstance] insertNewObject : @"RollingPaper"
+                                                                                                  initWith : parseJSON(request.responseString)];
+                        entity.is_new = [NSNumber numberWithBool:YES];
+                        NSLog(@"%@",entity);
+                        
+                        //편집 뷰를 만든다음
+                        PaperViewController* paperViewController = [[PaperViewController alloc] initWithEntity:entity];
+                        
+                        self.navigationController.delegate = self;
+                        [self.navigationController pushViewController : paperViewController
+                                                             animated : TRUE];
+                    } waitUntilDone:TRUE];
+                }
+             
             }];
             [request setFailedBlock:^{
                 NSLog(@"%@",@"fail");
@@ -147,9 +306,35 @@
     }
     else{
         NSLog(@"입력폼에 문제가 있음");
-        
     }
 }
+-(IBAction)onTouchQuit:(UIButton*)sender{
+    [[[UIAlertView alloc] initWithTitle:@"경고"
+                                message:@"이 종이에서 나가시겠습니까?"
+                               delegate:self
+                      cancelButtonTitle:nil
+                      otherButtonTitles:@"확인", @"취소",nil] show];
+}
+-(void) alertView:(UIAlertView *)alertView
+clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if(buttonIndex == 0)
+    {
+        NSLog(@"방 삭제");
+        [self.navigationController popViewControllerAnimated:TRUE];
+    }
+    else{
+        NSLog(@"취소");
+    }
+}
+-(void) navigationController:(UINavigationController *)navigationController
+       didShowViewController:(UIViewController *)viewController
+                    animated:(BOOL)animated{
+    if([viewController isKindOfClass:PaperViewController.class]){
+        [self.view removeFromSuperview];
+        [self removeFromParentViewController];
+    }
+}
+
 
 - (IBAction)onTouchPickFriend:(id)sender {
     if(!friendPickerController){
@@ -174,19 +359,23 @@
     [self.view endEditing:TRUE];
 }
 
+-(NSString*) dateToString : (NSDate*) date{
+    NSDateComponents* components = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit
+                                                             fromDate:date]; // Get necessary date components
+    return [NSString stringWithFormat:@"%d-%02d-%02d",components.year,components.month,components.day];
+}
+-(NSString*) timeToString : (NSDate*) date{
+    NSDateComponents* components = [[NSCalendar currentCalendar] components:NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit
+                                         fromDate:date]; // Get necessary date components
+    return [NSString stringWithFormat:@"%02d:%02d:%02d",components.hour,components.minute,components.second];
+}
+
+
 - (IBAction)onPickDate:(UIDatePicker *)sender {
-    NSDateComponents* date = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit
-                                                             fromDate:sender.date]; // Get necessary date components
-    self.receiveDate.text = [NSString stringWithFormat:@"%d-%02d-%02d",date.year,date.month,date.day];
-    NSLog(@"%@",self.receiveDate);
+    self.receiveDate.text = [self dateToString:sender.date];
 }
 -(IBAction)onPickTime:(UIDatePicker *)sender{
-    NSCalendar* calendar = [NSCalendar currentCalendar];
-    NSDateComponents* date = [calendar components:NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit
-                                         fromDate:sender.date]; // Get necessary date components
-    self.receiveTime.text = [NSString stringWithFormat:@"%02d:%02d:%02d",date.hour,date.minute,date.second];
-    NSLog(@"%@",self.receiveTime);
-    
+    self.receiveTime.text = [self timeToString:sender.date];
 }
 - (IBAction)onTouchReceiveDate:(id)sender {
     

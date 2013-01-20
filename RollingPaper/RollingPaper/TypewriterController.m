@@ -12,6 +12,9 @@
 #import "UELib/UEUI.h"
 
 
+#define DEFAULT_DURATION (0.3f)
+
+
 @interface TypewriterController ()
 
 @end
@@ -62,6 +65,9 @@ int originalButtonTop;
     originalTextViewHeight = self.textView.frame.size.height;
     originalButtonTop = 391;
     
+    [self.fontPalette           hideToTransparent];
+    [self.colorPaletteContainer hideToTransparent];
+    [self.textAlignContainer    hideToTransparent];
     
     
     NSArray* fontArray = [self fontArray];
@@ -108,8 +114,9 @@ int originalButtonTop;
    // NSLog(@"%@",self.doneButton);
     
     
-    [self.fontPalette fadeOut:0.3f];
-    [self.colorPalette fadeOut:0.3f];
+    [self.fontPalette           fadeOut:DEFAULT_DURATION];
+    [self.colorPaletteContainer fadeOut:DEFAULT_DURATION];
+    [self.textAlignContainer    fadeOut:DEFAULT_DURATION];
     
     [UIView animateWithDuration:0.3f animations:^{
         UIViewSetY(self.doneButton,self.view.frame.size.height - KEYBOARD_HEIGHT - self.doneButton.frame.size.height);
@@ -133,6 +140,14 @@ int originalButtonTop;
                            endEditImage : image];
 }
 
+- (IBAction)onTouchAlignButton:(id)sender {
+    if([self.textAlignContainer  fadeToggle:DEFAULT_DURATION]){
+        //보여지는 경우
+        [self.colorPaletteContainer fadeOut:DEFAULT_DURATION];
+        [self.fontPalette fadeOut:DEFAULT_DURATION];
+    }
+}
+
 - (IBAction)onTouchDone:(id)sender {
     if(self.textView.isFirstResponder){
         //현재 편집중이였던경우
@@ -143,17 +158,30 @@ int originalButtonTop;
     }
 }
 - (IBAction)onTouchFontButton:(id)sender {
-    if([self.fontPalette  fadeToggle:0.3f]){
+    if([self.fontPalette  fadeToggle:DEFAULT_DURATION]){
         //보여지는 경우
-        [self.colorPalette fadeOut:0.3f];
+        [self.colorPaletteContainer fadeOut:DEFAULT_DURATION];
+        [self.textAlignContainer fadeOut:DEFAULT_DURATION];
     }
 }
 
 - (IBAction)onTouchColor:(id)sender {
-    if([self.colorPalette fadeToggle:0.3f]){
+    if([self.colorPaletteContainer fadeToggle:DEFAULT_DURATION]){
         //보여지는 경우
-        [self.fontPalette fadeOut:0.3f];
+        [self.fontPalette fadeOut:DEFAULT_DURATION];
+        [self.textAlignContainer fadeOut:DEFAULT_DURATION];
     }
+}
+
+- (IBAction)onTouchTextAlignOptionButtons:(UIButton*)sender {
+    self.textView.textAlignment = (UITextAlignment)(sender.tag - 1000);
+    NSLog(@"%@",sender);
+    NSLog(@"%d",sender.tag - 1000);
+    [self.textAlignButton setImage:[sender imageForState:UIControlStateNormal] forState:UIControlStateNormal];
+}
+
+- (IBAction)onTouchCancel:(id)sender {
+    [self.delegate typewriterControllerDidCancelTyping:self];
 }
 
 -(void) colorPalette:(ColorPalette *)palette

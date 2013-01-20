@@ -74,7 +74,7 @@ float clampf(float value, float min_inclusive, float max_inclusive)
         max_inclusive = buf;
         //CC_SWAP(min_inclusive,max_inclusive);
 	}
-	return value < min_inclusive ? min_inclusive : value < max_inclusive? value : max_inclusive;
+	return value < min_inclusive ? min_inclusive : value < max_inclusive ? value : max_inclusive;
 }
 
 CGPoint ccpClamp(CGPoint p, CGPoint min_inclusive, CGPoint max_inclusive)

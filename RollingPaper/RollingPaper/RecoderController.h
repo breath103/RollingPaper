@@ -24,12 +24,23 @@
 @property (weak, nonatomic) IBOutlet UIButton *recodingButton;
 @property (weak, nonatomic) IBOutlet UIButton *playButton;
 @property (weak, nonatomic) IBOutlet UIButton *stopButton;
+@property (weak, nonatomic) IBOutlet UIButton *timelineIndicator;
+@property (weak, nonatomic) IBOutlet UILabel *endTimeLabel;
+@property (nonatomic,strong) NSTimer* timelineUpdatingTimer;
+@property (weak, nonatomic) IBOutlet UISlider *audioNavigation;
+@property (weak, nonatomic) IBOutlet UIView *playerContainer;
+@property (weak, nonatomic) IBOutlet UIButton *pauseButton;
+@property (weak, nonatomic) IBOutlet UIImageView *playerCircleGlow;
 
 - (IBAction)onTouchRecoding:(id)sender;
 - (IBAction)onTouchStop:(id)sender;
 - (IBAction)onTouchPlay:(id)sender;
+- (IBAction)onTouchPause:(id)sender;
 - (IBAction)onTouchDone:(id)sender;
 - (IBAction)onTouchCancel:(id)sender;
 
+
+
+- (IBAction)onAudioSliderChanged:(id)sender;
 -(id) initWithDelegate : (id<RecoderViewControllerDelegate>) aDelegate;
 @end

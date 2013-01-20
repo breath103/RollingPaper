@@ -14,6 +14,7 @@
 @protocol TypewriterControllerDelegate <NSObject>
 -(void) typewriterController : (TypewriterController*) typewriterController
                 endEditImage : (UIImage*) image;
+-(void) typewriterControllerDidCancelTyping:(TypewriterController *)typewriterController;
 @end
 
 @interface TypewriterController : UIViewController<UITextViewDelegate,ColorPaletteDelegate>
@@ -24,10 +25,16 @@
 @property (weak,nonatomic) id<TypewriterControllerDelegate> delegate;
 @property (weak,nonatomic) IBOutlet UIButton *doneButton;
 @property (weak,nonatomic) IBOutlet UITextView *textView;
-@property (weak, nonatomic) IBOutlet ColorPalette *colorPalette;
-@property (weak, nonatomic) IBOutlet UIView *fontPalette;
--(IBAction)onTouchDone:(id)sender;
+@property (weak,nonatomic) IBOutlet ColorPalette *colorPalette;
+@property (weak,nonatomic) IBOutlet UIView *fontPalette;
+@property (weak,nonatomic) IBOutlet UIButton *textAlignButton;
+@property (weak,nonatomic) IBOutlet UIView *colorPaletteContainer;
+@property (weak,nonatomic) IBOutlet UIView *textAlignContainer;
+- (IBAction)onTouchAlignButton:(id)sender;
+- (IBAction)onTouchDone:(id)sender;
+- (IBAction)onTouchCancel:(id)sender;
 - (IBAction)onTouchFontButton:(id)sender;
 - (IBAction)onTouchColor:(id)sender;
+- (IBAction)onTouchTextAlignOptionButtons:(id)sender;
 -(id) initWithDelegate : (id<TypewriterControllerDelegate>) delegate;
 @end

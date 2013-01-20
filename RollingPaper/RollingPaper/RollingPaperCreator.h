@@ -8,12 +8,20 @@
 
 #import <UIKit/UIKit.h>
 #import <FacebookSDK/FacebookSDK.h>
+#import "RollingPaper.h"
 #import "FBFriendSearchPickerController.h"
+typedef enum ROLLING_PAPER_CONTROLLER_STYLE{
+    PAPER_CONTROLLER_TYPE_CREATING,
+    PAPER_CONTROLLER_TYPE_EDITING_CREATOR,
+    PAPER_CONTROLLER_TYPE_EDITING_PARTICIPANTS
+} ROLLING_PAPER_CONTROLLER_STYLE;
 
 
 
-
-@interface RollingPaperCreator : UIViewController<FBFriendPickerDelegate,UISearchBarDelegate>
+@interface RollingPaperCreator : UIViewController<FBFriendPickerDelegate,
+                                                  UIAlertViewDelegate,
+                                                  UISearchBarDelegate,
+                                                  UINavigationControllerDelegate>
 
 @property (nonatomic,strong) FBFriendSearchPickerController* friendPickerController;
 @property (weak, nonatomic) IBOutlet UIView* contentContainer;
@@ -27,9 +35,20 @@
 @property (weak, nonatomic) IBOutlet UIDatePicker *timePicker;
 @property (nonatomic,weak) IBOutlet UIScrollView* scrollView;
 @property (nonatomic,strong) NSString* receiverFacebookID;
+@property (weak, nonatomic) IBOutlet UIImageView *paperCellImage;
+@property (weak, nonatomic) IBOutlet UIScrollView *paperBackgroundsScroll;
+@property (nonatomic,weak) UIButton* selectedBackgroundButton;
+@property (nonatomic,readwrite) ROLLING_PAPER_CONTROLLER_STYLE controllerType;
+@property (nonatomic,strong) RollingPaper* entity;
+@property (weak, nonatomic) IBOutlet UIButton *finishButton;
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+
+- (id) initForCreating;
+- (id) initForEditing : (RollingPaper*) entity;
+
+
 - (IBAction)onTouchPrevious:(id)sender;
 - (IBAction)onTouchNext:(id)sender;
-
 - (IBAction)onTouchSend:(id)sender;
 - (IBAction)onTouchPickFriend:(id)sender;
 - (IBAction)onHideKeyboard:(id)sender;

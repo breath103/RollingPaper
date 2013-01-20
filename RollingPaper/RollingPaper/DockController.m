@@ -8,6 +8,7 @@
 
 #import "DockController.h"
 #import "macro.h"
+#import "ccMacros.h"
 
 @interface DockController ()
 
@@ -37,6 +38,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self.view viewWithTag:10].transform = CGAffineTransformMakeRotation(CC_DEGREES_TO_RADIANS(-15));
+    [self.view viewWithTag:15].transform = CGAffineTransformMakeRotation(CC_DEGREES_TO_RADIANS(-30));
     // Do any additional setup after loading the view from its nib.
 }
 

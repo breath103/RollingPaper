@@ -10,6 +10,7 @@
 #import "UEUI.h"
 #import <AVFoundation/AVFoundation.h>
 #import "UEFileManager.h"
+#import "CGPointExtension.h"
 
 #define DEFAULT_DURATION (0.3f)
 
@@ -21,6 +22,8 @@
 - (IBAction)onTouchRecoding:(id)sender {
     if( ! self.recoder.audioRecorder.isRecording){
         [self.recoder startRecoding];
+        
+        [self.playerContainer fadeOut:DEFAULT_DURATION];
         
         [self.recodingButton fadeOut:DEFAULT_DURATION];
         [self.stopButton fadeIn:DEFAULT_DURATION];
@@ -40,6 +43,10 @@
     }
 }
 
+-(NSString*) getEndTime{
+    float duration = self.audioPlayer.duration;
+    return [NSString stringWithFormat:@"%f:%f",floorf(duration),duration - floorf(duration)];
+}
 - (IBAction)onTouchStop:(id)sender {
     if( self.recoder.audioRecorder.isRecording){
         [self.recoder stopRecording];
@@ -47,6 +54,8 @@
         self.audioPlayer = [[AVAudioPlayer alloc] initWithData:soundData
                                                          error:NULL];
         self.audioPlayer.delegate = self;
+        self.endTimeLabel.text = [self getEndTime];
+        
         [self.recodingCircle fadeOut:DEFAULT_DURATION];
         self.recodingCircleGlow.hidden = FALSE;
         [UIView animateWithDuration:DEFAULT_DURATION
@@ -58,14 +67,48 @@
                              self.recodingCircleGlow.hidden = TRUE;
                          }];
         
+        [self.recodingButton fadeIn:DEFAULT_DURATION];
         [self.stopButton fadeOut:DEFAULT_DURATION];
-        [self.playButton fadeIn:DEFAULT_DURATION];
+        
+        [self.playerContainer fadeIn:DEFAULT_DURATION];
+        //[self.playButton fadeIn:DEFAULT_DURATION];
     }
+}
+-(void) updateTimeline{
+ /*
+    self.timelineIndicator.center = ccpLerp(ccp(35,190),ccp(35+249,190),self.audioPlayer.currentTime/self.audioPlayer.duration);
+    NSLog(@"%@",NSStringFromCGPoint(self.timelineIndicator.center));
+    [self.timelineIndicator setNeedsDisplay];
+  */
+    self.audioNavigation.value = self.audioPlayer.currentTime / self.audioPlayer.duration;
+    [self.audioNavigation setNeedsDisplay];
 }
 - (IBAction)onTouchPlay:(id)sender {
     // 여기에 녹음된 사운드를 재생하는 부분을 넣는다.
     [self.audioPlayer play];
-    [self.recodingCircle fadeIn:DEFAULT_DURATION];
+    [self.playerCircleGlow fadeIn:DEFAULT_DURATION];
+    
+    if(self.timelineUpdatingTimer)
+        [self.timelineUpdatingTimer invalidate];
+    
+    self.timelineUpdatingTimer = [NSTimer scheduledTimerWithTimeInterval:0.01
+                                                                  target:self
+                                                                selector:@selector(updateTimeline)
+                                                                userInfo:nil
+                                                                 repeats:YES];
+    
+    [self.playButton fadeOut:DEFAULT_DURATION];
+    [self.pauseButton fadeIn:DEFAULT_DURATION];
+}
+
+- (IBAction)onTouchPause:(id)sender {
+    if(self.audioPlayer.isPlaying)
+    {
+        [self.audioPlayer pause];
+        [self.playButton   fadeIn:DEFAULT_DURATION];
+        [self.pauseButton fadeOut:DEFAULT_DURATION];
+        [self.playerCircleGlow fadeOut:DEFAULT_DURATION];
+    }
 }
 
 - (IBAction)onTouchDone:(id)sender {
@@ -90,6 +133,10 @@
                      }];
 }
 
+- (IBAction)onAudioSliderChanged:(id)sender {
+    
+}
+
 -(id) initWithDelegate : (id<RecoderViewControllerDelegate>) aDelegate{
     self = [self initWithNibName:NSStringFromClass(self.class) bundle:NULL];
     if(self){
@@ -105,17 +152,20 @@
 
 -(void) audioPlayerDidFinishPlaying:(AVAudioPlayer *)player
                        successfully:(BOOL)flag{
-    [self.recodingCircle fadeOut:DEFAULT_DURATION];
+    [self.playerCircleGlow fadeOut:DEFAULT_DURATION];
+    [self.pauseButton fadeOut:DEFAULT_DURATION];
+    [self.playButton fadeIn:DEFAULT_DURATION];
 }
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
+    
     [self hideButton:self.recodingCircle];
     [self hideButton:self.recodingCircleGlow];
     [self hideButton:self.stopButton];
-    [self hideButton:self.playButton];
+    
+    [self hideButton:self.playerContainer];
     // Do any additional setup after loading the view from its nib.
 }
 

@@ -13,17 +13,21 @@
 
 @protocol PaperCellDelegate <NSObject>
 -(void) PaperCellTouched : (PaperCellController*) paper;
+-(void) paperCellSettingTouched : (PaperCellController*) paper;
 @end
 
 @interface PaperCellController : UIViewController
 @property (strong,nonatomic) IBOutlet UILabel* ddayLabel;
 @property (strong,nonatomic) IBOutlet UILabel* titleLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *indicatorForNew;
+@property (weak, nonatomic) IBOutlet UIImageView *backgroundImage;
 
 @property (weak,nonatomic) id<PaperCellDelegate> delegate;
 @property (strong,nonatomic) RollingPaper* entity;
 @property (nonatomic,strong) NSTimer* ddayUpdatingTimer;
 -(id) initWithEntity : (RollingPaper*) entity
             delegate : (id<PaperCellDelegate>) delegate;
+- (IBAction)onSettingTouched:(id)sender;
 -(void) refreshViewWithEntity;
+
 @end

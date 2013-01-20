@@ -62,6 +62,7 @@ typedef struct UEUIMargin UEUIMargin;
 
 
 @interface UIView(AnimationMacro)
+-(void) hideToTransparent;
 -(void) fadeIn : (float) duration;
 -(void) fadeOut : (float) duration;
 -(BOOL) fadeToggle : (float) duration;

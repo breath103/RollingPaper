@@ -60,11 +60,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "RollingPaper/RollingPaperCreator.m"
-         timestampString = "380223519.010869"
+         timestampString = "380363059.84025"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "123"
-         endingLineNumber = "123"
+         startingLineNumber = "257"
+         endingLineNumber = "257"
          landmarkName = "-onTouchSend:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -86,11 +86,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "RollingPaper/PaperCellController.m"
-         timestampString = "379927963.446688"
+         timestampString = "380280689.740222"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "116"
-         endingLineNumber = "116"
+         startingLineNumber = "118"
+         endingLineNumber = "118"
          landmarkName = "-viewDidLoad"
          landmarkType = "5">
       </FileBreakpoint>
@@ -99,11 +99,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "RollingPaper/PaperCellController.m"
-         timestampString = "379928007.296182"
+         timestampString = "380280689.740222"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "117"
-         endingLineNumber = "117"
+         startingLineNumber = "119"
+         endingLineNumber = "119"
          landmarkName = "-viewDidLoad"
          landmarkType = "5">
       </FileBreakpoint>
@@ -112,11 +112,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "RollingPaper/TypewriterController.m"
-         timestampString = "380220361.313785"
+         timestampString = "380312455.154388"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "114"
-         endingLineNumber = "114"
+         startingLineNumber = "121"
+         endingLineNumber = "121"
          landmarkName = "-textViewDidBeginEditing:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -125,11 +125,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "RollingPaper/TypewriterController.m"
-         timestampString = "380220361.313785"
+         timestampString = "380312455.154388"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "115"
-         endingLineNumber = "115"
+         startingLineNumber = "122"
+         endingLineNumber = "122"
          landmarkName = "-textViewDidBeginEditing:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -138,11 +138,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "RollingPaper/TypewriterController.m"
-         timestampString = "380220361.313785"
+         timestampString = "380312455.154388"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "107"
-         endingLineNumber = "107"
+         startingLineNumber = "113"
+         endingLineNumber = "113"
          landmarkName = "-textViewDidBeginEditing:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -151,11 +151,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "RollingPaper/PaperViewController.m"
-         timestampString = "380201894.746986"
+         timestampString = "380310856.653073"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "590"
-         endingLineNumber = "590"
+         startingLineNumber = "589"
+         endingLineNumber = "589"
          landmarkName = "-preferredInterfaceOrientationForPresentation"
          landmarkType = "5">
       </FileBreakpoint>
@@ -164,11 +164,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "RollingPaper/PaperViewController.m"
-         timestampString = "380201894.746986"
+         timestampString = "380310856.653073"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "586"
-         endingLineNumber = "586"
+         startingLineNumber = "585"
+         endingLineNumber = "585"
          landmarkName = "-supportedInterfaceOrientations"
          landmarkType = "5">
       </FileBreakpoint>
@@ -190,11 +190,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "RollingPaper/PaperViewController.m"
-         timestampString = "380201894.746986"
+         timestampString = "380310856.653073"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "584"
-         endingLineNumber = "584"
+         startingLineNumber = "583"
+         endingLineNumber = "583"
          landmarkName = "-supportedInterfaceOrientations"
          landmarkType = "5">
       </FileBreakpoint>
@@ -203,11 +203,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "RollingPaper/NetworkTemplate.m"
-         timestampString = "380091871.333662"
+         timestampString = "380288534.794913"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "172"
-         endingLineNumber = "172"
+         startingLineNumber = "196"
+         endingLineNumber = "196"
          landmarkName = "+requestForBackgroundImage:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -229,11 +229,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "RollingPaper/RecoderController.m"
-         timestampString = "380235819.132721"
+         timestampString = "380308114.205921"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "68"
-         endingLineNumber = "68"
+         startingLineNumber = "91"
+         endingLineNumber = "91"
          landmarkName = "-onTouchPlay:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -242,11 +242,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "RollingPaper/RecoderController.m"
-         timestampString = "380235819.132721"
+         timestampString = "380308114.205921"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "72"
-         endingLineNumber = "72"
+         startingLineNumber = "115"
+         endingLineNumber = "115"
          landmarkName = "-onTouchDone:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -255,7 +255,20 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "RollingPaper/PaperViewController.m"
-         timestampString = "380201894.746986"
+         timestampString = "380310856.653073"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "508"
+         endingLineNumber = "508"
+         landmarkName = "-recoderViewController:onEndRecodingWithFile:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "RollingPaper/PaperViewController.m"
+         timestampString = "380310856.653073"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "509"
@@ -267,25 +280,12 @@
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "RollingPaper/PaperViewController.m"
-         timestampString = "380201894.746986"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "510"
-         endingLineNumber = "510"
-         landmarkName = "-recoderViewController:onEndRecodingWithFile:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
          filePath = "RollingPaper/RecoderController.m"
-         timestampString = "380235087.558362"
+         timestampString = "380308114.205921"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "44"
-         endingLineNumber = "44"
+         startingLineNumber = "51"
+         endingLineNumber = "51"
          landmarkName = "-onTouchStop:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -294,11 +294,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "RollingPaper/PaperViewController.m"
-         timestampString = "380201894.746986"
+         timestampString = "380310856.653073"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "511"
-         endingLineNumber = "511"
+         startingLineNumber = "510"
+         endingLineNumber = "510"
          landmarkName = "-recoderViewController:onEndRecodingWithFile:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -365,6 +365,123 @@
          startingLineNumber = "34"
          endingLineNumber = "34"
          landmarkName = "-preferredInterfaceOrientationForPresentation"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "RollingPaper/RollingPaperCreator.m"
+         timestampString = "380363059.84025"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "118"
+         endingLineNumber = "118"
+         landmarkName = "-initScrollView"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "RollingPaper/RollingPaperCreator.m"
+         timestampString = "380307957.810713"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "74"
+         endingLineNumber = "74"
+         landmarkName = "-initScrollView"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "RollingPaper/AppDelegate.m"
+         timestampString = "380289352.974533"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "78"
+         endingLineNumber = "78"
+         landmarkName = "-applicationDidReceiveMemoryWarning:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "RollingPaper/RollingPaperCreator.m"
+         timestampString = "380307957.810713"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "59"
+         endingLineNumber = "59"
+         landmarkName = "-initScrollView"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "RollingPaper/RollingPaperCreator.m"
+         timestampString = "380363059.84025"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "219"
+         endingLineNumber = "219"
+         landmarkName = "-didReceiveMemoryWarning"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "RollingPaper/RollingPaperCreator.m"
+         timestampString = "380307957.810713"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "60"
+         endingLineNumber = "60"
+         landmarkName = "-initScrollView"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "RollingPaper/RollingPaperCreator.m"
+         timestampString = "380363059.84025"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "101"
+         endingLineNumber = "101"
+         landmarkName = "-initScrollView"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "RollingPaper/TypewriterController.m"
+         timestampString = "380312559.740461"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "177"
+         endingLineNumber = "177"
+         landmarkName = "-onTouchTextAlignOptionButtons:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "RollingPaper/RollingPaperCreator.m"
+         timestampString = "380363059.84025"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "162"
+         endingLineNumber = "162"
+         landmarkName = "-viewDidLoad"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

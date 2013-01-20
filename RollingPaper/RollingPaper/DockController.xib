@@ -42,7 +42,7 @@
 						<string key="NSFrame">{{0, 38}, {52, 348}}</string>
 						<reference key="NSSuperview" ref="603674714"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="904376874"/>
+						<reference key="NSNextKeyView" ref="34602164"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<object class="NSCustomResource" key="IBUIImage">
@@ -53,7 +53,7 @@
 					<object class="IBUIButton" id="261782342">
 						<reference key="NSNextResponder" ref="603674714"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{6, 170}, {33, 27}}</string>
+						<string key="NSFrame">{{0, 165}, {46, 40}}</string>
 						<reference key="NSSuperview" ref="603674714"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="827307220"/>
@@ -92,7 +92,7 @@
 					<object class="IBUIButton" id="827307220">
 						<reference key="NSNextResponder" ref="603674714"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{7, 230}, {33, 23}}</string>
+						<string key="NSFrame">{{0, 219}, {46, 45}}</string>
 						<reference key="NSSuperview" ref="603674714"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="928954047"/>
@@ -117,7 +117,7 @@
 					<object class="IBUIButton" id="1030624655">
 						<reference key="NSNextResponder" ref="603674714"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{11, 117}, {26, 26}}</string>
+						<string key="NSFrame">{{0, 106}, {44, 42}}</string>
 						<reference key="NSSuperview" ref="603674714"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="261782342"/>
@@ -142,12 +142,13 @@
 					<object class="IBUIButton" id="904376874">
 						<reference key="NSNextResponder" ref="603674714"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{8, 57}, {28, 30}}</string>
+						<string key="NSFrame">{{-7, 59}, {58, 23}}</string>
 						<reference key="NSSuperview" ref="603674714"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="34602164"/>
+						<reference key="NSNextKeyView" ref="698674236"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
+						<int key="IBUITag">10</int>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<int key="IBUIContentHorizontalAlignment">0</int>
 						<int key="IBUIContentVerticalAlignment">0</int>
@@ -167,12 +168,13 @@
 					<object class="IBUIButton" id="928954047">
 						<reference key="NSNextResponder" ref="603674714"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{8, 284}, {30, 30}}</string>
+						<string key="NSFrame">{{-12, 287}, {55, 28}}</string>
 						<reference key="NSSuperview" ref="603674714"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="441499149"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
+						<int key="IBUITag">15</int>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<int key="IBUIContentHorizontalAlignment">0</int>
 						<int key="IBUIContentVerticalAlignment">0</int>
@@ -245,7 +247,7 @@
 				<string key="NSFrameSize">{78, 460}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
-				<reference key="NSNextKeyView" ref="698674236"/>
+				<reference key="NSNextKeyView" ref="904376874"/>
 				<string key="NSReuseIdentifierKey">_NS:9</string>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
@@ -509,13 +511,13 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="album_icon.png">{66, 46}</string>
-			<string key="camera_icon.png">{66, 54}</string>
+			<string key="album_icon.png">{92, 90}</string>
+			<string key="camera_icon.png">{91, 79}</string>
 			<string key="dockButton.png">{56, 78}</string>
-			<string key="mic_icon.png">{59, 60}</string>
-			<string key="pen_icon.png">{57, 61}</string>
+			<string key="mic_icon.png">{111, 56}</string>
+			<string key="pen_icon.png">{117, 46}</string>
 			<string key="save_icon.png">{54, 54}</string>
-			<string key="text_icon.png">{51, 51}</string>
+			<string key="text_icon.png">{89, 85}</string>
 			<string key="tool_dock_background.png">{105, 696}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">1930</string>

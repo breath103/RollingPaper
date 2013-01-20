@@ -20,6 +20,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "UELib/UEUI.h"
 #import "UserSettingViewController.h"
+#import "PaperSettingController.h"
 
 @interface RollingPaperListController ()
 
@@ -119,10 +120,8 @@
             
             [self addChildViewController:cellController];
             [self.paperScrollView addSubview:cellController.view];
-            
-            CGSize contentSize = self.paperScrollView.contentSize;
-            contentSize.height = topBorder + (heightMargin + viewHeight)*index;
-            self.paperScrollView.contentSize = contentSize;
+            self.paperScrollView.contentSize = CGSizeMake(self.paperScrollView.frame.size.width, topBorder + (heightMargin + viewHeight) * index);
+
         }
         else if ([entity.is_sended compare:@"SENDED"] == NSOrderedSame){
             NSLog(@"SENDED : %@",entity.idx);
@@ -130,6 +129,7 @@
     }
     
     [[[UECoreData sharedInstance] managedObjectContext] save:NULL];
+    
 }
 -(void) viewWillAppear:(BOOL)animated{
     
@@ -177,11 +177,16 @@
     PaperViewController* paperViewController = [[PaperViewController alloc] initWithEntity:paper.entity];
     [self.navigationController pushViewController:paperViewController animated:TRUE];
 }
+-(void) paperCellSettingTouched:(PaperCellController *)paper{
+    RollingPaperCreator* paperSettingView = [[RollingPaperCreator alloc] initForEditing:paper.entity];
+    [self.navigationController pushViewController:paperSettingView animated:TRUE];
+}
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
 }
+
 
 - (void)viewDidUnload {
     [self setPaperScrollView:nil];
@@ -190,14 +195,13 @@
 
 - (IBAction)onTouchAddPaper:(id)sender {
     RollingPaperCreator* controller = [[RollingPaperCreator alloc]initWithNibName:@"RollingPaperCreator" bundle:NULL];
-    [self.navigationController pushViewController:controller animated:TRUE];
+    [self.navigationController pushViewController:controller
+                                         animated:TRUE];
 }
 
 - (IBAction)onTouchRefresh:(id)sender {
     [self refreshPaperList];
 }
-
-
 -(BOOL)shouldAutorotate
 {
     return YES;

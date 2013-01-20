@@ -27,13 +27,16 @@
 @property (nonatomic, retain) NSNumber * width;
 @property (nonatomic, retain) NSString * background;
 @property (nonatomic, retain) NSSet *contents;
+@property (nonatomic, retain) NSString * receiver_name;
+@property (nonatomic, retain) NSString * target_email;
 @end
 
 @interface RollingPaper (CoreDataGeneratedAccessors)
-
 - (void)addContentsObject:(Content *)value;
 - (void)removeContentsObject:(Content *)value;
 - (void)addContents:(NSSet *)values;
 - (void)removeContents:(NSSet *)values;
-
 @end
+
+
+

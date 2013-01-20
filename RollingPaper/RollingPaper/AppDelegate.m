@@ -74,7 +74,9 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions{
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
 }
-
+-(void) applicationDidReceiveMemoryWarning:(UIApplication *)application{
+    NSLog(@"MEMORY WARNING : %@",application);
+}
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     [[UECoreData sharedInstance]saveContext];

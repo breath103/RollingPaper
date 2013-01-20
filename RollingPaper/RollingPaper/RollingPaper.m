@@ -26,5 +26,8 @@
 @dynamic width;
 @dynamic background;
 @dynamic contents;
-
+@dynamic receiver_name;
+@dynamic target_email;
 @end
+
+

@@ -16,6 +16,8 @@
 #define SERVER_HOST ([@"http://" stringByAppendingString:SERVER_IP])
 
 
+typedef void (^BackgroundImageHandler)(UIImage* image);
+
 
 @interface NetworkTemplate : NSObject
 // 로그인 / 회원가입 관련 리퀘스트들
@@ -29,7 +31,8 @@
                                                         notice : (NSString*) notice
                                                   receiverFBid : (NSString*) receiver_fb_id
                                                   receiverName : (NSString*) receiver_name
-                                                  receieveTime : (NSString*) receiveTime;
+                                                  receieveTime : (NSString*) receiveTime
+                                                    background : (NSString*) background;
 +(ASIFormDataRequest*) requestForRollingPaperListWithUserIdx : (NSString*) useridx;
 +(ASIFormDataRequest*) requestForRollingPaperContents : (NSString*) paper_idx
                                             afterTime : (long) timestamp;
@@ -48,6 +51,11 @@
 +(ASIFormDataRequest*) requestForSynchronizeImageContent : (ImageContent*) entity;
 +(ASIFormDataRequest*) requestForSynchronizeSoundContent : (SoundContent*) entity;
 
-+(ASIHTTPRequest*) requestForBackgroundImage : (NSString*) background;
 
++(ASIHTTPRequest*) requestForPaperBackgroundImageList;
++(ASIHTTPRequest*) requestForBackgroundImage : (NSString*) background;
++(ASIFormDataRequest*) requestForSynchronizePaper : (RollingPaper*) entity;
+
++(void) getBackgroundImage : (NSString*) background
+               withHandler : (BackgroundImageHandler) handler;
 @end

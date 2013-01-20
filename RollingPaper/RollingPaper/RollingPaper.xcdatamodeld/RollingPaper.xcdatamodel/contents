@@ -25,6 +25,8 @@
         <attribute name="notice" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="participants_count" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="receive_time" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="receiver_name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="target_email" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="update_time" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="width" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
@@ -47,7 +49,7 @@
     <elements>
         <element name="Content" positionX="-200" positionY="-135" width="128" height="133"/>
         <element name="ImageContent" positionX="-360" positionY="95" width="128" height="103"/>
-        <element name="RollingPaper" positionX="-144" positionY="54" width="128" height="255"/>
+        <element name="RollingPaper" positionX="-144" positionY="54" width="128" height="285"/>
         <element name="SoundContent" positionX="117" positionY="90" width="128" height="103"/>
         <element name="TextContent" positionX="9" positionY="-106" width="128" height="133"/>
     </elements>
