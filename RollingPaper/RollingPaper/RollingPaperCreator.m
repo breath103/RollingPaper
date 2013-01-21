@@ -51,9 +51,6 @@
     self.paperCellImage.layer.mask = maskLayer;
     [self.paperCellImage setNeedsDisplay];
 }
--(void) createBackgroundButton : (NSString*) background {
-    
-}
 -(void) initScrollView{
     [self.scrollView addSubview:self.contentContainer];
     self.scrollView.contentSize = self.contentContainer.frame.size;
@@ -129,6 +126,13 @@
     } completion:^(BOOL finished) {
         
     }];
+}
+
+- (void)deleteAllParticipants{
+    for(UIView* view in self.participantsContainer.subviews){
+        if(view != [self.participantsContainer.subviews objectAtIndex:0])
+            [view removeFromSuperview];
+    }
 }
 - (void)createNewParticipnatsCell : (NSDictionary<FBGraphUser>*) user{
     CGSize buttonSize = CGSizeMake(270, 37);
@@ -224,6 +228,7 @@
         [request setCompletionBlock:^{
             NSArray* array = [[SBJSON new]objectWithString:request.responseString];
             NSLog(@"%@",array);
+            [self deleteAllParticipants];
             for(NSDictionary* user in array){
                 [self addParticipantsView:user];
             }
@@ -579,11 +584,10 @@ clickedButtonAtIndex:(NSInteger)buttonIndex{
         }
         else if(self.invitingFreindPicker == sender){
             //방 만들기 모드에서 같이 만들 친구 모을때
+            [self deleteAllParticipants];
             for (id<FBGraphUser> user in self.invitingFreindPicker.selection)
-            {
-                //NSLog(@"%@",user);
                 [self createNewParticipnatsCell:user];
-            }
+        
             
             [self dismissViewControllerAnimated:TRUE completion:^{
                 

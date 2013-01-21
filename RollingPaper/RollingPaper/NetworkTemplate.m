@@ -12,6 +12,7 @@
 #import "UEFileManager.h"
 
 @implementation NetworkTemplate
+
 +(ASIFormDataRequest*) requestForPhoneAuth : (NSString*) phone{
     NSString* phoneAuthURL = [SERVER_HOST stringByAppendingString:@"/user/phoneAuth"];
     ASIFormDataRequest* request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:phoneAuthURL]];
@@ -213,6 +214,24 @@
     ASIHTTPRequest* request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:requestURL]];
     return request;
 }
+
++(ASIFormDataRequest*) requestForDeleteImageContent : (NSString*) image_idx
+                                        withUserIdx : (NSString*) user_idx{
+    NSString* requestURL = [SERVER_HOST stringByAppendingString:@"/paper/deleteContent/image"];
+    ASIFormDataRequest* request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:requestURL]];
+    [request addPostValue:image_idx forKey:@"image_idx"];
+    [request addPostValue:user_idx forKey:@"user_idx"];
+    return request;
+}
++(ASIFormDataRequest*) requestForDeleteSoundContent : (NSString*) sound_idx
+                                        withUserIdx : (NSString*) user_idx{
+    NSString* requestURL = [SERVER_HOST stringByAppendingString:@"/paper/deleteContent/sound"];
+    ASIFormDataRequest* request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:requestURL]];
+    [request addPostValue:sound_idx forKey:@"sound_idx"];
+    [request addPostValue:user_idx forKey:@"user_idx"];
+    return request;
+}
+
 +(void) getBackgroundImage : (NSString*) background
                withHandler : (BackgroundImageHandler) handler{
     NSString* BGlocalName = [NSString stringWithFormat:@"paperbg_%@",background];

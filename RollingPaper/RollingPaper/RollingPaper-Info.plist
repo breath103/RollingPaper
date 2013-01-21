@@ -4,15 +4,6 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>ko_KR</string>
-	<key>UIAppFonts</key>
-	<array>
-		<string>08SeoulHangangM.ttf</string>
-		<string>08SeoulNamsanM.ttf</string>
-		<string>NanumBrush.ttf</string>
-		<string>NanumGothic.ttf</string>
-		<string>NanumMyeongjo.ttf</string>
-		<string>NanumPen.ttf</string>
-	</array>
 	<key>CFBundleDisplayName</key>
 	<string>${PRODUCT_NAME}</string>
 	<key>CFBundleExecutable</key>
@@ -24,7 +15,8 @@
 			<key>CFBundleIconFiles</key>
 			<array>
 				<string>rolling paper_logo_단순화_2 copy.png</string>
-				<string>retina-logo3.png</string>
+				<string>rolling paper_logo.png</string>
+				<string>logo3.png</string>
 			</array>
 			<key>UIPrerenderedIcon</key>
 			<true/>
@@ -57,6 +49,15 @@
 	<string>333864290041286</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>UIAppFonts</key>
+	<array>
+		<string>08SeoulHangangM.ttf</string>
+		<string>08SeoulNamsanM.ttf</string>
+		<string>NanumBrush.ttf</string>
+		<string>NanumGothic.ttf</string>
+		<string>NanumMyeongjo.ttf</string>
+		<string>NanumPen.ttf</string>
+	</array>
 	<key>UIPrerenderedIcon</key>
 	<true/>
 	<key>UIRequiredDeviceCapabilities</key>
@@ -76,11 +77,11 @@
 			<key>TintColor</key>
 			<dict>
 				<key>Blue</key>
-				<real>0</real>
+				<real>0.0</real>
 				<key>Green</key>
-				<real>0</real>
+				<real>0.0</real>
 				<key>Red</key>
-				<real>0</real>
+				<real>0.0</real>
 			</dict>
 			<key>Translucent</key>
 			<false/>

@@ -66,6 +66,7 @@
 -(void) initLeftDockMenu{
     self.dockController = [[DockController alloc]initWithDelegate:self];
     [self addChildViewController:self.dockController];
+    
 }
 -(void) initContentsScrollContainer{
     self.contentsContainer.contentSize = CGSizeMake(self.entity.width.floatValue,
@@ -102,6 +103,15 @@
     self.contentsContainer.delegate = self;
 }
 -(void) onReceiveContentsResponse : (NSDictionary*) categorizedContents{
+    
+    for(UIView* subView in self.contentsScrollContainer.subviews){
+        [UIView animateWithDuration:0.2f animations:^{
+            subView.alpha = 0.0f;
+        } completion:^(BOOL finished) {
+            [subView removeFromSuperview];
+        }];
+    }
+    
     NSDictionary* imageContents = [categorizedContents objectForKey:@"image"];
     for(NSDictionary*p in imageContents){
         ImageContent* imageEntity = (ImageContent*)[[UECoreData sharedInstance]insertNewObject:@"ImageContent" initWith:p];
@@ -146,7 +156,16 @@
     [self initLeftDockMenu];
     [self initContentsScrollContainer];
     [self loadAndShowContents];
+    
     [self onChangeToEditingMode];
+    
+    self.transformTargetView = NULL;
+}
+- (IBAction)onTouchRefresh:(id)sender {
+    [self saveToServer];
+    
+    self.contentsContainer.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"main_background"]];
+    [self loadAndShowContents];
     
     self.transformTargetView = NULL;
 }
@@ -158,8 +177,7 @@
         NSLog(@"Long Background : %@",tap);
     }
 }
-
--(void) viewWillDisappear:(BOOL)animated{
+-(void) saveToServer{
     int i = 0;
     for( id<RollingPaperContentViewProtocol> view in self.contentsViews){
         if([view isNeedToSyncWithServer]){
@@ -168,6 +186,9 @@
         }
     }
     NSLog(@"%d개 업데이트 되었습니다",i);
+}
+-(void) viewWillDisappear:(BOOL)animated{
+    [self saveToServer];
 }
 - (void)didReceiveMemoryWarning{
     [super didReceiveMemoryWarning];
@@ -202,9 +223,11 @@
         self.transformTargetView.isNeedToSyncWithServer = TRUE;
     }
 }
--(void) onTouchContentDeleteButton : (UIButton*) deleteButton{
+-(void) onTouchContentDeleteButton : (UITapGestureRecognizer*) recognizer{
+    UIButton* deleteButton = recognizer.view;
     [[deleteButton superview] fadeOut:0.2f];
     [deleteButton removeFromSuperview];
+    [self setTransformTargetView:NULL];
 }
 -(void) setTransformTargetView:(UIView<RollingPaperContentViewProtocol> *)aTransformTargetView{
     if(_transformTargetView){
@@ -224,12 +247,17 @@
             self.dockController.panGestureRecognizer.enabled = FALSE;
             self.contentsContainer.scrollEnabled = NO;
             
-            UIButton* deleteButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+            UIButton* deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
             deleteButton.tag = 6666;
             [deleteButton setImage:[UIImage imageNamed:@"content_delete_button"] forState:UIControlStateNormal];
-            [deleteButton addTarget:self
-                             action:@selector(onTouchContentDeleteButton:)
-                   forControlEvents:UIControlEventTouchUpInside];
+            /*
+            [deleteButton addTarget : self
+                             action : @selector(onTouchContentDeleteButton:)
+                   forControlEvents : UIControlEventTouchUpInside];
+             */
+            UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTouchContentDeleteButton:)];
+            [deleteButton addGestureRecognizer:tapGesture];
+            
             deleteButton.frame = CGRectMake(0, 0,50,50);
             deleteButton.center = CGPointMake(_transformTargetView.bounds.size.width, 0);
             deleteButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
@@ -331,6 +359,8 @@
     self.transformTargetView = entityView;
     return entityView;
 }
+
+
 -(ImageContentView*) onCreateImage : (UIImage *)image{
     CGImageRef cgImage = image.CGImage;
     CGFloat width   = CGImageGetWidth(cgImage) / APP_SCALE;
@@ -419,6 +449,8 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer : (UIGestureRecognizer *)othe
             AlbumController* albumController = [[AlbumController alloc]initWithDelegate:self];
             [self addChildViewController:albumController];
             [self.view addSubview:albumController.view];
+            UIViewSetHeight(albumController.view, self.view.frame.size.height);
+            [albumController.view layoutSubviews];
             
             self.currentEditingViewController = albumController;
         }break;
@@ -426,6 +458,9 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer : (UIGestureRecognizer *)othe
             TypewriterController* typewriterController = [[TypewriterController alloc]initWithDelegate:self];
             [self addChildViewController:typewriterController];
             [self.view addSubview:typewriterController.view];
+            UIViewSetHeight(typewriterController.view, self.view.frame.size.height);
+            [typewriterController.view layoutSubviews];
+            
             UIViewSetY(typewriterController.view, self.view.frame.size.height);
             [UIView animateWithDuration:0.3f animations:^{
                 UIViewSetY(typewriterController.view, 0);
@@ -439,6 +474,9 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer : (UIGestureRecognizer *)othe
             RecoderController* recoderController = [[RecoderController alloc] initWithDelegate:self];
             [self addChildViewController:recoderController];
             [self.view addSubview:recoderController.view];
+            UIViewSetHeight(recoderController.view, self.view.frame.size.height);
+            [recoderController.view layoutSubviews];
+            
             recoderController.view.alpha = 0.0f;
             [UIView animateWithDuration:0.4f animations:^{
                 recoderController.view.alpha = 1.0f;
@@ -450,6 +488,8 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer : (UIGestureRecognizer *)othe
             PencilcaseController* pencilcaseController = [[PencilcaseController alloc]initWithDelegate:self];
             [self addChildViewController:pencilcaseController];
             [self.view addSubview:pencilcaseController.view];
+            UIViewSetHeight(pencilcaseController.view, self.view.frame.size.height);
+            [pencilcaseController.view layoutSubviews];
             
             self.currentEditingViewController = pencilcaseController;
         }break;

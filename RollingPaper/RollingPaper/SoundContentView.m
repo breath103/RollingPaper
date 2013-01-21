@@ -95,6 +95,19 @@
     self.entity.y        = FLOAT_TO_NSNUMBER(self.center.y);
 }
 -(void) syncEntityWithServer{
+    
+    if(self.entity.idx && self.hidden) {
+        ASIFormDataRequest* request = [NetworkTemplate requestForDeleteSoundContent:self.entity.idx.stringValue
+                                                                        withUserIdx:[UserInfo getUserIdx].stringValue];
+        [request setCompletionBlock:^{
+            NSLog(@"%@",request.responseString);
+        }];
+        [request setFailedBlock:^{
+            NSLog(@"%@",request);
+        }];
+        [request startSynchronous];
+    }
+    
     if(isNeedToSyncWithServer) {
         if(self.entity.idx == NULL){
             [self updateEntityWithView];

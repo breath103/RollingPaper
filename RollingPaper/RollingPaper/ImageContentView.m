@@ -21,6 +21,10 @@
 -(id) initWithEntity : (ImageContent*) entity{
     self = [self initWithFrame:CGRectMake(0,0,1,1)];
     if(self){
+        self.imageView = [[UIImageView alloc]initWithFrame:self.frame];
+        self.imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        [self addSubview: self.imageView];
+        
         self.entity = entity;
         self.userInteractionEnabled = TRUE;
         self.frame = CGRectMake(0,0,entity.width.floatValue , entity.height.floatValue);
@@ -43,6 +47,15 @@
     }
     return self;
 }
+
+-(UIImage*) image{
+    return self.imageView.image;
+}
+-(void) setImage : (UIImage*) image{
+    self.imageView.image = image;
+}
+
+
 -(NSString*) urlToLocalFilePath : (NSString*) url{
     NSArray* array = [url componentsSeparatedByString:@"/"];
     return [array lastObject];
@@ -85,40 +98,56 @@
     self.entity.y        = FLOAT_TO_NSNUMBER(self.center.y);
 }
 -(void) syncEntityWithServer{
-    if(isNeedToSyncWithServer) {
-        if(self.entity.image == NULL)
-        {
-            NSData* jpegImage = UIImagePNGRepresentation(self.image);
-            
-            [self updateEntityWithView];
-            ASIFormDataRequest* request = [NetworkTemplate requestForUploadImageContentWithUserIdx : [UserInfo getUserIdx].stringValue
-                                                                                            entity : self.entity
-                                                                                             image : jpegImage];
-            [request setCompletionBlock:^{
-                NSDictionary* dict = [[[SBJSON alloc] init] objectWithString:request.responseString];
-                [self.entity setValuesWithDictionary:dict];
-            }];
-            [request setFailedBlock:^{
-                NSLog(@"%@",@"fail!!!!");
-            }];
-            [request startSynchronous];
-            isNeedToSyncWithServer = false;
-        }
-        //원래 존재하는 엔티티인데, 값이 수정된경우
-        else{
-            [self updateEntityWithView];
-            ASIFormDataRequest* request = [NetworkTemplate requestForSynchronizeImageContent:self.entity];
-            [request setCompletionBlock:^{
-                NSDictionary* dict = [[[SBJSON alloc] init] objectWithString:request.responseString];
-                NSLog(@"%@",dict);
-            }];
-            [request setFailedBlock:^{
-                NSLog(@"%@",@"fail!!!!");
-            }];
-            [request startSynchronous];
-            isNeedToSyncWithServer = false;
+    
+    // 서버에서 받아온 것이고 숨겨진경우. 즉, 삭제 예약된 경우
+    if(self.entity.idx && self.hidden) {
+        ASIFormDataRequest* request = [NetworkTemplate requestForDeleteImageContent:self.entity.idx.stringValue
+                                                                        withUserIdx:[UserInfo getUserIdx].stringValue];
+        [request setCompletionBlock:^{
+            NSLog(@"%@",request.responseString);
+        }];
+        [request setFailedBlock:^{
+            NSLog(@"%@",request);
+        }];
+        [request startSynchronous];
+    }
+    else{
+        if(isNeedToSyncWithServer) {
+            if(self.entity.image == NULL)
+            {
+                NSData* jpegImage = UIImagePNGRepresentation(self.image);
+                
+                [self updateEntityWithView];
+                ASIFormDataRequest* request = [NetworkTemplate requestForUploadImageContentWithUserIdx : [UserInfo getUserIdx].stringValue
+                                                                                                entity : self.entity
+                                                                                                 image : jpegImage];
+                [request setCompletionBlock:^{
+                    NSDictionary* dict = [[[SBJSON alloc] init] objectWithString:request.responseString];
+                    [self.entity setValuesWithDictionary:dict];
+                }];
+                [request setFailedBlock:^{
+                    NSLog(@"%@",@"fail!!!!");
+                }];
+                [request startSynchronous];
+                isNeedToSyncWithServer = false;
+            }
+            //원래 존재하는 엔티티인데, 값이 수정된경우
+            else{
+                [self updateEntityWithView];
+                ASIFormDataRequest* request = [NetworkTemplate requestForSynchronizeImageContent:self.entity];
+                [request setCompletionBlock:^{
+                    NSDictionary* dict = [[[SBJSON alloc] init] objectWithString:request.responseString];
+                    NSLog(@"%@",dict);
+                }];
+                [request setFailedBlock:^{
+                    NSLog(@"%@",@"fail!!!!");
+                }];
+                [request startSynchronous];
+                isNeedToSyncWithServer = false;
+            }
         }
     }
+    
 }
 -(NSNumber*) getUserIdx{
     return self.entity.user_idx;

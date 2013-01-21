@@ -9,7 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "ImageContent.h"
 #import "RollingPaperContentViewProtocol.h"
-@interface ImageContentView : UIImageView<RollingPaperContentViewProtocol>
+@interface ImageContentView : UIView<RollingPaperContentViewProtocol>
+@property (nonatomic,strong) UIImageView* imageView;
 @property (strong,nonatomic) ImageContent* entity;
 -(id) initWithEntity : (ImageContent*) entity;
+-(UIImage*) image;
+-(void) setImage : (UIImage*) image;
 @end

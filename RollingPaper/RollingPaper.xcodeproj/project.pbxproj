@@ -53,6 +53,10 @@
 		0729BEE1168F8AC4002A300A /* colorPalleteBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 0729BEE0168F8AC4002A300A /* colorPalleteBackground.png */; };
 		0729BEE4168F91BD002A300A /* ColorPalette.m in Sources */ = {isa = PBXBuildFile; fileRef = 0729BEE3168F91BD002A300A /* ColorPalette.m */; };
 		0729BEE6168F9334002A300A /* bottomOverlayBar.png in Resources */ = {isa = PBXBuildFile; fileRef = 0729BEE5168F9334002A300A /* bottomOverlayBar.png */; };
+		0744AFB016ADAA5E00F5228C /* logo3.png in Resources */ = {isa = PBXBuildFile; fileRef = 0744AFAF16ADAA5E00F5228C /* logo3.png */; };
+		0744AFB216ADB4D700F5228C /* refresh_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 0744AFB116ADB4D700F5228C /* refresh_button.png */; };
+		0744AFB516ADBFB400F5228C /* LoadingProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0744AFB416ADBFB300F5228C /* LoadingProgressView.m */; };
+		0744AFB716ADC01000F5228C /* loading_circle.png in Resources */ = {isa = PBXBuildFile; fileRef = 0744AFB616ADC01000F5228C /* loading_circle.png */; };
 		0749EFB816970956004350E5 /* main_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 0749EFB616970956004350E5 /* main_background.png */; };
 		0749EFB916970956004350E5 /* main_letherpad.png in Resources */ = {isa = PBXBuildFile; fileRef = 0749EFB716970956004350E5 /* main_letherpad.png */; };
 		074A1A9A16A6E142001D9708 /* connect_with_facebook.png in Resources */ = {isa = PBXBuildFile; fileRef = 074A1A9616A6E142001D9708 /* connect_with_facebook.png */; };
@@ -154,7 +158,6 @@
 		07B355A5165AB2CB0094D7D7 /* AlbumPickerController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07B355A0165AB2CB0094D7D7 /* AlbumPickerController.xib */; };
 		07B355A6165AB2CB0094D7D7 /* PhotoPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B355A2165AB2CB0094D7D7 /* PhotoPickerController.m */; };
 		07B355A7165AB2CB0094D7D7 /* PhotoPickerController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07B355A3165AB2CB0094D7D7 /* PhotoPickerController.xib */; };
-		07B355A8165B2A030094D7D7 /* retina-logo3.png in Resources */ = {isa = PBXBuildFile; fileRef = 07B35599165AB2120094D7D7 /* retina-logo3.png */; };
 		07B355B4165B41250094D7D7 /* UEEntitiyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B355B3165B41250094D7D7 /* UEEntitiyView.m */; };
 		07B355B6165B47340094D7D7 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07B355B5165B47330094D7D7 /* CoreData.framework */; };
 		07B355B9165B4D360094D7D7 /* RollingPaper.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 07B355B7165B4D360094D7D7 /* RollingPaper.xcdatamodeld */; };
@@ -268,6 +271,11 @@
 		0729BEE2168F91BD002A300A /* ColorPalette.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorPalette.h; sourceTree = "<group>"; };
 		0729BEE3168F91BD002A300A /* ColorPalette.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorPalette.m; sourceTree = "<group>"; };
 		0729BEE5168F9334002A300A /* bottomOverlayBar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bottomOverlayBar.png; sourceTree = "<group>"; };
+		0744AFAF16ADAA5E00F5228C /* logo3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo3.png; sourceTree = "<group>"; };
+		0744AFB116ADB4D700F5228C /* refresh_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = refresh_button.png; sourceTree = "<group>"; };
+		0744AFB316ADBFB300F5228C /* LoadingProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoadingProgressView.h; sourceTree = "<group>"; };
+		0744AFB416ADBFB300F5228C /* LoadingProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoadingProgressView.m; sourceTree = "<group>"; };
+		0744AFB616ADC01000F5228C /* loading_circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loading_circle.png; sourceTree = "<group>"; };
 		0749EFB616970956004350E5 /* main_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = main_background.png; sourceTree = "<group>"; };
 		0749EFB716970956004350E5 /* main_letherpad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = main_letherpad.png; sourceTree = "<group>"; };
 		074A1A9616A6E142001D9708 /* connect_with_facebook.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = connect_with_facebook.png; sourceTree = "<group>"; };
@@ -426,7 +434,6 @@
 		07B3558D165A9B7A0094D7D7 /* logo_plane.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo_plane.png; sourceTree = "<group>"; };
 		07B35591165AA2B90094D7D7 /* loading-bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "loading-bg.png"; sourceTree = "<group>"; };
 		07B35593165AA4AC0094D7D7 /* app_loading_no_bar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "app_loading_no_bar@2x.png"; sourceTree = "<group>"; };
-		07B35599165AB2120094D7D7 /* retina-logo3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "retina-logo3.png"; sourceTree = "<group>"; };
 		07B3559E165AB2CB0094D7D7 /* AlbumPickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumPickerController.h; sourceTree = "<group>"; };
 		07B3559F165AB2CB0094D7D7 /* AlbumPickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlbumPickerController.m; sourceTree = "<group>"; };
 		07B355A0165AB2CB0094D7D7 /* AlbumPickerController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlbumPickerController.xib; sourceTree = "<group>"; };
@@ -655,7 +662,9 @@
 		07629A65168F1E5800F413A7 /* shared */ = {
 			isa = PBXGroup;
 			children = (
+				0744AFB616ADC01000F5228C /* loading_circle.png */,
 				0782AC9216AAAD9E00E79CA3 /* orange_button.png */,
+				0744AFB116ADB4D700F5228C /* refresh_button.png */,
 				074A1AA516A754E4001D9708 /* font_button_icon.png */,
 				074A1AA316A754CE001D9708 /* default_bottom_bar.png */,
 				07BC507916A542FA00F9060F /* previousArrow.png */,
@@ -679,7 +688,7 @@
 		0778B7E0163B7C4E0026B99A = {
 			isa = PBXGroup;
 			children = (
-				07B35599165AB2120094D7D7 /* retina-logo3.png */,
+				0744AFAF16ADAA5E00F5228C /* logo3.png */,
 				0778B7F5163B7C4E0026B99A /* RollingPaper */,
 				0778B7EE163B7C4E0026B99A /* Frameworks */,
 				0778B7EC163B7C4E0026B99A /* Products */,
@@ -742,6 +751,8 @@
 				0778B7FF163B7C4E0026B99A /* AppDelegate.m */,
 				07B3558A165A9B790094D7D7 /* resources */,
 				0778B7F6163B7C4E0026B99A /* Supporting Files */,
+				0744AFB316ADBFB300F5228C /* LoadingProgressView.h */,
+				0744AFB416ADBFB300F5228C /* LoadingProgressView.m */,
 			);
 			path = RollingPaper;
 			sourceTree = "<group>";
@@ -1152,7 +1163,6 @@
 				07B35594165AA4AC0094D7D7 /* app_loading_no_bar@2x.png in Resources */,
 				07B355A5165AB2CB0094D7D7 /* AlbumPickerController.xib in Resources */,
 				07B355A7165AB2CB0094D7D7 /* PhotoPickerController.xib in Resources */,
-				07B355A8165B2A030094D7D7 /* retina-logo3.png in Resources */,
 				076E89E8165EA26B00040F6F /* paper_cell_bg.png in Resources */,
 				076E89EB165EA2D100040F6F /* status_bar@2x.png in Resources */,
 				076E89F2165EA92400040F6F /* PaperCellController.xib in Resources */,
@@ -1255,6 +1265,9 @@
 				07C32BB616AC7359003FB62B /* userlist_top.png in Resources */,
 				0795EE6E16AD089E0024346B /* content_selectborder.png in Resources */,
 				0795EE7016AD0BB30024346B /* content_delete_button.png in Resources */,
+				0744AFB016ADAA5E00F5228C /* logo3.png in Resources */,
+				0744AFB216ADB4D700F5228C /* refresh_button.png in Resources */,
+				0744AFB716ADC01000F5228C /* loading_circle.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1322,6 +1335,7 @@
 				07BC508116A54E9B00F9060F /* NSRandomSupport.m in Sources */,
 				071D89A316A7B68400839C4B /* RollingPaper.m in Sources */,
 				07C32BAD16AC1194003FB62B /* UETextField.m in Sources */,
+				0744AFB516ADBFB400F5228C /* LoadingProgressView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

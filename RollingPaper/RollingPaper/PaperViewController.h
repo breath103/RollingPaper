@@ -51,6 +51,7 @@
 @property (nonatomic,strong) TypewriterController* typewriterController;
 @property (nonatomic,strong) PencilcaseController* pencilcaseController;
 */
+- (IBAction)onTouchRefresh:(id)sender;
 -(ImageContentView*) onCreateImage : (UIImage *)image;
 -(id) initWithEntity : (RollingPaper*) entity;
 -(NSArray*) contentsViews;

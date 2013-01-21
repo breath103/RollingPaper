@@ -91,7 +91,9 @@
 }
 +(NSMutableArray*) getDefaultColorArray
 {
-    NSMutableArray* colors = [NSMutableArray arrayWithObjects: UIColorXRGB(0,0,0),
+    NSMutableArray* colors = [NSMutableArray arrayWithObjects:
+                              [UIColor whiteColor],
+                              UIColorXRGB(0,0,0),
                               UIColorXRGB(255,30,0),
                               UIColorXRGB(246,207,40),
                               UIColorXRGB(94,116,62),

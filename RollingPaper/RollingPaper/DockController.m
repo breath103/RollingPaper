@@ -30,7 +30,9 @@
 
 -(void) willMoveToParentViewController:(UIViewController *)parent{
     [self.parentViewController.view addSubview:self.view];
-    UIViewSetOrigin(self.view, CGPointMake(-self.dockView.bounds.size.width,0));
+    UIViewSetOrigin(self.view, CGPointMake(-self.dockView.bounds.size.width,parent.view.frame.size.height/2 - self.view.bounds.size.height/2));
+    NSLog(@"%@",self.view);
+    NSLog(@"%@",self.dockView);
     self.panGestureRecognizer = [[ UIPanGestureRecognizer alloc] initWithTarget:self
                                                                          action:@selector(onDockGesture:)];
     [parent.view addGestureRecognizer:self.panGestureRecognizer];
