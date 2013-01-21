@@ -27,8 +27,6 @@
 		071E3A2E168A317E00A2A281 /* PaintingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 071E3A2C168A317E00A2A281 /* PaintingView.m */; };
 		0724BCB016A947FC00BD7139 /* save_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 0724BCA916A947FC00BD7139 /* save_icon.png */; };
 		0724BCB216A947FC00BD7139 /* tool_dock_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 0724BCAB16A947FC00BD7139 /* tool_dock_background.png */; };
-		0724BCB616A9828C00BD7139 /* FriendPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0724BCB416A9828C00BD7139 /* FriendPickerController.m */; };
-		0724BCB716A9828C00BD7139 /* FriendPickerController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0724BCB516A9828C00BD7139 /* FriendPickerController.xib */; };
 		0724BCC116A9E5DE00BD7139 /* recoder_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 0724BCB816A9E5DE00BD7139 /* recoder_background.png */; };
 		0724BCC216A9E5DE00BD7139 /* recoder_cancel_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 0724BCB916A9E5DE00BD7139 /* recoder_cancel_button.png */; };
 		0724BCC316A9E5DE00BD7139 /* recoder_ok_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 0724BCBA16A9E5DE00BD7139 /* recoder_ok_button.png */; };
@@ -129,6 +127,8 @@
 		078CA9AC16810592007A3BFC /* FBFriendSearchPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 078CA9AB16810591007A3BFC /* FBFriendSearchPickerController.m */; };
 		0795D1B8167B70D200272D34 /* RecoderController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0795D1B6167B70D200272D34 /* RecoderController.m */; };
 		0795D1B9167B70D200272D34 /* RecoderController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0795D1B7167B70D200272D34 /* RecoderController.xib */; };
+		0795EE6E16AD089E0024346B /* content_selectborder.png in Resources */ = {isa = PBXBuildFile; fileRef = 0795EE6D16AD089E0024346B /* content_selectborder.png */; };
+		0795EE7016AD0BB30024346B /* content_delete_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 0795EE6F16AD0BB20024346B /* content_delete_button.png */; };
 		079C2A19169B060D00FB7A9D /* FacebookHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 079C2A18169B060D00FB7A9D /* FacebookHelper.m */; };
 		07A8DD741689DB4F00E1686A /* PaperSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07A8DD721689DB4F00E1686A /* PaperSettingViewController.m */; };
 		07A8DD751689DB4F00E1686A /* PaperSettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07A8DD731689DB4F00E1686A /* PaperSettingViewController.xib */; };
@@ -163,10 +163,12 @@
 		07B35619165C12CF0094D7D7 /* CGPointExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B35618165C12CB0094D7D7 /* CGPointExtension.m */; };
 		07BC507B16A542FA00F9060F /* previousArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 07BC507916A542FA00F9060F /* previousArrow.png */; };
 		07BC508116A54E9B00F9060F /* NSRandomSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BC508016A54E9B00F9060F /* NSRandomSupport.m */; };
-		07BC508516A5535300F9060F /* PaperSettingController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BC508316A5535200F9060F /* PaperSettingController.m */; };
-		07BC508616A5535300F9060F /* PaperSettingController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07BC508416A5535200F9060F /* PaperSettingController.xib */; };
 		07C168081697D6BB00891757 /* dockButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 07C168071697D6BB00891757 /* dockButton.png */; };
 		07C32BAD16AC1194003FB62B /* UETextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 07C32BAC16AC1194003FB62B /* UETextField.m */; };
+		07C32BB316AC7359003FB62B /* userlist_bottom.png in Resources */ = {isa = PBXBuildFile; fileRef = 07C32BAF16AC7359003FB62B /* userlist_bottom.png */; };
+		07C32BB416AC7359003FB62B /* userlist_center.png in Resources */ = {isa = PBXBuildFile; fileRef = 07C32BB016AC7359003FB62B /* userlist_center.png */; };
+		07C32BB516AC7359003FB62B /* userlist_plus.png in Resources */ = {isa = PBXBuildFile; fileRef = 07C32BB116AC7359003FB62B /* userlist_plus.png */; };
+		07C32BB616AC7359003FB62B /* userlist_top.png in Resources */ = {isa = PBXBuildFile; fileRef = 07C32BB216AC7359003FB62B /* userlist_top.png */; };
 		07CD07C0167C693C00358AD6 /* UIFreeTransformGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 07CD07BF167C693C00358AD6 /* UIFreeTransformGestureRecognizer.m */; };
 		07CD07C7167CBC1400358AD6 /* UEFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 07CD07C6167CBC1400358AD6 /* UEFileManager.m */; };
 		07CD07EA167D145400358AD6 /* camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 07CD07E6167D145400358AD6 /* camera.png */; };
@@ -233,9 +235,6 @@
 		071E3A2D168A317E00A2A281 /* PaintingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaintingView.h; sourceTree = "<group>"; };
 		0724BCA916A947FC00BD7139 /* save_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = save_icon.png; sourceTree = "<group>"; };
 		0724BCAB16A947FC00BD7139 /* tool_dock_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tool_dock_background.png; sourceTree = "<group>"; };
-		0724BCB316A9828C00BD7139 /* FriendPickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendPickerController.h; sourceTree = "<group>"; };
-		0724BCB416A9828C00BD7139 /* FriendPickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendPickerController.m; sourceTree = "<group>"; };
-		0724BCB516A9828C00BD7139 /* FriendPickerController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FriendPickerController.xib; sourceTree = "<group>"; };
 		0724BCB816A9E5DE00BD7139 /* recoder_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = recoder_background.png; sourceTree = "<group>"; };
 		0724BCB916A9E5DE00BD7139 /* recoder_cancel_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = recoder_cancel_button.png; sourceTree = "<group>"; };
 		0724BCBA16A9E5DE00BD7139 /* recoder_ok_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = recoder_ok_button.png; sourceTree = "<group>"; };
@@ -356,6 +355,8 @@
 		0795D1B5167B70D100272D34 /* RecoderController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecoderController.h; sourceTree = "<group>"; };
 		0795D1B6167B70D200272D34 /* RecoderController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecoderController.m; sourceTree = "<group>"; };
 		0795D1B7167B70D200272D34 /* RecoderController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RecoderController.xib; sourceTree = "<group>"; };
+		0795EE6D16AD089E0024346B /* content_selectborder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = content_selectborder.png; sourceTree = "<group>"; };
+		0795EE6F16AD0BB20024346B /* content_delete_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = content_delete_button.png; sourceTree = "<group>"; };
 		079C2A17169B060D00FB7A9D /* FacebookHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookHelper.h; sourceTree = "<group>"; };
 		079C2A18169B060D00FB7A9D /* FacebookHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookHelper.m; sourceTree = "<group>"; };
 		07A8DD711689DB4E00E1686A /* PaperSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaperSettingViewController.h; sourceTree = "<group>"; };
@@ -447,12 +448,13 @@
 		07BC507916A542FA00F9060F /* previousArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = previousArrow.png; sourceTree = "<group>"; };
 		07BC507F16A54E9B00F9060F /* NSRandomSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSRandomSupport.h; sourceTree = "<group>"; };
 		07BC508016A54E9B00F9060F /* NSRandomSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSRandomSupport.m; sourceTree = "<group>"; };
-		07BC508216A5535200F9060F /* PaperSettingController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaperSettingController.h; sourceTree = "<group>"; };
-		07BC508316A5535200F9060F /* PaperSettingController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaperSettingController.m; sourceTree = "<group>"; };
-		07BC508416A5535200F9060F /* PaperSettingController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PaperSettingController.xib; sourceTree = "<group>"; };
 		07C168071697D6BB00891757 /* dockButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dockButton.png; sourceTree = "<group>"; };
 		07C32BAB16AC1194003FB62B /* UETextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UETextField.h; sourceTree = "<group>"; };
 		07C32BAC16AC1194003FB62B /* UETextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UETextField.m; sourceTree = "<group>"; };
+		07C32BAF16AC7359003FB62B /* userlist_bottom.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = userlist_bottom.png; sourceTree = "<group>"; };
+		07C32BB016AC7359003FB62B /* userlist_center.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = userlist_center.png; sourceTree = "<group>"; };
+		07C32BB116AC7359003FB62B /* userlist_plus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = userlist_plus.png; sourceTree = "<group>"; };
+		07C32BB216AC7359003FB62B /* userlist_top.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = userlist_top.png; sourceTree = "<group>"; };
 		07CD07BE167C693B00358AD6 /* UIFreeTransformGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIFreeTransformGestureRecognizer.h; sourceTree = "<group>"; };
 		07CD07BF167C693C00358AD6 /* UIFreeTransformGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIFreeTransformGestureRecognizer.m; sourceTree = "<group>"; };
 		07CD07C5167CBC1400358AD6 /* UEFileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UEFileManager.h; sourceTree = "<group>"; };
@@ -916,6 +918,9 @@
 		07B3558A165A9B790094D7D7 /* resources */ = {
 			isa = PBXGroup;
 			children = (
+				0795EE6F16AD0BB20024346B /* content_delete_button.png */,
+				0795EE6D16AD089E0024346B /* content_selectborder.png */,
+				07C32BAE16AC7359003FB62B /* setting */,
 				0724BCA416A947FB00BD7139 /* tools */,
 				0724BC9616A93E7C00BD7139 /* recoder */,
 				071D899016A76AF900839C4B /* font */,
@@ -1000,12 +1005,6 @@
 				07A8DD721689DB4F00E1686A /* PaperSettingViewController.m */,
 				07A8DD731689DB4F00E1686A /* PaperSettingViewController.xib */,
 				07629A5E168F036E00F413A7 /* UINavigationControllerViewOrientation.m */,
-				07BC508216A5535200F9060F /* PaperSettingController.h */,
-				07BC508316A5535200F9060F /* PaperSettingController.m */,
-				07BC508416A5535200F9060F /* PaperSettingController.xib */,
-				0724BCB316A9828C00BD7139 /* FriendPickerController.h */,
-				0724BCB416A9828C00BD7139 /* FriendPickerController.m */,
-				0724BCB516A9828C00BD7139 /* FriendPickerController.xib */,
 			);
 			name = NavigationViews;
 			sourceTree = "<group>";
@@ -1021,6 +1020,17 @@
 				07C32BAC16AC1194003FB62B /* UETextField.m */,
 			);
 			name = EditingComponentsView;
+			sourceTree = "<group>";
+		};
+		07C32BAE16AC7359003FB62B /* setting */ = {
+			isa = PBXGroup;
+			children = (
+				07C32BAF16AC7359003FB62B /* userlist_bottom.png */,
+				07C32BB016AC7359003FB62B /* userlist_center.png */,
+				07C32BB116AC7359003FB62B /* userlist_plus.png */,
+				07C32BB216AC7359003FB62B /* userlist_top.png */,
+			);
+			path = setting;
 			sourceTree = "<group>";
 		};
 		07CD07E5167D142700358AD6 /* paintingDock */ = {
@@ -1191,7 +1201,6 @@
 				0749EFB916970956004350E5 /* main_letherpad.png in Resources */,
 				07C168081697D6BB00891757 /* dockButton.png in Resources */,
 				07BC507B16A542FA00F9060F /* previousArrow.png in Resources */,
-				07BC508616A5535300F9060F /* PaperSettingController.xib in Resources */,
 				074A1A9A16A6E142001D9708 /* connect_with_facebook.png in Resources */,
 				074A1A9B16A6E142001D9708 /* join_button.png in Resources */,
 				074A1A9C16A6E142001D9708 /* or_image.png in Resources */,
@@ -1208,7 +1217,6 @@
 				071D899C16A76AF900839C4B /* NanumPen.ttf in Resources */,
 				0724BCB016A947FC00BD7139 /* save_icon.png in Resources */,
 				0724BCB216A947FC00BD7139 /* tool_dock_background.png in Resources */,
-				0724BCB716A9828C00BD7139 /* FriendPickerController.xib in Resources */,
 				0724BCC116A9E5DE00BD7139 /* recoder_background.png in Resources */,
 				0724BCC216A9E5DE00BD7139 /* recoder_cancel_button.png in Resources */,
 				0724BCC316A9E5DE00BD7139 /* recoder_ok_button.png in Resources */,
@@ -1241,6 +1249,12 @@
 				0782ACAF16AB0D4E00E79CA3 /* text_align_center.png in Resources */,
 				0782ACB016AB0D4E00E79CA3 /* 12 오른쪽 정렬 아이콘.png in Resources */,
 				0782ACB116AB0D4E00E79CA3 /* font_popover.png in Resources */,
+				07C32BB316AC7359003FB62B /* userlist_bottom.png in Resources */,
+				07C32BB416AC7359003FB62B /* userlist_center.png in Resources */,
+				07C32BB516AC7359003FB62B /* userlist_plus.png in Resources */,
+				07C32BB616AC7359003FB62B /* userlist_top.png in Resources */,
+				0795EE6E16AD089E0024346B /* content_selectborder.png in Resources */,
+				0795EE7016AD0BB30024346B /* content_delete_button.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1306,9 +1320,7 @@
 				079C2A19169B060D00FB7A9D /* FacebookHelper.m in Sources */,
 				077A988916A512F600B864B9 /* TextContent.m in Sources */,
 				07BC508116A54E9B00F9060F /* NSRandomSupport.m in Sources */,
-				07BC508516A5535300F9060F /* PaperSettingController.m in Sources */,
 				071D89A316A7B68400839C4B /* RollingPaper.m in Sources */,
-				0724BCB616A9828C00BD7139 /* FriendPickerController.m in Sources */,
 				07C32BAD16AC1194003FB62B /* UETextField.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

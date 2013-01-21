@@ -29,7 +29,9 @@
 #import "UEFileManager.h"
 
 
-#define BORDER (10.0f)
+#define BORDER_WIDTH (2.0f)
+#define BORDER_COLOR [UIColor colorWithPatternImage:[UIImage imageNamed:@"content_selectborder.png"]]
+
 
 @interface PaperViewController ()
 @end
@@ -200,9 +202,14 @@
         self.transformTargetView.isNeedToSyncWithServer = TRUE;
     }
 }
+-(void) onTouchContentDeleteButton : (UIButton*) deleteButton{
+    [[deleteButton superview] fadeOut:0.2f];
+    [deleteButton removeFromSuperview];
+}
 -(void) setTransformTargetView:(UIView<RollingPaperContentViewProtocol> *)aTransformTargetView{
     if(_transformTargetView){
         _transformTargetView.layer.borderWidth = 0.0f;
+        [[_transformTargetView viewWithTag:6666] removeFromSuperview];
     }
     
     _transformTargetView = aTransformTargetView;
@@ -211,11 +218,28 @@
         //해당 컨텐츠를 만든사람이 본인이라서 편집이 가능한경우에만 편집
         if([[_transformTargetView getUserIdx] compare:[UserInfo getUserIdx]] == NSOrderedSame)
         {
-            _transformTargetView.layer.borderWidth = BORDER;
-            _transformTargetView.layer.borderColor = [UIColor orangeColor].CGColor;
+            _transformTargetView.layer.borderWidth = BORDER_WIDTH;
+            _transformTargetView.layer.borderColor = BORDER_COLOR.CGColor;
             self.freeTransformGestureRecognizer.enabled = TRUE;
             self.dockController.panGestureRecognizer.enabled = FALSE;
             self.contentsContainer.scrollEnabled = NO;
+            
+            UIButton* deleteButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+            deleteButton.tag = 6666;
+            [deleteButton setImage:[UIImage imageNamed:@"content_delete_button"] forState:UIControlStateNormal];
+            [deleteButton addTarget:self
+                             action:@selector(onTouchContentDeleteButton:)
+                   forControlEvents:UIControlEventTouchUpInside];
+            deleteButton.frame = CGRectMake(0, 0,50,50);
+            deleteButton.center = CGPointMake(_transformTargetView.bounds.size.width, 0);
+            deleteButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+            
+            [_transformTargetView addSubview:deleteButton];
+            [_transformTargetView bringSubviewToFront:deleteButton];
+            
+            _transformTargetView.userInteractionEnabled = TRUE;
+            NSLog(@"%@",_transformTargetView);
+            NSLog(@"%@",deleteButton);
         }
         else{
             

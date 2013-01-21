@@ -24,7 +24,6 @@ typedef enum ROLLING_PAPER_CONTROLLER_STYLE{
                                                   UISearchBarDelegate,
                                                   UINavigationControllerDelegate>
 
-@property (nonatomic,strong) FBFriendSearchPickerController* friendPickerController;
 @property (weak, nonatomic) IBOutlet UIView* contentContainer;
 @property (weak, nonatomic) IBOutlet UITextField *titleText;
 @property (weak, nonatomic) IBOutlet UITextField *emailInput;
@@ -44,6 +43,9 @@ typedef enum ROLLING_PAPER_CONTROLLER_STYLE{
 @property (weak, nonatomic) IBOutlet UIButton *finishButton;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UIView *bottomViewsContainer;
+@property (weak, nonatomic) IBOutlet UIView *participantsContainer;
+@property (nonatomic,strong) FBFriendSearchPickerController* receivingFriendPicker;
+@property (nonatomic,strong) FBFriendSearchPickerController* invitingFreindPicker;
 
 @property (nonatomic,weak) RollingPaperListController* listController;
 - (id) initForCreating;

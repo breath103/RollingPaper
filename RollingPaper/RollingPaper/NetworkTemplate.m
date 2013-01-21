@@ -176,6 +176,13 @@
     return request;
 }
 
+
++(ASIFormDataRequest*) requestForParticipantsListWithPaperIdx : (NSString*) paper_idx{
+    NSString* requestURL = [SERVER_HOST stringByAppendingString:@"/paper/participants"];
+    ASIFormDataRequest* request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:requestURL]];
+    [request addPostValue:paper_idx forKey:@"paper"];
+    return request;
+}
 +(ASIFormDataRequest*) requestForQuitRoomWithUserIdx : (NSString*) user_idx
                                                paper : (NSString*) paper_idx{
     NSString* requestURL = [SERVER_HOST stringByAppendingString:@"/paper/quit"];
@@ -228,6 +235,19 @@
         [request startAsynchronous];
     }
     ////
-    }
+}
++(void) getImageFromURL : (NSString*) url
+            withHandler : (BackgroundImageHandler) handler{
+    ASIHTTPRequest* request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:url]];
+    [request setCompletionBlock:^{
+        UIImage* image = [UIImage imageWithData:request.responseData];
+        handler(image);
+    }];
+    [request setFailedBlock:^{
+        NSLog(@"%@",request);
+    }];
+    [request startAsynchronous];
+}
+
 
 @end

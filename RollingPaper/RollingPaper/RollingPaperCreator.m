@@ -10,10 +10,11 @@
 #import "NetworkTemplate.h"
 #import "UserInfo.h"
 #import "NSObject+block.h"
-#import "UserInfo.h"
 #import <QuartzCore/QuartzCore.h>
 #import "PaperViewController.h"
 #import "UECoreData.h"
+#import "JSON.h"
+#import "UELib/UEImageLibrary.h"
 
 @interface RollingPaperCreator ()
 
@@ -24,7 +25,6 @@
 @synthesize emailInput;
 @synthesize noticeInput;
 @synthesize receiverName;
-@synthesize friendPickerController;
 @synthesize receiveTime;
 @synthesize contentContainer;
 @synthesize receiverFacebookID;
@@ -63,7 +63,6 @@
         NSArray* backgroundList = [parseJSON(request.responseString) objectForKey:@"backgrounds"];
         
         int i = 0;
-        
         CGSize buttonSize = CGSizeMake(44, 44);
         int buttonRow = 5;
         int buttonColl = 1;
@@ -105,14 +104,12 @@
         contentSize.height = self.paperBackgroundsScroll.frame.size.height;
         self.paperBackgroundsScroll.contentSize = contentSize;
         NSLog(@"%@",self.paperBackgroundsScroll);
-        
-        
+    
         
         if(self.controllerType !=PAPER_CONTROLLER_TYPE_CREATING){
             for(UIButton* button in self.paperBackgroundsScroll.subviews){
                 if([button isKindOfClass:UIButton.class] &&
-                   [[button titleForState:UIControlStateDisabled] compare:self.entity.background] == NSOrderedSame)
-                {
+                   [[button titleForState:UIControlStateDisabled] compare:self.entity.background] == NSOrderedSame){
                     [self onBackgroundButtonTouched:button];
                     break;
                 }
@@ -133,6 +130,85 @@
         
     }];
 }
+- (void)createNewParticipnatsCell : (NSDictionary<FBGraphUser>*) user{
+    CGSize buttonSize = CGSizeMake(270, 37);
+    
+    UIButton* button = [UIButton buttonWithType:UIButtonTypeCustom];
+    if( (self.participantsContainer.subviews.count-1) == 0)
+        [button setBackgroundImage:[UIImage imageNamed:@"userlist_top"] forState:UIControlStateNormal];
+    else
+        [button setBackgroundImage:[UIImage imageNamed:@"userlist_center"] forState:UIControlStateNormal];
+    
+    button.frame = CGRectMake(0, buttonSize.height * (self.participantsContainer.subviews.count-1),
+                              buttonSize.width, buttonSize.height);
+    [button setTitle:[user objectForKey:@"name"] forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    
+   
+    UIImageView* profileView = [[UIImageView alloc] initWithImage:NULL];
+    profileView.frame = CGRectMake(12.5, 10, 19, 19);
+    [button addSubview:profileView];
+    [self.participantsContainer addSubview:button];
+    
+    [NetworkTemplate getImageFromURL:[[[user objectForKey:@"picture"] objectForKey:@"data"] objectForKey : @"url" ]
+                         withHandler:^(UIImage *image) {
+                             profileView.image = image;
+                             [profileView setNeedsDisplay];
+                         }];
+    
+    
+    UIViewSetHeight(self.participantsContainer,
+                    self.participantsContainer.subviews.count * buttonSize.height);
+    UIViewSetY([self.participantsContainer.subviews objectAtIndex:0],
+               (self.participantsContainer.subviews.count-1) * buttonSize.height);
+    
+    float delta = buttonSize.height * self.participantsContainer.subviews.count;
+    
+    CGSize contentSize = self.scrollView.contentSize;
+    contentSize.height = 748 + delta;
+    self.scrollView.contentSize = contentSize;
+    UIViewSetHeight(self.contentContainer, 748 + delta);
+    UIViewSetY(self.bottomViewsContainer, 486+delta);
+}
+- (void)addParticipantsView : (NSDictionary*) participant{
+    CGSize buttonSize = CGSizeMake(270, 37);
+    
+    UIButton* button = [UIButton buttonWithType:UIButtonTypeCustom];
+    if( (self.participantsContainer.subviews.count-1) == 0)
+        [button setBackgroundImage:[UIImage imageNamed:@"userlist_top"] forState:UIControlStateNormal];
+    else
+        [button setBackgroundImage:[UIImage imageNamed:@"userlist_center"] forState:UIControlStateNormal];
+    
+    button.frame = CGRectMake(0, buttonSize.height * (self.participantsContainer.subviews.count-1),
+                              buttonSize.width, buttonSize.height);
+    [button setTitle:[participant objectForKey:@"name"] forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    
+    UIImageView* profileView = [[UIImageView alloc] initWithImage:NULL];
+    profileView.frame = CGRectMake(12.5, 10, 19, 19);
+    [button addSubview:profileView];
+    [self.participantsContainer addSubview:button];
+   
+    [NetworkTemplate getImageFromURL:[participant objectForKey:@"picture"]
+                         withHandler:^(UIImage *image) {
+                             profileView.image = image;
+                             [profileView setNeedsDisplay];
+                         }];
+    
+    
+    UIViewSetHeight(self.participantsContainer,
+                    self.participantsContainer.subviews.count * buttonSize.height);
+    UIViewSetY([self.participantsContainer.subviews objectAtIndex:0],
+               (self.participantsContainer.subviews.count-1) * buttonSize.height);
+    
+    float delta = buttonSize.height * self.participantsContainer.subviews.count;
+    
+    CGSize contentSize = self.scrollView.contentSize;
+    contentSize.height = 748 + delta;
+    self.scrollView.contentSize = contentSize;
+    UIViewSetHeight(self.contentContainer, 748 + delta);
+    UIViewSetY(self.bottomViewsContainer, 486+delta);
+}
 - (void)syncPaperToView{
     if(self.entity){
         self.receiverName.text = self.entity.receiver_name;
@@ -143,16 +219,20 @@
         self.receiveDate.text = [self dateToString:receiveDate];
         self.receiveTime.text = [self timeToString:receiveDate];
         self.emailInput.text = self.entity.target_email;
-        
+     
+        ASIFormDataRequest* request = [NetworkTemplate requestForParticipantsListWithPaperIdx:self.entity.idx.stringValue];
+        [request setCompletionBlock:^{
+            NSArray* array = [[SBJSON new]objectWithString:request.responseString];
+            NSLog(@"%@",array);
+            for(NSDictionary* user in array){
+                [self addParticipantsView:user];
+            }
+        }];
+        [request setFailedBlock:^{
+            NSLog(@"%@",request);
+        }];
+        [request startAsynchronous];
     }
-}
-- (void)addNewParticipants{
-    float height = 33;
-    CGSize contentSize = self.scrollView.contentSize;
-    contentSize.height += height;
-    self.scrollView.contentSize = contentSize;
-    
-    UIViewSetY(self.bottomViewsContainer, self.bottomViewsContainer.frame.origin.y + height);
 }
 - (void)viewDidLoad
 {
@@ -162,7 +242,7 @@
     gestureRecognizer.cancelsTouchesInView = NO;
     [self.view addGestureRecognizer:gestureRecognizer];
     
-    [[NetworkTemplate requestForSearchingFacebookFriendUsingRollingPaper:[UserInfo getUserIdx].stringValue] startAsynchronous];
+  //  [[NetworkTemplate requestForSearchingFacebookFriendUsingRollingPaper:[UserInfo getUserIdx].stringValue] startAsynchronous];
     
     [self initScrollView];
     [self initPaperCellPreview];
@@ -202,10 +282,6 @@
             break;
     }
     
-    
-    [self addNewParticipants];
-    [self addNewParticipants];
-    [self addNewParticipants];
 }
 
 - (id) initForCreating{
@@ -269,6 +345,22 @@
     [self onTouchSend:NULL];
 }
 
+
+- (void) createPaperRequestSuccess : (NSDictionary*) paperResultDict{
+    self.entity = (RollingPaper*)[[UECoreData sharedInstance] insertNewObject : @"RollingPaper"
+                                                                     initWith : paperResultDict];
+    self.entity.is_new = [NSNumber numberWithBool:YES];
+    NSLog(@"%@",self.entity);
+    
+    //편집 뷰를 만든다음
+    PaperViewController* paperViewController = [[PaperViewController alloc] initWithEntity:self.entity];
+    
+    self.navigationController.delegate = self;
+    [self.navigationController pushViewController : paperViewController
+                                         animated : TRUE];
+    if(self.listController)
+        [self.listController refreshPaperList];
+}
 - (IBAction)onTouchSend:(id)sender {
     if([self confirmInputs])
     {
@@ -282,39 +374,34 @@
                                                                                       receieveTime : [self buildRequestDate]
                                                                                         background : [self.selectedBackgroundButton titleForState:UIControlStateDisabled]];
             [request setCompletionBlock:^{
-                
-                NSDictionary* result = parseJSON(request.responseString);
-                
-                if([result objectForKey:@"error"])
+                NSDictionary* createdEntity = parseJSON(request.responseString);
+                if([createdEntity objectForKey:@"error"])
                 {
                     [[[UIAlertView alloc] initWithTitle:@"실패"
-                                                message:[NSString stringWithFormat: @"롤링페이퍼 서버에 페이퍼 만들기 요청이 실패하였습니다.\n%@",[result objectForKey:@"error"]]
+                                                message:[NSString stringWithFormat: @"롤링페이퍼 서버에 페이퍼 만들기 요청이 실패하였습니다.\n%@",[createdEntity objectForKey:@"error"]]
                                                delegate:nil
                                       cancelButtonTitle:nil
                                       otherButtonTitles:@"확인", nil] show];
                 }
                 else{
-                    [self performBlockInMainThread:^{
-                        
-                        //서버로 부터 새로 만들어진 페이퍼의 엔티티 정보를 받아와서 이를 가지고 엔티티를 만들고,
-                        RollingPaper* entity = (RollingPaper*)[[UECoreData sharedInstance] insertNewObject : @"RollingPaper"
-                                                                                                  initWith : parseJSON(request.responseString)];
-                        entity.is_new = [NSNumber numberWithBool:YES];
-                        NSLog(@"%@",entity);
-                        
-                        //편집 뷰를 만든다음
-                        PaperViewController* paperViewController = [[PaperViewController alloc] initWithEntity:entity];
-                        
-                        self.navigationController.delegate = self;
-                        [self.navigationController pushViewController : paperViewController
-                                                             animated : TRUE];
-                        
-                        if(self.listController)
-                            [self.listController refreshPaperList];
-                        
-                    } waitUntilDone:TRUE];
+                    NSLog(@"%@",createdEntity);
+                    if(self.invitingFreindPicker &&
+                       self.invitingFreindPicker.selection.count > 0){
+                        NSMutableArray* facebook_friends = [NSMutableArray new];
+                        for (id<FBGraphUser> user in self.invitingFreindPicker.selection) [facebook_friends addObject: [user id]];
+                        ASIFormDataRequest* request = [NetworkTemplate requestForInviteFacebookFriends:facebook_friends
+                                                                                               ToPaper:[createdEntity objectForKey:@"idx"]
+                                                                                              withUser:[UserInfo getUserIdx].stringValue];
+                        [request setCompletionBlock:^{
+                            NSLog(@"%@",request.responseString);
+                            [self createPaperRequestSuccess : createdEntity];
+                        }];
+                        [request startAsynchronous];
+                    }
+                    else{
+                        [self createPaperRequestSuccess : createdEntity];
+                    }
                 }
-             
             }];
             [request setFailedBlock:^{
                 NSLog(@"%@",@"fail");
@@ -333,7 +420,7 @@
 }
 -(IBAction)onTouchQuit:(UIButton*)sender{
     [[[UIAlertView alloc] initWithTitle:@"경고"
-                                message:@"이 종이에서 나가시겠습니까?"
+                                message:@"이 롤링페이퍼를 지우시겠습니까?"
                                delegate:self
                       cancelButtonTitle:nil
                       otherButtonTitles:@"확인", @"취소",nil] show];
@@ -375,23 +462,22 @@ clickedButtonAtIndex:(NSInteger)buttonIndex{
 
 
 - (IBAction)onTouchPickFriend:(id)sender {
-    if(!friendPickerController){
-        friendPickerController = [[FBFriendSearchPickerController alloc] init];
-        friendPickerController.title    = @"친구 선택";
-        friendPickerController.delegate = self;
-        friendPickerController.allowsMultipleSelection = FALSE;
-        
-        [friendPickerController loadData];
-        [friendPickerController clearSelection];
-    }
-    [self presentViewController:friendPickerController
+ //   if(!friendPickerController){
+    self.receivingFriendPicker= [[FBFriendSearchPickerController alloc] init];
+    self.receivingFriendPicker.title    = @"친구 선택";
+    self.receivingFriendPicker.delegate = self;
+    self.receivingFriendPicker.allowsMultipleSelection = FALSE;
+    [self.receivingFriendPicker loadData];
+    [self.receivingFriendPicker clearSelection];
+ //   }
+    [self presentViewController:self.receivingFriendPicker
                        animated:YES
                      completion:^{}];
 }
-- (BOOL)friendPickerViewController:(FBFriendPickerViewController *)friendPicker
+- (BOOL)friendPickerViewController:(FBFriendSearchPickerController*)friendPicker
                  shouldIncludeUser:(id<FBGraphUser>)user{
-    return [friendPickerController delegateFriendPickerViewController:friendPicker
-                                                    shouldIncludeUser:user];
+    return [friendPicker delegateFriendPickerViewController:friendPicker
+                                          shouldIncludeUser:user];
 }
 - (IBAction)onHideKeyboard:(id)sender {
     [self.view endEditing:TRUE];
@@ -421,15 +507,14 @@ clickedButtonAtIndex:(NSInteger)buttonIndex{
 
 - (IBAction)onTouchInvite:(id)sender {
     //if(!friendPickerController){
-        friendPickerController = [[FBFriendSearchPickerController alloc] init];
-        friendPickerController.title    = @"친구 선택";
-        friendPickerController.delegate = self;
-        friendPickerController.allowsMultipleSelection = TRUE;
-        
-        [friendPickerController loadData];
-        [friendPickerController clearSelection];
+    self.invitingFreindPicker = [[FBFriendSearchPickerController alloc] init];
+    self.invitingFreindPicker.title    = @"친구 선택";
+    self.invitingFreindPicker.delegate = self;
+    self.invitingFreindPicker.allowsMultipleSelection = TRUE;
+    [self.invitingFreindPicker  loadData];
+    [self.invitingFreindPicker clearSelection];
     //}
-    [self presentViewController:friendPickerController
+    [self presentViewController:self.invitingFreindPicker 
                        animated:YES
                      completion:^{}];
 }
@@ -466,28 +551,86 @@ clickedButtonAtIndex:(NSInteger)buttonIndex{
 -(NSString*) buildRequestDate{
     return [NSString stringWithFormat:@"%@ %@",self.receiveDate.text,self.receiveTime.text];
 }
--(void) facebookViewControllerCancelWasPressed:(id)sender{
+-(void) facebookViewControllerCancelWasPressed:(FBFriendSearchPickerController*)sender{
     [self dismissViewControllerAnimated:YES completion:^{
     }];
 }
--(void) facebookViewControllerDoneWasPressed : (id)sender{
-    for (id<FBGraphUser> user in friendPickerController.selection) {
-        FBRequest* request = [FBRequest requestForGraphPath:[user id]];
-        [request startWithCompletionHandler:^(FBRequestConnection *connection, id<FBGraphUser> result, NSError *error) {
-            NSLog(@"%@",result);
-            if([result birthday]){
-                self.receiveDate.text = [self dateToFormatString:[self facebookBirthDayToCurrentBirthDay:[result birthday]]];
-                self.receiveTime.text = @"00:00:00";
+-(void) facebookViewControllerDoneWasPressed : (FBFriendSearchPickerController*)sender{
+    if(self.controllerType == PAPER_CONTROLLER_TYPE_CREATING)
+    {
+        if(self.receivingFriendPicker == sender){
+            for (id<FBGraphUser> user in self.receivingFriendPicker.selection) {
+                FBRequest* request = [FBRequest requestForGraphPath:[user id]];
+                [request startWithCompletionHandler:^(FBRequestConnection *connection, id<FBGraphUser> result, NSError *error) {
+                    NSLog(@"%@",result);
+                    if([result birthday]){
+                        self.receiveDate.text = [self dateToFormatString:[self facebookBirthDayToCurrentBirthDay:[result birthday]]];
+                        self.receiveTime.text = @"00:00:00";
+                    }
+                    else{
+                        
+                    }
+                }];
+                self.receiverFacebookID = user.id;
+                receiverName.text = user.name;
             }
-            else{
+            [self dismissViewControllerAnimated:YES completion:^{
+            }];
+        }
+        else if(self.invitingFreindPicker == sender){
+            //방 만들기 모드에서 같이 만들 친구 모을때
+            for (id<FBGraphUser> user in self.invitingFreindPicker.selection)
+            {
+                //NSLog(@"%@",user);
+                [self createNewParticipnatsCell:user];
+            }
+            
+            [self dismissViewControllerAnimated:TRUE completion:^{
                 
-            }
-        }];
-        self.receiverFacebookID = user.id;
-        receiverName.text = user.name;
+            }];
+        }
     }
-    [self dismissViewControllerAnimated:YES completion:^{
-    }];
+    else{ //방 편집모드
+        if(self.receivingFriendPicker == sender){
+            for (id<FBGraphUser> user in self.receivingFriendPicker.selection) {
+                FBRequest* request = [FBRequest requestForGraphPath:[user id]];
+                [request startWithCompletionHandler:^(FBRequestConnection *connection, id<FBGraphUser> result, NSError *error) {
+                    NSLog(@"%@",result);
+                    if([result birthday]){
+                        self.receiveDate.text = [self dateToFormatString:[self facebookBirthDayToCurrentBirthDay:[result birthday]]];
+                        self.receiveTime.text = @"00:00:00";
+                    }
+                    else{
+                        
+                    }
+                }];
+                self.receiverFacebookID = user.id;
+                receiverName.text = user.name;
+            }
+            [self dismissViewControllerAnimated:YES completion:^{
+                
+            }];
+        }
+        else if(self.invitingFreindPicker == sender){
+            //방 만들기 모드에서 같이 만들 친구 모을때
+            NSMutableArray* facebook_friends = [NSMutableArray new];
+            for (id<FBGraphUser> user in self.invitingFreindPicker.selection) [facebook_friends addObject: [user id]];
+            ASIFormDataRequest* request = [NetworkTemplate requestForInviteFacebookFriends:facebook_friends
+                                                                                   ToPaper:self.entity.idx.stringValue
+                                                                                  withUser:[UserInfo getUserIdx].stringValue];
+            [request setCompletionBlock:^{
+                NSLog(@"%@",request.responseString);
+                [self syncPaperToView];
+                [self dismissViewControllerAnimated:YES completion:^{
+                    
+                }];
+            }];
+            [request setFailedBlock:^{
+                NSLog(@"%@",request);
+            }];
+            [request startAsynchronous];
+        }
+    }
 }
 -(NSUInteger)supportedInterfaceOrientations
 {

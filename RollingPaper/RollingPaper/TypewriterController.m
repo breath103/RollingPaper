@@ -103,6 +103,8 @@ int originalButtonTop;
         lastButton = button;
     }
     [self onTouchFontText:lastButton];
+    
+    self.textView.contentInset = UIEdgeInsetsMake(-4,-8,0,0);
 }
 -(IBAction) onTouchFontText:(UIButton*)sender{
     self.textView.font = sender.titleLabel.font;
@@ -159,14 +161,9 @@ int originalButtonTop;
     
     for(NSString* line in [self.textView.text componentsSeparatedByString:@"\n"])
     {
-     //   CGSize singleLineRect = [self.textView.text sizeWithFont:self.textView.font];
-        
         CGSize textRect = [line sizeWithFont:self.textView.font
                            constrainedToSize:self.textView.frame.size
                                lineBreakMode:NSLineBreakByCharWrapping];
-      //  if(singleLineRect.width < textRect.width)
-      //      textRect.width = singleLineRect.width;
-        
         totalTextRect.height += textRect.height;
         if(totalTextRect.width < textRect.width){
             totalTextRect.width = textRect.width;
@@ -174,10 +171,11 @@ int originalButtonTop;
     }
     view.editable = FALSE;
     [view resignFirstResponder];
+ //   totalTextRect.width += 20;
+ //   totalTextRect.height += 20;
     UIViewSetSize(view, totalTextRect);
     
-    
-    UIGraphicsBeginImageContextWithOptions(view.bounds.size,
+    UIGraphicsBeginImageContextWithOptions(totalTextRect,
                                            view.opaque,
                                            [[UIScreen mainScreen] scale]);
     [view.layer renderInContext:UIGraphicsGetCurrentContext()];

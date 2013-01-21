@@ -22,6 +22,7 @@
     self = [self initWithFrame:CGRectMake(0,0,1,1)];
     if(self){
         self.entity = entity;
+        self.userInteractionEnabled = TRUE;
         self.frame = CGRectMake(0,0,entity.width.floatValue , entity.height.floatValue);
         if(entity.image){
             NSString* urlString = [entity.image stringByReplacingOccurrencesOfString:@"localhost" withString:SERVER_IP];

@@ -20,7 +20,6 @@
 #import <QuartzCore/QuartzCore.h>
 #import "UELib/UEUI.h"
 #import "UserSettingViewController.h"
-#import "PaperSettingController.h"
 
 @interface RollingPaperListController ()
 
@@ -142,7 +141,6 @@
 {
     [super viewDidLoad];
     if([UserInfo getUserInfo]){
-        NSDictionary* userDict = [UserInfo getUserInfo];        
         profileImageView.image = [UserInfo getImageFromPictrueURL];
         
         /*

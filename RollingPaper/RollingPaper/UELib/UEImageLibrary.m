@@ -9,12 +9,14 @@
 #import "UEImageLibrary.h"
 #import <QuartzCore/QuartzCore.h>
 
+typedef void (^ImageHandler)(UIImage* image);
 @implementation UEImageLibrary
 
 
 +(UIImage*) imageWithURL : (NSString*) url{
     return [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:url]]];
 }
+
 +(UIImage*) imageFromAssetRepresentation:(ALAssetRepresentation*) assetRep
 {
     return [UEImageLibrary scaleAndRotateImage:[UIImage imageWithCGImage:assetRep.fullResolutionImage]
