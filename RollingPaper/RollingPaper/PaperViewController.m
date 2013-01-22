@@ -193,7 +193,10 @@
 - (void)didReceiveMemoryWarning{
     [super didReceiveMemoryWarning];
 }
-
+- (void) viewWillAppear:(BOOL)animated{
+    NSLog(@"%@",self.view);
+    UIViewSetHeight(self.dockController.view, self.view.bounds.size.height);
+}
 -(NSArray*) contentsViews{
     return self.contentsScrollContainer.subviews;
 }

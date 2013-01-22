@@ -8,8 +8,8 @@
 
 #import "NetworkTemplate.h"
 #import "SBJSON.h"
-
 #import "UEFileManager.h"
+#import "RollingPaper.h"
 
 @implementation NetworkTemplate
 
@@ -64,6 +64,19 @@
     [request addPostValue:entity.height   forKey:@"height"];
     [request addPostValue:entity.rotation forKey:@"rotation"];
 
+    return request;
+}
+
++(ASIFormDataRequest*) requestForEditRollingPaper : (RollingPaper*) paper{
+    NSString* targetURL = [SERVER_HOST stringByAppendingString:@"/paper/edit"];
+    ASIFormDataRequest* request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:targetURL]];
+    
+    [request addPostValue:paper.idx.stringValue forKey:@"paper_idx"];
+    [request addPostValue:paper.title           forKey:@"title"];
+    [request addPostValue:paper.target_email    forKey:@"target_email"];
+    [request addPostValue:paper.notice          forKey:@"notice"];
+    [request addPostValue:paper.background      forKey:@"background"];
+    
     return request;
 }
 +(ASIFormDataRequest*) requestForCreateRollingPaperWithUserIdx : (NSString*) creator_idx

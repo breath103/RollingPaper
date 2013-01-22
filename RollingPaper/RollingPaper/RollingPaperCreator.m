@@ -213,6 +213,14 @@
     UIViewSetHeight(self.contentContainer, 748 + delta);
     UIViewSetY(self.bottomViewsContainer, 486+delta);
 }
+- (void)syncViewToPaper{
+    if(self.entity){
+        self.entity.receiver_name = self.receiverName.text;
+        self.entity.title         = self.titleText.text;
+        self.entity.notice        = self.noticeInput.text;
+        self.entity.background    = [self.selectedBackgroundButton titleForState:UIControlStateDisabled];
+    }
+}
 - (void)syncPaperToView{
     if(self.entity){
         self.receiverName.text = self.entity.receiver_name;
@@ -343,7 +351,22 @@
     return TRUE;
 }
 - (IBAction)onTouchPrevious:(id)sender {
-    [self.navigationController popViewControllerAnimated:TRUE];
+    if(self.controllerType == PAPER_CONTROLLER_TYPE_EDITING_CREATOR){
+        [self syncViewToPaper];
+        ASIFormDataRequest* request = [NetworkTemplate requestForEditRollingPaper:self.entity];
+        [request setCompletionBlock:^{
+            NSLog(@"%@",request.responseString);
+            [self.listController refreshPaperList];
+            [self.navigationController popViewControllerAnimated:TRUE];
+        }];
+        [request setFailedBlock:^{
+            
+        }];
+        [request startSynchronous];
+    }
+    else{
+        [self.navigationController popViewControllerAnimated:TRUE];
+    }
 }
 
 - (IBAction)onTouchNext:(id)sender {
