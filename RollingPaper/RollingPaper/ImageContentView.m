@@ -11,7 +11,7 @@
 #import "NetworkTemplate.h"
 #import "UserInfo.h"
 #import "UECoreData.h"
-#import "SBJSON.h"
+#import <JSONKit.h>
 #import "UEFileManager.h"
 #import "macro.h"
 #import "CGPointExtension.h"
@@ -122,7 +122,7 @@
                                                                                                 entity : self.entity
                                                                                                  image : jpegImage];
                 [request setCompletionBlock:^{
-                    NSDictionary* dict = [[[SBJSON alloc] init] objectWithString:request.responseString];
+                    NSDictionary* dict = [request.responseString objectFromJSONString];
                     [self.entity setValuesWithDictionary:dict];
                 }];
                 [request setFailedBlock:^{
@@ -136,7 +136,7 @@
                 [self updateEntityWithView];
                 ASIFormDataRequest* request = [NetworkTemplate requestForSynchronizeImageContent:self.entity];
                 [request setCompletionBlock:^{
-                    NSDictionary* dict = [[[SBJSON alloc] init] objectWithString:request.responseString];
+                    NSDictionary* dict = [request.responseString objectFromJSONString];
                     NSLog(@"%@",dict);
                 }];
                 [request setFailedBlock:^{

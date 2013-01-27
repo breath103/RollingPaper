@@ -10,7 +10,6 @@
 #import "NetworkTemplate.h"
 #import "UserInfo.h"
 #import "BlockSupport/NSObject+block.h"
-#import "SBJSON/SBJSON.h"
 #import "RollingPaper.h"
 #import "UECoreData.h"
 #import "PaperViewController.h"
@@ -20,6 +19,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "UELib/UEUI.h"
 #import "UserSettingViewController.h"
+#import <JSONKit.h>
 
 @interface RollingPaperListController ()
 
@@ -53,8 +53,7 @@
     ASIFormDataRequest* request = [NetworkTemplate requestForRollingPaperListWithUserIdx:[UserInfo getUserIdx].stringValue];
     [request setCompletionBlock:^{
         [self performBlockInMainThread:^{
-            SBJSON* parser = [[SBJSON alloc]init];
-            NSArray* paperArray = [parser objectWithString:request.responseString];
+            NSArray* paperArray = [request.responseString objectFromJSONString];
             [self createPaperViewsFromArray:paperArray];
         } waitUntilDone:TRUE];
     }];

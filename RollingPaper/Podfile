@@ -1,0 +1,5 @@
+platform :ios
+pod 'AFNetworking', '0.9.1'
+pod 'SYCache', '1.0'
+pod 'JSONKit', '1.5pre'
+pod 'ASIHTTPRequest', '1.8.1'

@@ -24,11 +24,9 @@
 #define UIColorRGB(r,g,b) UIColorRGBA(r,g,b,1.0f)
 #define UIColorXRGB(r,g,b) UIColorRGBA(r/255.0f,g/255.0f,b/255.0f,1.0f)
 #define KEYBOARD_HEIGHT (216.0f)
-
-
-
 #define DEBUG_NETWORK_NOT_AVAILABLE
-
+#define ToNSURL(x) ([[NSURL alloc]initWithString:x])
+#define ToNSURLRequest(x) ([NSURLRequest requestWithURL:ToNSURL(x)])
 
 
 

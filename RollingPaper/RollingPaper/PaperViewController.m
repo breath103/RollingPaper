@@ -8,7 +8,6 @@
 
 #import "PaperViewController.h"
 #import "NetworkTemplate.h"
-#import "SBJSON.h"
 #import "ImageContent.h"
 #import "SoundContent.h"
 #import "UECoreData.h"
@@ -27,6 +26,7 @@
 #import "BlockSupport/NSObject+block.h"
 #import <QuartzCore/QuartzCore.h>
 #import "UEFileManager.h"
+#import <JSONKit.h>
 
 
 #define BORDER_WIDTH (2.0f)
@@ -135,8 +135,7 @@
     ASIFormDataRequest* request = [NetworkTemplate requestForRollingPaperContents : self.entity.idx.stringValue
                                                                         afterTime : 1];
     [request setCompletionBlock:^{
-        SBJSON* parser = [[SBJSON alloc]init];
-        NSDictionary* categorizedContents = [parser objectWithString:request.responseString];
+        NSDictionary* categorizedContents = [request.responseString objectFromJSONString];
         NSLog(@"%@",categorizedContents);
         [self performSelectorOnMainThread : @selector(onReceiveContentsResponse:)
                                withObject : categorizedContents

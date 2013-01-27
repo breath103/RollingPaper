@@ -10,9 +10,9 @@
 #import "LoginMethodViewController.h"
 #import <FacebookSDK/FacebookSDK.h>
 #import "NetworkTemplate.h"
-#import "SBJSON/SBJSON.h"
 #import "UserInfo.h"
 #import "RollingPaperListController.h"
+#import <JSONKit.h>
 
 @interface LoginMethodViewController ()
 
@@ -73,8 +73,7 @@
             ASIFormDataRequest* request = [NetworkTemplate requestForFacebookJoinWithMe:me
                                                                             accessToken:session.accessToken];
             [request setCompletionBlock:^{
-                SBJsonParser* parser = [[SBJsonParser alloc] init];
-                NSDictionary* response = [parser objectWithString:request.responseString];
+                NSDictionary* response = [request.responseString objectFromJSONString];
                 NSString* resultType = [response objectForKey:@"result"];
                 if([resultType compare:@"login"] == NSOrderedSame){
                     NSLog(@"이미 가입되어 있는 페이스북 계정임으로 자동으로 로그인 합니다");

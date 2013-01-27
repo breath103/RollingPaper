@@ -1,0 +1,35 @@
+
+COCOAPODS: 0.16.1
+
+DEPENDENCIES: 
+- AFNetworking (= 0.9.1)
+- ASIHTTPRequest (= 1.8.1)
+- JSONKit (= 1.5pre)
+- SYCache (= 1.0)
+
+PODS: 
+- AFNetworking (0.9.1)
+- ASIHTTPRequest (1.8.1): 
+  - ASIHTTPRequest/ASIWebPageRequest (= 1.8.1)
+  - ASIHTTPRequest/CloudFiles (= 1.8.1)
+  - ASIHTTPRequest/S3 (= 1.8.1)
+  - Reachability
+- ASIHTTPRequest/ASIWebPageRequest (1.8.1): 
+  - Reachability
+- ASIHTTPRequest/CloudFiles (1.8.1): 
+  - Reachability
+- ASIHTTPRequest/S3 (1.8.1): 
+  - Reachability
+- JSONKit (1.5pre)
+- Reachability (3.1.0)
+- SYCache (1.0)
+
+SPEC CHECKSUMS: 
+  JSONKit: 3d4708953ea7ae399a49777372d8b060a43ddd27
+  SYCache: 8ca46f459ce46245db483bf2067f265e63d8ff23
+  ASIHTTPRequest/CloudFiles: e606d2df58b0aace6c1cf1d39a08d3484f91324a
+  Reachability: 1c8584c5f26fa776695efef95caaa50402c94cfb
+  ASIHTTPRequest/S3: e606d2df58b0aace6c1cf1d39a08d3484f91324a
+  ASIHTTPRequest/ASIWebPageRequest: e606d2df58b0aace6c1cf1d39a08d3484f91324a
+  ASIHTTPRequest: e606d2df58b0aace6c1cf1d39a08d3484f91324a
+  AFNetworking: 081ec3c1f4768c87ae79d69a96fcc9479e232e81

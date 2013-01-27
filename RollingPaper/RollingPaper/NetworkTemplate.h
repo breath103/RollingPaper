@@ -8,9 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import <FacebookSDK/FacebookSDK.h>
-#import "ASI/ASIFormDataRequest.h"
 #import "ImageContent.h"
 #import "SoundContent.h"
+#import <ASIFormDataRequest.h>
 
 #define SERVER_IP   (@"210.122.0.164:8001")
 #define SERVER_HOST ([@"http://" stringByAppendingString:SERVER_IP])
@@ -53,7 +53,6 @@ typedef void (^BackgroundImageHandler)(UIImage* image);
 +(ASIFormDataRequest*) requestForSynchronizeSoundContent : (SoundContent*) entity;
 
 +(ASIFormDataRequest*) requestForParticipantsListWithPaperIdx : (NSString*) paper_idx;
-+(ASIHTTPRequest*) requestForPaperBackgroundImageList;
 
 +(ASIHTTPRequest*) requestForBackgroundImage : (NSString*) background;
 +(ASIFormDataRequest*) requestForSynchronizePaper : (RollingPaper*) entity;

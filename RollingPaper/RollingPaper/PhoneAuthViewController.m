@@ -8,7 +8,6 @@
 
 #import "PhoneAuthViewController.h"
 #import "NetworkTemplate.h"
-#import "SBJSON.h"
 
 @interface PhoneAuthViewController ()
 
@@ -66,9 +65,9 @@ clickedButtonAtIndex:(NSInteger)buttonIndex{
 -(void) onPhoneNumberConfirmed{
     ASIFormDataRequest* request = [NetworkTemplate requestForPhoneAuth:phoneInput.text];
     [request setCompletionBlock:^{
-        NSDictionary* result = [[[SBJSON alloc]init] objectWithString:request.responseString];
-        NSString* authCode = [result objectForKey:@"authCode"];
-        NSLog(@"server received auth code : %@",authCode);
+       // NSDictionary* result =
+      //  NSString* authCode = [result objectForKey:@"authCode"];
+      //  NSLog(@"server received auth code : %@",authCode);
         
     }];
     [request setFailedBlock:^{

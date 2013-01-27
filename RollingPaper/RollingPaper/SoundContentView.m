@@ -8,12 +8,12 @@
 
 #import "SoundContentView.h"
 #import "NetworkTemplate.h"
-#import "SBJSON.h"
 #import "UserInfo.h"
 #import "UECoreData.h"
 #import "UEFileManager.h"
 #import "macro.h"
 #import "CGPointExtension.h"
+#import <JSONKit.h>
 
 
 
@@ -115,7 +115,7 @@
                                                                                             entity:self.entity
                                                                                              sound:[NSData dataWithContentsOfFile:self.entity.sound]];
             [request setCompletionBlock:^{
-                NSDictionary* dict = [[[SBJSON alloc] init] objectWithString:request.responseString];
+                NSDictionary* dict = [request.responseString objectFromJSONString];
                 NSLog(@"%@",dict);
                 [self.entity setValuesWithDictionary:dict];
                 NSLog(@"%@",self.entity);
@@ -130,7 +130,7 @@
             [self updateEntityWithView];
             ASIFormDataRequest* request = [NetworkTemplate requestForSynchronizeSoundContent:self.entity];
             [request setCompletionBlock:^{
-                NSDictionary* dict = [[[SBJSON alloc] init] objectWithString:request.responseString];
+                NSDictionary* dict = [request.responseString objectFromJSONString];
                 NSLog(@"%@",dict);
             }];
             [request setFailedBlock:^{

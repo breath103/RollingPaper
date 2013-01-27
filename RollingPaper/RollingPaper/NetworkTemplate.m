@@ -7,7 +7,7 @@
 //
 
 #import "NetworkTemplate.h"
-#import "SBJSON.h"
+#import <JSONKit.h>
 #import "UEFileManager.h"
 #import "RollingPaper.h"
 
@@ -114,10 +114,10 @@
                                               withUser : (NSString*) user_idx{
     NSString* targetURL = [SERVER_HOST stringByAppendingString:@"/paper/inviteWithFacebookID"];
     ASIFormDataRequest* request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:targetURL]];
-    SBJSON* json = [[SBJSON alloc] init];
+    
     [request addPostValue:paper_idx forKey:@"paper_idx"];
     [request addPostValue:user_idx  forKey:@"user_idx"];
-    [request addPostValue:[json stringWithObject:facebookFriends] forKey:@"facebook_friends"];
+    [request addPostValue:[facebookFriends JSONString] forKey:@"facebook_friends"];
     return request;
 }
 +(ASIFormDataRequest*) requestForRollingPaperContents : (NSString*) paper_idx
@@ -214,13 +214,6 @@
 }
 
 
-
-+(ASIHTTPRequest*) requestForPaperBackgroundImageList{
-    NSString* requestURL = [SERVER_HOST stringByAppendingString:@"/paper/backgroundList"];
-    ASIHTTPRequest* request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:requestURL]];
-    return request;
-    
-}
 +(ASIHTTPRequest*) requestForBackgroundImage : (NSString*) background{
     NSString* requestURL = [NSString stringWithFormat:@"%@/background/%@",SERVER_HOST,background];
     NSLog(@"%@",requestURL);

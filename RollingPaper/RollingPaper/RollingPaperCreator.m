@@ -13,8 +13,9 @@
 #import <QuartzCore/QuartzCore.h>
 #import "PaperViewController.h"
 #import "UECoreData.h"
-#import "JSON.h"
 #import "UELib/UEImageLibrary.h"
+#import <JSONKit.h>
+#import "FlowithAgent.h"
 
 @interface RollingPaperCreator ()
 
@@ -51,14 +52,20 @@
     self.paperCellImage.layer.mask = maskLayer;
     [self.paperCellImage setNeedsDisplay];
 }
+-(void) _addButtonShadow : (UIButton*) button{
+    button.layer.cornerRadius = 4;
+    button.layer.shadowColor = [UIColor blackColor].CGColor;
+    button.layer.shouldRasterize = TRUE;
+    button.layer.shadowRadius = 1.0f;
+    button.layer.shadowOpacity = 0.5;
+    button.layer.shadowOffset  = CGSizeMake(3,3);
+    button.layer.rasterizationScale = [UIScreen mainScreen].scale;
+}
 -(void) initScrollView{
     [self.scrollView addSubview:self.contentContainer];
     self.scrollView.contentSize = self.contentContainer.frame.size;
-    
-    ASIHTTPRequest* request = [NetworkTemplate requestForPaperBackgroundImageList];
-    [request setCompletionBlock:^{
-        NSArray* backgroundList = [parseJSON(request.responseString) objectForKey:@"backgrounds"];
-        
+    [[FlowithAgent sharedAgent] getBackgroundList:^(BOOL isCaschedResponse,
+                                                    NSArray *backgroundList) {
         int i = 0;
         CGSize buttonSize = CGSizeMake(44, 44);
         int buttonRow = 5;
@@ -67,33 +74,24 @@
         float heightOffset = (self.paperBackgroundsScroll.frame.size.height - buttonSize.height * buttonColl) / (buttonColl + 1);
         for(NSString* background in backgroundList)
         {
-            ^(int i){
-                [NetworkTemplate getBackgroundImage:background
-                                        withHandler:^(UIImage *image) {
-                                            UIButton* button = [UIButton buttonWithType:UIButtonTypeCustom];
-                                            button.frame = CGRectMake(widthOffset + (widthOffset+buttonSize.width) * i , heightOffset ,
-                                                                      buttonSize.width , buttonSize.height);
-                                            [button setTitle:background
-                                                    forState:UIControlStateDisabled];
-                                            button.layer.cornerRadius = 4;
-                                            button.layer.shadowColor = [UIColor blackColor].CGColor;
-                                            button.layer.shouldRasterize = TRUE;
-                                            button.layer.shadowRadius = 1.0f;
-                                            button.layer.shadowOpacity = 0.5;
-                                            button.layer.shadowOffset  = CGSizeMake(3,3);
-                                            button.layer.rasterizationScale = [UIScreen mainScreen].scale;
-                                            button.backgroundColor = [UIColor colorWithPatternImage:image];
-                                            [button addTarget:self
-                                                       action:@selector(onBackgroundButtonTouched:)
-                                             forControlEvents:UIControlEventTouchUpInside];
-                                            
-                                            [self.paperBackgroundsScroll addSubview:button];
-                                            
-                                            if(i == 0){
-                                                [self onBackgroundButtonTouched:button];
-                                            }
-                                        }];    
-            }(i);
+            [NetworkTemplate getBackgroundImage:background
+                withHandler:^(UIImage *image) {
+                    UIButton* button = [UIButton buttonWithType:UIButtonTypeCustom];
+                    button.frame = CGRectMake(widthOffset + (widthOffset+buttonSize.width) * i , heightOffset ,
+                                              buttonSize.width , buttonSize.height);
+                    [button setTitle:background
+                            forState:UIControlStateDisabled];
+                    [self _addButtonShadow:button];
+                    button.backgroundColor = [UIColor colorWithPatternImage:image];
+                    [button addTarget:self
+                               action:@selector(onBackgroundButtonTouched:)
+                     forControlEvents:UIControlEventTouchUpInside];
+                    
+                    [self.paperBackgroundsScroll addSubview:button];
+                    if(i == 0){
+                        [self onBackgroundButtonTouched:button];
+                    }
+            }];
             i++;
         }
         CGSize contentSize = self.paperBackgroundsScroll.contentSize;
@@ -101,7 +99,7 @@
         contentSize.height = self.paperBackgroundsScroll.frame.size.height;
         self.paperBackgroundsScroll.contentSize = contentSize;
         NSLog(@"%@",self.paperBackgroundsScroll);
-    
+        
         
         if(self.controllerType !=PAPER_CONTROLLER_TYPE_CREATING){
             for(UIButton* button in self.paperBackgroundsScroll.subviews){
@@ -113,10 +111,6 @@
             }
         }
     }];
-    [request setFailedBlock:^{
-        NSLog(@"%@",request);
-    }];
-    [request startAsynchronous];
 }
 - (void)onBackgroundButtonTouched : (UIButton*) sender{
     self.paperCellImage.image = NULL;//image;
@@ -234,7 +228,7 @@
      
         ASIFormDataRequest* request = [NetworkTemplate requestForParticipantsListWithPaperIdx:self.entity.idx.stringValue];
         [request setCompletionBlock:^{
-            NSArray* array = [[SBJSON new]objectWithString:request.responseString];
+            NSArray* array = [request.responseString objectFromJSONString];
             NSLog(@"%@",array);
             [self deleteAllParticipants];
             for(NSDictionary* user in array){

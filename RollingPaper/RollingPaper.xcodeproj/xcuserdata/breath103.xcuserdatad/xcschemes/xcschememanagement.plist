@@ -4,15 +4,45 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>RollingPaper copy.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>3</integer>
+		</dict>
 		<key>RollingPaper.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>0</integer>
+			<integer>1</integer>
+		</dict>
+		<key>Specs.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>2</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>074AA2EB16B560C300F8CB32</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>0778B7EA163B7C4E0026B99A</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>07BF9FFD16B561B3008295E3</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>07D3468C16B545FD007762BC</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>07D346AE16B545FD007762BC</key>
 		<dict>
 			<key>primary</key>
 			<true/>
