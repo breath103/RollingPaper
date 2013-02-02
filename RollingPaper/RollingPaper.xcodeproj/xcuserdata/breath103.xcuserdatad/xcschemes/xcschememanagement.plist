@@ -4,25 +4,25 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>RollingPaper copy.xcscheme</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>3</integer>
-		</dict>
 		<key>RollingPaper.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>1</integer>
 		</dict>
-		<key>Specs.xcscheme</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>2</integer>
-		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
 		<key>074AA2EB16B560C300F8CB32</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>07631CBC16B574C400D7F67A</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>07631DB416B576C700D7F67A</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -33,6 +33,11 @@
 			<true/>
 		</dict>
 		<key>07BF9FFD16B561B3008295E3</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>07BFA0D316B573E0008295E3</key>
 		<dict>
 			<key>primary</key>
 			<true/>

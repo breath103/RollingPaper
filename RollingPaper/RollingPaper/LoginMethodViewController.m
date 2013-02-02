@@ -10,7 +10,7 @@
 #import "LoginMethodViewController.h"
 #import <FacebookSDK/FacebookSDK.h>
 #import "NetworkTemplate.h"
-#import "UserInfo.h"
+#import "FlowithAgent.h"
 #import "RollingPaperListController.h"
 #import <JSONKit.h>
 
@@ -74,6 +74,7 @@
                                                                             accessToken:session.accessToken];
             [request setCompletionBlock:^{
                 NSDictionary* response = [request.responseString objectFromJSONString];
+                NSLog(@"%@",request.responseString);
                 NSString* resultType = [response objectForKey:@"result"];
                 if([resultType compare:@"login"] == NSOrderedSame){
                     NSLog(@"이미 가입되어 있는 페이스북 계정임으로 자동으로 로그인 합니다");
@@ -110,8 +111,8 @@
     [self onLoginSuccess:userDict];
 }
 -(void) onLoginSuccess : (NSDictionary*) userDict {
-    [UserInfo setUserInfo:userDict];
-    NSLog(@"%@",[UserInfo getUserInfo]);
+    [[FlowithAgent sharedAgent] setUserInfo:userDict];
+    NSLog(@"%@",[[FlowithAgent sharedAgent] getUserInfo]);
     [self showPaperList];
 }
 - (void)showPaperList {

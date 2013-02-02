@@ -8,7 +8,7 @@
 
 #import "RollingPaperCreator.h"
 #import "NetworkTemplate.h"
-#import "UserInfo.h"
+#import "FlowithAgent.h"
 #import "NSObject+block.h"
 #import <QuartzCore/QuartzCore.h>
 #import "PaperViewController.h"
@@ -29,15 +29,6 @@
 @synthesize receiveTime;
 @synthesize contentContainer;
 @synthesize receiverFacebookID;
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        
-    }
-    return self;
-}
 
 
 -(void) hideKeyboard{
@@ -65,7 +56,7 @@
     [self.scrollView addSubview:self.contentContainer];
     self.scrollView.contentSize = self.contentContainer.frame.size;
     [[FlowithAgent sharedAgent] getBackgroundList:^(BOOL isCaschedResponse,
-                                                    NSArray *backgroundList) {
+                                                    NSArray *backgroundList){
         int i = 0;
         CGSize buttonSize = CGSizeMake(44, 44);
         int buttonRow = 5;
@@ -74,24 +65,25 @@
         float heightOffset = (self.paperBackgroundsScroll.frame.size.height - buttonSize.height * buttonColl) / (buttonColl + 1);
         for(NSString* background in backgroundList)
         {
-            [NetworkTemplate getBackgroundImage:background
-                withHandler:^(UIImage *image) {
-                    UIButton* button = [UIButton buttonWithType:UIButtonTypeCustom];
-                    button.frame = CGRectMake(widthOffset + (widthOffset+buttonSize.width) * i , heightOffset ,
-                                              buttonSize.width , buttonSize.height);
-                    [button setTitle:background
-                            forState:UIControlStateDisabled];
-                    [self _addButtonShadow:button];
-                    button.backgroundColor = [UIColor colorWithPatternImage:image];
-                    [button addTarget:self
-                               action:@selector(onBackgroundButtonTouched:)
-                     forControlEvents:UIControlEventTouchUpInside];
-                    
-                    [self.paperBackgroundsScroll addSubview:button];
-                    if(i == 0){
-                        [self onBackgroundButtonTouched:button];
-                    }
-            }];
+            [[FlowithAgent sharedAgent]getBackground:background
+                                            response:^(BOOL isCachedResponse, UIImage *image){
+                                                UIButton* button = [UIButton buttonWithType:UIButtonTypeCustom];
+                                                button.frame = CGRectMake(widthOffset + (widthOffset+buttonSize.width) * i , heightOffset ,
+                                                                          buttonSize.width , buttonSize.height);
+                                                [button setTitle:background
+                                                        forState:UIControlStateDisabled];
+                                                [self _addButtonShadow:button];
+                                                button.backgroundColor = [UIColor colorWithPatternImage:image];
+                                                [button addTarget:self
+                                                           action:@selector(onBackgroundButtonTouched:)
+                                                 forControlEvents:UIControlEventTouchUpInside];
+                                                
+                                                [self.paperBackgroundsScroll addSubview:button];
+                                                if(i == 0){
+                                                    [self onBackgroundButtonTouched:button];
+                                                }
+                                            }];
+            
             i++;
         }
         CGSize contentSize = self.paperBackgroundsScroll.contentSize;
@@ -110,6 +102,13 @@
                 }
             }
         }
+    }failure:^(NSError *error) {
+        [[[UIAlertView alloc]initWithTitle:@"경고"
+                                   message:@"서버로부터 종이 배경들을 받아오는대 실패했습니다"
+                                  delegate:NULL
+                         cancelButtonTitle:@"확인"
+                         otherButtonTitles:NULL, nil] show];
+
     }];
 }
 - (void)onBackgroundButtonTouched : (UIButton*) sender{
@@ -121,7 +120,6 @@
         
     }];
 }
-
 - (void)deleteAllParticipants{
     for(UIView* view in self.participantsContainer.subviews){
         if(view != [self.participantsContainer.subviews objectAtIndex:0])
@@ -147,13 +145,13 @@
     profileView.frame = CGRectMake(12.5, 10, 19, 19);
     [button addSubview:profileView];
     [self.participantsContainer addSubview:button];
-    
-    [NetworkTemplate getImageFromURL:[[[user objectForKey:@"picture"] objectForKey:@"data"] objectForKey : @"url" ]
-                         withHandler:^(UIImage *image) {
-                             profileView.image = image;
-                             [profileView setNeedsDisplay];
-                         }];
-    
+
+    NSString* profileURL =[[[user objectForKey:@"picture"] objectForKey:@"data"]objectForKey :@"url" ];
+    [[FlowithAgent sharedAgent] getImageFromURL:profileURL
+                                        success:^(BOOL isCachedResponse, UIImage *image) {
+                                            profileView.image = image;
+                                            [profileView setNeedsDisplay];
+                                        }];
     
     UIViewSetHeight(self.participantsContainer,
                     self.participantsContainer.subviews.count * buttonSize.height);
@@ -187,12 +185,11 @@
     [button addSubview:profileView];
     [self.participantsContainer addSubview:button];
    
-    [NetworkTemplate getImageFromURL:[participant objectForKey:@"picture"]
-                         withHandler:^(UIImage *image) {
-                             profileView.image = image;
-                             [profileView setNeedsDisplay];
-                         }];
-    
+    [[FlowithAgent sharedAgent] getImageFromURL:[participant objectForKey:@"picture"]
+                                        success:^(BOOL isCachedResponse, UIImage *image) {
+                                            profileView.image = image;
+                                            [profileView setNeedsDisplay];
+                                        }];
     
     UIViewSetHeight(self.participantsContainer,
                     self.participantsContainer.subviews.count * buttonSize.height);
@@ -209,38 +206,46 @@
 }
 - (void)syncViewToPaper{
     if(self.entity){
-        self.entity.receiver_name = self.receiverName.text;
-        self.entity.title         = self.titleText.text;
-        self.entity.notice        = self.noticeInput.text;
-        self.entity.background    = [self.selectedBackgroundButton titleForState:UIControlStateDisabled];
+        NSLog(@"%@",self.entity);
+        self.entity.title          = self.titleText.text;
+        self.entity.notice         = self.noticeInput.text;
+        self.entity.target_email   = self.emailInput.text;
+        self.entity.receiver_name  = self.receiverName.text;
+        self.entity.receiver_fb_id = self.receiverFacebookID;
+        self.entity.receive_tel    = @"";
+        self.entity.receive_time   = [self buildRequestDate];
+        self.entity.background     = [self.selectedBackgroundButton titleForState:UIControlStateDisabled];
+        self.entity.width          = [NSNumber numberWithInt:1440];
+        self.entity.height         = [NSNumber numberWithInt:960];
+        
+        NSLog(@"%@",self.entity);
+        
     }
 }
 - (void)syncPaperToView{
     if(self.entity){
         self.receiverName.text = self.entity.receiver_name;
-        self.titleText.text = self.entity.title;
-        self.noticeInput.text = self.entity.notice;
+        self.titleText.text    = self.entity.title;
+        self.noticeInput.text  = self.entity.notice;
     
         NSDate* receiveDate = [NSDate dateWithTimeIntervalSince1970: [[NSNumberFormatter new]numberFromString:self.entity.receive_time].longLongValue ];
         self.receiveDate.text = [self dateToString:receiveDate];
         self.receiveTime.text = [self timeToString:receiveDate];
-        self.emailInput.text = self.entity.target_email;
+        self.emailInput.text  = self.entity.target_email;
      
-        ASIFormDataRequest* request = [NetworkTemplate requestForParticipantsListWithPaperIdx:self.entity.idx.stringValue];
-        [request setCompletionBlock:^{
-            NSArray* array = [request.responseString objectFromJSONString];
-            NSLog(@"%@",array);
-            [self deleteAllParticipants];
-            for(NSDictionary* user in array){
-                [self addParticipantsView:user];
-            }
-        }];
-        [request setFailedBlock:^{
-            NSLog(@"%@",request);
-        }];
-        [request startAsynchronous];
+        [[FlowithAgent sharedAgent] getPaperParticipants:self.entity
+            success:^(BOOL isCachedResponse, NSArray *participants) {
+                [self deleteAllParticipants];
+                for(NSDictionary* user in participants){
+                    [self addParticipantsView:user];
+                }
+            } failure:^(NSError *error) {
+                NSLog(@"%@",error);
+            }];
+        
     }
 }
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -248,8 +253,6 @@
                                                                                         action:@selector(hideKeyboard)];
     gestureRecognizer.cancelsTouchesInView = NO;
     [self.view addGestureRecognizer:gestureRecognizer];
-    
-  //  [[NetworkTemplate requestForSearchingFacebookFriendUsingRollingPaper:[UserInfo getUserIdx].stringValue] startAsynchronous];
     
     [self initScrollView];
     [self initPaperCellPreview];
@@ -288,14 +291,13 @@
         default:
             break;
     }
-    
 }
 
 - (id) initForCreating{
     self = [self initWithDefaultNib];
     if(self){
         self.controllerType = PAPER_CONTROLLER_TYPE_CREATING;
-        self.entity = NULL;
+        self.entity = (RollingPaper*)[[UECoreData sharedInstance] insertNewObject : @"RollingPaper"];
     }
     return self;
 }
@@ -303,7 +305,7 @@
     self = [self initWithDefaultNib];
     if(self){
         self.entity = aEntity;
-        if([[UserInfo getUserIdx] compare:self.entity.creator_idx] == NSOrderedSame)
+        if([[[FlowithAgent sharedAgent] getUserIdx] compare:self.entity.creator_idx] == NSOrderedSame)
         {
             self.controllerType = PAPER_CONTROLLER_TYPE_EDITING_CREATOR;
         }
@@ -368,12 +370,7 @@
 }
 
 
-- (void) createPaperRequestSuccess : (NSDictionary*) paperResultDict{
-    self.entity = (RollingPaper*)[[UECoreData sharedInstance] insertNewObject : @"RollingPaper"
-                                                                     initWith : paperResultDict];
-    self.entity.is_new = [NSNumber numberWithBool:YES];
-    NSLog(@"%@",self.entity);
-    
+- (void) createPaperRequestSuccess{
     //편집 뷰를 만든다음
     PaperViewController* paperViewController = [[PaperViewController alloc] initWithEntity:self.entity];
     
@@ -386,8 +383,41 @@
 - (IBAction)onTouchSend:(id)sender {
     if([self confirmInputs])
     {
-        @autoreleasepool {
-            ASIFormDataRequest* request = [NetworkTemplate requestForCreateRollingPaperWithUserIdx : [UserInfo getUserIdx].stringValue
+        [self syncViewToPaper];
+        [[FlowithAgent sharedAgent] createPaper:self.entity
+                                        success:^(RollingPaper *createdPaper) {
+                                            NSLog(@"%@",createdPaper);
+                                            
+                                            self.entity = createdPaper;
+                                            if(self.invitingFreindPicker &&
+                                               self.invitingFreindPicker.selection.count > 0){
+                                                
+                                                /*
+                                                NSMutableArray* facebook_friends = [NSMutableArray new];
+                                                for (id<FBGraphUser> user in self.invitingFreindPicker.selection) [facebook_friends addObject: [user id]];
+                                                ASIFormDataRequest* request = [NetworkTemplate requestForInviteFacebookFriends:facebook_friends
+                                                                                                                       ToPaper:[createdEntity objectForKey:@"idx"]
+                                                                                                                      withUser:[[FlowithAgent sharedAgent] getUserIdx].stringValue];
+                                                [request setCompletionBlock:^{
+                                                    NSLog(@"%@",request.responseString);
+                                                    [self createPaperRequestSuccess : createdEntity];
+                                                }];
+                                                [request startAsynchronous];
+                                                 */
+                                            }
+                                            else{
+                                            }
+                                            [self createPaperRequestSuccess];
+                                        }failure:^(NSError *error) {
+                                            NSLog(@"%@",error);
+                                            [[[UIAlertView alloc] initWithTitle:@"실패"
+                                                                        message:@"롤링페이퍼 서버에 페이퍼 만들기 요청이 실패하였습니다.\n인터넷 연결상태를 확인해주세요"
+                                                                       delegate:nil
+                                                              cancelButtonTitle:nil
+                                                              otherButtonTitles:@"확인", nil] show];
+                                        }];
+            /*
+            ASIFormDataRequest* request = [NetworkTemplate requestForCreateRollingPaperWithUserIdx : [[FlowithAgent sharedAgent] getUserIdx].stringValue
                                                                                              title : titleText.text
                                                                                       target_email : emailInput.text
                                                                                             notice : noticeInput.text
@@ -413,7 +443,7 @@
                         for (id<FBGraphUser> user in self.invitingFreindPicker.selection) [facebook_friends addObject: [user id]];
                         ASIFormDataRequest* request = [NetworkTemplate requestForInviteFacebookFriends:facebook_friends
                                                                                                ToPaper:[createdEntity objectForKey:@"idx"]
-                                                                                              withUser:[UserInfo getUserIdx].stringValue];
+                                                                                              withUser:[[FlowithAgent sharedAgent] getUserIdx].stringValue];
                         [request setCompletionBlock:^{
                             NSLog(@"%@",request.responseString);
                             [self createPaperRequestSuccess : createdEntity];
@@ -434,7 +464,7 @@
                                   otherButtonTitles:@"확인", nil] show];
             }];
             [request startAsynchronous];
-        }
+             */
     }
     else{
         NSLog(@"입력폼에 문제가 있음");
@@ -452,7 +482,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex{
     if(buttonIndex == 0)
     {
         NSLog(@"방 삭제");
-        ASIFormDataRequest* request = [ NetworkTemplate requestForQuitRoomWithUserIdx : [UserInfo getUserIdx].stringValue
+        ASIFormDataRequest* request = [ NetworkTemplate requestForQuitRoomWithUserIdx : [[FlowithAgent sharedAgent] getUserIdx].stringValue
                                                                                 paper : self.entity.idx.stringValue];
         [request setCompletionBlock:^{
             NSLog(@"%@",request.responseString);
@@ -638,7 +668,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex{
             for (id<FBGraphUser> user in self.invitingFreindPicker.selection) [facebook_friends addObject: [user id]];
             ASIFormDataRequest* request = [NetworkTemplate requestForInviteFacebookFriends:facebook_friends
                                                                                    ToPaper:self.entity.idx.stringValue
-                                                                                  withUser:[UserInfo getUserIdx].stringValue];
+                                                                                  withUser:[[FlowithAgent sharedAgent] getUserIdx].stringValue];
             [request setCompletionBlock:^{
                 NSLog(@"%@",request.responseString);
                 [self syncPaperToView];

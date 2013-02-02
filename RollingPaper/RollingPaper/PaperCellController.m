@@ -10,6 +10,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "NetworkTemplate.h"
 #import "UEFileManager.h"
+#import "FlowithAgent.h"
 
 @interface PaperCellController ()
 
@@ -118,7 +119,22 @@
     [self.view addGestureRecognizer:tapGestureRecognizer];
     
     [self refreshViewWithEntity];
-
+    
+    [[FlowithAgent sharedAgent] getBackground:entity.background
+                                     response:^(BOOL isCachedResponse, UIImage *image) {
+                                         self.backgroundImage.image = NULL;//image;
+                                         self.backgroundImage.backgroundColor = [UIColor colorWithPatternImage:image];
+                                         UIImage* mask_image = [ UIImage imageNamed:@"paper_cell_bg"];
+                                         CGSize size = self.backgroundImage.frame.size;
+                                         CALayer* maskLayer = [CALayer layer];
+                                         maskLayer.frame = CGRectMake(0,0,size.width,size.height);
+                                         maskLayer.contents = (__bridge id)[mask_image CGImage];
+                                         self.backgroundImage.layer.mask = maskLayer;
+                                         [self.backgroundImage setNeedsDisplay];
+                                         NSLog(@"%@",self.backgroundImage);
+                                         NSLog(@"%@",image);
+                                    }];
+/*
     
     [NetworkTemplate getBackgroundImage:entity.background
                             withHandler:^(UIImage *image) {
@@ -134,6 +150,7 @@
                                 NSLog(@"%@",self.backgroundImage);
                                 NSLog(@"%@",image);
                             }];
+ */
     
     
     if(self.entity.is_new.boolValue){

@@ -9,12 +9,12 @@
 #import "ImageContentView.h"
 #import "UELib/UEImageLibrary.h"
 #import "NetworkTemplate.h"
-#import "UserInfo.h"
 #import "UECoreData.h"
 #import <JSONKit.h>
 #import "UEFileManager.h"
 #import "macro.h"
 #import "CGPointExtension.h"
+#import "FlowithAgent.h"
 
 @implementation ImageContentView
 @synthesize isNeedToSyncWithServer;
@@ -102,7 +102,7 @@
     // 서버에서 받아온 것이고 숨겨진경우. 즉, 삭제 예약된 경우
     if(self.entity.idx && self.hidden) {
         ASIFormDataRequest* request = [NetworkTemplate requestForDeleteImageContent:self.entity.idx.stringValue
-                                                                        withUserIdx:[UserInfo getUserIdx].stringValue];
+                                                                        withUserIdx:[FlowithAgent sharedAgent].getUserIdx.stringValue];
         [request setCompletionBlock:^{
             NSLog(@"%@",request.responseString);
         }];
@@ -118,7 +118,7 @@
                 NSData* jpegImage = UIImagePNGRepresentation(self.image);
                 
                 [self updateEntityWithView];
-                ASIFormDataRequest* request = [NetworkTemplate requestForUploadImageContentWithUserIdx : [UserInfo getUserIdx].stringValue
+                ASIFormDataRequest* request = [NetworkTemplate requestForUploadImageContentWithUserIdx : [FlowithAgent sharedAgent].getUserIdx.stringValue
                                                                                                 entity : self.entity
                                                                                                  image : jpegImage];
                 [request setCompletionBlock:^{

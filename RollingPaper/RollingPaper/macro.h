@@ -26,7 +26,7 @@
 #define KEYBOARD_HEIGHT (216.0f)
 #define DEBUG_NETWORK_NOT_AVAILABLE
 #define ToNSURL(x) ([[NSURL alloc]initWithString:x])
-#define ToNSURLRequest(x) ([NSURLRequest requestWithURL:ToNSURL(x)])
+#define ToNSURLRequest(x) ([NSMutableURLRequest requestWithURL:ToNSURL(x)])
 
 
 

@@ -10,6 +10,8 @@
 #import <CoreData/CoreData.h>
 @interface NSManagedObject(DictionarySupport)
 -(void) setValuesWithDictionary : (NSDictionary*) dict;
++(NSArray*) entitiesWithDictionaryArray : (NSArray*) array;
++(NSArray*) attributeNames;
 @end
 
 @interface UECoreData : NSObject

@@ -7,14 +7,13 @@
 //
 
 #import "PaperViewController.h"
-#import "NetworkTemplate.h"
 #import "ImageContent.h"
 #import "SoundContent.h"
 #import "UECoreData.h"
 #import "UELib/UEImageLibrary.h"
 #import "ImageContentView.h"
 #import "SoundContentView.h"
-#import "UserInfo.h"
+#import "FlowithAgent.h"
 #import "CGPointExtension.h"
 #import "ccMacros.h"
 #import "UELib/UEUI.h"
@@ -27,6 +26,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "UEFileManager.h"
 #import <JSONKit.h>
+#import "UECoreData.h"
 
 
 #define BORDER_WIDTH (2.0f)
@@ -39,7 +39,6 @@
 @implementation PaperViewController
 //@synthesize contentsViews;
 @synthesize entity;
-@synthesize friendPickerController;
 @synthesize contentsContainer;
 @synthesize transformTargetView = _transformTargetView;
 @synthesize dockController;
@@ -82,12 +81,12 @@
     }
     else{
         NSLog(@"%@가 로컬에 없음",entity.background);
-        
-        [NetworkTemplate getBackgroundImage:entity.background
-                                withHandler:^(UIImage *image) {
-                                    self.contentsScrollContainer.backgroundColor = [UIColor colorWithPatternImage:image];
-                                    [self.contentsScrollContainer setNeedsDisplay];
-                                }];
+        [[FlowithAgent sharedAgent] getBackground:entity.background
+                                         response:^(BOOL isCachedResponse, UIImage *image) {
+            self.contentsScrollContainer.backgroundColor = [UIColor colorWithPatternImage:image];
+            [self.contentsScrollContainer setNeedsDisplay];
+        }];
+    
      
     }
     ///
@@ -102,7 +101,7 @@
     self.contentsContainer.scrollEnabled = FALSE;
     self.contentsContainer.delegate = self;
 }
--(void) onReceiveContentsResponse : (NSDictionary*) categorizedContents{
+-(void) onReceiveContentsResponse : (NSArray*) imageContents : (NSArray*) soundContents{
     
     for(UIView* subView in self.contentsScrollContainer.subviews){
         [UIView animateWithDuration:0.2f animations:^{
@@ -112,39 +111,35 @@
         }];
     }
     
-    NSDictionary* imageContents = [categorizedContents objectForKey:@"image"];
-    for(NSDictionary*p in imageContents){
-        ImageContent* imageEntity = (ImageContent*)[[UECoreData sharedInstance]insertNewObject:@"ImageContent" initWith:p];
-        ImageContentView* entityView = [[ImageContentView alloc] initWithEntity:imageEntity];
+    for(ImageContent* image in imageContents){
+        ImageContentView* entityView = [[ImageContentView alloc] initWithEntity:image];
         [self.contentsScrollContainer addSubview:entityView];
-        
-        [self addTransformTargetGestureToEntityView:entityView];
     }
-    //self.transformTargetView = [contentsViews lastObject];
-    //NSDictionary* textContents  = [categorizedContents objectForKey:@"text"];
     
-    NSDictionary* soundContents = [categorizedContents objectForKey:@"sound"];
-    for(NSDictionary*p in soundContents){
-        SoundContent* soundEntity = (SoundContent*)[[UECoreData sharedInstance]insertNewObject:@"SoundContent" initWith:p];
-        SoundContentView* entityView = [[SoundContentView alloc] initWithEntity:soundEntity];
+    for(SoundContent* sound in soundContents){
+        SoundContentView* entityView = [[SoundContentView alloc] initWithEntity:sound];
         [self.contentsScrollContainer addSubview:entityView];
     }
+    
+    [self addTransformTargetGestureToEntityView:[self.contentsScrollContainer.subviews lastObject]];
+    
     // 일단 받았음으로 받은 것을 현재 디바이스에 저장한다
 }
 -(void)loadAndShowContents{
-    ASIFormDataRequest* request = [NetworkTemplate requestForRollingPaperContents : self.entity.idx.stringValue
-                                                                        afterTime : 1];
-    [request setCompletionBlock:^{
-        NSDictionary* categorizedContents = [request.responseString objectFromJSONString];
-        NSLog(@"%@",categorizedContents);
-        [self performSelectorOnMainThread : @selector(onReceiveContentsResponse:)
-                               withObject : categorizedContents
-                            waitUntilDone : TRUE];
-    }];
-    [request setFailedBlock:^{
-        NSLog(@"--%@",request.error);
-    }];
-    [request startAsynchronous];
+    [[FlowithAgent sharedAgent] getContentsOfPaper:self.entity
+                                         afterTime:1
+     success:^(BOOL isCachedResponse, NSArray *imageContents,
+                                      NSArray *soundContents) {
+         [self onReceiveContentsResponse:imageContents
+                                        :soundContents ];
+         
+     }failure:^(NSError *error) {
+         [[[UIAlertView alloc] initWithTitle:@"에러"
+                                     message:@"페이퍼 내용을 서버로 부터 받아오는 실패했습니다. 다시 시도해주세요"
+                                    delegate:nil
+                           cancelButtonTitle:@"확인"
+                           otherButtonTitles: nil] show];
+     }];
 }
 
 -(void)viewDidLoad{
@@ -241,7 +236,7 @@
     if(_transformTargetView)
     {
         //해당 컨텐츠를 만든사람이 본인이라서 편집이 가능한경우에만 편집
-        if([[_transformTargetView getUserIdx] compare:[UserInfo getUserIdx]] == NSOrderedSame)
+        if([[_transformTargetView getUserIdx] compare:[[FlowithAgent sharedAgent] getUserIdx]] == NSOrderedSame)
         {
             _transformTargetView.layer.borderWidth = BORDER_WIDTH;
             _transformTargetView.layer.borderColor = BORDER_COLOR.CGColor;
@@ -305,48 +300,12 @@
     NSLog(@"%@",longTapGestureRecognizer);
 }
 
-- (IBAction)onTouchInvite:(id)sender {
-    if(!friendPickerController){
-        friendPickerController = [[FBFriendPickerViewController alloc] init];
-        friendPickerController.title = @"Pick Friends";
-        friendPickerController.delegate = self;
-        
-        [friendPickerController loadData];
-        [friendPickerController clearSelection];
-        [self presentViewController:friendPickerController animated:TRUE completion:^{
-        
-        }];
-    }
-}
-
--(void) facebookViewControllerDoneWasPressed:(id)sender{
-    NSMutableArray* friendArray = [[NSMutableArray alloc]init];
-    for (id<FBGraphUser> user in friendPickerController.selection) {
-        [friendArray addObject: [user id]];
-    }
-    [self dismissViewControllerAnimated:TRUE completion:^{
-        friendPickerController = NULL;
-    }];
-    @autoreleasepool {
-        ASIFormDataRequest* request =  [NetworkTemplate requestForInviteFacebookFriends : friendArray
-                                                                                ToPaper : [NSString stringWithFormat:@"%d",self.entity.idx.intValue]
-                                                                               withUser : [UserInfo getUserIdx].stringValue];
-        [request setCompletionBlock:^{
-            NSLog(@"%@",request.responseString);
-        }];
-        [request setFailedBlock:^{
-            NSLog(@"fail : ");
-        }];
-        [request startAsynchronous];
-    }
-}
-
 -(SoundContentView*) onCreateSound : (NSString*) file{
     
     SoundContent* soundEntity = (SoundContent*)[[UECoreData sharedInstance]insertNewObject:@"SoundContent"];
     soundEntity.idx       = NULL;
     soundEntity.paper_idx = self.entity.idx;
-    soundEntity.user_idx  = [NSNumber numberWithInt:[UserInfo getUserIdx].intValue];
+    soundEntity.user_idx  = [NSNumber numberWithInt:[[FlowithAgent sharedAgent] getUserIdx].intValue];
     soundEntity.x         = [NSNumber numberWithFloat:self.view.frame.size.width /2];
     soundEntity.y         = [NSNumber numberWithFloat:self.view.frame.size.height/2];
     soundEntity.width     = [NSNumber numberWithFloat:SOUND_CONTENT_WIDTH];
@@ -371,7 +330,7 @@
     ImageContent* imageEntity = (ImageContent*)[[UECoreData sharedInstance]insertNewObject:@"ImageContent"];
     imageEntity.idx       = NULL;
     imageEntity.paper_idx = self.entity.idx;
-    imageEntity.user_idx  = [NSNumber numberWithInt:[UserInfo getUserIdx].intValue];
+    imageEntity.user_idx  = [NSNumber numberWithInt:[[FlowithAgent sharedAgent] getUserIdx].intValue];
     imageEntity.x         = [NSNumber numberWithFloat:0.0f];
     imageEntity.y         = [NSNumber numberWithFloat:0.0f];
     imageEntity.rotation  = [NSNumber numberWithFloat:0.0f];

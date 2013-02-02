@@ -33,10 +33,8 @@
                                                    UIImagePickerControllerDelegate,
                                                    AlbumControllerDelegate,
                                                    RecoderViewControllerDelegate,
-                                                   PencilcaseControllerDelegate,
-                                                   FBFriendPickerDelegate>
+                                                   PencilcaseControllerDelegate>
 @property (nonatomic,strong) UIView<RollingPaperContentViewProtocol>* transformTargetView;
-@property (strong, nonatomic) FBFriendPickerViewController* friendPickerController;
 @property (strong, nonatomic) RollingPaper* entity;
 @property (nonatomic,weak) IBOutlet UIScrollView *contentsContainer;
 @property (nonatomic,strong) UIView* contentsScrollContainer;

@@ -25,18 +25,8 @@ typedef void (^BackgroundImageHandler)(UIImage* image);
                                         accessToken : (NSString*) accesstoken;
 +(ASIFormDataRequest*) requestForPhoneAuth : (NSString*) phone;
 +(ASIFormDataRequest*) requestForEditRollingPaper : (RollingPaper*) paper;
+
 // 방생성, 조회, 초대 관련 리퀘스트들
-+(ASIFormDataRequest*) requestForCreateRollingPaperWithUserIdx : (NSString*) creator_idx
-                                                         title : (NSString*) title
-                                                  target_email : (NSString*) target_email
-                                                        notice : (NSString*) notice
-                                                  receiverFBid : (NSString*) receiver_fb_id
-                                                  receiverName : (NSString*) receiver_name
-                                                  receieveTime : (NSString*) receiveTime
-                                                    background : (NSString*) background;
-+(ASIFormDataRequest*) requestForRollingPaperListWithUserIdx : (NSString*) useridx;
-+(ASIFormDataRequest*) requestForRollingPaperContents : (NSString*) paper_idx
-                                            afterTime : (long) timestamp;
 +(ASIFormDataRequest*) requestForInviteFacebookFriends : (NSArray*) facebookFriends
                                                ToPaper : (NSString*) paper_idx
                                               withUser : (NSString*) userIdx;
@@ -52,9 +42,6 @@ typedef void (^BackgroundImageHandler)(UIImage* image);
 +(ASIFormDataRequest*) requestForSynchronizeImageContent : (ImageContent*) entity;
 +(ASIFormDataRequest*) requestForSynchronizeSoundContent : (SoundContent*) entity;
 
-+(ASIFormDataRequest*) requestForParticipantsListWithPaperIdx : (NSString*) paper_idx;
-
-+(ASIHTTPRequest*) requestForBackgroundImage : (NSString*) background;
 +(ASIFormDataRequest*) requestForSynchronizePaper : (RollingPaper*) entity;
 +(ASIFormDataRequest*) requestForQuitRoomWithUserIdx : (NSString*) user_idx
                                                paper : (NSString*) paper_idx;
@@ -63,11 +50,5 @@ typedef void (^BackgroundImageHandler)(UIImage* image);
                                         withUserIdx : (NSString*) user_idx;
 +(ASIFormDataRequest*) requestForDeleteSoundContent : (NSString*) sound_idx
                                         withUserIdx : (NSString*) user_idx;
-
-
-+(void) getBackgroundImage : (NSString*) background
-               withHandler : (BackgroundImageHandler) handler;
-+(void) getImageFromURL : (NSString*) url
-            withHandler : (BackgroundImageHandler) handler;
 
 @end

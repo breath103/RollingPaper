@@ -8,12 +8,12 @@
 
 #import "SoundContentView.h"
 #import "NetworkTemplate.h"
-#import "UserInfo.h"
 #import "UECoreData.h"
 #import "UEFileManager.h"
 #import "macro.h"
 #import "CGPointExtension.h"
 #import <JSONKit.h>
+#import "FlowithAgent.h"
 
 
 
@@ -98,7 +98,7 @@
     
     if(self.entity.idx && self.hidden) {
         ASIFormDataRequest* request = [NetworkTemplate requestForDeleteSoundContent:self.entity.idx.stringValue
-                                                                        withUserIdx:[UserInfo getUserIdx].stringValue];
+                                                                        withUserIdx:[[FlowithAgent sharedAgent] getUserIdx].stringValue];
         [request setCompletionBlock:^{
             NSLog(@"%@",request.responseString);
         }];
@@ -111,7 +111,7 @@
     if(isNeedToSyncWithServer) {
         if(self.entity.idx == NULL){
             [self updateEntityWithView];
-            ASIFormDataRequest* request = [NetworkTemplate requestForUploadSoundContentWithUserIdx:[UserInfo getUserIdx].stringValue
+            ASIFormDataRequest* request = [NetworkTemplate requestForUploadSoundContentWithUserIdx:[[FlowithAgent sharedAgent] getUserIdx].stringValue
                                                                                             entity:self.entity
                                                                                              sound:[NSData dataWithContentsOfFile:self.entity.sound]];
             [request setCompletionBlock:^{

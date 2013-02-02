@@ -18,4 +18,5 @@
 @property (nonatomic, retain) NSString * sound;
 @property (nonatomic, retain) NSNumber * user_idx;
 
++(NSArray*) contentsWithDictionaryArray : (NSArray*) array;
 @end

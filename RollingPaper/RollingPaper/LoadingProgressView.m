@@ -8,6 +8,7 @@
 
 #import "LoadingProgressView.h"
 #import "ccMacros.h"
+
 /*
 @implementation LoadingProgressView
 @synthesize imageView;

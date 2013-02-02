@@ -19,7 +19,7 @@
             openURL:(NSURL *)url
   sourceApplication:(NSString *)sourceApplication
          annotation:(id)annotation {
-    NSLog(@"%@",url);
+
     return [FBSession.activeSession handleOpenURL:url];
 }
 

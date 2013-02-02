@@ -8,7 +8,7 @@
 
 #import "RootViewController.h"
 #import <FacebookSDK/FacebookSDK.h>
-#import "UserInfo.h"
+#import "FlowithAgent.h"
 #import <math.h>
 #import "RollingPaperCreator.h"
 #import "RollingPaperListController.h"
@@ -50,8 +50,8 @@
         } completion:^(BOOL finished) {
             paperPlaneView.hidden = TRUE;
             
-            if([UserInfo getUserInfo]){
-                NSLog(@"다음 아이디로 이미 로그인 된 상태 : %@",[UserInfo getUserInfo]);
+            if([[FlowithAgent sharedAgent] getUserInfo]){
+                NSLog(@"다음 아이디로 이미 로그인 된 상태 : %@",[[FlowithAgent sharedAgent] getUserInfo]);
                 [self onTouchLoginWithFacebook];
             }
             else {
@@ -81,7 +81,7 @@
                                   completionHandler : ^(FBSession *session, FBSessionState status, NSError *error) {
                                       NSLog(@"%@",session.accessToken);
                                       if (!error){
-                                          [self onLoginSuccess:[UserInfo getUserInfo]];
+                                          [self onLoginSuccess:[[FlowithAgent sharedAgent] getUserInfo]];
                                       }else {
                                           [[[UIAlertView alloc] initWithTitle:@"Error"
                                                                       message:error.localizedDescription
@@ -140,8 +140,8 @@
     [self onLoginSuccess:userDict];
 }
 -(void) onLoginSuccess : (NSDictionary*) userDict {
-    [UserInfo setUserInfo:userDict];
-    NSLog(@"%@",[UserInfo getUserInfo]);
+    [[FlowithAgent sharedAgent] setUserInfo:userDict];
+    NSLog(@"%@",[[FlowithAgent sharedAgent] getUserInfo]);
     [self showPaperList];
 }
 - (void)viewDidUnload {

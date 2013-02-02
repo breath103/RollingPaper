@@ -7,8 +7,7 @@
 //
 
 #import "RollingPaperListController.h"
-#import "NetworkTemplate.h"
-#import "UserInfo.h"
+#import "FlowithAgent.h"
 #import "BlockSupport/NSObject+block.h"
 #import "RollingPaper.h"
 #import "UECoreData.h"
@@ -27,7 +26,6 @@
 
 @implementation RollingPaperListController
 @synthesize paperScrollView;
-@synthesize profileImageView;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     
@@ -50,28 +48,21 @@
     [paperCellControllers removeAllObjects];
 }
 -(void) refreshPaperList{
-    ASIFormDataRequest* request = [NetworkTemplate requestForRollingPaperListWithUserIdx:[UserInfo getUserIdx].stringValue];
-    [request setCompletionBlock:^{
+    [[FlowithAgent sharedAgent]getParticipaitingPapers:^(BOOL isCachedResponse, NSArray *paperArray) {
         [self performBlockInMainThread:^{
-            NSArray* paperArray = [request.responseString objectFromJSONString];
+            NSLog(@"%d %@",isCachedResponse,paperArray);
             [self createPaperViewsFromArray:paperArray];
         } waitUntilDone:TRUE];
+    } failure:^(NSError *error) {
+        [[[UIAlertView alloc] initWithTitle:@"경고" message:@"서버로부터 페이퍼 리스트를 받아오는데 실패했습니다" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles: nil] show];
     }];
-    [request setFailedBlock:^{
-        [[[UIAlertView alloc] initWithTitle : @"Error"
-                                    message : @"서버로부터 롤링페이퍼 리스트를 받아오지 못했습니다"
-                                   delegate : nil
-                          cancelButtonTitle : @"OK"
-                          otherButtonTitles : nil] show];
-    }];
-    [request startAsynchronous];
 }
 -(NSMutableDictionary*) fetchAllRollingPaperWithIdxKey{
     NSManagedObjectContext* managedObjectContext = [UECoreData sharedInstance].managedObjectContext;
     NSFetchRequest* fetchRequest = [NSFetchRequest new];
-    NSEntityDescription *entityDesc = [NSEntityDescription entityForName:@"RollingPaper" inManagedObjectContext:[UECoreData sharedInstance].managedObjectContext];
+    NSEntityDescription *entityDesc = [NSEntityDescription entityForName:@"RollingPaper"
+                                                  inManagedObjectContext:[UECoreData sharedInstance].managedObjectContext];
     [fetchRequest setEntity:entityDesc];
-    
     NSMutableArray *entities = [[managedObjectContext executeFetchRequest:fetchRequest error:NULL] mutableCopy];
     
     NSMutableDictionary* dict = [[NSMutableDictionary alloc]init];
@@ -88,14 +79,12 @@
     float cellContainerWidth = self.paperScrollView.frame.size.width;
     
     [self removeAllPaperViews];
-    
     NSMutableDictionary* storedPapers = [self fetchAllRollingPaperWithIdxKey];
     for(NSDictionary* p in paperDictArray){
         RollingPaper* entity = NULL;
         
         entity = [storedPapers objectForKey:[p objectForKey:@"idx"]];
         NSLog(@"%@",entity);
-        
         if( ! entity ){
             entity = (RollingPaper*)[[UECoreData sharedInstance] insertNewObject : @"RollingPaper"
                                                                         initWith : p];
@@ -118,8 +107,8 @@
             
             [self addChildViewController:cellController];
             [self.paperScrollView addSubview:cellController.view];
-            self.paperScrollView.contentSize = CGSizeMake(self.paperScrollView.frame.size.width, topBorder + (heightMargin + viewHeight) * index);
-
+            self.paperScrollView.contentSize = CGSizeMake(self.paperScrollView.frame.size.width,
+                                                          topBorder + (heightMargin + viewHeight) * index);
         }
         else if ([entity.is_sended compare:@"SENDED"] == NSOrderedSame){
             NSLog(@"SENDED : %@",entity.idx);
@@ -127,7 +116,6 @@
     }
     
     [[[UECoreData sharedInstance] managedObjectContext] save:NULL];
-    
 }
 -(void) viewWillAppear:(BOOL)animated{
     
@@ -139,17 +127,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    if([UserInfo getUserInfo]){
-        profileImageView.image = [UserInfo getImageFromPictrueURL];
-        
-        /*
-        profileImageView.layer.cornerRadius = profileImageView.frame.size.width/2.0f;
-        profileImageView.layer.masksToBounds = TRUE;
-        profileImageView.layer.borderWidth = 2.5f;
-        profileImageView.layer.borderColor = [UEUI CGColorWithRed:1.0f Green:1.0f Blue:1.0f Alpha:1.0f];
-        UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onTapUserSetting)];
-        [profileImageView addGestureRecognizer:tapGesture];
-         */
+    if([[FlowithAgent sharedAgent] getUserInfo]){
+        [[FlowithAgent sharedAgent] getProfileImage:^(BOOL isCachedResponse, UIImage *image) {
+            [self.profileButton setImage:image forState:UIControlStateNormal];
+            [self.profileButton hideToTransparent];
+            [self.profileButton fadeIn:0.3f];
+        }];
         [self refreshPaperList];
     }
     else{
@@ -163,12 +146,7 @@
         [self.navigationController popViewControllerAnimated:TRUE];
     }
 }
--(void) onTapUserSetting{
-    UserSettingViewController* settingViewController = [[UserSettingViewController alloc] initWithNibName:NSStringFromClass(UserSettingViewController.class)
-                                                                                                   bundle:NULL];
-    [self.navigationController pushViewController:settingViewController
-                                         animated:TRUE];
-}
+
 -(void) PaperCellTouched : (PaperCellController *) paper
 {
     PaperViewController* paperViewController = [[PaperViewController alloc] initWithEntity:paper.entity];
@@ -200,6 +178,12 @@
 
 - (IBAction)onTouchRefresh:(id)sender {
     [self refreshPaperList];
+}
+
+- (IBAction)onTouchProfile:(id)sender {
+    UserSettingViewController* settingViewController = [[UserSettingViewController alloc] initWithDefaultNib];
+    [self.navigationController pushViewController:settingViewController
+                                         animated:TRUE];
 }
 -(BOOL)shouldAutorotate
 {

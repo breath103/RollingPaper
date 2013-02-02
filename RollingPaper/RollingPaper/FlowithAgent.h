@@ -11,71 +11,66 @@
 #define SERVER_IP   (@"210.122.0.164:8001")
 #define SERVER_HOST ([@"http://" stringByAppendingString:SERVER_IP])
 
+
+@class RollingPaper;
+
 @interface FlowithAgent : NSObject
+
 +(FlowithAgent*) sharedAgent;
 
 -(void) setUserInfo : (NSDictionary*) dict;
 -(NSDictionary*) getUserInfo;
 -(NSNumber*) getUserIdx;
-//-(void) getProfileImage : (void(^)(UIImage* image)) response;
-
--(void) getImageFromURL : (NSString*)url
-               useCache : (BOOL)useCache
-               response : (void(^)(BOOL isCachedResponse,UIImage* image)) response;
-
--(void) getBackgroundList : (void (^)(BOOL isCaschedResponse, NSArray * backgroundList))callback;
 
 /*
-+(ASIFormDataRequest*) requestForFacebookJoinWithMe : (id<FBGraphUser>) me
-                                        accessToken : (NSString*) accesstoken;
-+(ASIFormDataRequest*) requestForPhoneAuth : (NSString*) phone;
-+(ASIFormDataRequest*) requestForEditRollingPaper : (RollingPaper*) paper;
-// 방생성, 조회, 초대 관련 리퀘스트들
-+(ASIFormDataRequest*) requestForCreateRollingPaperWithUserIdx : (NSString*) creator_idx
-                                                         title : (NSString*) title
-                                                  target_email : (NSString*) target_email
-                                                        notice : (NSString*) notice
-                                                  receiverFBid : (NSString*) receiver_fb_id
-                                                  receiverName : (NSString*) receiver_name
-                                                  receieveTime : (NSString*) receiveTime
-                                                    background : (NSString*) background;
-+(ASIFormDataRequest*) requestForRollingPaperListWithUserIdx : (NSString*) useridx;
-+(ASIFormDataRequest*) requestForRollingPaperContents : (NSString*) paper_idx
-                                            afterTime : (long) timestamp;
-+(ASIFormDataRequest*) requestForInviteFacebookFriends : (NSArray*) facebookFriends
-                                               ToPaper : (NSString*) paper_idx
-                                              withUser : (NSString*) userIdx;
-// 컨텐츠 제작 관련 리퀘스트들
-+(ASIFormDataRequest*) requestForUploadImageContentWithUserIdx : (NSString*) useridx
-                                                        entity : (ImageContent*) entity
-                                                         image : (NSData*) image;
-+(ASIFormDataRequest*) requestForUploadSoundContentWithUserIdx : (NSString*) useridx
-                                                        entity : (SoundContent*) entity
-                                                         sound : (NSData*) image;
-+(ASIFormDataRequest*) requestForSearchingFacebookFriendUsingRollingPaper : (NSString*) useridx;
-// 컨텐츠 수정 관련 리퀘스트
-+(ASIFormDataRequest*) requestForSynchronizeImageContent : (ImageContent*) entity;
-+(ASIFormDataRequest*) requestForSynchronizeSoundContent : (SoundContent*) entity;
+ 
+ 이함수부터 수정해야댐 2월 3일 여기까지함
+ 
+ */
+/*
+-(void) joinWithFacebook :(id<FBGraphUser>) me
+             accessToken : (NSString*) accesstoken;
+ */
 
-+(ASIFormDataRequest*) requestForParticipantsListWithPaperIdx : (NSString*) paper_idx;
-+(ASIHTTPRequest*) requestForPaperBackgroundImageList;
+-(void) getProfileImage : (void(^)(BOOL isCachedResponse,UIImage* image)) success;
+-(void) getImageFromURL : (NSString*)url
+                success : (void(^)(BOOL isCachedResponse,UIImage* image)) success;
 
-+(ASIHTTPRequest*) requestForBackgroundImage : (NSString*) background;
-+(ASIFormDataRequest*) requestForSynchronizePaper : (RollingPaper*) entity;
-+(ASIFormDataRequest*) requestForQuitRoomWithUserIdx : (NSString*) user_idx
-                                               paper : (NSString*) paper_idx;
+// BACKGROUND METHOD
+-(void) getBackgroundList : (void (^)(BOOL isCaschedResponse, NSArray * backgroundList))callback
+                  failure : (void (^)(NSError* error))failure;
+-(void) getBackground : (NSString*) background
+             response : (void(^)(BOOL isCachedResponse,UIImage* image)) response;
+/////////////////////
 
-+(ASIFormDataRequest*) requestForDeleteImageContent : (NSString*) image_idx
-                                        withUserIdx : (NSString*) user_idx;
-+(ASIFormDataRequest*) requestForDeleteSoundContent : (NSString*) sound_idx
-                                        withUserIdx : (NSString*) user_idx;
+// USER - CONNECTION PAPER
+-(void) getParticipaitingPapers : (void (^)(BOOL isCachedResponse,NSArray* paperArray))success
+                        failure : (void (^)(NSError* error))failure ;
+-(void) getReceivedPapers : (void (^)(BOOL isCachedResponse,NSArray* paperArray))callback
+                  failure : (void (^)(NSError* error))failure ;
+-(void) getSendedPapers : (void (^)(BOOL isCachedResponse,NSArray* paperArray))callback
+                failure : (void (^)(NSError* error))failure ;
 
 
-+(void) getBackgroundImage : (NSString*) background
-               withHandler : (BackgroundImageHandler) handler;
-+(void) getImageFromURL : (NSString*) url
-            withHandler : (BackgroundImageHandler) handler;
-*/
+// PAPER
+-(void) createPaper : (RollingPaper*) paper
+            success : (void (^)(RollingPaper* paper))success
+            failure : (void (^)(NSError* error))failure;
+-(void) updatePaper : (RollingPaper*) paper
+            success : (void (^)(RollingPaper* paper))success
+            failure : (void (^)(NSError* error))failure;
+-(void) getContentsOfPaper : (RollingPaper*) paper
+                 afterTime : (long long) timestamp
+                   success : (void (^)(BOOL isCachedResponse,NSArray* imageContents,
+                                                             NSArray* soundContents))success
+                   failure : (void (^)(NSError* error))failure;
+-(void) getPaperParticipants : (RollingPaper*) paper
+                     success : (void (^)(BOOL isCachedResponse,NSArray* participants))success
+                     failure : (void (^)(NSError* error))failure;
+// NOTICE
+-(void) getNoticeList : (void (^)(BOOL isCaschedResponse, NSArray * noticeList))success
+              failure : (void (^)(NSError* error))failure;
+
 
 
 @end

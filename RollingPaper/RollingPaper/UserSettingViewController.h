@@ -10,5 +10,6 @@
 
 @interface UserSettingViewController : UIViewController
 @property (weak, nonatomic) IBOutlet UIImageView *userImageView;
+- (IBAction)onTouchShowNotice:(id)sender;
 
 @end

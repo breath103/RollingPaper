@@ -18,4 +18,5 @@
 @property (nonatomic, retain) NSNumber * paper_idx;
 @property (nonatomic, retain) NSNumber * user_idx;
 
++(NSArray*) contentsWithDictionaryArray : (NSArray*) array;
 @end

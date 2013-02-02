@@ -7,7 +7,7 @@
 //
 
 #import "SoundContent.h"
-
+#import "UECoreData.h"
 
 @implementation SoundContent
 
@@ -15,5 +15,15 @@
 @dynamic paper_idx;
 @dynamic sound;
 @dynamic user_idx;
+
+
++(NSArray*) contentsWithDictionaryArray : (NSArray*) array{
+    NSMutableArray* entitys = [NSMutableArray arrayWithCapacity:array.count];
+    for(NSDictionary*p in array){
+         SoundContent* soundEntity = (SoundContent*)[[UECoreData sharedInstance]insertNewObject:@"SoundContent" initWith:p];
+        [entitys addObject:soundEntity];
+    }
+    return entitys;
+}
 
 @end

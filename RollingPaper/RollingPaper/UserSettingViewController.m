@@ -7,8 +7,8 @@
 //
 
 #import "UserSettingViewController.h"
-#import "UserInfo.h"
-#import "UELib/UEImageLibrary.h"
+#import "FlowithAgent.h"
+#import "NoticeTableController.h"
 
 @interface UserSettingViewController ()
 
@@ -28,7 +28,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.userImageView.image = [UEImageLibrary imageWithURL:[[UserInfo getUserInfo] valueForKey:@"picture"]];
+    [[FlowithAgent sharedAgent] getProfileImage:^(BOOL isCachedResponse, UIImage *image) {
+        self.userImageView.image = image;
+    }];
     // Do any additional setup after loading the view from its nib.
 }
 -(void) viewDidAppear:(BOOL)animated{
@@ -44,5 +46,10 @@
 - (void)viewDidUnload {
     [self setUserImageView:nil];
     [super viewDidUnload];
+}
+- (IBAction)onTouchShowNotice:(id)sender {
+    NoticeTableController* noticeTableController = [[NoticeTableController alloc] initWithDefaultNib];
+    [self.navigationController pushViewController:noticeTableController
+                                         animated:TRUE];
 }
 @end

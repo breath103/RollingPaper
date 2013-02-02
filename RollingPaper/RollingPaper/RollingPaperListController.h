@@ -14,8 +14,9 @@
     NSMutableArray* paperCellControllers;
 }
 @property (weak, nonatomic) IBOutlet UIScrollView *paperScrollView;
-@property (weak, nonatomic) IBOutlet UIImageView *profileImageView;
+@property (weak, nonatomic) IBOutlet UIButton *profileButton;
 -(IBAction)onTouchAddPaper:(id)sender;
 - (IBAction)onTouchRefresh:(id)sender;
+- (IBAction)onTouchProfile:(id)sender;
 -(void) refreshPaperList;
 @end

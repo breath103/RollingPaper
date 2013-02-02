@@ -7,7 +7,7 @@
 //
 
 #import "ImageContent.h"
-
+#import "UECoreData.h"
 
 @implementation ImageContent
 
@@ -15,5 +15,17 @@
 @dynamic image;
 @dynamic paper_idx;
 @dynamic user_idx;
+
+
+
++(NSArray*) contentsWithDictionaryArray : (NSArray*) array{
+    
+    NSMutableArray* entitys = [NSMutableArray arrayWithCapacity:array.count];
+    for(NSDictionary*p in array){
+        ImageContent* imageEntity = (ImageContent*)[[UECoreData sharedInstance]insertNewObject:@"ImageContent" initWith:p];
+        [entitys addObject:imageEntity];
+    }
+    return entitys;
+}
 
 @end

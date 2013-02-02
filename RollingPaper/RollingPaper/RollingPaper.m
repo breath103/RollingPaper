@@ -28,6 +28,11 @@
 @dynamic contents;
 @dynamic receiver_name;
 @dynamic target_email;
+@dynamic receive_tel;
+@dynamic receiver_fb_id;
++(NSMutableArray*) papersWithDictionaryArray : (NSArray*) dictionaryArray{
+    return NULL;
+}
 @end
 
 

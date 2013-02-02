@@ -144,6 +144,7 @@
 		return;
 	}
 	
+    [self removeObjectForKey:key];
 	dispatch_async(_queue, ^{
 		NSString *path = [self _pathForKey:key];
 		

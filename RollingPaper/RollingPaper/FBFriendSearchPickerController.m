@@ -8,7 +8,7 @@
 
 #import "FBFriendSearchPickerController.h"
 #import "NetworkTemplate.h"
-#import "UserInfo.h"
+#import "FlowithAgent.h"
 
 @implementation FBFriendSearchPickerController
 @synthesize searchBar;
@@ -41,7 +41,7 @@
     for(id view in toolbar.items){
         NSLog(@"%@",view);
     }
-    ASIFormDataRequest* request = [NetworkTemplate requestForSearchingFacebookFriendUsingRollingPaper:[UserInfo getUserIdx].stringValue];
+    ASIFormDataRequest* request = [NetworkTemplate requestForSearchingFacebookFriendUsingRollingPaper:[[FlowithAgent sharedAgent] getUserIdx].stringValue];
     [request setCompletionBlock:^{
         NSDictionary* dict = parseJSON(request.responseString);
         self.appUsingFriends = [dict objectForKey:@"friends"];

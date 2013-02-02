@@ -14,13 +14,27 @@
     for( NSString* name in self.entity.propertiesByName.allKeys){
         // 실제데이터 모델에서 존재하는 프로퍼티들을 뽑는다.
         id value = [dict objectForKey:name];
-        
         if(value == [NSNull null])
             value = NULL;
-    
+       
+        //NSLog(@"%@",NSStringFromClass([[self valueForKey:name] class]));
+        
         [self setValue:value forKey:name];
     }
 }
++(NSArray*) entitiesWithDictionaryArray : (NSArray*) array
+{
+    NSMutableArray* entities = [NSMutableArray arrayWithCapacity:array.count];
+    for(NSDictionary*p in array){
+        NSManagedObject* entity= [[UECoreData sharedInstance]insertNewObject:NSStringFromClass(self) initWith:p];
+        [entities addObject:entity];
+    }
+    return entities;
+}
+-(NSArray*) attributeNames{
+    return [self.entity attributesByName].allKeys;
+}
+
 @end
 
 
@@ -124,7 +138,6 @@
     }
     return newObject;
 }
-
 
 
 

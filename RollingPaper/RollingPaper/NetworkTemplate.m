@@ -102,13 +102,6 @@
     NSLog(@"%@",request.postBody);
     return request;
 }
-+(ASIFormDataRequest*) requestForRollingPaperListWithUserIdx : (NSString*) useridx{
-    NSString* targetURL = [SERVER_HOST stringByAppendingString:@"/user/paperList"];
-    ASIFormDataRequest* request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:targetURL]];
-    
-    [request addPostValue:useridx forKey:@"user_idx"];
-    return request;
-}
 +(ASIFormDataRequest*) requestForInviteFacebookFriends : (NSArray*) facebookFriends
                                                ToPaper : (NSString*) paper_idx
                                               withUser : (NSString*) user_idx{
@@ -176,6 +169,7 @@
     [request addPostValue:entity.y        forKey:@"y"];
     [request addPostValue:entity.image    forKey:@"image"];
     return request;
+    
 }
 +(ASIFormDataRequest*) requestForSynchronizeSoundContent : (SoundContent*) entity{
     NSString* requestURL = [SERVER_HOST stringByAppendingString:@"/paper/editContent/sound"];
@@ -214,12 +208,6 @@
 }
 
 
-+(ASIHTTPRequest*) requestForBackgroundImage : (NSString*) background{
-    NSString* requestURL = [NSString stringWithFormat:@"%@/background/%@",SERVER_HOST,background];
-    NSLog(@"%@",requestURL);
-    ASIHTTPRequest* request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:requestURL]];
-    return request;
-}
 
 +(ASIFormDataRequest*) requestForDeleteImageContent : (NSString*) image_idx
                                         withUserIdx : (NSString*) user_idx{
@@ -236,30 +224,6 @@
     [request addPostValue:sound_idx forKey:@"sound_idx"];
     [request addPostValue:user_idx forKey:@"user_idx"];
     return request;
-}
-
-+(void) getBackgroundImage : (NSString*) background
-               withHandler : (BackgroundImageHandler) handler{
-    NSString* BGlocalName = [NSString stringWithFormat:@"paperbg_%@",background];
-    ///
-    NSData* data = [UEFileManager readDataFromLocalFile:BGlocalName];
-    if(data)
-    {
-        handler([UIImage imageWithData:data]);
-    }
-    else{
-        ASIHTTPRequest* request = [NetworkTemplate requestForBackgroundImage:background];
-        [request setCompletionBlock:^{
-            UIImage* image = [UIImage imageWithData:request.responseData];
-            [UEFileManager writeData:request.responseData ToLocalFile:BGlocalName];
-            handler(image);
-        }];
-        [request setFailedBlock:^{
-            NSLog(@"%@",request);
-        }];
-        [request startAsynchronous];
-    }
-    ////
 }
 +(void) getImageFromURL : (NSString*) url
             withHandler : (BackgroundImageHandler) handler{
