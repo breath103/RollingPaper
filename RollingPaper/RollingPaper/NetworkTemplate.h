@@ -21,8 +21,6 @@ typedef void (^BackgroundImageHandler)(UIImage* image);
 
 @interface NetworkTemplate : NSObject
 // 로그인 / 회원가입 관련 리퀘스트들
-+(ASIFormDataRequest*) requestForFacebookJoinWithMe : (id<FBGraphUser>) me
-                                        accessToken : (NSString*) accesstoken;
 +(ASIFormDataRequest*) requestForPhoneAuth : (NSString*) phone;
 +(ASIFormDataRequest*) requestForEditRollingPaper : (RollingPaper*) paper;
 

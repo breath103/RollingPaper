@@ -15,6 +15,7 @@
 #import "SoundContent.h"
 #import "UECoreData.h"
 #import "Notice.h"
+#import <FacebookSDK/FacebookSDK.h>
 
 #define SubAddressToRequestURL(x) ([SERVER_HOST stringByAppendingString:x])
 #define SubAddressToNSURLRequest(x) ToNSURLRequest(SubAddressToRequestURL(x))
@@ -52,11 +53,49 @@
 -(UIImage*) getImageFromPictrueURL{
     return [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[[self getUserInfo] objectForKey:@"picture"]]]];
 }
+
 -(void) handleRequestFailure : (NSURLRequest *) request
                     response : (NSHTTPURLResponse *)response
                        error : (NSError *) error{
     
 }
+
+-(void) joinWithFacebook :(id<FBGraphUser>) me
+             accessToken : (NSString*) accesstoken
+                 success : (void(^)(NSDictionary* response)) success
+                 failure : (void(^)(NSError* error)) failure{
+   NSURL *url = [NSURL URLWithString:SERVER_HOST];
+    
+    AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:url];
+
+    //생일부분이 mysql에는 yyyy-mm-dd 으로 넣어야 하는데 올때는 mm/dd/yyyy로온다. 이걸 재정렬
+    NSString* birthdayString = [me objectForKey:@"birthday"];
+    NSArray* dateComponent = [birthdayString componentsSeparatedByString:@"/"];
+    birthdayString = [NSString stringWithFormat:@"%@-%@-%@",
+                      [dateComponent objectAtIndex:2],
+                      [dateComponent objectAtIndex:0],
+                      [dateComponent objectAtIndex:1]];
+    
+    
+    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
+                            [me id],@"facebook_id" ,
+                            [me objectForKey:@"name"],@"name",
+                            [me objectForKey:@"email"],@"email",
+                            birthdayString,@"birthday",
+                            [[((NSDictionary*)[me objectForKey:@"picture"])objectForKey:@"data"] objectForKey:@"url"],@"picture",
+                            accesstoken,@"facebook_accesstoken",
+                            nil];
+    [httpClient postPath:@"/user/joinWithFacebook.json"
+              parameters:params
+                 success:^(AFHTTPRequestOperation *operation, NSData* responseObject){
+                     NSDictionary* jsonDict = [responseObject objectFromJSONData];
+                     success(jsonDict);
+                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                     failure(error);
+                 }];
+   
+}
+
 
 -(void) getProfileImage : (void(^)(BOOL isCachedResponse,UIImage* image)) success{
     [self getImageFromURL:[[self getUserInfo] objectForKey:@"picture" ]
@@ -113,9 +152,10 @@
         NSString* requestURL = [NSString stringWithFormat:@"%@/background/%@",SERVER_HOST,background];
         NSURLRequest *urlRequest = ToNSURLRequest(requestURL);
         AFImageRequestOperation* imageRequest = [AFImageRequestOperation imageRequestOperationWithRequest:urlRequest
-                                                                                     imageProcessingBlock:^UIImage* (UIImage* originalImage) {
-                                                                                         return originalImage;
-                                                                                     } success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                        imageProcessingBlock:^UIImage* (UIImage* originalImage) {
+                            return originalImage;
+                        }
+                        success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
                                                                                          [[SYCache sharedCache] setImage:image forKey:background];
                                                                                          callback(FALSE,image);
                                                                                      } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
@@ -311,6 +351,54 @@
     }];
     [request start];
 }
+
+-(void) deleteImageContent : (ImageContent*) imageContent
+                   success : (void (^)())success{
+    // Create an HTTP client with your site's base url
+    AFHTTPClient *client = [AFHTTPClient clientWithBaseURL:[NSURL URLWithString:SERVER_HOST]];
+    
+    // Setup the other parameters you need to pass
+    NSDictionary *parameters = @{@"username" : @"bob", @"password" : @"123456"};
+    
+    // Create a NSURLRequest using the HTTP client and the path with your parameters
+    NSURLRequest *request = [client requestWithMethod:@"DELETE"
+                                                 path:@"paper/ImageContent/"
+                                           parameters:parameters];
+    
+    // Create an operation to receive any response from the server
+    AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        // Do stuff
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+        // Handle error
+    }];
+    
+    // Begin the operation
+    [operation start];
+    /*
+    +(ASIFormDataRequest*) requestForDeleteImageContent : (NSString*) image_idx
+    withUserIdx : (NSString*) user_idx{
+        NSString* requestURL = [SERVER_HOST stringByAppendingString:@"/paper/deleteContent/image"];
+        ASIFormDataRequest* request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:requestURL]];
+        [request addPostValue:image_idx forKey:@"image_idx"];
+        [request addPostValue:user_idx forKey:@"user_idx"];
+        return request;
+    }
+    +(ASIFormDataRequest*) requestForDeleteSoundContent : (NSString*) sound_idx
+    withUserIdx : (NSString*) user_idx{
+        NSString* requestURL = [SERVER_HOST stringByAppendingString:@"/paper/deleteContent/sound"];
+        ASIFormDataRequest* request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:requestURL]];
+        [request addPostValue:sound_idx forKey:@"sound_idx"];
+        [request addPostValue:user_idx forKey:@"user_idx"];
+        return request;
+    }
+     */
+}
+-(void) deleteSoundContent : (SoundContent*) imageContent
+                   success : (void (^)())success{
+    
+}
+
+
 -(void) getNoticeList : (void (^)(BOOL isCaschedResponse, NSArray * noticeList))success
               failure : (void (^)(NSError* error))failure{
     NSString* methodName = @"getNoticeList";

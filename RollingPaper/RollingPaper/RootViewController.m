@@ -98,32 +98,31 @@
                                                  HTTPMethod:@"GET"];
     [fbRequest startWithCompletionHandler:^(FBRequestConnection *connection,id<FBGraphUser> me,NSError *error) {
          if(! error){
-             ASIFormDataRequest* request = [NetworkTemplate requestForFacebookJoinWithMe : me
-                                                                             accessToken : session.accessToken];
-             [request setCompletionBlock:^{
-                 NSDictionary* response = [request.responseString objectFromJSONString];
-                 NSString* resultType = [response objectForKey:@"result"];
-                 if([resultType compare:@"login"] == NSOrderedSame){
-                     NSLog(@"이미 가입되어 있는 페이스북 계정임으로 자동으로 로그인 합니다");
-                     NSDictionary* logiendUser= [response objectForKey:@"user"];
-                     NSLog(@"%@",logiendUser);
-                     [self onLoginSuccess:logiendUser];
-                 }
-                 else if ([resultType compare:@"fail"] == NSOrderedSame){
-                     NSLog(@"이미 가입되어있는 이메일 계정입니다");
-                     NSLog(@"%@",[response objectForKey:@"email"]);
-                 }
-                 else if ([resultType compare:@"join"] == NSOrderedSame){
-                     NSLog(@"가입 성공하였습니다");
-                     NSDictionary* logiendUser= [response objectForKey:@"user"];
-                     NSLog(@"%@",logiendUser);
-                     [self onJoinSuccess:logiendUser];
-                 }
-             }];
-             [request setFailedBlock:^{
-                 NSLog(@"%@",@"<RollingPaper 서버와 통신 실패>");
-             }];
-             [request startAsynchronous];
+             [[FlowithAgent sharedAgent] joinWithFacebook:me
+                                              accessToken:session.accessToken
+                                                  success:^(NSDictionary *response) {
+                                                      NSString* resultType = [response objectForKey:@"result"];
+                                                      if([resultType compare:@"login"] == NSOrderedSame){
+                                                          NSLog(@"이미 가입되어 있는 페이스북 계정임으로 자동으로 로그인 합니다");
+                                                          NSDictionary* logiendUser= [response objectForKey:@"user"];
+                                                          NSLog(@"%@",logiendUser);
+                                                          [self onLoginSuccess:logiendUser];
+                                                      }
+                                                      else if ([resultType compare:@"fail"] == NSOrderedSame){
+                                                          NSLog(@"이미 가입되어있는 이메일 계정입니다");
+                                                          NSLog(@"%@",[response objectForKey:@"email"]);
+                                                      }
+                                                      else if ([resultType compare:@"join"] == NSOrderedSame){
+                                                          NSLog(@"가입 성공하였습니다");
+                                                          NSDictionary* logiendUser= [response objectForKey:@"user"];
+                                                          NSLog(@"%@",logiendUser);
+                                                          [self onJoinSuccess:logiendUser];
+                                                      }
+                                                  } failure:^(NSError *error) {
+                                                      NSLog(@"%@",error);
+                                                      NSLog(@"%@",@"<RollingPaper 서버와 통신 실패>");
+                                                      
+                                                  }];
          }
          else {
              [[[UIAlertView alloc] initWithTitle : @"Error"
