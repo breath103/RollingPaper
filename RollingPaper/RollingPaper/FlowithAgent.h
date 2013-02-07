@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <FacebookSDK/FacebookSDK.h>
 
-#define SERVER_IP   (@"210.122.0.164:8001")
+#define SERVER_IP   (@"210.122.0.119:8001")
 #define SERVER_HOST ([@"http://" stringByAppendingString:SERVER_IP])
 
 
@@ -72,6 +72,23 @@
                      success : (void (^)(BOOL isCachedResponse,NSArray* participants))success
                      failure : (void (^)(NSError* error))failure;
 //Contents
+-(void) insertImageContent : (ImageContent*) imageContent
+                     image : (NSData*) image
+                   success : (void (^)(ImageContent* insertedImageContent))success
+                   failure : (void (^)(NSError* error))failure;
+
+-(void) insertSoundContent : (SoundContent*) soundContent
+                     sound : (NSData*) sound
+                   success : (void (^)(SoundContent* insertedSoundContent))success
+                   failure : (void (^)(NSError* error))failure;
+
+-(void) updateImageContent : (ImageContent*) entity
+                   success : (void (^)(ImageContent* updatedImageContent))success
+                   failure : (void (^)(NSError* error))failure;
+-(void) updateSoundContent : (SoundContent*) entity
+                   success : (void (^)(SoundContent* updatedSoundContent))success
+                   failure : (void (^)(NSError* error))failure;
+
 -(void) deleteImageContent : (ImageContent*) imageContent
                    success : (void (^)())success;
 -(void) deleteSoundContent : (SoundContent*) imageContent

@@ -45,27 +45,6 @@
     
     return request;
 }
-+(ASIFormDataRequest*) requestForUploadImageContentWithUserIdx : (NSString*) useridx
-                                                        entity : (ImageContent*) entity
-                                                         image : (NSData*) image{
-    NSString* joinWithFacebookURL = [SERVER_HOST stringByAppendingString:@"/paper/addContent/image"];
-    ASIFormDataRequest* request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:joinWithFacebookURL]];
-  
-    [request addPostValue:useridx           forKey:@"user_idx"];
-    [request addPostValue:entity.paper_idx  forKey:@"paper_idx"];
-    [request setData : image
-        withFileName : @"photo1.png"
-      andContentType : @"image/png"
-              forKey : @"image"];
-    
-    [request addPostValue:entity.x        forKey:@"x"];
-    [request addPostValue:entity.y        forKey:@"y"];
-    [request addPostValue:entity.width    forKey:@"width"];
-    [request addPostValue:entity.height   forKey:@"height"];
-    [request addPostValue:entity.rotation forKey:@"rotation"];
-
-    return request;
-}
 
 +(ASIFormDataRequest*) requestForEditRollingPaper : (RollingPaper*) paper{
     NSString* targetURL = [SERVER_HOST stringByAppendingString:@"/paper/edit"];
@@ -79,29 +58,6 @@
     
     return request;
 }
-+(ASIFormDataRequest*) requestForCreateRollingPaperWithUserIdx : (NSString*) creator_idx
-                                                         title : (NSString*) title
-                                                  target_email : (NSString*) target_email
-                                                        notice : (NSString*) notice
-                                                  receiverFBid : (NSString*) receiver_fb_id
-                                                  receiverName : (NSString*) receiver_name
-                                                  receieveTime : (NSString*) receiveTime
-                                                    background : (NSString*) background{
-    NSString* targetURL = [SERVER_HOST stringByAppendingString:@"/paper/create"];
-    ASIFormDataRequest* request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:targetURL]];
-    
-    [request addPostValue:creator_idx     forKey:@"creator_idx"];
-    [request addPostValue:title           forKey:@"title"];
-    [request addPostValue:target_email    forKey:@"target_email"];
-    [request addPostValue:notice          forKey:@"notice"];
-    [request addPostValue:receiver_fb_id  forKey:@"r_fb_id"];
-    [request addPostValue:receiver_name   forKey:@"r_name"];
-    [request addPostValue:receiveTime     forKey:@"r_time"];
-    [request addPostValue:background      forKey:@"background"];
-    
-    NSLog(@"%@",request.postBody);
-    return request;
-}
 +(ASIFormDataRequest*) requestForInviteFacebookFriends : (NSArray*) facebookFriends
                                                ToPaper : (NSString*) paper_idx
                                               withUser : (NSString*) user_idx{
@@ -111,15 +67,6 @@
     [request addPostValue:paper_idx forKey:@"paper_idx"];
     [request addPostValue:user_idx  forKey:@"user_idx"];
     [request addPostValue:[facebookFriends JSONString] forKey:@"facebook_friends"];
-    return request;
-}
-+(ASIFormDataRequest*) requestForRollingPaperContents : (NSString*) paper_idx
-                                            afterTime : (long) timestamp {
-    NSString* targetURL = [SERVER_HOST stringByAppendingString:@"/paper/contents"];
-    ASIFormDataRequest* request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:targetURL]];
-    
-    [request addPostValue:paper_idx  forKey:@"paper_idx"];
-    [request addPostValue:[NSString stringWithFormat:@"%ld",timestamp] forKey:@"after_time"];
     return request;
 }
 +(ASIFormDataRequest*) requestForUploadSoundContentWithUserIdx : (NSString*) useridx
@@ -157,40 +104,8 @@
     return request;
 }
 
-// 컨텐츠 수정 관련 리퀘스트
-+(ASIFormDataRequest*) requestForSynchronizeImageContent : (ImageContent*) entity{
-    NSString* requestURL = [SERVER_HOST stringByAppendingString:@"/paper/editContent/image"];
-    ASIFormDataRequest* request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:requestURL]];
-    [request addPostValue:entity.idx      forKey:@"idx"];
-    [request addPostValue:entity.rotation forKey:@"rotation"];
-    [request addPostValue:entity.width    forKey:@"width"];
-    [request addPostValue:entity.height   forKey:@"height"];
-    [request addPostValue:entity.x        forKey:@"x"];
-    [request addPostValue:entity.y        forKey:@"y"];
-    [request addPostValue:entity.image    forKey:@"image"];
-    return request;
-    
-}
-+(ASIFormDataRequest*) requestForSynchronizeSoundContent : (SoundContent*) entity{
-    NSString* requestURL = [SERVER_HOST stringByAppendingString:@"/paper/editContent/sound"];
-    ASIFormDataRequest* request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:requestURL]];
-    [request addPostValue:entity.idx      forKey:@"idx"];
-    [request addPostValue:entity.rotation forKey:@"rotation"];
-    [request addPostValue:entity.width    forKey:@"width"];
-    [request addPostValue:entity.height   forKey:@"height"];
-    [request addPostValue:entity.x        forKey:@"x"];
-    [request addPostValue:entity.y        forKey:@"y"];
-    [request addPostValue:entity.sound    forKey:@"sound"];
-    return request;
-}
 
 
-+(ASIFormDataRequest*) requestForParticipantsListWithPaperIdx : (NSString*) paper_idx{
-    NSString* requestURL = [SERVER_HOST stringByAppendingString:@"/paper/participants"];
-    ASIFormDataRequest* request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:requestURL]];
-    [request addPostValue:paper_idx forKey:@"paper"];
-    return request;
-}
 +(ASIFormDataRequest*) requestForQuitRoomWithUserIdx : (NSString*) user_idx
                                                paper : (NSString*) paper_idx{
     NSString* requestURL = [SERVER_HOST stringByAppendingString:@"/paper/quit"];
@@ -208,35 +123,6 @@
 }
 
 
-
-+(ASIFormDataRequest*) requestForDeleteImageContent : (NSString*) image_idx
-                                        withUserIdx : (NSString*) user_idx{
-    NSString* requestURL = [SERVER_HOST stringByAppendingString:@"/paper/deleteContent/image"];
-    ASIFormDataRequest* request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:requestURL]];
-    [request addPostValue:image_idx forKey:@"image_idx"];
-    [request addPostValue:user_idx forKey:@"user_idx"];
-    return request;
-}
-+(ASIFormDataRequest*) requestForDeleteSoundContent : (NSString*) sound_idx
-                                        withUserIdx : (NSString*) user_idx{
-    NSString* requestURL = [SERVER_HOST stringByAppendingString:@"/paper/deleteContent/sound"];
-    ASIFormDataRequest* request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:requestURL]];
-    [request addPostValue:sound_idx forKey:@"sound_idx"];
-    [request addPostValue:user_idx forKey:@"user_idx"];
-    return request;
-}
-+(void) getImageFromURL : (NSString*) url
-            withHandler : (BackgroundImageHandler) handler{
-    ASIHTTPRequest* request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:url]];
-    [request setCompletionBlock:^{
-        UIImage* image = [UIImage imageWithData:request.responseData];
-        handler(image);
-    }];
-    [request setFailedBlock:^{
-        NSLog(@"%@",request);
-    }];
-    [request startAsynchronous];
-}
 
 
 @end

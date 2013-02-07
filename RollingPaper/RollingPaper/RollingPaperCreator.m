@@ -514,14 +514,12 @@ clickedButtonAtIndex:(NSInteger)buttonIndex{
 
 
 - (IBAction)onTouchPickFriend:(id)sender {
- //   if(!friendPickerController){
     self.receivingFriendPicker= [[FBFriendSearchPickerController alloc] init];
     self.receivingFriendPicker.title    = @"친구 선택";
     self.receivingFriendPicker.delegate = self;
     self.receivingFriendPicker.allowsMultipleSelection = FALSE;
     [self.receivingFriendPicker loadData];
     [self.receivingFriendPicker clearSelection];
- //   }
     [self presentViewController:self.receivingFriendPicker
                        animated:YES
                      completion:^{}];
@@ -685,7 +683,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex{
 }
 -(NSUInteger)supportedInterfaceOrientations
 {
-    return UIInterfaceOrientationMaskPortrait;// | UIInterfaceOrientationMaskPortraitUpsideDown;
+    return UIInterfaceOrientationMaskPortrait;
 }
 
 - (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation

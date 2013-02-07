@@ -305,27 +305,20 @@
                  afterTime : (long long) timestamp
                    success : (void (^)(BOOL isCachedResponse,NSArray* imageContents,NSArray* soundContents))success
                    failure : (void (^)(NSError *))failure{
-    /*
-    NSArray* cachedResponse = [[SYCache sharedCache]objectForKey:@"getParticipaitingPapers"];
-    if(cachedResponse){
-        callback(TRUE,cachedResponse);
-    }
-    */
-    NSURL *url = [NSURL URLWithString:SERVER_HOST];
-    AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:url];
-    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
-                            paper.idx,@"paper_idx",
-                            [NSNumber numberWithLongLong:timestamp].stringValue, @"after_time",
-                            nil];
-    [httpClient postPath:@"/paper/contents"
-              parameters:params
-                 success:^(AFHTTPRequestOperation *operation, NSData* responseObject){
-                     NSDictionary* contentsDictionary = [responseObject objectFromJSONData];
-                     success(FALSE,[ImageContent contentsWithDictionaryArray:[contentsDictionary objectForKey:@"image"]],
-                                    [SoundContent contentsWithDictionaryArray:[contentsDictionary objectForKey:@"sound"]]);
-                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                     failure(error);
-                 }];
+    NSString* url = [NSString stringWithFormat:@"/paper/%@.json",
+                     paper.idx.stringValue];
+    NSURLRequest* urlRequest = SubAddressToNSURLRequest(url);
+    [[AFJSONRequestOperation JSONRequestOperationWithRequest:urlRequest
+    success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        NSDictionary* contentsDictionary = [JSON objectForKey:@"contents"];
+        NSLog(@"%@",contentsDictionary);
+        success(FALSE,[ImageContent contentsWithDictionaryArray:[contentsDictionary objectForKey:@"image"]],
+                [SoundContent contentsWithDictionaryArray:[contentsDictionary objectForKey:@"sound"]]);
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+        failure(error);
+    }] start];
+    
+    
 }
 -(void) getPaperParticipants : (RollingPaper*) paper
                      success : (void (^)(BOOL isCachedResponse,NSArray* participants))success
@@ -352,50 +345,160 @@
     [request start];
 }
 
+-(void) insertImageContent : (ImageContent*) imageContent
+                     image : (NSData*) image
+                   success : (void (^)(ImageContent* insertedImageContent))success
+                   failure : (void (^)(NSError* error))failure{
+    NSURL *url = [NSURL URLWithString:SERVER_HOST];
+    
+    AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:url];
+    
+    NSURLRequest *request = [httpClient multipartFormRequestWithMethod:@"POST"
+            path:@"/paper/addContent/image"
+            parameters:@{@"user_idx" : [self getUserIdx],
+                         @"paper_idx" : imageContent.paper_idx,
+                         @"x" : imageContent.x,
+                         @"y" : imageContent.y,
+                         @"width" :imageContent.width,
+                         @"height" : imageContent.height,
+                         @"rotation" : imageContent.rotation}
+            constructingBodyWithBlock: ^(id <AFMultipartFormData> formData) {
+                [formData appendPartWithFileData:image
+                                            name:@"image"
+                                        fileName:@"photo1.png"
+                                        mimeType:@"image/png"];
+    }];
+    [[AFJSONRequestOperation JSONRequestOperationWithRequest:request
+      success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+          NSDictionary* insertedImageDict = [JSON objectForKey:@"success"];
+          if(insertedImageDict){
+              success( [ImageContent contentWithDictionary:insertedImageDict] );
+          }
+          else{
+              failure( [JSON objectForKey:@"error"] );
+          }
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+        failure(error);
+    }] start];
+}
+
+-(void) insertSoundContent : (SoundContent*) soundContent
+                     sound : (NSData*) sound
+                   success : (void (^)(SoundContent* insertedSoundContent))success
+                   failure : (void (^)(NSError* error))failure{
+    NSURL *url = [NSURL URLWithString:SERVER_HOST];
+    
+    AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:url];
+    
+    NSURLRequest *request = [httpClient multipartFormRequestWithMethod:@"POST"
+                    path:@"/paper/addContent/sound"
+                    parameters:@{@"user_idx" : [self getUserIdx],
+                                @"paper_idx" : soundContent.paper_idx,
+                                @"x" : soundContent.x,
+                                @"y" : soundContent.y,
+                                @"width" :soundContent.width,
+                                @"height" : soundContent.height,
+                                @"rotation" : soundContent.rotation}
+            constructingBodyWithBlock: ^(id <AFMultipartFormData> formData) {
+                [formData appendPartWithFileData:sound
+                                            name:@"sound"
+                                        fileName:@"sound1.wav"
+                                        mimeType:@"audio/wav"];
+            }];
+    [[AFJSONRequestOperation JSONRequestOperationWithRequest:request
+            success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+                NSDictionary* insertedSoundContent = [JSON objectForKey:@"success"];
+                if(insertedSoundContent){
+                    success( [SoundContent contentWithDictionary:insertedSoundContent] );
+                }
+                else{
+                    failure( [JSON objectForKey:@"error"] );
+                }
+            } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+                failure(error);
+            }] start];
+}
+
+
+
+// 컨텐츠 수정 관련 리퀘스트
+-(void) updateImageContent : (ImageContent*) entity
+                   success : (void (^)(ImageContent* updatedImageContent))success
+                   failure : (void (^)(NSError* error))failure{
+    NSURL *url = [NSURL URLWithString:SERVER_HOST];
+    
+    AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:url];
+    [httpClient postPath:@"/paper/editContent/image"
+              parameters:@{@"idx"      : entity.idx,
+                           @"rotation" : entity.rotation,
+                           @"width"    : entity.width,
+                           @"height"   : entity.height,
+                           @"x"        : entity.x,
+                           @"y"        : entity.y,
+                           @"image"    : entity.image}
+                 success:^(AFHTTPRequestOperation *operation, NSData* responseObject){
+                     NSDictionary* results = [responseObject objectFromJSONData];
+                     NSDictionary* updatedDict = [results objectForKey:@"success"];
+                     NSLog(@"%@",results);
+                     ImageContent* updatedContent = [ImageContent contentWithDictionary:updatedDict];
+                     NSLog(@"%@",updatedContent);
+                     success(updatedContent);
+                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                     failure(error);
+                 }];
+}
+-(void) updateSoundContent : (SoundContent*) entity
+                   success : (void (^)(SoundContent* updatedSoundContent))success
+                   failure : (void (^)(NSError* error))failure{
+    NSURL *url = [NSURL URLWithString:SERVER_HOST];
+    
+    AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:url];
+    [httpClient postPath:@"/paper/editContent/sound"
+              parameters:@{@"idx" : entity.idx,
+                           @"rotation": entity.rotation,
+                           @"width":entity.width,
+                           @"height":entity.height,
+                           @"x": entity.x,
+                           @"y":entity.y,
+                           @"sound":entity.sound}
+                 success:^(AFHTTPRequestOperation *operation, NSData* responseObject){
+                     NSDictionary* results = [responseObject objectFromJSONData];
+                     NSDictionary* updatedDict = [results objectForKey:@"success"];
+                     NSLog(@"%@",results);
+                     SoundContent* updatedContent = [SoundContent contentWithDictionary:updatedDict];
+                     NSLog(@"%@",updatedContent);
+                     success(updatedContent);
+                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                     failure(error);
+                 }];
+}
+
+
 -(void) deleteImageContent : (ImageContent*) imageContent
                    success : (void (^)())success{
-    // Create an HTTP client with your site's base url
     AFHTTPClient *client = [AFHTTPClient clientWithBaseURL:[NSURL URLWithString:SERVER_HOST]];
-    
-    // Setup the other parameters you need to pass
-    NSDictionary *parameters = @{@"username" : @"bob", @"password" : @"123456"};
-    
-    // Create a NSURLRequest using the HTTP client and the path with your parameters
-    NSURLRequest *request = [client requestWithMethod:@"DELETE"
-                                                 path:@"paper/ImageContent/"
-                                           parameters:parameters];
-    
-    // Create an operation to receive any response from the server
-    AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-        // Do stuff
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-        // Handle error
-    }];
-    
-    // Begin the operation
-    [operation start];
-    /*
-    +(ASIFormDataRequest*) requestForDeleteImageContent : (NSString*) image_idx
-    withUserIdx : (NSString*) user_idx{
-        NSString* requestURL = [SERVER_HOST stringByAppendingString:@"/paper/deleteContent/image"];
-        ASIFormDataRequest* request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:requestURL]];
-        [request addPostValue:image_idx forKey:@"image_idx"];
-        [request addPostValue:user_idx forKey:@"user_idx"];
-        return request;
-    }
-    +(ASIFormDataRequest*) requestForDeleteSoundContent : (NSString*) sound_idx
-    withUserIdx : (NSString*) user_idx{
-        NSString* requestURL = [SERVER_HOST stringByAppendingString:@"/paper/deleteContent/sound"];
-        ASIFormDataRequest* request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:requestURL]];
-        [request addPostValue:sound_idx forKey:@"sound_idx"];
-        [request addPostValue:user_idx forKey:@"user_idx"];
-        return request;
-    }
-     */
+    [client postPath:@"/paper/deleteContent/image"
+          parameters:@{@"user_idx"  : [self getUserIdx],
+                       @"image_idx" : imageContent.idx}
+             success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                 NSLog(@"%@",responseObject);
+                 success();
+             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                 NSLog(@"%@",error);
+             }];
 }
--(void) deleteSoundContent : (SoundContent*) imageContent
+-(void) deleteSoundContent : (SoundContent*) soundContent
                    success : (void (^)())success{
-    
+    AFHTTPClient *client = [AFHTTPClient clientWithBaseURL:[NSURL URLWithString:SERVER_HOST]];
+    [client postPath:@"/paper/deleteContent/sound"
+          parameters:@{@"user_idx"  : [self getUserIdx],
+                       @"sound_idx" : soundContent.idx}
+             success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                 NSLog(@"%@",responseObject);
+                 success();
+             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                 NSLog(@"%@",error);
+             }];
 }
 
 

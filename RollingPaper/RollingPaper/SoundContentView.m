@@ -97,46 +97,36 @@
 -(void) syncEntityWithServer{
     
     if(self.entity.idx && self.hidden) {
-        ASIFormDataRequest* request = [NetworkTemplate requestForDeleteSoundContent:self.entity.idx.stringValue
-                                                                        withUserIdx:[[FlowithAgent sharedAgent] getUserIdx].stringValue];
-        [request setCompletionBlock:^{
-            NSLog(@"%@",request.responseString);
+        [[FlowithAgent sharedAgent] deleteSoundContent:self.entity
+         success:^{
+        
         }];
-        [request setFailedBlock:^{
-            NSLog(@"%@",request);
-        }];
-        [request startSynchronous];
     }
     
     if(isNeedToSyncWithServer) {
         if(self.entity.idx == NULL){
             [self updateEntityWithView];
-            ASIFormDataRequest* request = [NetworkTemplate requestForUploadSoundContentWithUserIdx:[[FlowithAgent sharedAgent] getUserIdx].stringValue
-                                                                                            entity:self.entity
-                                                                                             sound:[NSData dataWithContentsOfFile:self.entity.sound]];
-            [request setCompletionBlock:^{
-                NSDictionary* dict = [request.responseString objectFromJSONString];
-                NSLog(@"%@",dict);
-                [self.entity setValuesWithDictionary:dict];
-                NSLog(@"%@",self.entity);
+            NSData* sound = [NSData dataWithContentsOfFile:self.entity.sound];
+            [[FlowithAgent sharedAgent] insertSoundContent:self.entity
+                                                     sound:sound
+            success:^(SoundContent *insertedSoundContent) {
+                self.entity = insertedSoundContent;
+                
+            } failure:^(NSError *error) {
+                NSLog(@"%@",error);
             }];
-            [request setFailedBlock:^{
-                NSLog(@"%@",@"fail!!!!");
-            }];
-            [request startAsynchronous];
             isNeedToSyncWithServer = FALSE;
         }
         else {
             [self updateEntityWithView];
-            ASIFormDataRequest* request = [NetworkTemplate requestForSynchronizeSoundContent:self.entity];
-            [request setCompletionBlock:^{
-                NSDictionary* dict = [request.responseString objectFromJSONString];
-                NSLog(@"%@",dict);
+            [[FlowithAgent sharedAgent] updateSoundContent:self.entity
+             success:^(SoundContent *updatedSoundContent) {
+                 NSLog(@"%@",updatedSoundContent);
+                 self.entity = updatedSoundContent;
+            } failure:^(NSError *error) {
+                NSLog(@"%@",error);
             }];
-            [request setFailedBlock:^{
-                NSLog(@"%@",@"fail!!!!");
-            }];
-            [request startSynchronous];
+            
             isNeedToSyncWithServer = false;
         }
         

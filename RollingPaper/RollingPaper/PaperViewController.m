@@ -86,8 +86,6 @@
             self.contentsScrollContainer.backgroundColor = [UIColor colorWithPatternImage:image];
             [self.contentsScrollContainer setNeedsDisplay];
         }];
-    
-     
     }
     ///
     
@@ -130,6 +128,7 @@
                                          afterTime:1
      success:^(BOOL isCachedResponse, NSArray *imageContents,
                                       NSArray *soundContents) {
+         NSLog(@"%@ %@",imageContents,soundContents);
          [self onReceiveContentsResponse:imageContents
                                         :soundContents ];
          

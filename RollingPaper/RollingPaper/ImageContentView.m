@@ -101,15 +101,10 @@
     
     // 서버에서 받아온 것이고 숨겨진경우. 즉, 삭제 예약된 경우
     if(self.entity.idx && self.hidden) {
-        ASIFormDataRequest* request = [NetworkTemplate requestForDeleteImageContent:self.entity.idx.stringValue
-                                                                        withUserIdx:[FlowithAgent sharedAgent].getUserIdx.stringValue];
-        [request setCompletionBlock:^{
-            NSLog(@"%@",request.responseString);
+        [[FlowithAgent sharedAgent] deleteImageContent:self.entity
+        success:^{
+            NSLog(@"DELETE IMAGE END");
         }];
-        [request setFailedBlock:^{
-            NSLog(@"%@",request);
-        }];
-        [request startSynchronous];
     }
     else{
         if(isNeedToSyncWithServer) {
@@ -118,31 +113,28 @@
                 NSData* jpegImage = UIImagePNGRepresentation(self.image);
                 
                 [self updateEntityWithView];
-                ASIFormDataRequest* request = [NetworkTemplate requestForUploadImageContentWithUserIdx : [FlowithAgent sharedAgent].getUserIdx.stringValue
-                                                                                                entity : self.entity
-                                                                                                 image : jpegImage];
-                [request setCompletionBlock:^{
-                    NSDictionary* dict = [request.responseString objectFromJSONString];
-                    [self.entity setValuesWithDictionary:dict];
-                }];
-                [request setFailedBlock:^{
-                    NSLog(@"%@",@"fail!!!!");
-                }];
-                [request startSynchronous];
-                isNeedToSyncWithServer = false;
+                
+                [[FlowithAgent sharedAgent]insertImageContent:self.entity
+                    image:jpegImage
+                    success:^(ImageContent *insertedImageContent) {
+                        self.entity = insertedImageContent;
+                        
+                    } failure:^(NSError *error) {
+                        NSLog(@"%@",error);
+                    }];
+                 isNeedToSyncWithServer = false;
             }
             //원래 존재하는 엔티티인데, 값이 수정된경우
             else{
                 [self updateEntityWithView];
-                ASIFormDataRequest* request = [NetworkTemplate requestForSynchronizeImageContent:self.entity];
-                [request setCompletionBlock:^{
-                    NSDictionary* dict = [request.responseString objectFromJSONString];
-                    NSLog(@"%@",dict);
+                
+                [[FlowithAgent sharedAgent] updateImageContent:self.entity success:^(ImageContent *updatedImageContent) {
+                    NSLog(@"%@",updatedImageContent);
+                    self.entity = updatedImageContent;
+                } failure:^(NSError *error) {
+                    NSLog(@"%@",error);
                 }];
-                [request setFailedBlock:^{
-                    NSLog(@"%@",@"fail!!!!");
-                }];
-                [request startSynchronous];
+                
                 isNeedToSyncWithServer = false;
             }
         }

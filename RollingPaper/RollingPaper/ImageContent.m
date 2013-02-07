@@ -17,7 +17,10 @@
 @dynamic user_idx;
 
 
-
++(ImageContent*) contentWithDictionary : (NSDictionary*) dict{
+    ImageContent* imageEntity = (ImageContent*)[[UECoreData sharedInstance]insertNewObject:@"ImageContent" initWith:dict];
+    return imageEntity;
+}
 +(NSArray*) contentsWithDictionaryArray : (NSArray*) array{
     
     NSMutableArray* entitys = [NSMutableArray arrayWithCapacity:array.count];
