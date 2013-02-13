@@ -25,7 +25,7 @@
 @property (nonatomic, retain) NSDate   * update_time;
 @property (nonatomic, retain) NSNumber * width;
 @property (nonatomic, retain) NSString * background;
-@property (nonatomic, retain) NSSet *contents;
+@property (nonatomic, retain) NSSet    * contents;
 @property (nonatomic, retain) NSString * receiver_name;
 @property (nonatomic, retain) NSString * target_email;
 @property (nonatomic, retain) NSString * receive_tel;
@@ -37,6 +37,10 @@
 - (void)removeContentsObject:(Content *)value;
 - (void)addContents:(NSSet *)values;
 - (void)removeContents:(NSSet *)values;
+@end
+
+@interface RollingPaper (NetworkingHelper)
+- (NSDictionary*) dictionaryForUpdateRequest;
 @end
 
 

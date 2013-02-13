@@ -7,7 +7,6 @@
 //
 
 #import "SoundContentView.h"
-#import "NetworkTemplate.h"
 #import "UECoreData.h"
 #import "UEFileManager.h"
 #import "macro.h"
@@ -97,21 +96,24 @@
 -(void) syncEntityWithServer{
     
     if(self.entity.idx && self.hidden) {
+        NSLog(@"DELETE SOUND : %@",self.entity.idx);
         [[FlowithAgent sharedAgent] deleteSoundContent:self.entity
          success:^{
-        
+             
         }];
     }
     
     if(isNeedToSyncWithServer) {
         if(self.entity.idx == NULL){
             [self updateEntityWithView];
+            
+            NSLog(@"INSERT SOUND : %@",self.entity.idx);
+            
             NSData* sound = [NSData dataWithContentsOfFile:self.entity.sound];
             [[FlowithAgent sharedAgent] insertSoundContent:self.entity
                                                      sound:sound
             success:^(SoundContent *insertedSoundContent) {
                 self.entity = insertedSoundContent;
-                
             } failure:^(NSError *error) {
                 NSLog(@"%@",error);
             }];
@@ -119,6 +121,9 @@
         }
         else {
             [self updateEntityWithView];
+            
+            NSLog(@"DELETE SOUND : %@",self.entity.idx);
+            
             [[FlowithAgent sharedAgent] updateSoundContent:self.entity
              success:^(SoundContent *updatedSoundContent) {
                  NSLog(@"%@",updatedSoundContent);

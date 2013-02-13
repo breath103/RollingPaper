@@ -16,7 +16,6 @@
 #import "PaperViewController.h"
 #import "macro.h"
 #import "LoginMethodViewController.h"
-#import "NetworkTemplate.h"
 #import <JSONKit.h>
 
 

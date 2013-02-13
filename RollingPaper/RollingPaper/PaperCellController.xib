@@ -92,6 +92,19 @@
 							<string key="NSResourceName">paper_cell_bg_shadow.png</string>
 						</object>
 					</object>
+					<object class="IBUIView" id="148589144">
+						<reference key="NSNextResponder" ref="278927570"/>
+						<int key="NSvFlags">292</int>
+						<string key="NSFrame">{{0, 53}, {245, 43}}</string>
+						<reference key="NSSuperview" ref="278927570"/>
+						<reference key="NSWindow"/>
+						<string key="NSReuseIdentifierKey">_NS:9</string>
+						<object class="NSColor" key="IBUIBackgroundColor">
+							<int key="NSColorSpace">1</int>
+							<bytes key="NSRGB">MSAxIDEgMC4yAA</bytes>
+						</object>
+						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+					</object>
 					<object class="IBUILabel" id="275362175">
 						<reference key="NSNextResponder" ref="278927570"/>
 						<int key="NSvFlags">292</int>
@@ -152,15 +165,20 @@
 					<object class="IBUIButton" id="928895695">
 						<reference key="NSNextResponder" ref="278927570"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{188, 72}, {16, 17}}</string>
+						<string key="NSFrame">{{127, 66}, {80, 27}}</string>
 						<reference key="NSSuperview" ref="278927570"/>
 						<reference key="NSWindow"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<float key="IBUIAlpha">0.5</float>
+						<int key="IBUIContentMode">8</int>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<int key="IBUIContentHorizontalAlignment">0</int>
 						<int key="IBUIContentVerticalAlignment">0</int>
+						<double key="IBUIContentEdgeInsets.top">0.0</double>
+						<double key="IBUIContentEdgeInsets.bottom">0.0</double>
+						<double key="IBUIContentEdgeInsets.left">0.0</double>
+						<double key="IBUIContentEdgeInsets.right">-46</double>
 						<reference key="IBUIHighlightedTitleColor" ref="735692361"/>
 						<object class="NSColor" key="IBUINormalTitleColor">
 							<int key="NSColorSpace">1</int>
@@ -275,6 +293,7 @@
 							<reference ref="108809411"/>
 							<reference ref="121800755"/>
 							<reference ref="928895695"/>
+							<reference ref="148589144"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -311,6 +330,11 @@
 						<reference key="object" ref="121800755"/>
 						<reference key="parent" ref="278927570"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">106</int>
+						<reference key="object" ref="148589144"/>
+						<reference key="parent" ref="278927570"/>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -319,7 +343,9 @@
 				<string key="-2.CustomClassName">UIResponder</string>
 				<string key="-2.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="102.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<real value="0.0" key="102.IBUIButtonInspectorSelectedEdgeInsetMetadataKey"/>
 				<string key="105.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="106.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="4.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="5.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="6.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -330,7 +356,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">105</int>
+			<int key="maxID">106</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -384,10 +410,10 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="paper_cell_bg.png">{490, 192}</string>
-			<string key="paper_cell_bg_shadow.png">{534, 217}</string>
-			<string key="papercell_new_indicator.png">{52, 41}</string>
-			<string key="setting_icon.png">{26, 26}</string>
+			<string key="paper_cell_bg.png">{245, 96}</string>
+			<string key="paper_cell_bg_shadow.png">{267, 109}</string>
+			<string key="papercell_new_indicator.png">{26, 21}</string>
+			<string key="setting_icon.png">{13, 13}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>

@@ -26,9 +26,7 @@
 -(NSNumber*) getUserIdx;
 
 /*
- 
  이함수부터 수정해야댐 2월 3일 여기까지함
- 
  */
 -(void) joinWithFacebook :(id<FBGraphUser>) me
              accessToken : (NSString*) accesstoken
@@ -54,7 +52,11 @@
                   failure : (void (^)(NSError* error))failure ;
 -(void) getSendedPapers : (void (^)(BOOL isCachedResponse,NSArray* paperArray))callback
                 failure : (void (^)(NSError* error))failure ;
-
+        // -CONNECTION USERS
+-(void) getUsersWhoAreMyFacebookFriends : (void (^)(BOOL isCachedResponse,NSArray* users))success
+                                failure : (void (^)(NSError* error))failure;
+-(void) inviteUsers : (NSArray*) users
+            toPaper : (RollingPaper*) paper;
 
 // PAPER
 -(void) createPaper : (RollingPaper*) paper
@@ -71,6 +73,10 @@
 -(void) getPaperParticipants : (RollingPaper*) paper
                      success : (void (^)(BOOL isCachedResponse,NSArray* participants))success
                      failure : (void (^)(NSError* error))failure;
+-(void) quitPaper : (RollingPaper*) paper
+          success : (void (^)())success
+          failure : (void (^)(NSError* error))failure;
+
 //Contents
 -(void) insertImageContent : (ImageContent*) imageContent
                      image : (NSData*) image

@@ -35,4 +35,22 @@
 }
 @end
 
+@implementation RollingPaper(NetworkingHelper)
+- (NSDictionary*) dictionaryForUpdateRequest{
+    NSDictionary *params = @{
+        @"title" : self.title,
+        @"width" : self.width,
+        @"height" : self.height,
+        @"receive_time" : self.receive_time,
+        @"notice" : self.notice,
+        @"receiver_fb_id" : self.receiver_fb_id,
+        @"receiver_name" : self.receiver_name,
+        @"receive_tel" : self.receive_tel,
+        @"background" : self.background,
+        @"target_email" : self.target_email
+    };
+    return params;
+}
+@end
+
 

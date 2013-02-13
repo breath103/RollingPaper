@@ -306,7 +306,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
 			<object class="IBUIView" id="219526365">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">292</int>
 				<array class="NSMutableArray" key="NSSubviews">
 					<object class="IBUILabel" id="391771838">
@@ -802,6 +802,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 					</object>
 				</array>
 				<string key="NSFrameSize">{311, 748}</string>
+				<reference key="NSSuperview"/>
 				<reference key="NSNextKeyView" ref="747807484"/>
 				<string key="NSReuseIdentifierKey">_NS:9</string>
 				<reference key="IBUIBackgroundColor" ref="253680360"/>
@@ -1326,18 +1327,18 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="background.png">{611, 798}</string>
-			<string key="bigtextfieldBackground.png">{535, 212}</string>
-			<string key="main_background.png">{640, 832}</string>
-			<string key="nextArrow.png">{32, 39}</string>
-			<string key="orange_button.png">{528, 75}</string>
-			<string key="paper_cell_bg.png">{490, 192}</string>
-			<string key="paper_cell_bg_shadow.png">{534, 217}</string>
-			<string key="previousArrow.png">{32, 38}</string>
-			<string key="status_bar@2x.png">{16, 16}</string>
-			<string key="textfieldBackground.png">{537, 75}</string>
-			<string key="userlist_bottom.png">{527, 71}</string>
-			<string key="userlist_plus.png">{30, 30}</string>
+			<string key="background.png">{306, 399}</string>
+			<string key="bigtextfieldBackground.png">{268, 106}</string>
+			<string key="main_background.png">{320, 416}</string>
+			<string key="nextArrow.png">{16, 20}</string>
+			<string key="orange_button.png">{264, 38}</string>
+			<string key="paper_cell_bg.png">{245, 96}</string>
+			<string key="paper_cell_bg_shadow.png">{267, 109}</string>
+			<string key="previousArrow.png">{16, 19}</string>
+			<string key="status_bar@2x.png">{640, 90}</string>
+			<string key="textfieldBackground.png">{269, 38}</string>
+			<string key="userlist_bottom.png">{264, 36}</string>
+			<string key="userlist_plus.png">{15, 15}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>

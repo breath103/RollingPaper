@@ -64,7 +64,7 @@
              accessToken : (NSString*) accesstoken
                  success : (void(^)(NSDictionary* response)) success
                  failure : (void(^)(NSError* error)) failure{
-   NSURL *url = [NSURL URLWithString:SERVER_HOST];
+    NSURL *url = [NSURL URLWithString:SERVER_HOST];
     
     AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:url];
 
@@ -231,6 +231,20 @@
     }];
     [request start];
 }
+-(void) getUsersWhoAreMyFacebookFriends : (void (^)(BOOL isCachedResponse,NSArray* users))success
+                                failure : (void (^)(NSError* error))failure {
+    NSURL *url = [NSURL URLWithString:SERVER_HOST];
+    AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:url];
+    NSURLRequest *request = [httpClient requestWithMethod:@"GET"
+                                                     path:[NSString stringWithFormat:@"/user/%lld/getUsersWhoAreMyFacebookFriend.json",self.getUserIdx.longLongValue]
+                                               parameters:NULL];
+    [[AFJSONRequestOperation JSONRequestOperationWithRequest:request
+                                                    success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+                                                        success(false,[JSON objectForKey:@"friends"]);
+                                                     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+                                                        failure(error);
+                                                     }] start];
+}
 
 
 
@@ -277,24 +291,13 @@
     NSURL *url = [NSURL URLWithString:SERVER_HOST];
     
     AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:url];
-    [paper valueForKey:NULL];
-    // [paper dictionaryWithValuesForKeys: [paper d]];
     // new version of creating paper
-    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
-                            self.getUserIdx,@"creator_idx" ,
-                            paper.title,@"title",
-                            paper.target_email,@"target_email",
-                            paper.notice,@"notice",
-                            paper.width,@"width"       ,
-                            paper.height, @"height"      ,
-                            paper.receiver_fb_id, @"receiver_fb_id",
-                            paper.receiver_name,@"receiver_name" ,
-                            paper.receive_time,@"receive_time"  ,
-                            paper.receive_tel,@"receive_tel"   ,
-                            paper.background,@"background"    , nil];
-    [httpClient putPath: [NSString stringWithFormat:@"paper/%lld.json",paper.idx.longLongValue]
+    NSMutableDictionary* params = [NSMutableDictionary dictionaryWithDictionary:[paper dictionaryForUpdateRequest]];
+    NSLog(@"%@",params);
+    [httpClient putPath: [NSString stringWithFormat:@"/paper/%lld.json",paper.idx.longLongValue]
               parameters:params
                  success:^(AFHTTPRequestOperation *operation, NSData* responseObject){
+                     NSLog(@"%@",responseObject);
                      success(paper);
                  } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                      failure(error);
@@ -323,7 +326,6 @@
 -(void) getPaperParticipants : (RollingPaper*) paper
                      success : (void (^)(BOOL isCachedResponse,NSArray* participants))success
                      failure : (void (^)(NSError* error))failure{
-    //"/paper/:id/participants.json"
     NSString* url = [NSString stringWithFormat:@"/paper/%@/participants.json",
                      paper.idx.stringValue];
     
@@ -344,6 +346,33 @@
     }];
     [request start];
 }
+
+-(void) quitPaper : (RollingPaper*) paper
+          success : (void (^)())success
+          failure : (void (^)(NSError* error))failure{
+    NSURL *url = [NSURL URLWithString:SERVER_HOST];
+    
+    AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:url];
+    
+    NSURLRequest *request = [httpClient multipartFormRequestWithMethod:@"POST"
+                                                                  path:[NSString stringWithFormat:@"/paper/%@.json",paper.idx.stringValue]
+                                                            parameters:@{@"user_idx": self.getUserIdx }
+                                             constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {}];
+    [[AFJSONRequestOperation JSONRequestOperationWithRequest:request
+                                                     success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+                                                         NSString* errorString = [JSON objectForKey:@"error"];
+                                                         if(errorString){
+                                                             failure( [NSError errorWithDomain:errorString code:0 userInfo:NULL] );
+                                                         }
+                                                         else{
+                                                             success();
+                                                         }
+                                                     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+                                                         failure(error);
+                                                     }] start];
+}
+
+
 
 -(void) insertImageContent : (ImageContent*) imageContent
                      image : (NSData*) image

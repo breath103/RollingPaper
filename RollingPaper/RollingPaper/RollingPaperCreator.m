@@ -7,7 +7,6 @@
 //
 
 #import "RollingPaperCreator.h"
-#import "NetworkTemplate.h"
 #import "FlowithAgent.h"
 #import "NSObject+block.h"
 #import <QuartzCore/QuartzCore.h>
@@ -115,7 +114,7 @@
     self.paperCellImage.image = NULL;//image;
     self.selectedBackgroundButton = sender;
     [UIView animateWithDuration:0.2f animations:^{
-        self.paperCellImage.backgroundColor = sender.backgroundColor;///[UIColor colorWithPatternImage:[sender imageForState:UIControlStateDisabled]];
+        self.paperCellImage.backgroundColor = sender.backgroundColor;
     } completion:^(BOOL finished) {
         
     }];
@@ -349,16 +348,16 @@
 - (IBAction)onTouchPrevious:(id)sender {
     if(self.controllerType == PAPER_CONTROLLER_TYPE_EDITING_CREATOR){
         [self syncViewToPaper];
-        ASIFormDataRequest* request = [NetworkTemplate requestForEditRollingPaper:self.entity];
-        [request setCompletionBlock:^{
-            NSLog(@"%@",request.responseString);
-            [self.listController refreshPaperList];
-            [self.navigationController popViewControllerAnimated:TRUE];
+        [[FlowithAgent sharedAgent] updatePaper:self.entity
+          success:^(RollingPaper *paper) {
+              NSLog(@"%@",paper);
+              self.entity = paper;
+              [self.listController refreshPaperList];
+              [self.navigationController popViewControllerAnimated:TRUE];
+        } failure:^(NSError *error) {
+            NSLog(@"%@",error);
+            [[[UIAlertView alloc] initWithTitle:@"에러" message:@"서버와 통신 실패" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles: nil] show];
         }];
-        [request setFailedBlock:^{
-            
-        }];
-        [request startSynchronous];
     }
     else{
         [self.navigationController popViewControllerAnimated:TRUE];
@@ -481,23 +480,19 @@
 clickedButtonAtIndex:(NSInteger)buttonIndex{
     if(buttonIndex == 0)
     {
-        NSLog(@"방 삭제");
-        ASIFormDataRequest* request = [ NetworkTemplate requestForQuitRoomWithUserIdx : [[FlowithAgent sharedAgent] getUserIdx].stringValue
-                                                                                paper : self.entity.idx.stringValue];
-        [request setCompletionBlock:^{
-            NSLog(@"%@",request.responseString);
+        [[FlowithAgent sharedAgent] quitPaper:self.entity
+          success:^{
             [self.navigationController popViewControllerAnimated:TRUE];
             if(self.listController)
-               [self.listController refreshPaperList];
-        }];
-        [request setFailedBlock:^{
+                [self.listController refreshPaperList];
+        } failure:^(NSError *error) {
             [[[UIAlertView alloc] initWithTitle:@"에러"
                                         message:@"서버와의 통신에 실패했습니다.\n인터넷 연결 상태를 확인해주세요"
                                        delegate:self
                               cancelButtonTitle:nil
                               otherButtonTitles:@"확인", @"취소",nil] show];
+            NSLog(@"%@",error);
         }];
-        [request startAsynchronous];
     }
     else{
         NSLog(@"취소");
@@ -632,10 +627,8 @@ clickedButtonAtIndex:(NSInteger)buttonIndex{
             [self deleteAllParticipants];
             for (id<FBGraphUser> user in self.invitingFreindPicker.selection)
                 [self createNewParticipnatsCell:user];
-        
-            
             [self dismissViewControllerAnimated:TRUE completion:^{
-                
+            
             }];
         }
     }
@@ -661,9 +654,11 @@ clickedButtonAtIndex:(NSInteger)buttonIndex{
             }];
         }
         else if(self.invitingFreindPicker == sender){
-            //방 만들기 모드에서 같이 만들 친구 모을때
+            //방 만들기 모드에서 같이 만들 친구 초대할때
             NSMutableArray* facebook_friends = [NSMutableArray new];
-            for (id<FBGraphUser> user in self.invitingFreindPicker.selection) [facebook_friends addObject: [user id]];
+            for (id<FBGraphUser> user in self.invitingFreindPicker.selection)
+                [facebook_friends addObject: [user id]];
+            /*
             ASIFormDataRequest* request = [NetworkTemplate requestForInviteFacebookFriends:facebook_friends
                                                                                    ToPaper:self.entity.idx.stringValue
                                                                                   withUser:[[FlowithAgent sharedAgent] getUserIdx].stringValue];
@@ -678,6 +673,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex{
                 NSLog(@"%@",request);
             }];
             [request startAsynchronous];
+             */
         }
     }
 }

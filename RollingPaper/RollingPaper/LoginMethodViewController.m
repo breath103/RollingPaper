@@ -9,7 +9,6 @@
 
 #import "LoginMethodViewController.h"
 #import <FacebookSDK/FacebookSDK.h>
-#import "NetworkTemplate.h"
 #import "FlowithAgent.h"
 #import "RollingPaperListController.h"
 #import <JSONKit.h>
@@ -93,6 +92,7 @@
                 } failure:^(NSError *error) {
                     NSLog(@"%@",error);
                     NSLog(@"%@",@"<RollingPaper 서버와 통신 실패>");
+                    [[[UIAlertView alloc]initWithTitle:@"에러" message:@"서버와 통신 실패" delegate:nil cancelButtonTitle:@"cancel" otherButtonTitles: nil] show];
 
                 }];
         }

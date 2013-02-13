@@ -7,7 +7,6 @@
 //
 
 #import "FBFriendSearchPickerController.h"
-#import "NetworkTemplate.h"
 #import "FlowithAgent.h"
 
 @implementation FBFriendSearchPickerController
@@ -41,6 +40,13 @@
     for(id view in toolbar.items){
         NSLog(@"%@",view);
     }
+    [[FlowithAgent sharedAgent] getUsersWhoAreMyFacebookFriends:^(BOOL isCachedResponse, NSArray *users) {
+        NSLog(@"%@",users);
+        
+    } failure:^(NSError *error) {
+        NSLog(@"%@",error);
+    }];
+    /*
     ASIFormDataRequest* request = [NetworkTemplate requestForSearchingFacebookFriendUsingRollingPaper:[[FlowithAgent sharedAgent] getUserIdx].stringValue];
     [request setCompletionBlock:^{
         NSDictionary* dict = parseJSON(request.responseString);
@@ -51,6 +57,7 @@
         
     }];
     [request startAsynchronous];
+     */
 }
 
 - (void)didReceiveMemoryWarning

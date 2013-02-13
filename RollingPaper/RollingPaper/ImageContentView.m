@@ -8,7 +8,6 @@
 
 #import "ImageContentView.h"
 #import "UELib/UEImageLibrary.h"
-#import "NetworkTemplate.h"
 #import "UECoreData.h"
 #import <JSONKit.h>
 #import "UEFileManager.h"
@@ -35,9 +34,7 @@
                                  [self urlToLocalFilePath:urlString]];
             if(!imageData) //이미지가 로컬에 없는경우
             {
-                NSLog(@"%@이미지가 로컬에 없음",urlString);
                 self.image = [self loadImageFromURLAndSaveToLocalStorage:urlString];
-            
             }else{
                 self.image = [UIImage imageWithData:imageData];
             }

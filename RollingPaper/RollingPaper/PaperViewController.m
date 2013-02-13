@@ -76,11 +76,9 @@
 
     NSData* backgroundData = [UEFileManager readDataFromLocalFile:[NSString stringWithFormat:@"paperbg_%@",entity.background]];
     if(backgroundData){
-        NSLog(@"%@가 로컬에 있음",entity.background);
         self.contentsScrollContainer.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageWithData:backgroundData]];
     }
     else{
-        NSLog(@"%@가 로컬에 없음",entity.background);
         [[FlowithAgent sharedAgent] getBackground:entity.background
                                          response:^(BOOL isCachedResponse, UIImage *image) {
             self.contentsScrollContainer.backgroundColor = [UIColor colorWithPatternImage:image];
@@ -92,10 +90,11 @@
     self.contentsScrollContainer.userInteractionEnabled = TRUE;
     UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self
                                                                                 action:@selector(onTapScrollBack:)];
-    // tapGesture.delegate = self;
+
     [self.contentsScrollContainer addGestureRecognizer:tapGesture];
 
     [self.contentsContainer addSubview:self.contentsScrollContainer];
+    
     self.contentsContainer.scrollEnabled = FALSE;
     self.contentsContainer.delegate = self;
 }
@@ -608,7 +607,7 @@ didFinishPickingMediaWithInfo : (NSDictionary *)info{
     [self.dockController hideIndicator];
     
     self.contentsContainer.maximumZoomScale = 1.0f;
-//    CGSize scrollSize  = self.contentsContainer.frame.size;
+//  CGSize scrollSize  = self.contentsContainer.frame.size;
     CGSize contentSize = self.contentsContainer.contentSize;
 
     self.contentsContainer.minimumZoomScale = 1.0/3;
@@ -683,7 +682,12 @@ didFinishPickingMediaWithInfo : (NSDictionary *)info{
 }
 
 #pragma mark UIScrollViewDelegate
--(void)scrollViewDidZoom:(UIScrollView *)scrollView{}
+
+//인스펙팅 모드로 넘어갔을때 아이폰 5등에서도 무조건 컨텐츠들이 스크롤뷰 중앙으로몰리게 
+-(void)scrollViewDidZoom:(UIScrollView *)scrollView{
+    
+     
+}
 -(void) scrollViewDidEndZooming:(UIScrollView *)scrollView
                        withView:(UIView *)view  
                         atScale:(float)scale{

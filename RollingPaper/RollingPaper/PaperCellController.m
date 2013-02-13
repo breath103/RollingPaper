@@ -8,9 +8,9 @@
 
 #import "PaperCellController.h"
 #import <QuartzCore/QuartzCore.h>
-#import "NetworkTemplate.h"
 #import "UEFileManager.h"
 #import "FlowithAgent.h"
+#import "KakaoLinkCenter.h"
 
 @interface PaperCellController ()
 
@@ -129,33 +129,12 @@
                                          CALayer* maskLayer = [CALayer layer];
                                          maskLayer.frame = CGRectMake(0,0,size.width,size.height);
                                          maskLayer.contents = (__bridge id)[mask_image CGImage];
-                                         self.backgroundImage.layer.mask = maskLayer;
+                                         self.view.layer.mask = maskLayer;
                                          [self.backgroundImage setNeedsDisplay];
-                                         NSLog(@"%@",self.backgroundImage);
-                                         NSLog(@"%@",image);
                                     }];
-/*
-    
-    [NetworkTemplate getBackgroundImage:entity.background
-                            withHandler:^(UIImage *image) {
-                                self.backgroundImage.image = NULL;//image;
-                                self.backgroundImage.backgroundColor = [UIColor colorWithPatternImage:image];
-                                UIImage* mask_image = [ UIImage imageNamed:@"paper_cell_bg"];
-                                CGSize size = self.backgroundImage.frame.size;
-                                CALayer* maskLayer = [CALayer layer];
-                                maskLayer.frame = CGRectMake(0,0,size.width,size.height);
-                                maskLayer.contents = (__bridge id)[mask_image CGImage];
-                                self.backgroundImage.layer.mask = maskLayer;
-                                [self.backgroundImage setNeedsDisplay];
-                                NSLog(@"%@",self.backgroundImage);
-                                NSLog(@"%@",image);
-                            }];
- */
-    
-    
+
     if(self.entity.is_new.boolValue){
         NSLog(@"%@ 는 New",self.entity);
-    //    self.view.backgroundColor = [UIColor redColor];
         self.indicatorForNew.hidden = FALSE;
     }
     else{
@@ -170,6 +149,18 @@
 
 -(void) onTap {
     [self.delegate PaperCellTouched:self];
+    if([KakaoLinkCenter canOpenKakaoLink])
+    {
+        [KakaoLinkCenter openKakaoLinkWithURL:@"http://210.122.0.119:8001/paper?v=97"
+                                   appVersion:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]
+                                  appBundleID:[[NSBundle mainBundle] bundleIdentifier]
+                                      appName:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleName"]
+                                      message:@"선물"];
+    }
+    else{
+        NSLog(@"can not open kakao link");
+    }
+
 }
 - (void)didReceiveMemoryWarning
 {

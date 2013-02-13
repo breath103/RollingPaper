@@ -7,8 +7,6 @@
 //
 
 #import "PhoneAuthViewController.h"
-#import "NetworkTemplate.h"
-
 @interface PhoneAuthViewController ()
 
 @end
@@ -63,6 +61,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex{
     }
 }
 -(void) onPhoneNumberConfirmed{
+    /*
     ASIFormDataRequest* request = [NetworkTemplate requestForPhoneAuth:phoneInput.text];
     [request setCompletionBlock:^{
        // NSDictionary* result =
@@ -75,6 +74,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex{
         
     }];
     [request startAsynchronous];
+     */
 }
 - (void)viewDidUnload {
     [self setPhoneInput:nil];
