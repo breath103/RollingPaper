@@ -106,4 +106,7 @@
               failure : (void (^)(NSError* error))failure;
 
 
+// KAKAO
+-(void) sendApplicationLinkToKakao;
+
 @end

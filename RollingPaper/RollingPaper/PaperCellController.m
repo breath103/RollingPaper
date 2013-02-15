@@ -149,19 +149,8 @@
 
 -(void) onTap {
     [self.delegate PaperCellTouched:self];
-    if([KakaoLinkCenter canOpenKakaoLink])
-    {
-        [KakaoLinkCenter openKakaoLinkWithURL:@"http://210.122.0.119:8001/paper?v=97"
-                                   appVersion:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]
-                                  appBundleID:[[NSBundle mainBundle] bundleIdentifier]
-                                      appName:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleName"]
-                                      message:@"선물"];
-    }
-    else{
-        NSLog(@"can not open kakao link");
-    }
-
 }
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

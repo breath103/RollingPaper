@@ -16,6 +16,7 @@
 #import "UECoreData.h"
 #import "Notice.h"
 #import <FacebookSDK/FacebookSDK.h>
+#import "KakaoLinkCenter.h"
 
 #define SubAddressToRequestURL(x) ([SERVER_HOST stringByAppendingString:x])
 #define SubAddressToNSURLRequest(x) ToNSURLRequest(SubAddressToRequestURL(x))
@@ -553,5 +554,31 @@
     [request start];
 }
 
+-(void) sendApplicationLinkToKakao{
+    if(![KakaoLinkCenter canOpenKakaoLink])
+        return;
+
+    
+    NSDictionary *metaInfoAndroid = [NSDictionary dictionaryWithObjectsAndKeys:
+                                     @"android", @"os",
+                                     @"phone", @"devicetype",
+                                     @"http://210.122.0.119:8001/demo.html", @"installurl",
+                                     @"example://example", @"executeurl",
+                                     nil];
+    
+    NSDictionary *metaInfoIOS = [NSDictionary dictionaryWithObjectsAndKeys:
+                                 @"ios", @"os",
+                                 @"phone", @"devicetype",
+                                 @"http://210.122.0.119:8001/demo.html", @"installurl",
+                                 @"example://example", @"executeurl",
+                                 nil];
+    
+    [KakaoLinkCenter openKakaoAppLinkWithMessage : @"롤링페이퍼에 초대합니다"
+                                             URL : @"http://210.122.0.119:8001/demo.html"
+                                     appBundleID : [[NSBundle mainBundle] bundleIdentifier]
+                                      appVersion : [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]
+                                         appName : [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleName"]
+                                   metaInfoArray : @[metaInfoIOS,metaInfoAndroid]];
+}
 
 @end

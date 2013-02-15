@@ -67,7 +67,9 @@
 }
 - (void)showPaperList {
     RollingPaperListController* controller = [[RollingPaperListController alloc] initWithNibName:@"RollingPaperListController" bundle:NULL];
+    [self.navigationController popViewControllerAnimated:FALSE];
     [self.navigationController pushViewController:controller animated:TRUE];
+    NSLog(@"%@",self.navigationController.viewControllers);
 }
 - (void)onTouchLoginWithFacebook {
     if ( !FBSession.activeSession.isOpen) {

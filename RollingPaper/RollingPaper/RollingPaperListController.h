@@ -16,7 +16,11 @@
 @property (weak, nonatomic) IBOutlet UIScrollView *paperScrollView;
 @property (weak, nonatomic) IBOutlet UIButton *profileButton;
 -(IBAction)onTouchAddPaper:(id)sender;
-- (IBAction)onTouchRefresh:(id)sender;
-- (IBAction)onTouchProfile:(id)sender;
+-(IBAction)onTouchRefresh:(id)sender;
+-(IBAction)onTouchProfile:(id)sender;
 -(void) refreshPaperList;
+//해당 아이디를 가진 페이퍼에 접근할 수 없는경우 false 접근 가능한경우 true
+-(BOOL) showPaperWithIdx : (NSNumber*) paper_idx;
+
++(RollingPaperListController*) getInstance;
 @end

@@ -40,6 +40,7 @@ static NSString *const StoryLinkURLBaseString = @"storylink://posting";
 + (NSString *)URLStringForParameters:(NSDictionary *)parameters baseString:(NSString *)baseString {
 	NSString *argumentsString = HTTPArgumentsStringForParameters(parameters);
 	NSString *URLString = [NSString stringWithFormat:@"%@?%@", baseString, argumentsString];
+    NSLog(@"%@",URLString);
 	return URLString;
 }
 
@@ -121,7 +122,6 @@ static NSString *const StoryLinkURLBaseString = @"storylink://posting";
     
 	return [self openKakaoLinkWithParams:parameters];
 }
-
 
 + (BOOL)canOpenStoryLink {
 	return [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:StoryLinkURLBaseString]];

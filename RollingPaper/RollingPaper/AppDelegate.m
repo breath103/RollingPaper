@@ -10,16 +10,44 @@
 
 #import "RootViewController.h"
 #import <FacebookSDK/FacebookSDK.h>
+#import "RollingPaperListController.h"
 
 @implementation AppDelegate
 
 @synthesize navigationController;
 @synthesize coreData;
+-(NSDictionary*) parseQuery : (NSString*) query{
+    NSMutableDictionary* queryDict = [NSMutableDictionary new];
+    NSArray* sets = [query componentsSeparatedByString:@"&"];
+    for(NSString* component in sets){
+        NSArray* keyValue = [component componentsSeparatedByString:@"="];
+        [queryDict setObject:keyValue[1]
+                      forKey:keyValue[0]];
+    }
+    return queryDict;
+}
+-(void) handleRollingPaperOpenURL : (NSURL*) url{
+    if([url.host isEqualToString:@"sendInvitation"]){
+        NSDictionary* queryDict = [self parseQuery:url.query];
+        NSLog(@"%@",queryDict);
+        
+        /*
+        [self.navigationController popToRootViewControllerAnimated:FALSE];
+        RollingPaperListController* paperListController = (RollingPaperListController*)self.navigationController.presentingViewController;
+        */
+        NSNumberFormatter * f = [[NSNumberFormatter alloc] init];
+        [f setNumberStyle:NSNumberFormatterDecimalStyle];
+        
+        if([RollingPaperListController getInstance]){
+            [[RollingPaperListController getInstance] showPaperWithIdx:[f numberFromString:[queryDict objectForKey:@"paper"]]];
+        }
+    }
+}
 - (BOOL)application:(UIApplication *)application
             openURL:(NSURL *)url
   sourceApplication:(NSString *)sourceApplication
          annotation:(id)annotation {
-
+    [self handleRollingPaperOpenURL:url];
     return [FBSession.activeSession handleOpenURL:url];
 }
 
@@ -32,7 +60,6 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions{
     self.window = [[UIWindow alloc] initWithFrame:bounds];
     self.rootViewController = [[RootViewController alloc] initWithDefaultNib];
     self.navigationController = [[UINavigationController alloc] initWithRootViewController:self.rootViewController];
-    //UIBarMetricsLandscapePhone
     
     UINavigationBar* navigationBar = self.navigationController.navigationBar;
     [navigationBar setBackgroundImage:[UIImage imageNamed:@"status_bar"]
@@ -79,7 +106,7 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions{
 }
 - (void)applicationWillTerminate:(UIApplication *)application
 {
-    [[UECoreData sharedInstance]saveContext];
+    [[UECoreData sharedInstance] saveContext];
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 - (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window

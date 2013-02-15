@@ -20,19 +20,26 @@
 #import "UserSettingViewController.h"
 #import <JSONKit.h>
 
+static RollingPaperListController* g_instance = NULL;
+
 @interface RollingPaperListController ()
 
 @end
 
 @implementation RollingPaperListController
 @synthesize paperScrollView;
+
++(RollingPaperListController*) getInstance{
+    return g_instance;
+}
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
-    
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
         paperCellControllers = [NSMutableArray new];
+        g_instance = self;
     }
     return self;
 }
@@ -49,12 +56,13 @@
 }
 -(void) refreshPaperList{
     [[FlowithAgent sharedAgent]getParticipaitingPapers:^(BOOL isCachedResponse, NSArray *paperArray) {
-        [self performBlockInMainThread:^{
-            NSLog(@"%d %@",isCachedResponse,paperArray);
-            [self createPaperViewsFromArray:paperArray];
-        } waitUntilDone:TRUE];
+        [self createPaperViewsFromArray:paperArray];
     } failure:^(NSError *error) {
-        [[[UIAlertView alloc] initWithTitle:@"경고" message:@"서버로부터 페이퍼 리스트를 받아오는데 실패했습니다" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles: nil] show];
+        [[[UIAlertView alloc] initWithTitle:@"경고"
+                                    message:@"서버로부터 페이퍼 리스트를 받아오는데 실패했습니다"
+                                   delegate:nil
+                          cancelButtonTitle:@"확인"
+                          otherButtonTitles:nil] show];
     }];
 }
 -(NSMutableDictionary*) fetchAllRollingPaperWithIdxKey{
@@ -198,5 +206,16 @@
 - (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
 {
     return UIInterfaceOrientationPortrait;
+}
+-(BOOL) showPaperWithIdx : (NSNumber*) paper_idx{
+    for(PaperCellController* cellController in self.childViewControllers){
+        if(cellController &&
+           cellController.entity &&
+           [cellController.entity.idx compare:paper_idx] == NSOrderedSame){
+            [self PaperCellTouched:cellController];
+            return TRUE;
+        }
+    }
+    return FALSE;
 }
 @end

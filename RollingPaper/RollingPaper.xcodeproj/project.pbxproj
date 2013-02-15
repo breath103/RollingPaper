@@ -241,6 +241,8 @@
 		07AB33A416458BFC000A27F7 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07AB33A316458BFC000A27F7 /* FacebookSDK.framework */; };
 		07AB33D116467D13000A27F7 /* NSObject+block.m in Sources */ = {isa = PBXBuildFile; fileRef = 07AB33D016467D13000A27F7 /* NSObject+block.m */; };
 		07AFD55B167303B700F19D64 /* RollingPaperListController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07AFD55A167303B600F19D64 /* RollingPaperListController.xib */; };
+		07B0CBDA16CE443600FB50F6 /* BugReportController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B0CBD816CE443600FB50F6 /* BugReportController.m */; };
+		07B0CBDB16CE443600FB50F6 /* BugReportController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07B0CBD916CE443600FB50F6 /* BugReportController.xib */; };
 		07B35574165A80CE0094D7D7 /* UEAssets.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B35565165A80CE0094D7D7 /* UEAssets.m */; };
 		07B35575165A80CE0094D7D7 /* UEDataStructure.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B35567165A80CE0094D7D7 /* UEDataStructure.m */; };
 		07B35577165A80CE0094D7D7 /* UEImageLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B3556B165A80CE0094D7D7 /* UEImageLibrary.m */; };
@@ -552,6 +554,9 @@
 		07AB33CF16467D13000A27F7 /* NSObject+block.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+block.h"; sourceTree = "<group>"; };
 		07AB33D016467D13000A27F7 /* NSObject+block.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+block.m"; sourceTree = "<group>"; };
 		07AFD55A167303B600F19D64 /* RollingPaperListController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RollingPaperListController.xib; sourceTree = "<group>"; };
+		07B0CBD716CE443600FB50F6 /* BugReportController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BugReportController.h; sourceTree = "<group>"; };
+		07B0CBD816CE443600FB50F6 /* BugReportController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BugReportController.m; sourceTree = "<group>"; };
+		07B0CBD916CE443600FB50F6 /* BugReportController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BugReportController.xib; sourceTree = "<group>"; };
 		07B35564165A80CE0094D7D7 /* UEAssets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UEAssets.h; sourceTree = "<group>"; };
 		07B35565165A80CE0094D7D7 /* UEAssets.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UEAssets.m; sourceTree = "<group>"; };
 		07B35566165A80CE0094D7D7 /* UEDataStructure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UEDataStructure.h; sourceTree = "<group>"; };
@@ -804,6 +809,9 @@
 				073EB69016BB36F00071DE77 /* NoticeTableController.h */,
 				073EB69116BB36F00071DE77 /* NoticeTableController.m */,
 				073EB69216BB36F00071DE77 /* NoticeTableController.xib */,
+				07B0CBD716CE443600FB50F6 /* BugReportController.h */,
+				07B0CBD816CE443600FB50F6 /* BugReportController.m */,
+				07B0CBD916CE443600FB50F6 /* BugReportController.xib */,
 			);
 			name = Setting;
 			sourceTree = "<group>";
@@ -1418,6 +1426,7 @@
 				07AAC58E16C4142200E1EBB0 /* tool_dock_background@2x.png in Resources */,
 				07AAC58F16C4142200E1EBB0 /* undoButton.png in Resources */,
 				07AAC59016C4142200E1EBB0 /* undoButton@2x.png in Resources */,
+				07B0CBDB16CE443600FB50F6 /* BugReportController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1532,6 +1541,7 @@
 				073EB69716BB382E0071DE77 /* Notice.m in Sources */,
 				071A1C7C16BDC81800393627 /* User.m in Sources */,
 				074D9D0C16CB8BA50060DDDB /* KakaoLinkCenter.m in Sources */,
+				07B0CBDA16CE443600FB50F6 /* BugReportController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1619,7 +1629,7 @@
 			baseConfigurationReference = 79C1079E3D27429083B31B8B /* Pods.xcconfig */;
 			buildSettings = {
 				ARCHS = armv7;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Suyeong Lee (NPUDP9X8HL)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Suyeong Lee";
 				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Developer: Suyeong Lee (NPUDP9X8HL)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Suyeong Lee (NPUDP9X8HL)";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1638,7 +1648,7 @@
 					"\"$(SRCROOT)/RollingPaper/SBJSON\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "B1E3A087-3E0D-4FEF-9319-067CFCE6C507";
+				PROVISIONING_PROFILE = "819E89AE-9147-49DB-BB64-A7B2C69A2D3E";
 				"PROVISIONING_PROFILE[sdk=*]" = "DB27EF45-C1D7-41BA-93FC-A0659A3856F3";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "DB27EF45-C1D7-41BA-93FC-A0659A3856F3";
 				SDKROOT = iphoneos;
@@ -1653,7 +1663,7 @@
 			baseConfigurationReference = 79C1079E3D27429083B31B8B /* Pods.xcconfig */;
 			buildSettings = {
 				ARCHS = armv7;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Suyeong Lee (NPUDP9X8HL)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Suyeong Lee";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Suyeong Lee (NPUDP9X8HL)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1671,7 +1681,7 @@
 					"\"$(SRCROOT)/RollingPaper/SBJSON\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "B1E3A087-3E0D-4FEF-9319-067CFCE6C507";
+				PROVISIONING_PROFILE = "819E89AE-9147-49DB-BB64-A7B2C69A2D3E";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "B1E3A087-3E0D-4FEF-9319-067CFCE6C507";
 				SDKROOT = iphoneos;
 				TEST_AFTER_BUILD = NO;
