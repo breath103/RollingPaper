@@ -42,14 +42,11 @@
 @property (nonatomic,strong) DockController* dockController;
 @property (nonatomic,strong) UIViewController* currentEditingViewController;
 @property (nonatomic,readwrite) BOOL isEditingMode;
-/*
-@property (nonatomic,strong) CameraController* cameraController;
-@property (nonatomic,strong) AlbumController* albumController;
-@property (nonatomic,strong) RecoderController* recoderController;
-@property (nonatomic,strong) TypewriterController* typewriterController;
-@property (nonatomic,strong) PencilcaseController* pencilcaseController;
-*/
-- (IBAction)onTouchRefresh:(id)sender;
+@property (weak, nonatomic) IBOutlet UIButton *saveButton;
+@property (weak, nonatomic) IBOutlet UIButton *refreshButton;
+
+- (IBAction)onTouchSaveAndQuit:(id)sender;
+-(IBAction)onTouchRefresh:(id)sender;
 -(ImageContentView*) onCreateImage : (UIImage *)image;
 -(id) initWithEntity : (RollingPaper*) entity;
 -(NSArray*) contentsViews;

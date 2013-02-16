@@ -27,6 +27,7 @@
 #import "UEFileManager.h"
 #import <JSONKit.h>
 #import "UECoreData.h"
+#import "RollingPaperCreator.h"
 
 
 #define BORDER_WIDTH (2.0f)
@@ -56,6 +57,7 @@
 }
 -(void) viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
+    NSLog(@"%@",self.dockController.view);
     //사용자가 한번 본 경우에는 해당 엔티티가 더이상 새로운 것이 아니기 때문에 NO로 변경
     self.entity.is_new = [NSNumber numberWithBool:NO];
 }
@@ -153,13 +155,29 @@
     [self initContentsScrollContainer];
     [self loadAndShowContents];
     
+    [self.saveButton.superview bringSubviewToFront:self.saveButton];
+    [self.refreshButton.superview bringSubviewToFront:self.refreshButton];
+    
     [self onChangeToEditingMode];
     
     self.transformTargetView = NULL;
 }
+- (IBAction)onTouchSaveAndQuit:(id)sender {
+    //저장관련된 내용은 ViewWillDisapear 에서처리
+    [self.navigationController popToRootViewControllerAnimated:TRUE];
+}
+
+
 - (IBAction)onTouchRefresh:(id)sender {
     [self saveToServer:^(NSMutableArray *syncSuccessedViews,
                          NSMutableArray *syncFailedViews) {
+        if(syncFailedViews && syncFailedViews.count > 0){
+            [[[UIAlertView alloc] initWithTitle:@"경고"
+                                        message:[NSString stringWithFormat:@"%d개 컨텐츠의 업로드가 실패했습니다",syncFailedViews.count]
+                                       delegate:nil
+                              cancelButtonTitle:@"확인"
+                              otherButtonTitles:nil] show];
+        }
         self.contentsContainer.backgroundColor =
             [UIColor colorWithPatternImage:[UIImage imageNamed:@"main_background"]];
         [self loadAndShowContents];
@@ -220,7 +238,13 @@
 -(void) viewWillDisappear:(BOOL)animated{
     [self saveToServer:^(NSMutableArray *syncSuccessedViews,
                          NSMutableArray *syncFailedViews) {
-        
+        if(syncFailedViews && syncFailedViews.count > 0){
+            [[[UIAlertView alloc] initWithTitle:@"경고"
+                                        message:[NSString stringWithFormat:@"%d개 컨텐츠의 업로드가 실패했습니다",syncFailedViews.count]
+                                       delegate:nil
+                              cancelButtonTitle:@"확인"
+                              otherButtonTitles:nil] show];
+        }
     }];
 }
 - (void)didReceiveMemoryWarning{
@@ -420,16 +444,13 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer : (UIGestureRecognizer *)othe
     NSLog(@"%@ %d %@",dock,menuType,button);
     self.dockController.panGestureRecognizer.enabled = FALSE;
     
-    [dock hide];
-    [dock hideIndicator];
+    if(menuType != DockMenuTypeSetting){
+        [dock hide];
+        [dock hideIndicator];
+    }
     
     switch (menuType) {
         case DockMenuTypeCamera:{
-            /*
-            CameraController* camViewController = [[CameraController alloc] initWithDelegate:self];
-            [self addChildViewController:camViewController];
-            [self.view addSubview:camViewController.view];
-             */
             UIImagePickerController* cameraController = [[UIImagePickerController alloc]init];
             cameraController.sourceType = UIImagePickerControllerSourceTypeCamera;
             cameraController.cameraCaptureMode = UIImagePickerControllerCameraCaptureModePhoto;
@@ -493,9 +514,9 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer : (UIGestureRecognizer *)othe
             
             self.currentEditingViewController = pencilcaseController;
         }break;
-        case DockMenuTypeSave : {
-            [self.navigationController popToRootViewControllerAnimated:TRUE];
-            //[self.navigationController popViewControllerAnimated:TRUE];
+        case DockMenuTypeSetting : {
+            RollingPaperCreator* settingController = [[RollingPaperCreator alloc] initForEditing:self.entity];
+            [self.navigationController pushViewController:settingController animated:self];
         }break;
         default:
             NSLog(@"Unhandled dock menu %d",menuType);

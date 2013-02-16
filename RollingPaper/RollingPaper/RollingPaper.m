@@ -35,19 +35,21 @@
 }
 @end
 
+#define NullToNSNull(x) ( (x)?(x):[NSNull null] )
+
 @implementation RollingPaper(NetworkingHelper)
 - (NSDictionary*) dictionaryForUpdateRequest{
     NSDictionary *params = @{
-        @"title" : self.title,
-        @"width" : self.width,
-        @"height" : self.height,
-        @"receive_time" : self.receive_time,
-        @"notice" : self.notice,
-        @"receiver_fb_id" : self.receiver_fb_id,
-        @"receiver_name" : self.receiver_name,
-        @"receive_tel" : self.receive_tel,
-        @"background" : self.background,
-        @"target_email" : self.target_email
+        @"title"    : NullToNSNull(self.title),
+        @"width"    : NullToNSNull(self.width),
+        @"height"   : NullToNSNull(self.height),
+        @"receive_time" : NullToNSNull(self.receive_time),
+        @"notice"   : NullToNSNull(self.notice),
+        @"receiver_fb_id" : NullToNSNull(self.receiver_fb_id),
+        @"receiver_name"  : NullToNSNull(self.receiver_name),
+        @"receive_tel"    : NullToNSNull(self.receive_tel),
+        @"background"     : NullToNSNull(self.background),
+        @"target_email"   : NullToNSNull(self.target_email)
     };
     return params;
 }

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="8.00">
 	<data>
-		<int key="IBDocument.SystemTarget">1536</int>
+		<int key="IBDocument.SystemTarget">1552</int>
 		<string key="IBDocument.SystemVersion">12C60</string>
-		<string key="IBDocument.InterfaceBuilderVersion">2844</string>
+		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
 		<string key="IBDocument.AppKitVersion">1187.34</string>
 		<string key="IBDocument.HIToolboxVersion">625.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-			<string key="NS.object.0">1930</string>
+			<string key="NS.object.0">2083</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>IBProxyObject</string>
@@ -224,15 +224,16 @@
 							<object class="IBUIButton" id="441499149">
 								<reference key="NSNextResponder" ref="603674714"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{10, 305}, {27, 27}}</string>
+								<string key="NSFrame">{{10, 301}, {27, 27}}</string>
 								<reference key="NSSuperview" ref="603674714"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
+								<int key="IBUIContentMode">4</int>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<int key="IBUIContentHorizontalAlignment">0</int>
 								<int key="IBUIContentVerticalAlignment">0</int>
-								<string key="IBUINormalTitle">Button</string>
 								<reference key="IBUIHighlightedTitleColor" ref="53150687"/>
 								<object class="NSColor" key="IBUINormalTitleColor">
 									<int key="NSColorSpace">1</int>
@@ -241,7 +242,7 @@
 								<reference key="IBUINormalTitleShadowColor" ref="581880047"/>
 								<object class="NSCustomResource" key="IBUINormalImage">
 									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">save_icon.png</string>
+									<string key="NSResourceName">setting_icon_2.png</string>
 								</object>
 								<reference key="IBUIFontDescription" ref="595944559"/>
 								<reference key="IBUIFont" ref="976275876"/>
@@ -264,6 +265,7 @@
 				<string key="NSFrameSize">{78, 460}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
+				<reference key="NSNextKeyView" ref="603674714"/>
 				<string key="NSReuseIdentifierKey">_NS:9</string>
 				<reference key="IBUIBackgroundColor" ref="599282800"/>
 				<object class="IBUISimulatedSizeMetrics" key="IBUISimulatedDestinationMetrics">
@@ -347,12 +349,12 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
-						<string key="label">onTouchSave:</string>
+						<string key="label">onTouchSetting:</string>
 						<reference key="source" ref="441499149"/>
 						<reference key="destination" ref="372490531"/>
 						<int key="IBEventType">7</int>
 					</object>
-					<int key="connectionID">73</int>
+					<int key="connectionID">177</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -453,6 +455,7 @@
 				<string key="67.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="7.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="72.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<real value="0.0" key="72.IBUIButtonInspectorSelectedEdgeInsetMetadataKey"/>
 				<string key="8.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="9.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			</dictionary>
@@ -460,7 +463,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">176</int>
+			<int key="maxID">177</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -473,7 +476,7 @@
 						<string key="onTouchKeyboard:">id</string>
 						<string key="onTouchMicrophone:">id</string>
 						<string key="onTouchPencilcase:">id</string>
-						<string key="onTouchSave:">id</string>
+						<string key="onTouchSetting:">id</string>
 						<string key="onTouchShowToggleButton:">id</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
@@ -497,8 +500,8 @@
 							<string key="name">onTouchPencilcase:</string>
 							<string key="candidateClassName">id</string>
 						</object>
-						<object class="IBActionInfo" key="onTouchSave:">
-							<string key="name">onTouchSave:</string>
+						<object class="IBActionInfo" key="onTouchSetting:">
+							<string key="name">onTouchSetting:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="onTouchShowToggleButton:">
@@ -529,15 +532,15 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="album_icon.png">{92, 90}</string>
-			<string key="camera_icon.png">{91, 79}</string>
-			<string key="dockButton.png">{56, 78}</string>
-			<string key="mic_icon.png">{111, 56}</string>
-			<string key="pen_icon.png">{117, 46}</string>
-			<string key="save_icon.png">{54, 54}</string>
-			<string key="text_icon.png">{89, 85}</string>
-			<string key="tool_dock_background.png">{105, 696}</string>
+			<string key="album_icon.png">{46, 45}</string>
+			<string key="camera_icon.png">{46, 40}</string>
+			<string key="dockButton.png">{28, 39}</string>
+			<string key="mic_icon.png">{56, 28}</string>
+			<string key="pen_icon.png">{59, 23}</string>
+			<string key="setting_icon_2.png">{55, 55}</string>
+			<string key="text_icon.png">{45, 43}</string>
+			<string key="tool_dock_background.png">{53, 348}</string>
 		</dictionary>
-		<string key="IBCocoaTouchPluginVersion">1930</string>
+		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>
 </archive>

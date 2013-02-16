@@ -293,6 +293,7 @@
     
     AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:url];
     // new version of creating paper
+    
     NSMutableDictionary* params = [NSMutableDictionary dictionaryWithDictionary:[paper dictionaryForUpdateRequest]];
     NSLog(@"%@",params);
     [httpClient putPath: [NSString stringWithFormat:@"/paper/%lld.json",paper.idx.longLongValue]

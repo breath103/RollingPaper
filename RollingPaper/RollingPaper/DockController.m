@@ -124,12 +124,14 @@
                          pickMenu : DockMenuTypePencilcase
                          inButton : sender];
 }
-- (IBAction)onTouchSave:(id)sender {
-    NSLog(@"Save Menu");
+- (IBAction)onTouchSetting:(id)sender {
+    NSLog(@"Setting Menu");
     [self.delegate dockController : self
-                         pickMenu : DockMenuTypeSave
+                         pickMenu : DockMenuTypeSetting
                          inButton : sender];
+
 }
+
 - (IBAction)onTouchShowToggleButton:(id)sender {
     if(isDockPoped){
         [self hide];
@@ -138,6 +140,8 @@
         [self show];
     }
 }
+
+
 -(void) hideIndicator{
     [self.view fadeOut:0.1f];
 }
