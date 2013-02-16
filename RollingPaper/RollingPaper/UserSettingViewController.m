@@ -50,7 +50,7 @@
 
 - (void)viewDidUnload {
     [self setUserImageView:nil];
-    [super viewDidUnload];
+    [super viewDidUnload];  
 }
 - (IBAction)onTouchShowNotice:(id)sender {
     NoticeTableController* noticeTableController = [[NoticeTableController alloc] initWithDefaultNib];
