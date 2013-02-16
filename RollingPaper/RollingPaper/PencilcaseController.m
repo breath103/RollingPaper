@@ -185,7 +185,7 @@ NSString* TOOL_TYPE_STRING[TOOL_COUNT] = {
     CGSize size = ToolImageSize[toolType];
     
     UIImage* image      = [UIImage imageNamed:imageName];
-    UIImage* mask_Image = [UIImage imageNamed:[imageName stringByAppendingString:@"_mask"]];
+    UIImage* mask_Image = [UIImage imageNamed:[imageName stringByAppendingString:@"_mask@2x"]];
     
     button.contentMode = UIViewContentModeScaleToFill;
     [button setImage:image

@@ -67,9 +67,11 @@
 }
 - (void)showPaperList {
     RollingPaperListController* controller = [[RollingPaperListController alloc] initWithNibName:@"RollingPaperListController" bundle:NULL];
-    [self.navigationController popViewControllerAnimated:FALSE];
     [self.navigationController pushViewController:controller animated:TRUE];
-    NSLog(@"%@",self.navigationController.viewControllers);
+
+    // Navigation Stackd에서 롤링페이퍼 리스트컨트롤러가 제일 위로 오게 루트뷰를 빼버린다.
+    [self removeFromParentViewController];
+    
 }
 - (void)onTouchLoginWithFacebook {
     if ( !FBSession.activeSession.isOpen) {

@@ -131,6 +131,7 @@ static RollingPaperListController* g_instance = NULL;
 -(void) viewDidAppear:(BOOL)animated
 {
     self.navigationController.navigationBarHidden = TRUE;
+    NSLog(@"%@",self.navigationController.viewControllers);
 }
 - (void)viewDidLoad
 {

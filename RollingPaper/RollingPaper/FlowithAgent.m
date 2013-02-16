@@ -316,6 +316,7 @@
     success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
         NSDictionary* contentsDictionary = [JSON objectForKey:@"contents"];
         NSLog(@"%@",contentsDictionary);
+        
         success(FALSE,[ImageContent contentsWithDictionaryArray:[contentsDictionary objectForKey:@"image"]],
                 [SoundContent contentsWithDictionaryArray:[contentsDictionary objectForKey:@"sound"]]);
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
@@ -505,29 +506,29 @@
 
 
 -(void) deleteImageContent : (ImageContent*) imageContent
-                   success : (void (^)())success{
+                   success : (void (^)())success
+                   failure : (void (^)(NSError* error))failure{
     AFHTTPClient *client = [AFHTTPClient clientWithBaseURL:[NSURL URLWithString:SERVER_HOST]];
     [client postPath:@"/paper/deleteContent/image"
           parameters:@{@"user_idx"  : [self getUserIdx],
                        @"image_idx" : imageContent.idx}
              success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                 NSLog(@"%@",responseObject);
                  success();
              } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                 NSLog(@"%@",error);
+                 failure(error);
              }];
 }
 -(void) deleteSoundContent : (SoundContent*) soundContent
-                   success : (void (^)())success{
+                   success : (void (^)())success
+                   failure : (void (^)(NSError* error))failure{
     AFHTTPClient *client = [AFHTTPClient clientWithBaseURL:[NSURL URLWithString:SERVER_HOST]];
     [client postPath:@"/paper/deleteContent/sound"
           parameters:@{@"user_idx"  : [self getUserIdx],
                        @"sound_idx" : soundContent.idx}
              success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                 NSLog(@"%@",responseObject);
                  success();
              } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                 NSLog(@"%@",error);
+                 failure(error);
              }];
 }
 

@@ -33,7 +33,10 @@
 #define BORDER_COLOR [UIColor colorWithPatternImage:[UIImage imageNamed:@"content_selectborder.png"]]
 
 
-@interface PaperViewController ()
+@interface PaperViewController (PrivateInterface)
+-(void) saveToServer : (void(^)(NSMutableArray* syncSuccessedViews,
+                                NSMutableArray* syncFailedViews)) callback;
+
 @end
 
 @implementation PaperViewController
@@ -98,7 +101,8 @@
     self.contentsContainer.scrollEnabled = FALSE;
     self.contentsContainer.delegate = self;
 }
--(void) onReceiveContentsResponse : (NSArray*) imageContents : (NSArray*) soundContents{
+-(void) onReceiveContentsResponse : (NSArray*) imageContents
+                                  : (NSArray*) soundContents{
     
     for(UIView* subView in self.contentsScrollContainer.subviews){
         [UIView animateWithDuration:0.2f animations:^{
@@ -154,12 +158,13 @@
     self.transformTargetView = NULL;
 }
 - (IBAction)onTouchRefresh:(id)sender {
-    [self saveToServer];
-    
-    self.contentsContainer.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"main_background"]];
-    [self loadAndShowContents];
-    
-    self.transformTargetView = NULL;
+    [self saveToServer:^(NSMutableArray *syncSuccessedViews,
+                         NSMutableArray *syncFailedViews) {
+        self.contentsContainer.backgroundColor =
+            [UIColor colorWithPatternImage:[UIImage imageNamed:@"main_background"]];
+        [self loadAndShowContents];
+        self.transformTargetView = NULL;
+    }];    
 }
 
 
@@ -169,18 +174,54 @@
         NSLog(@"Long Background : %@",tap);
     }
 }
--(void) saveToServer{
-    int i = 0;
-    for( id<RollingPaperContentViewProtocol> view in self.contentsViews){
-        if([view isNeedToSyncWithServer]){
-            [view syncEntityWithServer];
-            i++;
+-(void) saveToServer : (void(^)(NSMutableArray* syncSuccessedViews,
+                                NSMutableArray* syncFailedViews)) callback{
+   // __block int syncSuccessCount = 0;
+   // __block int syncFailureCount = 0;
+    
+    __block NSMutableArray* syncSuccessedViews = [NSMutableArray new];
+    __block NSMutableArray* syncFailedViews    = [NSMutableArray new];
+    
+    __block int totalNeedsSyncViewCount = 0;
+    
+    //서버와 동기화 해야하는 뷰의 갯수를 카운트 한다
+    for( id<RollingPaperContentViewProtocol> view in self.contentsViews)
+        if([view isNeedToSyncWithServer])
+            totalNeedsSyncViewCount++;
+        
+    if(totalNeedsSyncViewCount > 0){
+        for( id<RollingPaperContentViewProtocol> view in self.contentsViews){
+            if([view isNeedToSyncWithServer]){
+                [view syncEntityWithServer:^(NSError *error,
+                                             UIView<RollingPaperContentViewProtocol> *view) {
+                    if(error){
+                        NSLog(@"%@ sync failure",view);
+                        [syncFailedViews addObject:view];
+                    }
+                    else{
+                        NSLog(@"%@ sync success",view);
+                        [syncSuccessedViews addObject:syncSuccessedViews];
+                        if( (syncSuccessedViews.count + syncFailedViews.count) >= totalNeedsSyncViewCount ){
+                            callback(syncSuccessedViews,syncFailedViews);
+                        }
+                    }
+                }];
+            }
         }
     }
-    NSLog(@"%d개 업데이트 되었습니다",i);
+    else {
+        callback(syncSuccessedViews,syncFailedViews);
+    }
+   
+        
+        //    NSLog(@"%d개 업데이트 되었습니다",totalNeedsSyncViewCount);
+ 
 }
 -(void) viewWillDisappear:(BOOL)animated{
-    [self saveToServer];
+    [self saveToServer:^(NSMutableArray *syncSuccessedViews,
+                         NSMutableArray *syncFailedViews) {
+        
+    }];
 }
 - (void)didReceiveMemoryWarning{
     [super didReceiveMemoryWarning];
@@ -219,7 +260,7 @@
     }
 }
 -(void) onTouchContentDeleteButton : (UITapGestureRecognizer*) recognizer{
-    UIButton* deleteButton = recognizer.view;
+    UIButton* deleteButton = (UIButton*)recognizer.view;
     [[deleteButton superview] fadeOut:0.2f];
     [deleteButton removeFromSuperview];
     [self setTransformTargetView:NULL];
@@ -285,7 +326,7 @@
             [self setTransformTargetView:NULL];
         }
         else{
-            [self setTransformTargetView:gestureRecognizer.view];
+            [self setTransformTargetView:(UIView<RollingPaperContentViewProtocol>*)gestureRecognizer.view];
         }
     }
 }
@@ -453,15 +494,16 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer : (UIGestureRecognizer *)othe
             self.currentEditingViewController = pencilcaseController;
         }break;
         case DockMenuTypeSave : {
-            [self.navigationController popViewControllerAnimated:TRUE];
+            [self.navigationController popToRootViewControllerAnimated:TRUE];
+            //[self.navigationController popViewControllerAnimated:TRUE];
         }break;
         default:
             NSLog(@"Unhandled dock menu %d",menuType);
             break;
     }
 }
-#pragma mark CameraControllerDelegate 
 /*
+#pragma mark CameraControllerDelegate
 -(void) cameraController:(CameraController *)camera
              onPickImage:(UIImage *)image{
     if(image){

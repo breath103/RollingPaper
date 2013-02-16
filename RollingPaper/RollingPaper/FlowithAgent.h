@@ -96,10 +96,11 @@
                    failure : (void (^)(NSError* error))failure;
 
 -(void) deleteImageContent : (ImageContent*) imageContent
-                   success : (void (^)())success;
+                   success : (void (^)())success
+                   failure : (void (^)(NSError* error))failure;
 -(void) deleteSoundContent : (SoundContent*) imageContent
-                   success : (void (^)())success;
-
+                   success : (void (^)())success
+                   failure : (void (^)(NSError* error))failure;
 
 // NOTICE
 -(void) getNoticeList : (void (^)(BOOL isCaschedResponse, NSArray * noticeList))success
