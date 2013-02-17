@@ -31,12 +31,7 @@
     [[FlowithAgent sharedAgent] getProfileImage:^(BOOL isCachedResponse, UIImage *image) {
         self.userImageView.image = image;
     }];
-    UITapGestureRecognizer* tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard)];
-    [self.view addGestureRecognizer: tap];
     // Do any additional setup after loading the view from its nib.
-}
--(void) hideKeyboard{
-    [self.feedbackInput resignFirstResponder];
 }
 -(void) viewDidAppear:(BOOL)animated{
     self.navigationController.navigationBarHidden = FALSE;
@@ -50,7 +45,7 @@
 
 - (void)viewDidUnload {
     [self setUserImageView:nil];
-    [super viewDidUnload];  
+    [super viewDidUnload];
 }
 - (IBAction)onTouchShowNotice:(id)sender {
     NoticeTableController* noticeTableController = [[NoticeTableController alloc] initWithDefaultNib];
@@ -59,9 +54,6 @@
 }
 
 - (IBAction)onTouchFeedbackButton:(id)sender {
-    NSString *feedback = self.feedbackInput.text;
-    [TestFlight submitFeedback:feedback];
-    self.feedbackInput.text = @"";
-    [[[UIAlertView alloc] initWithTitle:@"알림" message:@"개발자에게 피드백이 전송되었습니다.\n감사합니다" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles: nil] show];
+    [TestFlight openFeedbackView];
 }
 @end

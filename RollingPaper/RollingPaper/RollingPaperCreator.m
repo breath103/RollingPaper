@@ -15,6 +15,7 @@
 #import "UELib/UEImageLibrary.h"
 #import <JSONKit.h>
 #import "FlowithAgent.h"
+#import "PaperBackgroundPicker.h"
 
 @interface RollingPaperCreator ()
 
@@ -51,74 +52,45 @@
     button.layer.shadowOffset  = CGSizeMake(3,3);
     button.layer.rasterizationScale = [UIScreen mainScreen].scale;
 }
+
 -(void) initScrollView{
     [self.scrollView addSubview:self.contentContainer];
     self.scrollView.contentSize = self.contentContainer.frame.size;
-    [[FlowithAgent sharedAgent] getBackgroundList:^(BOOL isCaschedResponse,
-                                                    NSArray *backgroundList){
-        int i = 0;
-        CGSize buttonSize = CGSizeMake(44, 44);
-        int buttonRow = 5;
-        int buttonColl = 1;
-        float widthOffset = (self.paperBackgroundsScroll.frame.size.width - buttonSize.width * buttonRow) / (buttonRow+1);
-        float heightOffset = (self.paperBackgroundsScroll.frame.size.height - buttonSize.height * buttonColl) / (buttonColl + 1);
-        for(NSString* background in backgroundList)
-        {
-            [[FlowithAgent sharedAgent]getBackground:background
-                                            response:^(BOOL isCachedResponse, UIImage *image){
-                                                UIButton* button = [UIButton buttonWithType:UIButtonTypeCustom];
-                                                button.frame = CGRectMake(widthOffset + (widthOffset+buttonSize.width) * i , heightOffset ,
-                                                                          buttonSize.width , buttonSize.height);
-                                                [button setTitle:background
-                                                        forState:UIControlStateDisabled];
-                                                [self _addButtonShadow:button];
-                                                button.backgroundColor = [UIColor colorWithPatternImage:image];
-                                                [button addTarget:self
-                                                           action:@selector(onBackgroundButtonTouched:)
-                                                 forControlEvents:UIControlEventTouchUpInside];
-                                                
-                                                [self.paperBackgroundsScroll addSubview:button];
-                                                if(i == 0){
-                                                    [self onBackgroundButtonTouched:button];
-                                                }
-                                            }];
-            
-            i++;
-        }
-        CGSize contentSize = self.paperBackgroundsScroll.contentSize;
-        contentSize.width = (buttonSize.width + widthOffset) * backgroundList.count + widthOffset;
-        contentSize.height = self.paperBackgroundsScroll.frame.size.height;
-        self.paperBackgroundsScroll.contentSize = contentSize;
-        NSLog(@"%@",self.paperBackgroundsScroll);
-        
-        
-        if(self.controllerType !=PAPER_CONTROLLER_TYPE_CREATING){
-            for(UIButton* button in self.paperBackgroundsScroll.subviews){
-                if([button isKindOfClass:UIButton.class] &&
-                   [[button titleForState:UIControlStateDisabled] compare:self.entity.background] == NSOrderedSame){
-                    [self onBackgroundButtonTouched:button];
-                    break;
-                }
-            }
-        }
-    }failure:^(NSError *error) {
-        [[[UIAlertView alloc]initWithTitle:@"경고"
-                                   message:@"서버로부터 종이 배경들을 받아오는대 실패했습니다"
-                                  delegate:NULL
-                         cancelButtonTitle:@"확인"
-                         otherButtonTitles:NULL, nil] show];
+}
 
-    }];
-}
-- (void)onBackgroundButtonTouched : (UIButton*) sender{
-    self.paperCellImage.image = NULL;//image;
-    self.selectedBackgroundButton = sender;
-    [UIView animateWithDuration:0.2f animations:^{
-        self.paperCellImage.backgroundColor = sender.backgroundColor;
-    } completion:^(BOOL finished) {
+
+#pragma PaperBackgroundPicker Delegate
+-(void) paperBackgroundPickerDidCancelPicking:(PaperBackgroundPicker *)picker{
+    [self dismissViewControllerAnimated:TRUE
+     completion:^{
         
     }];
 }
+
+
+-(void) setPaperCellBackgroundWithName : (NSString*) backgroundName{
+    self.selectedBackgroundName = backgroundName;
+    NSLog(@"%@",self.selectedBackgroundName);
+    [[FlowithAgent sharedAgent] getBackground:self.selectedBackgroundName
+    response:^(BOOL isCachedResponse, UIImage *image) {
+        self.paperCellImage.image = NULL;
+        self.paperCellImage.backgroundColor = [UIColor colorWithPatternImage:image];
+        [self.paperCellImage setNeedsDisplay];
+    }];
+}
+
+
+-(void) paperBackgroundPicker:(PaperBackgroundPicker *)picker
+            didPickBackground:(NSString*) backgroundName{
+    [self setPaperCellBackgroundWithName:backgroundName];
+    [self dismissViewControllerAnimated:TRUE
+                             completion:^{
+                                 
+                             }];
+
+}
+/////
+
 - (void)deleteAllParticipants{
     for(UIView* view in self.participantsContainer.subviews){
         if(view != [self.participantsContainer.subviews objectAtIndex:0])
@@ -160,9 +132,9 @@
     float delta = buttonSize.height * self.participantsContainer.subviews.count;
     
     CGSize contentSize = self.scrollView.contentSize;
-    contentSize.height = 748 + delta;
+    contentSize.height = 667 + delta;
     self.scrollView.contentSize = contentSize;
-    UIViewSetHeight(self.contentContainer, 748 + delta);
+    UIViewSetHeight(self.contentContainer, 667 + delta);
     UIViewSetY(self.bottomViewsContainer, 486+delta);
 }
 - (void)addParticipantsView : (NSDictionary*) participant{
@@ -198,9 +170,9 @@
     float delta = buttonSize.height * self.participantsContainer.subviews.count;
     
     CGSize contentSize = self.scrollView.contentSize;
-    contentSize.height = 748 + delta;
+    contentSize.height = 667 + delta;
     self.scrollView.contentSize = contentSize;
-    UIViewSetHeight(self.contentContainer, 748 + delta);
+    UIViewSetHeight(self.contentContainer, 667 + delta);
     UIViewSetY(self.bottomViewsContainer, 486+delta);
 }
 - (void)syncViewToPaper{
@@ -213,12 +185,10 @@
         self.entity.receiver_fb_id = self.receiverFacebookID;
         self.entity.receive_tel    = @"";
         self.entity.receive_time   = [self buildRequestDate];
-        self.entity.background     = [self.selectedBackgroundButton titleForState:UIControlStateDisabled];
+        self.entity.background     = self.selectedBackgroundName;
         self.entity.width          = [NSNumber numberWithInt:1440];
         self.entity.height         = [NSNumber numberWithInt:960];
-        
         NSLog(@"%@",self.entity);
-        
     }
 }
 - (void)syncPaperToView{
@@ -231,7 +201,8 @@
         self.receiveDate.text = [self dateToString:receiveDate];
         self.receiveTime.text = [self timeToString:receiveDate];
         self.emailInput.text  = self.entity.target_email;
-     
+        [self setPaperCellBackgroundWithName:self.entity.background];
+        
         [[FlowithAgent sharedAgent] getPaperParticipants:self.entity
             success:^(BOOL isCachedResponse, NSArray *participants) {
                 [self deleteAllParticipants];
@@ -244,7 +215,6 @@
         
     }
 }
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -259,8 +229,6 @@
     self.datePicker.minimumDate = [NSDate date];
     self.receiveDate.inputView = self.datePicker;
     self.receiveTime.inputView = self.timePicker;
-    
-    
     
     NSLog(@"%@",self.entity);
     switch (self.controllerType) {
@@ -350,13 +318,16 @@
         [self syncViewToPaper];
         [[FlowithAgent sharedAgent] updatePaper:self.entity
           success:^(RollingPaper *paper) {
-              NSLog(@"%@",paper);
               self.entity = paper;
               [self.listController refreshPaperList];
               [self.navigationController popViewControllerAnimated:TRUE];
         } failure:^(NSError *error) {
             NSLog(@"%@",error);
-            [[[UIAlertView alloc] initWithTitle:@"에러" message:@"서버와 통신 실패" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles: nil] show];
+            [[[UIAlertView alloc] initWithTitle:@"에러"
+                                        message:@"서버와 통신 실패"
+                                       delegate:nil
+                              cancelButtonTitle:@"확인"
+                              otherButtonTitles:nil] show];
         }];
     }
     else{
@@ -519,8 +490,8 @@ clickedButtonAtIndex:(NSInteger)buttonIndex{
                        animated:YES
                      completion:^{}];
 }
-- (BOOL)friendPickerViewController:(FBFriendSearchPickerController*)friendPicker
-                 shouldIncludeUser:(id<FBGraphUser>)user{
+- (BOOL)friendPickerViewController : (FBFriendSearchPickerController*)friendPicker
+                 shouldIncludeUser : (id<FBGraphUser>)user{
     return [friendPicker delegateFriendPickerViewController:friendPicker
                                           shouldIncludeUser:user];
 }
@@ -562,6 +533,17 @@ clickedButtonAtIndex:(NSInteger)buttonIndex{
     [self presentViewController:self.invitingFreindPicker 
                        animated:YES
                      completion:^{}];
+}
+
+- (IBAction)onTouchPickBackground:(id)sender {
+    PaperBackgroundPicker* picker = [[PaperBackgroundPicker alloc]initWithInitialBackgroundName:self.selectedBackgroundName
+                                                                                       Delegate:self];
+    [self presentViewController:picker
+                       animated:TRUE
+                     completion:^{
+                         
+                     }];
+
 }
 -(NSString*) dateToFormatString : (NSDate*) date{
     NSDateFormatter* dateFormatter = [[NSDateFormatter alloc]init];

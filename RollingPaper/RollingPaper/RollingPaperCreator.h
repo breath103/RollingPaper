@@ -11,6 +11,9 @@
 #import "RollingPaper.h"
 #import "FBFriendSearchPickerController.h"
 #import "RollingPaperListController.h"
+#import "PaperBackgroundPicker.h"
+
+
 typedef enum ROLLING_PAPER_CONTROLLER_STYLE{
     PAPER_CONTROLLER_TYPE_CREATING,
     PAPER_CONTROLLER_TYPE_EDITING_CREATOR,
@@ -22,7 +25,8 @@ typedef enum ROLLING_PAPER_CONTROLLER_STYLE{
 @interface RollingPaperCreator : UIViewController<FBFriendPickerDelegate,
                                                   UIAlertViewDelegate,
                                                   UISearchBarDelegate,
-                                                  UINavigationControllerDelegate>
+                                                  UINavigationControllerDelegate,
+                                                  PaperBackgroundPickerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView* contentContainer;
 @property (weak, nonatomic) IBOutlet UITextField *titleText;
@@ -36,8 +40,9 @@ typedef enum ROLLING_PAPER_CONTROLLER_STYLE{
 @property (nonatomic,weak) IBOutlet UIScrollView* scrollView;
 @property (nonatomic,strong) NSString* receiverFacebookID;
 @property (weak, nonatomic) IBOutlet UIImageView *paperCellImage;
-@property (weak, nonatomic) IBOutlet UIScrollView *paperBackgroundsScroll;
-@property (nonatomic,weak) UIButton* selectedBackgroundButton;
+@property (nonatomic,strong) NSString* selectedBackgroundName;
+//@property (weak, nonatomic) IBOutlet UIScrollView *paperBackgroundsScroll;
+//@property (nonatomic,weak) UIButton* selectedBackgroundButton;
 @property (nonatomic,readwrite) ROLLING_PAPER_CONTROLLER_STYLE controllerType;
 @property (nonatomic,strong) RollingPaper* entity;
 @property (weak, nonatomic) IBOutlet UIButton *finishButton;
@@ -61,5 +66,6 @@ typedef enum ROLLING_PAPER_CONTROLLER_STYLE{
 - (IBAction)onPickTime:(UIDatePicker *)sender;
 - (IBAction)onTouchReceiveDate:(id)sender;
 - (IBAction)onTouchInvite:(id)sender;
+- (IBAction)onTouchPickBackground:(id)sender;
 
 @end

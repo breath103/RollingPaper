@@ -30,6 +30,7 @@
                                                    DockControllerDelegate,
                                                    TypewriterControllerDelegate,
                                                 //   CameraContorllerDelegate,
+                                                   UINavigationControllerDelegate,
                                                    UIImagePickerControllerDelegate,
                                                    AlbumControllerDelegate,
                                                    RecoderViewControllerDelegate,

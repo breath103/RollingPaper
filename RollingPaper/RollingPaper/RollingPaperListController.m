@@ -55,7 +55,8 @@ static RollingPaperListController* g_instance = NULL;
     [paperCellControllers removeAllObjects];
 }
 -(void) refreshPaperList{
-    [[FlowithAgent sharedAgent]getParticipaitingPapers:^(BOOL isCachedResponse, NSArray *paperArray) {
+    [[FlowithAgent sharedAgent]getParticipaitingPapers:^(BOOL isCachedResponse,
+                                                         NSArray *paperArray) {
         [self createPaperViewsFromArray:paperArray];
     } failure:^(NSError *error) {
         [[[UIAlertView alloc] initWithTitle:@"경고"
@@ -164,7 +165,8 @@ static RollingPaperListController* g_instance = NULL;
 -(void) paperCellSettingTouched:(PaperCellController *)paper{
     RollingPaperCreator* paperSettingView = [[RollingPaperCreator alloc] initForEditing:paper.entity];
     paperSettingView.listController = self;
-    [self.navigationController pushViewController:paperSettingView animated:TRUE];
+    [self.navigationController pushViewController : paperSettingView
+                                         animated : TRUE];
 }
 
 - (void)didReceiveMemoryWarning

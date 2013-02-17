@@ -52,7 +52,7 @@
                   failure : (void (^)(NSError* error))failure ;
 -(void) getSendedPapers : (void (^)(BOOL isCachedResponse,NSArray* paperArray))callback
                 failure : (void (^)(NSError* error))failure ;
-        // -CONNECTION USERS
+// -CONNECTION USERS
 -(void) getUsersWhoAreMyFacebookFriends : (void (^)(BOOL isCachedResponse,NSArray* users))success
                                 failure : (void (^)(NSError* error))failure;
 -(void) inviteUsers : (NSArray*) users

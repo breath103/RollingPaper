@@ -80,7 +80,6 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions{
 #ifdef TESTING
     [TestFlight setDeviceIdentifier:[[[UIDevice currentDevice] identifierForVendor] UUIDString]];
 #endif
-    
     [TestFlight takeOff:@"134d6c9817a6a69e9e1cf71568dfc69c_MTg3OTgzMjAxMy0wMi0xNiAwOTo1NDo1Mi4xNTg5MzA"];
    
     return YES;

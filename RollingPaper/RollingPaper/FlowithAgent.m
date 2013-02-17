@@ -127,9 +127,9 @@
 
 -(void) getBackgroundList : (void (^)(BOOL isCaschedResponse, NSArray * backgroundList))callback
                   failure : (void (^)(NSError* error))failure{
-    NSArray* backgroundList = [[SYCache sharedCache]objectForKey:@"getBackgroundList"];
-    if(backgroundList){
-        callback(TRUE,backgroundList);
+    NSDictionary* cashedResponse = [[SYCache sharedCache]objectForKey:@"getBackgroundList"];
+    if(cashedResponse){
+        callback(TRUE,[cashedResponse objectForKey:@"backgrounds"]);
     }
     
     NSURLRequest *urlRequest =  SubAddressToNSURLRequest(@"/paper_backgroundList.json");
@@ -348,6 +348,10 @@
         failure(error);
     }];
     [request start];
+}
+-(void) inviteUsers : (NSArray*) users
+            toPaper : (RollingPaper*) paper{
+    NSLog(@"NEED TO IMPLEMENT !!!!!!");
 }
 
 -(void) quitPaper : (RollingPaper*) paper

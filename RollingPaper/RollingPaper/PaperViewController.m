@@ -37,7 +37,6 @@
 @interface PaperViewController (PrivateInterface)
 -(void) saveToServer : (void(^)(NSMutableArray* syncSuccessedViews,
                                 NSMutableArray* syncFailedViews)) callback;
-
 @end
 
 @implementation PaperViewController
@@ -515,8 +514,10 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer : (UIGestureRecognizer *)othe
             self.currentEditingViewController = pencilcaseController;
         }break;
         case DockMenuTypeSetting : {
-            RollingPaperCreator* settingController = [[RollingPaperCreator alloc] initForEditing:self.entity];
-            [self.navigationController pushViewController:settingController animated:self];
+            RollingPaperCreator* paperSettingView = [[RollingPaperCreator alloc] initForEditing:self.entity];
+            paperSettingView.listController = [self.navigationController.viewControllers objectAtIndex:0];
+            [self.navigationController pushViewController:paperSettingView
+                                                 animated:TRUE];
         }break;
         default:
             NSLog(@"Unhandled dock menu %d",menuType);

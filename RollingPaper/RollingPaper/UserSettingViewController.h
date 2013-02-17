@@ -10,7 +10,6 @@
 
 @interface UserSettingViewController : UIViewController
 @property (weak, nonatomic) IBOutlet UIImageView *userImageView;
-@property (weak, nonatomic) IBOutlet UITextView *feedbackInput;
 - (IBAction)onTouchShowNotice:(id)sender;
 - (IBAction)onTouchFeedbackButton:(id)sender;
 
