@@ -28,6 +28,8 @@
 - (IBAction)onTouchCancel:(id)sender;
 -(id) initWithInitialBackgroundName : (NSString*) backgroundName
                            Delegate : (id<PaperBackgroundPickerDelegate>)delegate;
+
+
 @end
 
 @protocol PaperBackgroundPickerDelegate <NSObject>

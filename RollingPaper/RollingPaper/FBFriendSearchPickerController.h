@@ -9,6 +9,7 @@
 #import <FacebookSDK/FacebookSDK.h>
 
 @interface FBFriendSearchPickerController : FBFriendPickerViewController<UISearchBarDelegate>
+
 @property (nonatomic,strong) UISearchBar* searchBar;
 @property (nonatomic,strong) NSString*    searchText;
 @property (nonatomic,strong) NSArray*     appUsingFriends;

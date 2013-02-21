@@ -92,10 +92,12 @@
     ///
     
     self.contentsScrollContainer.userInteractionEnabled = TRUE;
-    UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self
-                                                                                action:@selector(onTapScrollBack:)];
-
-    [self.contentsScrollContainer addGestureRecognizer:tapGesture];
+    UILongPressGestureRecognizer* backFocus = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(onTapScrollBack:)];
+    [backFocus setMinimumPressDuration:0.1f];
+    self.backFocusTapGestureRecognizer = backFocus;
+   // [self.backFocusTapGestureRecognizer setNumberOfTouchesRequired:3];
+    [self.contentsContainer addGestureRecognizer:self.backFocusTapGestureRecognizer];
+ //   self.backFocusTapGestureRecognizer.delegate = self;
 
     [self.contentsContainer addSubview:self.contentsScrollContainer];
     
@@ -116,15 +118,15 @@
     for(ImageContent* image in imageContents){
         ImageContentView* entityView = [[ImageContentView alloc] initWithEntity:image];
         [self.contentsScrollContainer addSubview:entityView];
+        [self addTransformTargetGestureToEntityView:entityView];
+        
     }
     
     for(SoundContent* sound in soundContents){
         SoundContentView* entityView = [[SoundContentView alloc] initWithEntity:sound];
         [self.contentsScrollContainer addSubview:entityView];
+        [self addTransformTargetGestureToEntityView:entityView];
     }
-    
-    [self addTransformTargetGestureToEntityView:[self.contentsScrollContainer.subviews lastObject]];
-    
     // 일단 받았음으로 받은 것을 현재 디바이스에 저장한다
 }
 -(void)loadAndShowContents{
@@ -133,9 +135,8 @@
      success:^(BOOL isCachedResponse, NSArray *imageContents,
                                       NSArray *soundContents) {
          NSLog(@"%@ %@",imageContents,soundContents);
-         [self onReceiveContentsResponse:imageContents
-                                        :soundContents ];
-         
+         [self onReceiveContentsResponse : imageContents
+                                         : soundContents ];
      }failure:^(NSError *error) {
          [[[UIAlertView alloc] initWithTitle:@"에러"
                                      message:@"페이퍼 내용을 서버로 부터 받아오는 실패했습니다. 다시 시도해주세요"
@@ -355,11 +356,11 @@
 }
 -(void) addTransformTargetGestureToEntityView : (UIView*) view{
     view.userInteractionEnabled = TRUE;
-    UILongPressGestureRecognizer* longTapGestureRecognizer = [[UILongPressGestureRecognizer alloc]initWithTarget:self
-                                                                                                          action:@selector(onLongPressContent:)];
+    UILongPressGestureRecognizer* longTapGestureRecognizer = [[UILongPressGestureRecognizer alloc]
+                                                    initWithTarget:self
+                                                            action:@selector(onLongPressContent:)];
     [view addGestureRecognizer:longTapGestureRecognizer];
     longTapGestureRecognizer.delegate = self;
-    NSLog(@"%@",longTapGestureRecognizer);
 }
 
 -(SoundContentView*) onCreateSound : (NSString*) file{
@@ -433,6 +434,11 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer : (UIGestureRecognizer *)othe
         otherGestureRecognizer == [contentsScrollContainer.gestureRecognizers objectAtIndex:0]) {
         return NO;
     }
+    if(gestureRecognizer == self.freeTransformGestureRecognizer &&
+       otherGestureRecognizer == self.backFocusTapGestureRecognizer ){
+        return NO;
+    }
+    
     return YES;
 }
 
@@ -524,21 +530,6 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer : (UIGestureRecognizer *)othe
             break;
     }
 }
-/*
-#pragma mark CameraControllerDelegate
--(void) cameraController:(CameraController *)camera
-             onPickImage:(UIImage *)image{
-    if(image){
-        //이미지를 선택한경우
-        [self onCreateImage:image];
-    }
-    [camera removeFromParentViewController];
-    [camera.view removeFromSuperview];
-}
--(void) cameraControllerCancelPicking:(CameraController *)camera{
-    
-}
- */
 
 -(void) onEditingViewDismissed{
     [dockController showIndicator];
@@ -762,7 +753,6 @@ didFinishPickingMediaWithInfo : (NSDictionary *)info{
 -(UIView*) viewForZoomingInScrollView:(UIScrollView *)scrollView{
     return self.contentsScrollContainer;
 }
-
 
 
 @end

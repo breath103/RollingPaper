@@ -12,6 +12,7 @@
 #import "FBFriendSearchPickerController.h"
 #import "RollingPaperListController.h"
 #import "PaperBackgroundPicker.h"
+#import "PaperParticipantsListController.h"
 
 
 typedef enum ROLLING_PAPER_CONTROLLER_STYLE{
@@ -51,6 +52,7 @@ typedef enum ROLLING_PAPER_CONTROLLER_STYLE{
 @property (weak, nonatomic) IBOutlet UIView *participantsContainer;
 @property (nonatomic,strong) FBFriendSearchPickerController* receivingFriendPicker;
 @property (nonatomic,strong) FBFriendSearchPickerController* invitingFreindPicker;
+@property (nonatomic,strong) PaperParticipantsListController* participantsListController;
 
 @property (nonatomic,weak) RollingPaperListController* listController;
 - (id) initForCreating;

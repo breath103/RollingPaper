@@ -45,6 +45,7 @@
 @property (nonatomic,readwrite) BOOL isEditingMode;
 @property (weak, nonatomic) IBOutlet UIButton *saveButton;
 @property (weak, nonatomic) IBOutlet UIButton *refreshButton;
+@property (nonatomic,strong) UITapGestureRecognizer* backFocusTapGestureRecognizer;
 
 - (IBAction)onTouchSaveAndQuit:(id)sender;
 -(IBAction)onTouchRefresh:(id)sender;

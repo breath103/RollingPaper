@@ -16,6 +16,8 @@
 #import <JSONKit.h>
 #import "FlowithAgent.h"
 #import "PaperBackgroundPicker.h"
+#import <UIImageView+AFNetworking.h>
+#import "User.h"
 
 @interface RollingPaperCreator ()
 
@@ -97,7 +99,7 @@
             [view removeFromSuperview];
     }
 }
-- (void)createNewParticipnatsCell : (NSDictionary<FBGraphUser>*) user{
+- (void)createNewParticipnatsCell : (id<FBGraphUser>) user{
     CGSize buttonSize = CGSizeMake(270, 37);
     
     UIButton* button = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -118,11 +120,15 @@
     [self.participantsContainer addSubview:button];
 
     NSString* profileURL =[[[user objectForKey:@"picture"] objectForKey:@"data"]objectForKey :@"url" ];
-    [[FlowithAgent sharedAgent] getImageFromURL:profileURL
-                                        success:^(BOOL isCachedResponse, UIImage *image) {
-                                            profileView.image = image;
-                                            [profileView setNeedsDisplay];
-                                        }];
+
+    [profileView
+     setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:profileURL]]
+     placeholderImage:NULL
+     success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+         profileView.image = image;
+     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+         
+     }];
     
     UIViewSetHeight(self.participantsContainer,
                     self.participantsContainer.subviews.count * buttonSize.height);
@@ -137,7 +143,7 @@
     UIViewSetHeight(self.contentContainer, 667 + delta);
     UIViewSetY(self.bottomViewsContainer, 486+delta);
 }
-- (void)addParticipantsView : (NSDictionary*) participant{
+- (void)addParticipantsView : (User*) participant{
     CGSize buttonSize = CGSizeMake(270, 37);
     
     UIButton* button = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -148,7 +154,7 @@
     
     button.frame = CGRectMake(0, buttonSize.height * (self.participantsContainer.subviews.count-1),
                               buttonSize.width, buttonSize.height);
-    [button setTitle:[participant objectForKey:@"name"] forState:UIControlStateNormal];
+    [button setTitle:participant.name forState:UIControlStateNormal];
     [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     
     UIImageView* profileView = [[UIImageView alloc] initWithImage:NULL];
@@ -156,11 +162,15 @@
     [button addSubview:profileView];
     [self.participantsContainer addSubview:button];
    
-    [[FlowithAgent sharedAgent] getImageFromURL:[participant objectForKey:@"picture"]
-                                        success:^(BOOL isCachedResponse, UIImage *image) {
-                                            profileView.image = image;
-                                            [profileView setNeedsDisplay];
-                                        }];
+    [profileView
+        setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:participant.picture]]
+                placeholderImage:NULL
+    success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+        profileView.image = image;
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+        
+    }];
+    
     
     UIViewSetHeight(self.participantsContainer,
                     self.participantsContainer.subviews.count * buttonSize.height);
@@ -206,7 +216,7 @@
         [[FlowithAgent sharedAgent] getPaperParticipants:self.entity
             success:^(BOOL isCachedResponse, NSArray *participants) {
                 [self deleteAllParticipants];
-                for(NSDictionary* user in participants){
+                for(User* user in participants){
                     [self addParticipantsView:user];
                 }
             } failure:^(NSError *error) {
@@ -214,6 +224,12 @@
             }];
         
     }
+}
+- (void) initParticipantsListController{
+    self.participantsListController = [[PaperParticipantsListController alloc]initWithPaper:self.entity];
+    
+    [self.contentContainer addSubview:self.participantsListController.view];
+    [self addChildViewController:self.participantsListController];
 }
 - (void)viewDidLoad
 {
@@ -225,6 +241,9 @@
     
     [self initScrollView];
     [self initPaperCellPreview];
+    
+  //  [self initParticipantsListController];
+    
     
     self.datePicker.minimumDate = [NSDate date];
     self.receiveDate.inputView = self.datePicker;
@@ -355,86 +374,33 @@
     {
         [self syncViewToPaper];
         [[FlowithAgent sharedAgent] createPaper:self.entity
-                                        success:^(RollingPaper *createdPaper) {
-                                            NSLog(@"%@",createdPaper);
-                                            
-                                            self.entity = createdPaper;
-                                            if(self.invitingFreindPicker &&
-                                               self.invitingFreindPicker.selection.count > 0){
-                                                
-                                                /*
-                                                NSMutableArray* facebook_friends = [NSMutableArray new];
-                                                for (id<FBGraphUser> user in self.invitingFreindPicker.selection) [facebook_friends addObject: [user id]];
-                                                ASIFormDataRequest* request = [NetworkTemplate requestForInviteFacebookFriends:facebook_friends
-                                                                                                                       ToPaper:[createdEntity objectForKey:@"idx"]
-                                                                                                                      withUser:[[FlowithAgent sharedAgent] getUserIdx].stringValue];
-                                                [request setCompletionBlock:^{
-                                                    NSLog(@"%@",request.responseString);
-                                                    [self createPaperRequestSuccess : createdEntity];
-                                                }];
-                                                [request startAsynchronous];
-                                                 */
-                                            }
-                                            else{
-                                            }
-                                            [self createPaperRequestSuccess];
-                                        }failure:^(NSError *error) {
-                                            NSLog(@"%@",error);
-                                            [[[UIAlertView alloc] initWithTitle:@"실패"
-                                                                        message:@"롤링페이퍼 서버에 페이퍼 만들기 요청이 실패하였습니다.\n인터넷 연결상태를 확인해주세요"
-                                                                       delegate:nil
-                                                              cancelButtonTitle:nil
-                                                              otherButtonTitles:@"확인", nil] show];
-                                        }];
-            /*
-            ASIFormDataRequest* request = [NetworkTemplate requestForCreateRollingPaperWithUserIdx : [[FlowithAgent sharedAgent] getUserIdx].stringValue
-                                                                                             title : titleText.text
-                                                                                      target_email : emailInput.text
-                                                                                            notice : noticeInput.text
-                                                                                      receiverFBid : receiverFacebookID
-                                                                                      receiverName : receiverName.text
-                                                                                      receieveTime : [self buildRequestDate]
-                                                                                        background : [self.selectedBackgroundButton titleForState:UIControlStateDisabled]];
-            [request setCompletionBlock:^{
-                NSDictionary* createdEntity = parseJSON(request.responseString);
-                if([createdEntity objectForKey:@"error"])
-                {
-                    [[[UIAlertView alloc] initWithTitle:@"실패"
-                                                message:[NSString stringWithFormat: @"롤링페이퍼 서버에 페이퍼 만들기 요청이 실패하였습니다.\n%@",[createdEntity objectForKey:@"error"]]
-                                               delegate:nil
-                                      cancelButtonTitle:nil
-                                      otherButtonTitles:@"확인", nil] show];
+            success:^(RollingPaper *createdPaper) {
+                self.entity = createdPaper;
+                if(self.invitingFreindPicker &&
+                   self.invitingFreindPicker.selection.count > 0){
+                    NSMutableArray* facebook_friends = [NSMutableArray new];
+                    for (id<FBGraphUser> user in self.invitingFreindPicker.selection)
+                        [facebook_friends addObject: [user id]];
+                    [[FlowithAgent sharedAgent] inviteFacebookFreinds:facebook_friends toPaper:self.entity
+                                                              success:^{
+                                                                  
+                                                              } failure:^(NSError *error) {
+                                                                  
+                                                              }];
                 }
+                //친구초대가 없는경우
                 else{
-                    NSLog(@"%@",createdEntity);
-                    if(self.invitingFreindPicker &&
-                       self.invitingFreindPicker.selection.count > 0){
-                        NSMutableArray* facebook_friends = [NSMutableArray new];
-                        for (id<FBGraphUser> user in self.invitingFreindPicker.selection) [facebook_friends addObject: [user id]];
-                        ASIFormDataRequest* request = [NetworkTemplate requestForInviteFacebookFriends:facebook_friends
-                                                                                               ToPaper:[createdEntity objectForKey:@"idx"]
-                                                                                              withUser:[[FlowithAgent sharedAgent] getUserIdx].stringValue];
-                        [request setCompletionBlock:^{
-                            NSLog(@"%@",request.responseString);
-                            [self createPaperRequestSuccess : createdEntity];
-                        }];
-                        [request startAsynchronous];
-                    }
-                    else{
-                        [self createPaperRequestSuccess : createdEntity];
-                    }
+                
                 }
-            }];
-            [request setFailedBlock:^{
-                NSLog(@"%@",@"fail");
+                
+                [self createPaperRequestSuccess];
+            }failure:^(NSError *error) {
                 [[[UIAlertView alloc] initWithTitle:@"실패"
                                             message:@"롤링페이퍼 서버에 페이퍼 만들기 요청이 실패하였습니다.\n인터넷 연결상태를 확인해주세요"
                                            delegate:nil
                                   cancelButtonTitle:nil
                                   otherButtonTitles:@"확인", nil] show];
-            }];
-            [request startAsynchronous];
-             */
+        }];
     }
     else{
         NSLog(@"입력폼에 문제가 있음");
@@ -582,25 +548,39 @@ clickedButtonAtIndex:(NSInteger)buttonIndex{
     [self dismissViewControllerAnimated:YES completion:^{
     }];
 }
+
+
+-(void) fillReceiverDataInputsWithFacebookUser : (id<FBGraphUser>) user {
+    FBRequest* request = [FBRequest requestWithGraphPath:[user id]
+                                              parameters:@{@"fields":@"email,birthday,name"}
+                                              HTTPMethod:@"GET"];
+    [request startWithCompletionHandler:^(FBRequestConnection *connection, id<FBGraphUser> result, NSError *error) {
+        if([result birthday]){
+            self.receiveDate.text = [self dateToFormatString:[self facebookBirthDayToCurrentBirthDay:[result birthday]]];
+            self.receiveTime.text = @"00:00:00";
+        }
+    }];
+    self.receiverFacebookID = user.id;
+    receiverName.text = user.name;
+    
+    
+    [[FlowithAgent sharedAgent] getUserWithFacebookID:[user id]
+                                              success:^(User* user) {
+                                                  if(user.email)
+                                                      self.emailInput.text = user.email;
+                                              } failure:^(NSError *error) {
+                                                  NSLog(@"%@",error);
+                                              }];
+
+}
+
+
 -(void) facebookViewControllerDoneWasPressed : (FBFriendSearchPickerController*)sender{
     if(self.controllerType == PAPER_CONTROLLER_TYPE_CREATING)
     {
         if(self.receivingFriendPicker == sender){
-            for (id<FBGraphUser> user in self.receivingFriendPicker.selection) {
-                FBRequest* request = [FBRequest requestForGraphPath:[user id]];
-                [request startWithCompletionHandler:^(FBRequestConnection *connection, id<FBGraphUser> result, NSError *error) {
-                    NSLog(@"%@",result);
-                    if([result birthday]){
-                        self.receiveDate.text = [self dateToFormatString:[self facebookBirthDayToCurrentBirthDay:[result birthday]]];
-                        self.receiveTime.text = @"00:00:00";
-                    }
-                    else{
-                        
-                    }
-                }];
-                self.receiverFacebookID = user.id;
-                receiverName.text = user.name;
-            }
+            id<FBGraphUser> user = [self.receivingFriendPicker.selection objectAtIndex:0];
+            [self fillReceiverDataInputsWithFacebookUser:user];
             [self dismissViewControllerAnimated:YES completion:^{
             }];
         }
@@ -616,23 +596,9 @@ clickedButtonAtIndex:(NSInteger)buttonIndex{
     }
     else{ //방 편집모드
         if(self.receivingFriendPicker == sender){
-            for (id<FBGraphUser> user in self.receivingFriendPicker.selection) {
-                FBRequest* request = [FBRequest requestForGraphPath:[user id]];
-                [request startWithCompletionHandler:^(FBRequestConnection *connection, id<FBGraphUser> result, NSError *error) {
-                    NSLog(@"%@",result);
-                    if([result birthday]){
-                        self.receiveDate.text = [self dateToFormatString:[self facebookBirthDayToCurrentBirthDay:[result birthday]]];
-                        self.receiveTime.text = @"00:00:00";
-                    }
-                    else{
-                        
-                    }
-                }];
-                self.receiverFacebookID = user.id;
-                receiverName.text = user.name;
-            }
+            id<FBGraphUser> user = [self.receivingFriendPicker.selection objectAtIndex:0];
+            [self fillReceiverDataInputsWithFacebookUser:user];
             [self dismissViewControllerAnimated:YES completion:^{
-                
             }];
         }
         else if(self.invitingFreindPicker == sender){
@@ -640,22 +606,17 @@ clickedButtonAtIndex:(NSInteger)buttonIndex{
             NSMutableArray* facebook_friends = [NSMutableArray new];
             for (id<FBGraphUser> user in self.invitingFreindPicker.selection)
                 [facebook_friends addObject: [user id]];
-            /*
-            ASIFormDataRequest* request = [NetworkTemplate requestForInviteFacebookFriends:facebook_friends
-                                                                                   ToPaper:self.entity.idx.stringValue
-                                                                                  withUser:[[FlowithAgent sharedAgent] getUserIdx].stringValue];
-            [request setCompletionBlock:^{
-                NSLog(@"%@",request.responseString);
+            
+            [[FlowithAgent sharedAgent]inviteFacebookFreinds:facebook_friends
+                                                     toPaper:self.entity
+            success:^{
                 [self syncPaperToView];
                 [self dismissViewControllerAnimated:YES completion:^{
                     
                 }];
+            } failure:^(NSError *error) {
+                NSLog(@"%@",error);
             }];
-            [request setFailedBlock:^{
-                NSLog(@"%@",request);
-            }];
-            [request startAsynchronous];
-             */
         }
     }
 }

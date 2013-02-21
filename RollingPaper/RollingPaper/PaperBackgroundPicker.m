@@ -10,6 +10,7 @@
 #import "FlowithAgent.h"
 #import "UELib/UEUI.h"
 #import <QuartzCore/QuartzCore.h>
+#import "ccMacros.h"
 
 
 @implementation PaperBackgroundCell
@@ -136,4 +137,14 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
 didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
     // TODO: Deselect item
 }
+
+#pragma mark - UICollectionViewFlowLayout Delegate
+
+/*
+- (CGSize)collectionView:(UICollectionView *)collectionView
+                  layout:(UICollectionViewLayout*)collectionViewLayout
+  sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
+    return CGSizeMake(50 , (double) arc4random() / RAND_MAX * 50);
+}
+ */
 @end

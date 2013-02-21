@@ -1596,8 +1596,8 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Suyeong Lee";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Suyeong Lee";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Suyeong Lee (NPUDP9X8HL)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Suyeong Lee (NPUDP9X8HL)";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -1612,8 +1612,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "819E89AE-9147-49DB-BB64-A7B2C69A2D3E";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "819E89AE-9147-49DB-BB64-A7B2C69A2D3E";
+				PROVISIONING_PROFILE = "1BAB78AC-8940-4CE9-8684-D2C6701F3A7C";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "1BAB78AC-8940-4CE9-8684-D2C6701F3A7C";
 				SDKROOT = iphoneos;
 				VALID_ARCHS = "armv7 armv7s";
 			};
@@ -1629,8 +1629,8 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Suyeong Lee";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Suyeong Lee";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Suyeong Lee (NPUDP9X8HL)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Suyeong Lee (NPUDP9X8HL)";
 				COPY_PHASE_STRIP = NO;
 				"COPY_PHASE_STRIP[sdk=*]" = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1640,8 +1640,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "819E89AE-9147-49DB-BB64-A7B2C69A2D3E";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "819E89AE-9147-49DB-BB64-A7B2C69A2D3E";
+				PROVISIONING_PROFILE = "1BAB78AC-8940-4CE9-8684-D2C6701F3A7C";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "1BAB78AC-8940-4CE9-8684-D2C6701F3A7C";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 				VALID_ARCHS = "armv7 armv7s";
@@ -1653,8 +1653,8 @@
 			baseConfigurationReference = 79C1079E3D27429083B31B8B /* Pods.xcconfig */;
 			buildSettings = {
 				ARCHS = armv7;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Suyeong Lee";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Suyeong Lee";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Suyeong Lee (NPUDP9X8HL)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Suyeong Lee (NPUDP9X8HL)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../TravelTape/TravelTape\"",
@@ -1672,8 +1672,8 @@
 					"\"$(SRCROOT)/RollingPaper/TestFlightSDK1.1\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "819E89AE-9147-49DB-BB64-A7B2C69A2D3E";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "819E89AE-9147-49DB-BB64-A7B2C69A2D3E";
+				PROVISIONING_PROFILE = "1BAB78AC-8940-4CE9-8684-D2C6701F3A7C";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "1BAB78AC-8940-4CE9-8684-D2C6701F3A7C";
 				SDKROOT = iphoneos;
 				TEST_AFTER_BUILD = NO;
 				VALIDATE_PRODUCT = YES;
@@ -1686,8 +1686,8 @@
 			baseConfigurationReference = 79C1079E3D27429083B31B8B /* Pods.xcconfig */;
 			buildSettings = {
 				ARCHS = armv7;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Suyeong Lee";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Suyeong Lee";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Suyeong Lee (NPUDP9X8HL)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Suyeong Lee (NPUDP9X8HL)";
 				COPY_PHASE_STRIP = NO;
 				"COPY_PHASE_STRIP[sdk=*]" = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1707,8 +1707,8 @@
 					"\"$(SRCROOT)/RollingPaper/TestFlightSDK1.1\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "819E89AE-9147-49DB-BB64-A7B2C69A2D3E";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "819E89AE-9147-49DB-BB64-A7B2C69A2D3E";
+				PROVISIONING_PROFILE = "1BAB78AC-8940-4CE9-8684-D2C6701F3A7C";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "1BAB78AC-8940-4CE9-8684-D2C6701F3A7C";
 				SDKROOT = iphoneos;
 				TEST_AFTER_BUILD = NO;
 				VALIDATE_PRODUCT = YES;

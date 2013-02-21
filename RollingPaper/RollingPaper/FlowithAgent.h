@@ -15,7 +15,8 @@
 
 @class RollingPaper;
 @class ImageContent;
-@class SoundContent; 
+@class SoundContent;
+@class User;
 
 @interface FlowithAgent : NSObject
 
@@ -45,6 +46,12 @@
              response : (void(^)(BOOL isCachedResponse,UIImage* image)) response;
 /////////////////////
 
+// USER
+-(void) getUserWithFacebookID : (NSString*) facebook_id
+                      success : (void (^)(User* user))success
+                      failure : (void (^)(NSError* error))failure ;
+
+
 // USER - CONNECTION PAPER
 -(void) getParticipaitingPapers : (void (^)(BOOL isCachedResponse,NSArray* paperArray))success
                         failure : (void (^)(NSError* error))failure ;
@@ -57,6 +64,11 @@
                                 failure : (void (^)(NSError* error))failure;
 -(void) inviteUsers : (NSArray*) users
             toPaper : (RollingPaper*) paper;
+-(void) inviteFacebookFreinds : (NSArray*) facebook_friends
+                      toPaper : (RollingPaper*) paper
+                      success : (void (^)(void))success
+                      failure : (void (^)(NSError* error))failure;
+
 
 // PAPER
 -(void) createPaper : (RollingPaper*) paper

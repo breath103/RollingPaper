@@ -17,6 +17,7 @@
 #import "Notice.h"
 #import <FacebookSDK/FacebookSDK.h>
 #import "KakaoLinkCenter.h"
+#import "User.h"
 
 #define SubAddressToRequestURL(x) ([SERVER_HOST stringByAppendingString:x])
 #define SubAddressToNSURLRequest(x) ToNSURLRequest(SubAddressToRequestURL(x))
@@ -114,8 +115,8 @@
           imageProcessingBlock : ^UIImage *(UIImage *image) {
               return image ;
         } success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-            [[SYCache sharedCache] removeObjectForKey:url];
-            [[SYCache sharedCache] setImage:image forKey:url];
+   //         [[SYCache sharedCache] removeObjectForKey:url];
+    //        [[SYCache sharedCache] setImage:image forKey:url];
             success(FALSE,image);
         } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
             NSLog(@"fail : %@",error);
@@ -317,15 +318,36 @@
     success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
         NSDictionary* contentsDictionary = [JSON objectForKey:@"contents"];
         NSLog(@"%@",contentsDictionary);
-        
         success(FALSE,[ImageContent contentsWithDictionaryArray:[contentsDictionary objectForKey:@"image"]],
                 [SoundContent contentsWithDictionaryArray:[contentsDictionary objectForKey:@"sound"]]);
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
         failure(error);
     }] start];
-    
-    
 }
+
+-(void) getUserWithFacebookID : (NSString*) facebook_id
+                      success : (void (^)(User* user))success
+                      failure : (void (^)(NSError* error))failure{
+    NSURL *url = [NSURL URLWithString:SERVER_HOST];
+    AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:url];
+    
+    [[AFJSONRequestOperation
+     JSONRequestOperationWithRequest:[httpClient requestWithMethod:@"GET"
+                                                              path:[NSString stringWithFormat:@"user/findWithFacebookID/%@.json",facebook_id]
+                                                        parameters:NULL]
+     success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+         NSDictionary* resultDict = JSON;
+         if([resultDict objectForKey:@"user"]){
+             success( [[User alloc] initWithDict:[resultDict objectForKey:@"user"]] );
+         }else{
+             failure( [NSError errorWithDomain:@"There is No User" code:100 userInfo:nil]);
+         }
+     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+         failure(error);
+     }] start];
+}
+
+
 -(void) getPaperParticipants : (RollingPaper*) paper
                      success : (void (^)(BOOL isCachedResponse,NSArray* participants))success
                      failure : (void (^)(NSError* error))failure{
@@ -334,7 +356,7 @@
     
     NSArray* cachedResponse = [[SYCache sharedCache]objectForKey:url];
     if(cachedResponse){
-        success(TRUE,cachedResponse);
+        success(TRUE,[User userWithDictArray:cachedResponse]);
     }
     
     AFJSONRequestOperation* request =
@@ -342,7 +364,7 @@
         NSArray* participantsArray = JSON;
         [[SYCache sharedCache] removeObjectForKey:url];
         [[SYCache sharedCache] setObject:participantsArray forKey:url];
-        success(FALSE,participantsArray);
+        success(FALSE,[User userWithDictArray:participantsArray]);
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
         NSLog(@"%@",error);
         failure(error);
@@ -353,7 +375,38 @@
             toPaper : (RollingPaper*) paper{
     NSLog(@"NEED TO IMPLEMENT !!!!!!");
 }
-
+-(void) inviteFacebookFreinds : (NSArray*) facebook_friends
+                      toPaper : (RollingPaper*) paper
+                      success : (void (^)(void))success
+                      failure : (void (^)(NSError* error))failure{
+    
+    NSURL *url = [NSURL URLWithString:SERVER_HOST];
+    
+    AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:url];
+    // new version of creating paper
+    NSDictionary *params = @{@"paper_idx":paper.idx,
+                             @"user_idx" :[self getUserIdx],
+                             @"facebook_friends" : [facebook_friends JSONString]};
+    [httpClient postPath:@"/paper/inviteWithFacebookID"
+              parameters:params
+                 success:^(AFHTTPRequestOperation *operation, NSData* responseObject){
+                     NSLog(@"%@",[responseObject objectFromJSONData]);
+                     /*
+                     NSDictionary* jsonDict = [responseObject objectFromJSONData];
+                     if([jsonDict objectForKey:@"success"]){
+                     
+                     }else{
+                         
+                     }
+                      */
+                     if(responseObject){
+                         success();
+                     }
+                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                     failure(error);
+                 }];
+   
+}
 -(void) quitPaper : (RollingPaper*) paper
           success : (void (^)())success
           failure : (void (^)(NSError* error))failure{

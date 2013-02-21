@@ -12,12 +12,10 @@
 
 
 @interface SoundContent : Content
-
 @property (nonatomic, retain) NSNumber * idx;
 @property (nonatomic, retain) NSNumber * paper_idx;
 @property (nonatomic, retain) NSString * sound;
 @property (nonatomic, retain) NSNumber * user_idx;
-
 +(SoundContent*) contentWithDictionary : (NSDictionary*) dict;
 +(NSArray*) contentsWithDictionaryArray : (NSArray*) array;
 @end

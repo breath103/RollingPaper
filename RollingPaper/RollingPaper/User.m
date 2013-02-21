@@ -12,14 +12,25 @@
 -(id) initWithDict : (NSDictionary*) dict{
     self = [self init];
     if(self){
-        self.birthday = [dict objectForKey:@"birthday"];
-        self.email    = [dict objectForKey:@"email"];
+        self.birthday             = [dict objectForKey:@"birthday"];
+        self.email                = [dict objectForKey:@"email"];
         self.facebook_accesstoken = [dict objectForKey:@"facebook_accesstoken"];
-        self.facebook_id = [dict objectForKey:@"facebook_id"];
-        self.idx = [dict objectForKey:@"idx"];
-        self.name = [dict objectForKey:@"name"];
-        self.picture = [dict objectForKey:@"picture"];
+        self.facebook_id          = [dict objectForKey:@"facebook_id"];
+        self.idx                  = [dict objectForKey:@"idx"];
+        self.name                 = [dict objectForKey:@"name"];
+        self.picture              = [dict objectForKey:@"picture"];
     }
     return self;
+}
++(NSArray*) userWithDictArray : (NSArray*) dictArray{
+    NSMutableArray* users = [[NSMutableArray alloc]initWithCapacity:dictArray.count];
+    for(NSDictionary* userDict in dictArray){
+        [users addObject:[[User alloc] initWithDict:userDict]];
+    }
+    return users;
+}
+
+-(void) getPicture : (void(^)(UIImage* image)) callback{
+    
 }
 @end
