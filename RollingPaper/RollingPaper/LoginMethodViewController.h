@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface LoginMethodViewController : UIViewController
-
 - (IBAction)onTouchFacebookLogin:(id)sender;
 - (IBAction)onTouchLogin:(id)sender;
+- (IBAction)onTouchSignUp:(id)sender;
 @end

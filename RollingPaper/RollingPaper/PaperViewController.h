@@ -47,6 +47,9 @@
 @property (weak, nonatomic) IBOutlet UIButton *refreshButton;
 @property (nonatomic,strong) UITapGestureRecognizer* backFocusTapGestureRecognizer;
 
+-(void) hideTopNavigationBar;
+-(void) showTopNavigationBar;
+
 - (IBAction)onTouchSaveAndQuit:(id)sender;
 -(IBAction)onTouchRefresh:(id)sender;
 -(ImageContentView*) onCreateImage : (UIImage *)image;

@@ -31,6 +31,5 @@
 }
 
 -(void) getPicture : (void(^)(UIImage* image)) callback{
-    
 }
 @end

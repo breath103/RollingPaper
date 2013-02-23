@@ -18,6 +18,8 @@
 #import "PaperBackgroundPicker.h"
 #import <UIImageView+AFNetworking.h>
 #import "User.h"
+#import "UIAlertViewBlockDelegate.h"
+#import "PaperParticipantsListController.h"
 
 @interface RollingPaperCreator ()
 
@@ -121,14 +123,7 @@
 
     NSString* profileURL =[[[user objectForKey:@"picture"] objectForKey:@"data"]objectForKey :@"url" ];
 
-    [profileView
-     setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:profileURL]]
-     placeholderImage:NULL
-     success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-         profileView.image = image;
-     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-         
-     }];
+    [profileView setImageWithURL:[NSURL URLWithString:profileURL]];
     
     UIViewSetHeight(self.participantsContainer,
                     self.participantsContainer.subviews.count * buttonSize.height);
@@ -162,14 +157,7 @@
     [button addSubview:profileView];
     [self.participantsContainer addSubview:button];
    
-    [profileView
-        setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:participant.picture]]
-                placeholderImage:NULL
-    success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-        profileView.image = image;
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-        
-    }];
+    [profileView setImageWithURL:[NSURL URLWithString:participant.picture]];
     
     
     UIViewSetHeight(self.participantsContainer,
@@ -225,11 +213,44 @@
         
     }
 }
+/*
 - (void) initParticipantsListController{
     self.participantsListController = [[PaperParticipantsListController alloc]initWithPaper:self.entity];
     
     [self.contentContainer addSubview:self.participantsListController.view];
     [self addChildViewController:self.participantsListController];
+}
+ */
+- (void)viewWillAppear:(BOOL)animated{
+    
+    [self.navigationController setNavigationBarHidden:FALSE
+                                             animated:TRUE];
+    
+    {
+        UIButton* leftButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        leftButton.frame = CGRectMake(0, 0, 24,24);
+        [leftButton setImage:[UIImage imageNamed:@"previousArrow"]
+                    forState:UIControlStateNormal];
+        [leftButton addTarget:self
+                       action:@selector(onTouchPrevious:)
+             forControlEvents:UIControlEventTouchUpInside];
+        
+        UIBarButtonItem* leftBarButton = [[UIBarButtonItem alloc]initWithCustomView:leftButton];
+        [self.navigationItem setLeftBarButtonItem:leftBarButton
+                                          animated:TRUE];
+    }
+    {
+        /*
+        UIButton* rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        rightButton.frame = CGRectMake(0, 0, 24,24);
+        [rightButton setImage:[UIImage imageNamed:@"nextArrow"] forState:UIControlStateNormal];
+        [rightButton addTarget:self action:@selector(onTouchProfile:)
+                   forControlEvents:UIControlEventTouchUpInside];
+        UIBarButtonItem* rightBarButton = [[UIBarButtonItem alloc]initWithCustomView:rightButton];
+        [self.navigationItem setRightBarButtonItem:rightBarButton
+                                         animated:TRUE];
+         */
+    }
 }
 - (void)viewDidLoad
 {
@@ -242,8 +263,7 @@
     [self initScrollView];
     [self initPaperCellPreview];
     
-  //  [self initParticipantsListController];
-    
+    //[self initParticipantsListController];
     
     self.datePicker.minimumDate = [NSDate date];
     self.receiveDate.inputView = self.datePicker;
@@ -252,24 +272,27 @@
     NSLog(@"%@",self.entity);
     switch (self.controllerType) {
         case PAPER_CONTROLLER_TYPE_CREATING:{
-            self.titleLabel.text = @"RollingPaper 만들기";
-            [self.finishButton setTitle:@"완료" forState:UIControlStateNormal];
+            self.title = @"RollingPaper 만들기";
+            [self.finishButton setTitle:@"완료"
+                               forState:UIControlStateNormal];
             [self.finishButton addTarget:self
                                   action:@selector(onTouchSend:)
                         forControlEvents:UIControlEventTouchUpInside];
         }break;
         case PAPER_CONTROLLER_TYPE_EDITING_CREATOR:{
             [self syncPaperToView];
-            self.titleLabel.text = @"RollingPaper 편집";
-            [self.finishButton setTitle:@"지우기" forState:UIControlStateNormal];
+            self.title = @"RollingPaper 편집";
+            [self.finishButton setTitle:@"지우기"
+                               forState:UIControlStateNormal];
             [self.finishButton addTarget:self
                                   action:@selector(onTouchQuit:)
                         forControlEvents:UIControlEventTouchUpInside];
         }break;
         case PAPER_CONTROLLER_TYPE_EDITING_PARTICIPANTS:{
             [self syncPaperToView];
-            self.titleLabel.text = @"RollingPaper 편집";
-            [self.finishButton setTitle:@"나가기" forState:UIControlStateNormal];
+            self.title = @"RollingPaper 편집";
+            [self.finishButton setTitle:@"나가기"
+                               forState:UIControlStateNormal];
             [self.finishButton addTarget:self
                                   action:@selector(onTouchQuit:)
                         forControlEvents:UIControlEventTouchUpInside];
@@ -291,11 +314,10 @@
     self = [self initWithDefaultNib];
     if(self){
         self.entity = aEntity;
-        if([[[FlowithAgent sharedAgent] getUserIdx] compare:self.entity.creator_idx] == NSOrderedSame)
-        {
+        if([[[FlowithAgent sharedAgent] getUserIdx] isEqualToNumber:self.entity.creator_idx]) {
             self.controllerType = PAPER_CONTROLLER_TYPE_EDITING_CREATOR;
         }
-        else{
+        else {
             self.controllerType = PAPER_CONTROLLER_TYPE_EDITING_PARTICIPANTS;
         }
     }
@@ -370,8 +392,7 @@
         [self.listController refreshPaperList];
 }
 - (IBAction)onTouchSend:(id)sender {
-    if([self confirmInputs])
-    {
+    if([self confirmInputs]) {
         [self syncViewToPaper];
         [[FlowithAgent sharedAgent] createPaper:self.entity
             success:^(RollingPaper *createdPaper) {
@@ -388,11 +409,9 @@
                                                                   
                                                               }];
                 }
-                //친구초대가 없는경우
                 else{
-                
+                    //친구초대가 없는경우
                 }
-                
                 [self createPaperRequestSuccess];
             }failure:^(NSError *error) {
                 [[[UIAlertView alloc] initWithTitle:@"실패"
@@ -407,33 +426,30 @@
     }
 }
 -(IBAction)onTouchQuit:(UIButton*)sender{
-    [[[UIAlertView alloc] initWithTitle:@"경고"
+    [[[UIAlertViewBlock alloc] initWithTitle:@"경고"
                                 message:@"이 롤링페이퍼를 지우시겠습니까?"
-                               delegate:self
+                               blockDelegate:^(UIAlertView *alertView, int clickedButtonIndex) {
+                                   if(clickedButtonIndex == 0) {
+                                       [[FlowithAgent sharedAgent] quitPaper:self.entity
+                                        success:^{
+                                            [self.navigationController popViewControllerAnimated:TRUE];
+                                            if(self.listController)
+                                                [self.listController refreshPaperList];
+                                        } failure:^(NSError *error) {
+                                            [[[UIAlertView alloc] initWithTitle:@"에러"
+                                                                        message:@"서버와의 통신에 실패했습니다.\n인터넷 연결 상태를 확인해주세요"
+                                                                       delegate:nil
+                                                              cancelButtonTitle:nil
+                                                              otherButtonTitles:@"확인", @"취소",nil] show];
+                                            NSLog(@"%@",error);
+                                        }];
+                                   }
+                                   else{
+                                       NSLog(@"취소");
+                                   }
+                               }
                       cancelButtonTitle:nil
                       otherButtonTitles:@"확인", @"취소",nil] show];
-}
--(void) alertView:(UIAlertView *)alertView
-clickedButtonAtIndex:(NSInteger)buttonIndex{
-    if(buttonIndex == 0)
-    {
-        [[FlowithAgent sharedAgent] quitPaper:self.entity
-          success:^{
-            [self.navigationController popViewControllerAnimated:TRUE];
-            if(self.listController)
-                [self.listController refreshPaperList];
-        } failure:^(NSError *error) {
-            [[[UIAlertView alloc] initWithTitle:@"에러"
-                                        message:@"서버와의 통신에 실패했습니다.\n인터넷 연결 상태를 확인해주세요"
-                                       delegate:self
-                              cancelButtonTitle:nil
-                              otherButtonTitles:@"확인", @"취소",nil] show];
-            NSLog(@"%@",error);
-        }];
-    }
-    else{
-        NSLog(@"취소");
-    }
 }
 -(void) navigationController:(UINavigationController *)navigationController
        didShowViewController:(UIViewController *)viewController
@@ -488,6 +504,9 @@ clickedButtonAtIndex:(NSInteger)buttonIndex{
 }
 
 - (IBAction)onTouchInvite:(id)sender {
+    self.participantsListController = [[PaperParticipantsListController alloc]initWithPaper:self.entity];
+    [self.navigationController pushViewController:self.participantsListController animated:TRUE];
+    /*
     //if(!friendPickerController){
     self.invitingFreindPicker = [[FBFriendSearchPickerController alloc] init];
     self.invitingFreindPicker.title    = @"친구 선택";
@@ -499,6 +518,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex{
     [self presentViewController:self.invitingFreindPicker 
                        animated:YES
                      completion:^{}];
+     */
 }
 
 - (IBAction)onTouchPickBackground:(id)sender {
@@ -562,7 +582,6 @@ clickedButtonAtIndex:(NSInteger)buttonIndex{
     }];
     self.receiverFacebookID = user.id;
     receiverName.text = user.name;
-    
     
     [[FlowithAgent sharedAgent] getUserWithFacebookID:[user id]
                                               success:^(User* user) {

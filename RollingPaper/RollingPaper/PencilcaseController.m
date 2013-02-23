@@ -27,9 +27,9 @@
 
 CGSize ToolImageSize[TOOL_COUNT] = {
     { 217  , 19.5},
-    { 231  , 20},
-    { 186.5, 26},
-    { 178  , 24},
+    { 231  , 20  },
+    { 186.5, 26  },
+    { 178  , 24  },
     { 164  , 32.5}
 };
 NSString* TOOL_TYPE_STRING[TOOL_COUNT] = {
@@ -82,11 +82,15 @@ NSString* TOOL_TYPE_STRING[TOOL_COUNT] = {
 {
     [super viewDidLoad];
     
-    
+    /*
     self.paintingView = [[PaintingView alloc]initWithFrame:self.view.frame];
     self.paintingView.delegate = self;
     [self.view addSubview:self.paintingView];
     [self.view sendSubviewToBack:self.paintingView];
+    NSLog(@"%@",self.paintingView);
+    */
+    
+    self.paintingView.delegate = self;
     NSLog(@"%@",self.paintingView);
     
     selectedButton = NULL;
@@ -96,6 +100,9 @@ NSString* TOOL_TYPE_STRING[TOOL_COUNT] = {
     [self initColorPopover];
     
     [self animateToLeftPanning];
+}
+-(void) viewDidAppear:(BOOL)animated{
+    [self.paintingView setupCGContext];
 }
 -(IBAction)onToolTouched:(id)sender{
     [self hideColorPalette];
@@ -185,9 +192,9 @@ NSString* TOOL_TYPE_STRING[TOOL_COUNT] = {
     CGSize size = ToolImageSize[toolType];
     
     UIImage* image      = [UIImage imageNamed:imageName];
-    UIImage* mask_Image = [UIImage imageNamed:[imageName stringByAppendingString:@"_mask@2x"]];
+    UIImage* mask_Image = [UIImage imageNamed:[imageName stringByAppendingString:@"_mask"]];
     
-    button.contentMode = UIViewContentModeScaleToFill;
+    button.contentMode = UIViewContentModeScaleAspectFit;
     [button setImage:image
             forState:UIControlStateNormal];
     NSLog(@"%@ %@",image,mask_Image);
@@ -202,10 +209,18 @@ NSString* TOOL_TYPE_STRING[TOOL_COUNT] = {
         UIView* colorOverlayView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, size.width,size.height)];
         colorOverlayView.opaque = NO;
         colorOverlayView.backgroundColor = [UIColor redColor];
+        
+        UIImageView* maskView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)];
+        maskView.contentMode = UIViewContentModeScaleAspectFit;
+        maskView.image = mask_Image;
+        /*
         CALayer* maskLayer = [CALayer layer];
         maskLayer.frame = CGRectMake(0,0,size.width,size.height);
         maskLayer.contents = (__bridge id)[mask_Image CGImage];
-        colorOverlayView.layer.mask = maskLayer;
+        NSLog(@"%@",NSStringFromCGRect(maskLayer.contentsRect));
+      //  maskLayer.contentsRect = CGRectMake(0, 0 , size.width,size.height);
+         */
+        colorOverlayView.layer.mask = maskView.layer;
         colorOverlayView.userInteractionEnabled = FALSE;
         colorOverlayView.tag = 1000;
         [button addSubview:colorOverlayView];
@@ -311,8 +326,7 @@ NSString* TOOL_TYPE_STRING[TOOL_COUNT] = {
     [UIView animateWithDuration:0.5f
                      animations:^{
                          int index = 0;
-                         for(UIButton* button in toolButtons)
-                         {
+                         for(UIButton* button in toolButtons){
                              button.enabled   = TRUE;
                              float rotation = CC_DEGREES_TO_RADIANS( (index - count/2) * 60.0/(count-1));
                              button.center    = ccpAdd(leftOrigin,ccpMult(ccpForAngle(rotation),250));

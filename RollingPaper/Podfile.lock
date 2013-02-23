@@ -1,35 +1,17 @@
 
-SPEC CHECKSUMS: 
-  JSONKit: 3d4708953ea7ae399a49777372d8b060a43ddd27
-  ASIHTTPRequest/S3: e606d2df58b0aace6c1cf1d39a08d3484f91324a
-  Reachability: 1c8584c5f26fa776695efef95caaa50402c94cfb
-  ASIHTTPRequest/ASIWebPageRequest: e606d2df58b0aace6c1cf1d39a08d3484f91324a
-  SYCache: 8ca46f459ce46245db483bf2067f265e63d8ff23
-  ASIHTTPRequest/CloudFiles: e606d2df58b0aace6c1cf1d39a08d3484f91324a
-  AFNetworking: 761a418233d280c1e0580bcb76ff9cb4c3073d17
-  ASIHTTPRequest: e606d2df58b0aace6c1cf1d39a08d3484f91324a
-
 DEPENDENCIES: 
 - AFNetworking (= 1.1.0)
-- ASIHTTPRequest (= 1.8.1)
 - JSONKit (= 1.5pre)
 - SYCache (= 1.0)
 
-PODS: 
-- AFNetworking (1.1.0)
-- ASIHTTPRequest (1.8.1): 
-  - ASIHTTPRequest/ASIWebPageRequest (= 1.8.1)
-  - ASIHTTPRequest/CloudFiles (= 1.8.1)
-  - ASIHTTPRequest/S3 (= 1.8.1)
-  - Reachability
-- ASIHTTPRequest/ASIWebPageRequest (1.8.1): 
-  - Reachability
-- ASIHTTPRequest/CloudFiles (1.8.1): 
-  - Reachability
-- ASIHTTPRequest/S3 (1.8.1): 
-  - Reachability
-- JSONKit (1.5pre)
-- Reachability (3.1.0)
-- SYCache (1.0)
+SPEC CHECKSUMS: 
+  SYCache: 8ca46f459ce46245db483bf2067f265e63d8ff23
+  JSONKit: 3d4708953ea7ae399a49777372d8b060a43ddd27
+  AFNetworking: 761a418233d280c1e0580bcb76ff9cb4c3073d17
 
 COCOAPODS: 0.16.1
+
+PODS: 
+- AFNetworking (1.1.0)
+- JSONKit (1.5pre)
+- SYCache (1.0)

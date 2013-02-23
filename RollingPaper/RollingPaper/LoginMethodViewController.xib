@@ -224,6 +224,15 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">onTouchSignUp:</string>
+						<reference key="source" ref="534900065"/>
+						<reference key="destination" ref="372490531"/>
+						<int key="IBEventType">7</int>
+					</object>
+					<int key="connectionID">231</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">onTouchLogin:</string>
 						<reference key="source" ref="586867397"/>
 						<reference key="destination" ref="372490531"/>
@@ -894,7 +903,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">229</int>
+			<int key="maxID">231</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -904,6 +913,7 @@
 					<dictionary class="NSMutableDictionary" key="actions">
 						<string key="onTouchFacebookLogin:">id</string>
 						<string key="onTouchLogin:">id</string>
+						<string key="onTouchSignUp:">id</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
 						<object class="IBActionInfo" key="onTouchFacebookLogin:">
@@ -912,6 +922,10 @@
 						</object>
 						<object class="IBActionInfo" key="onTouchLogin:">
 							<string key="name">onTouchLogin:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="onTouchSignUp:">
+							<string key="name">onTouchSignUp:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 					</dictionary>

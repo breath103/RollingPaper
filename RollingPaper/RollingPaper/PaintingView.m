@@ -73,43 +73,44 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        // BitmapContext 생성. 32bit color ARGB로 color system 지정
-        drawingContext = CGBitmapContextCreate(NULL,
-                                               self.bounds.size.width * APP_SCALE,
-                                               self.bounds.size.height * APP_SCALE,
-                                               8,
-                                               4 * self.bounds.size.width * APP_SCALE,
-                                               CGColorSpaceCreateDeviceRGB(),
-                                               kCGImageAlphaPremultipliedLast);
-        CGContextSetAllowsAntialiasing( drawingContext, true);
-        CGContextSetShouldAntialias( drawingContext, true);
-        CGContextScaleCTM(drawingContext, APP_SCALE, APP_SCALE);
-        CGContextSetInterpolationQuality(drawingContext,kCGInterpolationHigh);
-        
-        //drawLayer를 생성하고 drawLayer의 context의 drawing property를 설정한다.
-        drawingLayer = CGLayerCreateWithContext(drawingContext,
-                                                self.bounds.size,
-                                                NULL);
-        
-        CGContextRef layerContext = CGLayerGetContext(drawingLayer);
-        
-        CGContextSetAllowsAntialiasing(layerContext, true);
-        CGContextSetShouldAntialias(layerContext,true);
-        //CGContextScaleCTM(layerContext, APP_SCALE, APP_SCALE);
-        CGContextSetInterpolationQuality(layerContext,kCGInterpolationHigh);
-        
-        self.opaque = FALSE;
-        self.backgroundColor = [UIColor clearColor];
-        self.multipleTouchEnabled = TRUE;
-        pathArray = [NSMutableArray new];
-        removedPathArray = [NSMutableArray new];
-        
-        self.toolType = NAMEPEN;
-        
-        
-        self.enablePainting = TRUE;
     }
     return self;
+}
+-(void) setupCGContext{
+    // BitmapContext 생성. 32bit color ARGB로 color system 지정
+    drawingContext = CGBitmapContextCreate(NULL,
+                                           self.bounds.size.width * APP_SCALE,
+                                           self.bounds.size.height * APP_SCALE,
+                                           8,
+                                           4 * self.bounds.size.width * APP_SCALE,
+                                           CGColorSpaceCreateDeviceRGB(),
+                                           kCGImageAlphaPremultipliedLast);
+    CGContextSetAllowsAntialiasing( drawingContext, true);
+    CGContextSetShouldAntialias( drawingContext, true);
+    CGContextScaleCTM(drawingContext, APP_SCALE, APP_SCALE);
+    CGContextSetInterpolationQuality(drawingContext,kCGInterpolationHigh);
+    
+    //drawLayer를 생성하고 drawLayer의 context의 drawing property를 설정한다.
+    drawingLayer = CGLayerCreateWithContext(drawingContext,
+                                            self.bounds.size,
+                                            NULL);
+    
+    CGContextRef layerContext = CGLayerGetContext(drawingLayer);
+    
+    CGContextSetAllowsAntialiasing(layerContext, true);
+    CGContextSetShouldAntialias(layerContext,true);
+    //CGContextScaleCTM(layerContext, APP_SCALE, APP_SCALE);
+    CGContextSetInterpolationQuality(layerContext,kCGInterpolationHigh);
+    
+    self.opaque = FALSE;
+    self.backgroundColor = [UIColor clearColor];
+    self.multipleTouchEnabled = TRUE;
+    pathArray = [NSMutableArray new];
+    removedPathArray = [NSMutableArray new];
+    
+    self.toolType = NAMEPEN;
+    self.enablePainting = TRUE;
+    
 }
 
 -(void) setToolType:(TOOL_TYPE)toolType{

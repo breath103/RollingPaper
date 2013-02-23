@@ -8,7 +8,7 @@
 
 #import "AppDelegate.h"
 
-#import "RootViewController.h"
+#import "SplashViewController.h"
 #import <FacebookSDK/FacebookSDK.h>
 #import "RollingPaperListController.h"
 
@@ -58,7 +58,7 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions{
     
     CGRect bounds = [[UIScreen mainScreen] bounds];
     self.window = [[UIWindow alloc] initWithFrame:bounds];
-    self.rootViewController = [[RootViewController alloc] initWithDefaultNib];
+    self.rootViewController = [[SplashViewController alloc] initWithDefaultNib];
     self.navigationController = [[UINavigationController alloc] initWithRootViewController:self.rootViewController];
     
     UINavigationBar* navigationBar = self.navigationController.navigationBar;
@@ -71,7 +71,7 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions{
     navigationItem.backBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"backButton"] style:UIBarButtonItemStyleBordered target:NULL action:NULL];
     NSLog(@"%@",navigationItem);
      */
-    self.navigationController.navigationBarHidden =TRUE;
+   // self.navigationController.navigationBarHidden =TRUE;
     self.window.rootViewController = self.navigationController;
     [self.window makeKeyAndVisible];
 

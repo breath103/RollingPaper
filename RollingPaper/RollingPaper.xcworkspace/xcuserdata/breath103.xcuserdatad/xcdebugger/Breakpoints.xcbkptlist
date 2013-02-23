@@ -52,7 +52,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "326"
          endingLineNumber = "326"
-         landmarkName = "-getContentsOfPaper:afterTime:success:failure:"
+         landmarkName = "-getUserWithFacebookID:success:failure:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint

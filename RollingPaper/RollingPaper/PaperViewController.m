@@ -19,7 +19,6 @@
 #import "UELib/UEUI.h"
 #import "macro.h"
 #import "RecoderController.h"
-//#import "CameraController.h"
 #import "AlbumController.h"
 #import "PencilcaseController.h"
 #import "BlockSupport/NSObject+block.h"
@@ -28,6 +27,7 @@
 #import <JSONKit.h>
 #import "UECoreData.h"
 #import "RollingPaperCreator.h"
+#import "UIAlertViewBlockDelegate.h"
 
 
 #define BORDER_WIDTH (2.0f)
@@ -38,6 +38,7 @@
 -(void) saveToServer : (void(^)(NSMutableArray* syncSuccessedViews,
                                 NSMutableArray* syncFailedViews)) callback;
 @end
+
 
 @implementation PaperViewController
 //@synthesize contentsViews;
@@ -94,7 +95,7 @@
     self.contentsScrollContainer.userInteractionEnabled = TRUE;
     UILongPressGestureRecognizer* backFocus = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(onTapScrollBack:)];
     [backFocus setMinimumPressDuration:0.1f];
-    self.backFocusTapGestureRecognizer = backFocus;
+    self.backFocusTapGestureRecognizer = (UITapGestureRecognizer*)backFocus;
    // [self.backFocusTapGestureRecognizer setNumberOfTouchesRequired:3];
     [self.contentsContainer addGestureRecognizer:self.backFocusTapGestureRecognizer];
  //   self.backFocusTapGestureRecognizer.delegate = self;
@@ -138,12 +139,21 @@
          [self onReceiveContentsResponse : imageContents
                                          : soundContents ];
      }failure:^(NSError *error) {
-         [[[UIAlertView alloc] initWithTitle:@"에러"
-                                     message:@"페이퍼 내용을 서버로 부터 받아오는 실패했습니다. 다시 시도해주세요"
-                                    delegate:nil
-                           cancelButtonTitle:@"확인"
-                           otherButtonTitles: nil] show];
+         [[[UIAlertViewBlock alloc] initWithTitle:@"에러"
+                                          message:@"페이퍼 내용을 서버로 부터 받아오는 실패했습니다. 다시 시도해주세요"
+                                    blockDelegate:^(UIAlertView *alertView, int clickedButtonIndex) {
+                                        if(clickedButtonIndex == 1)
+                                            [self loadAndShowContents];
+                                    }
+                                cancelButtonTitle:@"확인"
+                                otherButtonTitles:@"재시도",nil] show];
      }];
+}
+
+-(void) viewWillAppear:(BOOL)animated{
+    [self.navigationController setNavigationBarHidden:TRUE
+                                             animated:TRUE];
+    UIViewSetHeight(self.dockController.view, self.view.bounds.size.height);
 }
 
 -(void)viewDidLoad{
@@ -249,10 +259,6 @@
 }
 - (void)didReceiveMemoryWarning{
     [super didReceiveMemoryWarning];
-}
-- (void) viewWillAppear:(BOOL)animated{
-    NSLog(@"%@",self.view);
-    UIViewSetHeight(self.dockController.view, self.view.bounds.size.height);
 }
 -(NSArray*) contentsViews{
     return self.contentsScrollContainer.subviews;
@@ -442,6 +448,16 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer : (UIGestureRecognizer *)othe
     return YES;
 }
 
+-(void) hideTopNavigationBar{
+    [self.saveButton    fadeOut:0.3f];
+    [self.refreshButton fadeOut:0.3f];
+}
+-(void) showTopNavigationBar{
+    [self.saveButton    fadeIn:0.3f];
+    [self.refreshButton fadeIn:0.3f];
+}
+
+
 #pragma mark DockControllerDelegate
 -(void) dockController:(DockController *)dock
               pickMenu:(DockMenuType)menuType
@@ -449,27 +465,37 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer : (UIGestureRecognizer *)othe
     NSLog(@"%@ %d %@",dock,menuType,button);
     self.dockController.panGestureRecognizer.enabled = FALSE;
     
-    if(menuType != DockMenuTypeSetting){
+    if(menuType != DockMenuTypeSetting &&
+       menuType != DockMenuTypeCamera){
         [dock hide];
         [dock hideIndicator];
+        
+        [self hideTopNavigationBar];
     }
     
     switch (menuType) {
         case DockMenuTypeCamera:{
-            UIImagePickerController* cameraController = [[UIImagePickerController alloc]init];
-            cameraController.sourceType = UIImagePickerControllerSourceTypeCamera;
-            cameraController.cameraCaptureMode = UIImagePickerControllerCameraCaptureModePhoto;
-            cameraController.cameraFlashMode = UIImagePickerControllerCameraFlashModeAuto;
-            cameraController.allowsEditing = TRUE;
-            cameraController.delegate = self;
-            
-            [self presentViewController:cameraController
-                               animated:TRUE
-                             completion:^{
-                                
-                             }];
-            
-            self.currentEditingViewController = cameraController;
+            if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]){
+                UIImagePickerController* cameraController = [[UIImagePickerController alloc]init];
+                cameraController.sourceType = UIImagePickerControllerSourceTypeCamera;
+                cameraController.cameraCaptureMode = UIImagePickerControllerCameraCaptureModePhoto;
+                cameraController.cameraFlashMode = UIImagePickerControllerCameraFlashModeAuto;
+                cameraController.allowsEditing = TRUE;
+                cameraController.delegate = self;
+                [self presentViewController:cameraController
+                                   animated:TRUE
+                                 completion:^{
+                                     
+                                 }];
+                self.currentEditingViewController = cameraController;
+            }
+            else{
+                [[[UIAlertView alloc] initWithTitle:@"에러"
+                                            message:@"디바이스가 카메라를 지원하지 않습니다"
+                                           delegate:nil
+                                  cancelButtonTitle:@"확인"
+                                  otherButtonTitles: nil]show];
+            }
         }break;
         case DockMenuTypeAlbum:{
             AlbumController* albumController = [[AlbumController alloc]initWithDelegate:self];
@@ -525,14 +551,15 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer : (UIGestureRecognizer *)othe
             [self.navigationController pushViewController:paperSettingView
                                                  animated:TRUE];
         }break;
-        default:
+        default:{
             NSLog(@"Unhandled dock menu %d",menuType);
-            break;
+        }break;
     }
 }
 
 -(void) onEditingViewDismissed{
     [dockController showIndicator];
+    [self showTopNavigationBar];
     self.currentEditingViewController = NULL;
 }
 -(void) imagePickerController : (UIImagePickerController *)picker

@@ -47,7 +47,6 @@ typedef enum ROLLING_PAPER_CONTROLLER_STYLE{
 @property (nonatomic,readwrite) ROLLING_PAPER_CONTROLLER_STYLE controllerType;
 @property (nonatomic,strong) RollingPaper* entity;
 @property (weak, nonatomic) IBOutlet UIButton *finishButton;
-@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UIView *bottomViewsContainer;
 @property (weak, nonatomic) IBOutlet UIView *participantsContainer;
 @property (nonatomic,strong) FBFriendSearchPickerController* receivingFriendPicker;

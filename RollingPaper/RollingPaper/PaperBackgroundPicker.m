@@ -11,6 +11,7 @@
 #import "UELib/UEUI.h"
 #import <QuartzCore/QuartzCore.h>
 #import "ccMacros.h"
+#import "UIAlertViewBlockDelegate.h"
 
 
 @implementation PaperBackgroundCell
@@ -61,11 +62,7 @@
     return self;
 }
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    [self.collectionView registerClass:[PaperBackgroundCell class]
-            forCellWithReuseIdentifier:@"BackgroundCell"];
+- (void)refreshBackgrounds{
     
     // Do any additional setup after loading the view from its nib.
     [[FlowithAgent sharedAgent] getBackgroundList:^(BOOL isCaschedResponse,
@@ -79,17 +76,28 @@
             if([backgroundName compare: self.selectedBackgroundName] == NSOrderedSame){
                 [self.collectionView selectItemAtIndexPath:[NSIndexPath indexPathForItem:i inSection:0]
                                                   animated:TRUE
-                                scrollPosition:UICollectionViewScrollPositionCenteredVertically];
+                                            scrollPosition:UICollectionViewScrollPositionCenteredVertically];
             }
         }
     }failure:^(NSError *error) {
-        [[[UIAlertView alloc]initWithTitle:@"경고"
-                                   message:@"서버로부터 종이 배경들을 받아오는대 실패했습니다"
-                                  delegate:NULL
-                         cancelButtonTitle:@"확인"
-                         otherButtonTitles:NULL, nil] show];
+        [[[UIAlertViewBlock alloc]initWithTitle:@"경고"
+                                        message:@"서버로부터 종이 배경들을 받아오는대 실패했습니다"
+                                  blockDelegate:^(UIAlertView *alertView, int clickedButtonIndex) {
+                                      if(clickedButtonIndex == 1){
+                                          [self refreshBackgrounds];
+                                      }
+                                  }
+                              cancelButtonTitle:@"확인"
+                              otherButtonTitles:@"재시도", nil] show];
     }];
-    
+}
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    [self.collectionView registerClass:[PaperBackgroundCell class]
+            forCellWithReuseIdentifier:@"BackgroundCell"];
+   
+    [self refreshBackgrounds];
 }
 
 - (void)didReceiveMemoryWarning
@@ -140,11 +148,9 @@ didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
 
 #pragma mark - UICollectionViewFlowLayout Delegate
 
-/*
 - (CGSize)collectionView:(UICollectionView *)collectionView
                   layout:(UICollectionViewLayout*)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
     return CGSizeMake(50 , (double) arc4random() / RAND_MAX * 50);
 }
- */
 @end

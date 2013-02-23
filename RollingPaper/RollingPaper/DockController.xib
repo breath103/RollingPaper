@@ -227,7 +227,6 @@
 								<string key="NSFrame">{{10, 301}, {27, 27}}</string>
 								<reference key="NSSuperview" ref="603674714"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<int key="IBUIContentMode">4</int>
@@ -248,7 +247,7 @@
 								<reference key="IBUIFont" ref="976275876"/>
 							</object>
 						</array>
-						<string key="NSFrame">{{0, 39}, {78, 348}}</string>
+						<string key="NSFrame">{{0, 45}, {78, 348}}</string>
 						<reference key="NSSuperview" ref="919376768"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="904376874"/>

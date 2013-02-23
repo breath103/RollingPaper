@@ -1,11 +1,3 @@
-//
-//  FlowithAgent.m
-//  RollingPaper
-//
-//  Created by 이상현 on 13. 1. 27..
-//  Copyright (c) 2013년 상현 이. All rights reserved.
-//
-
 #import "FlowithAgent.h"
 #import <SYCache.h>
 #import <AFNetworking.h>
@@ -351,8 +343,7 @@
 -(void) getPaperParticipants : (RollingPaper*) paper
                      success : (void (^)(BOOL isCachedResponse,NSArray* participants))success
                      failure : (void (^)(NSError* error))failure{
-    NSString* url = [NSString stringWithFormat:@"/paper/%@/participants.json",
-                     paper.idx.stringValue];
+    NSString* url = [NSString stringWithFormat:@"/paper/%@/participants.json",paper.idx.stringValue];
     
     NSArray* cachedResponse = [[SYCache sharedCache]objectForKey:url];
     if(cachedResponse){
@@ -360,7 +351,8 @@
     }
     
     AFJSONRequestOperation* request =
-    [AFJSONRequestOperation JSONRequestOperationWithRequest:SubAddressToNSURLRequest(url) success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+    [AFJSONRequestOperation JSONRequestOperationWithRequest:SubAddressToNSURLRequest(url)
+                                                    success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
         NSArray* participantsArray = JSON;
         [[SYCache sharedCache] removeObjectForKey:url];
         [[SYCache sharedCache] setObject:participantsArray forKey:url];
@@ -391,14 +383,6 @@
               parameters:params
                  success:^(AFHTTPRequestOperation *operation, NSData* responseObject){
                      NSLog(@"%@",[responseObject objectFromJSONData]);
-                     /*
-                     NSDictionary* jsonDict = [responseObject objectFromJSONData];
-                     if([jsonDict objectForKey:@"success"]){
-                     
-                     }else{
-                         
-                     }
-                      */
                      if(responseObject){
                          success();
                      }
