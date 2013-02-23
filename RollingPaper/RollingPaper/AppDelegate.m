@@ -71,7 +71,7 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions{
     navigationItem.backBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"backButton"] style:UIBarButtonItemStyleBordered target:NULL action:NULL];
     NSLog(@"%@",navigationItem);
      */
-    self.navigationController.navigationBarHidden =TRUE;
+   // self.navigationController.navigationBarHidden =TRUE;
     self.window.rootViewController = self.navigationController;
     [self.window makeKeyAndVisible];
 

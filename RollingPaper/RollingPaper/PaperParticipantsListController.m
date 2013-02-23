@@ -1,6 +1,7 @@
 #import "PaperParticipantsListController.h"
 #import "FlowithAgent.h"
 #import "User.h"
+#import <UIImageView+AFNetworking.h>
 
 @interface PaperParticipantsListController ()
 
@@ -15,6 +16,7 @@
     }
     return self;
 }
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -60,11 +62,12 @@
     }
     User* user = [self.users objectAtIndex: [indexPath indexAtPosition:1]];
     cell.textLabel.text = user.name;
+    [cell.imageView setImageWithURL:[NSURL URLWithString:user.picture]];
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-
+    
 }
 
 

@@ -28,6 +28,7 @@
 #import <JSONKit.h>
 #import "UECoreData.h"
 #import "RollingPaperCreator.h"
+#import "UIAlertViewBlockDelegate.h"
 
 
 #define BORDER_WIDTH (2.0f)
@@ -94,7 +95,7 @@
     self.contentsScrollContainer.userInteractionEnabled = TRUE;
     UILongPressGestureRecognizer* backFocus = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(onTapScrollBack:)];
     [backFocus setMinimumPressDuration:0.1f];
-    self.backFocusTapGestureRecognizer = backFocus;
+    self.backFocusTapGestureRecognizer = (UITapGestureRecognizer*)backFocus;
    // [self.backFocusTapGestureRecognizer setNumberOfTouchesRequired:3];
     [self.contentsContainer addGestureRecognizer:self.backFocusTapGestureRecognizer];
  //   self.backFocusTapGestureRecognizer.delegate = self;
@@ -138,11 +139,14 @@
          [self onReceiveContentsResponse : imageContents
                                          : soundContents ];
      }failure:^(NSError *error) {
-         [[[UIAlertView alloc] initWithTitle:@"에러"
-                                     message:@"페이퍼 내용을 서버로 부터 받아오는 실패했습니다. 다시 시도해주세요"
-                                    delegate:nil
-                           cancelButtonTitle:@"확인"
-                           otherButtonTitles: nil] show];
+         [[[UIAlertViewBlock alloc] initWithTitle:@"에러"
+                                          message:@"페이퍼 내용을 서버로 부터 받아오는 실패했습니다. 다시 시도해주세요"
+                                    blockDelegate:^(UIAlertView *alertView, int clickedButtonIndex) {
+                                        if(clickedButtonIndex == 1)
+                                            [self loadAndShowContents];
+                                    }
+                                cancelButtonTitle:@"확인"
+                                otherButtonTitles:@"재시도",nil] show];
      }];
 }
 
@@ -442,6 +446,16 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer : (UIGestureRecognizer *)othe
     return YES;
 }
 
+-(void) hideTopNavigationBar{
+    [self.saveButton    fadeOut:0.3f];
+    [self.refreshButton fadeOut:0.3f];
+}
+-(void) showTopNavigationBar{
+    [self.saveButton    fadeIn:0.3f];
+    [self.refreshButton fadeIn:0.3f];
+}
+
+
 #pragma mark DockControllerDelegate
 -(void) dockController:(DockController *)dock
               pickMenu:(DockMenuType)menuType
@@ -452,6 +466,8 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer : (UIGestureRecognizer *)othe
     if(menuType != DockMenuTypeSetting){
         [dock hide];
         [dock hideIndicator];
+        
+        [self hideTopNavigationBar];
     }
     
     switch (menuType) {
@@ -533,6 +549,7 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer : (UIGestureRecognizer *)othe
 
 -(void) onEditingViewDismissed{
     [dockController showIndicator];
+    [self showTopNavigationBar];
     self.currentEditingViewController = NULL;
 }
 -(void) imagePickerController : (UIImagePickerController *)picker

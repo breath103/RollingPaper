@@ -31,6 +31,8 @@
 {
     [super viewDidLoad];
     
+    self.navigationController.navigationBarHidden =TRUE;
+    
     UIImageView* imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"nextArrow"]];
     imageView.frame = CGRectMake(0, 0, 32/2, 39/2);
     UIBarButtonItem* nextButton = [[UIBarButtonItem alloc] initWithCustomView:imageView];

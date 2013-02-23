@@ -42,6 +42,7 @@
 		075A1EB21684B77200BB4E3B /* PhoneAuthViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 075A1EB01684B77100BB4E3B /* PhoneAuthViewController.xib */; };
 		075A1EBB1684BA5400BB4E3B /* UserSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 075A1EB91684BA5300BB4E3B /* UserSettingViewController.m */; };
 		075A1EBC1684BA5400BB4E3B /* UserSettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 075A1EBA1684BA5400BB4E3B /* UserSettingViewController.xib */; };
+		075BF9FB16D6087400AC76F1 /* UIAlertViewBlockDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 075BF9FA16D6087400AC76F1 /* UIAlertViewBlockDelegate.m */; };
 		07629A54168E46FD00F413A7 /* ContentsScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 07629A53168E46FD00F413A7 /* ContentsScrollView.m */; };
 		07629A5F168F036E00F413A7 /* UINavigationControllerViewOrientation.m in Sources */ = {isa = PBXBuildFile; fileRef = 07629A5E168F036E00F413A7 /* UINavigationControllerViewOrientation.m */; };
 		0769651016457AA7002C25B6 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0769650F16457AA7002C25B6 /* FacebookSDK.framework */; };
@@ -344,6 +345,8 @@
 		075A1EB81684BA5300BB4E3B /* UserSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserSettingViewController.h; sourceTree = "<group>"; };
 		075A1EB91684BA5300BB4E3B /* UserSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserSettingViewController.m; sourceTree = "<group>"; };
 		075A1EBA1684BA5400BB4E3B /* UserSettingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserSettingViewController.xib; sourceTree = "<group>"; };
+		075BF9F916D6087400AC76F1 /* UIAlertViewBlockDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIAlertViewBlockDelegate.h; sourceTree = "<group>"; };
+		075BF9FA16D6087400AC76F1 /* UIAlertViewBlockDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIAlertViewBlockDelegate.m; sourceTree = "<group>"; };
 		07629A52168E46FD00F413A7 /* ContentsScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContentsScrollView.h; sourceTree = "<group>"; };
 		07629A53168E46FD00F413A7 /* ContentsScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContentsScrollView.m; sourceTree = "<group>"; };
 		07629A5E168F036E00F413A7 /* UINavigationControllerViewOrientation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UINavigationControllerViewOrientation.m; sourceTree = "<group>"; };
@@ -715,6 +718,15 @@
 			name = KAKAO;
 			sourceTree = "<group>";
 		};
+		075BF9F816D6085100AC76F1 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				075BF9F916D6087400AC76F1 /* UIAlertViewBlockDelegate.h */,
+				075BF9FA16D6087400AC76F1 /* UIAlertViewBlockDelegate.m */,
+			);
+			name = Extension;
+			sourceTree = "<group>";
+		};
 		0778B7E0163B7C4E0026B99A = {
 			isa = PBXGroup;
 			children = (
@@ -775,6 +787,7 @@
 		0778B7F5163B7C4E0026B99A /* RollingPaper */ = {
 			isa = PBXGroup;
 			children = (
+				075BF9F816D6085100AC76F1 /* Extension */,
 				07D2556816CFD5AD00C4715C /* TestFlightSDK1.1 */,
 				074D9D0916CB8B950060DDDB /* KAKAO */,
 				078C7BD516BB31A800BDD4E6 /* Setting */,
@@ -1568,6 +1581,7 @@
 				074D9D0C16CB8BA50060DDDB /* KakaoLinkCenter.m in Sources */,
 				0720DDC716D0161100368B26 /* PaperBackgroundPicker.m in Sources */,
 				0720DDCC16D0EB2800368B26 /* PaperParticipantsListController.m in Sources */,
+				075BF9FB16D6087400AC76F1 /* UIAlertViewBlockDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

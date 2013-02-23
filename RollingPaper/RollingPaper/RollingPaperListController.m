@@ -126,16 +126,10 @@ static RollingPaperListController* g_instance = NULL;
     
     [[[UECoreData sharedInstance] managedObjectContext] save:NULL];
 }
--(void) viewWillAppear:(BOOL)animated{
-    
-}
--(void) viewDidAppear:(BOOL)animated
-{
-    self.navigationController.navigationBarHidden = TRUE;
-    NSLog(@"%@",self.navigationController.viewControllers);
-}
 - (void)viewDidLoad
 {
+   /// self.navigationController.navigationBarHidden = FALSE;
+    
     [super viewDidLoad];
     if([[FlowithAgent sharedAgent] getUserInfo]){
         [[FlowithAgent sharedAgent] getProfileImage:^(BOOL isCachedResponse, UIImage *image) {

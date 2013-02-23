@@ -18,6 +18,6 @@
 @property(nonatomic,strong) NSString* picture;
 -(id) initWithDict : (NSDictionary*) dict;
 +(NSArray*) userWithDictArray : (NSArray*) dictArray;
--(void) getPicture : (void(^)(UIImage* image)) callback;
+//-(void) getPicture : (void(^)(UIImage* image)) callback;
 
 @end
