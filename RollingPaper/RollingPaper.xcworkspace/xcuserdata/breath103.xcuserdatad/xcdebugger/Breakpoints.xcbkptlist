@@ -8,11 +8,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "RollingPaper/PaperViewController.m"
-         timestampString = "382885424.067658"
+         timestampString = "383344356.232245"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "97"
-         endingLineNumber = "97"
+         startingLineNumber = "98"
+         endingLineNumber = "98"
          landmarkName = "-initContentsScrollContainer"
          landmarkType = "5">
       </FileBreakpoint>
@@ -21,11 +21,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "RollingPaper/PaperViewController.m"
-         timestampString = "382890562.972488"
+         timestampString = "383344356.232245"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "190"
-         endingLineNumber = "190"
+         startingLineNumber = "199"
+         endingLineNumber = "199"
          landmarkName = "-onTapScrollBack:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -34,11 +34,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "RollingPaper/RollingPaperCreator.m"
-         timestampString = "382908568.353863"
+         timestampString = "383344356.232245"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "610"
-         endingLineNumber = "610"
+         startingLineNumber = "629"
+         endingLineNumber = "629"
          landmarkName = "-facebookViewControllerDoneWasPressed:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -46,39 +46,13 @@
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "RollingPaper/RollingPaperCreator.m"
-         timestampString = "382907451.656855"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "117"
-         endingLineNumber = "117"
-         landmarkName = "-createNewParticipnatsCell:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "RollingPaper/RollingPaperCreator.m"
-         timestampString = "382907451.656855"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "167"
-         endingLineNumber = "167"
-         landmarkName = "-addParticipantsView:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
          filePath = "RollingPaper/FlowithAgent.m"
-         timestampString = "382907451.656855"
+         timestampString = "383340649.069382"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "334"
-         endingLineNumber = "334"
-         landmarkName = "-getUserWithFacebookID:success:failure:"
+         startingLineNumber = "326"
+         endingLineNumber = "326"
+         landmarkName = "-getContentsOfPaper:afterTime:success:failure:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -86,76 +60,24 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "RollingPaper/RollingPaperCreator.m"
-         timestampString = "382908568.353863"
+         timestampString = "383344356.232245"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "555"
-         endingLineNumber = "555"
+         startingLineNumber = "575"
+         endingLineNumber = "575"
          landmarkName = "-fillReceiverDataInputsWithFacebookUser:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "RollingPaper/RollingPaperCreator.m"
-         timestampString = "382922451.409972"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "564"
-         endingLineNumber = "564"
-         landmarkName = "-fillReceiverDataInputsWithFacebookUser:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "RollingPaper/RollingPaperCreator.m"
-         timestampString = "382922515.848983"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "105"
-         endingLineNumber = "105"
-         landmarkName = "-createNewParticipnatsCell:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "RollingPaper/RollingPaperCreator.m"
-         timestampString = "382922554.646888"
+         timestampString = "383321304.576247"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "157"
-         endingLineNumber = "157"
-         landmarkName = "-addParticipantsView:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "RollingPaper/RollingPaperCreator.m"
-         timestampString = "382922604.426849"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "158"
-         endingLineNumber = "158"
-         landmarkName = "-addParticipantsView:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "RollingPaper/RollingPaperCreator.m"
-         timestampString = "382922666.336248"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "219"
-         endingLineNumber = "219"
+         startingLineNumber = "207"
+         endingLineNumber = "207"
          landmarkName = "-syncPaperToView"
          landmarkType = "5">
       </FileBreakpoint>
@@ -164,12 +86,38 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "RollingPaper/RollingPaperCreator.m"
-         timestampString = "382922675.830871"
+         timestampString = "383321304.576247"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "218"
-         endingLineNumber = "218"
+         startingLineNumber = "206"
+         endingLineNumber = "206"
          landmarkName = "-syncPaperToView"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "RollingPaper/UIAlertViewBlockDelegate.m"
+         timestampString = "383319115.3354"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "35"
+         endingLineNumber = "35"
+         landmarkName = "-alertView:clickedButtonAtIndex:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "RollingPaper/UIAlertViewBlockDelegate.m"
+         timestampString = "383319125.609849"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "33"
+         endingLineNumber = "33"
+         landmarkName = "-alertView:clickedButtonAtIndex:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>
