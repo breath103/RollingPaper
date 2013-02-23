@@ -221,6 +221,37 @@
     [self addChildViewController:self.participantsListController];
 }
  */
+- (void)viewWillAppear:(BOOL)animated{
+    
+    [self.navigationController setNavigationBarHidden:FALSE
+                                             animated:TRUE];
+    
+    {
+        UIButton* leftButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        leftButton.frame = CGRectMake(0, 0, 24,24);
+        [leftButton setImage:[UIImage imageNamed:@"previousArrow"]
+                    forState:UIControlStateNormal];
+        [leftButton addTarget:self
+                       action:@selector(onTouchPrevious:)
+             forControlEvents:UIControlEventTouchUpInside];
+        
+        UIBarButtonItem* leftBarButton = [[UIBarButtonItem alloc]initWithCustomView:leftButton];
+        [self.navigationItem setLeftBarButtonItem:leftBarButton
+                                          animated:TRUE];
+    }
+    {
+        /*
+        UIButton* rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        rightButton.frame = CGRectMake(0, 0, 24,24);
+        [rightButton setImage:[UIImage imageNamed:@"nextArrow"] forState:UIControlStateNormal];
+        [rightButton addTarget:self action:@selector(onTouchProfile:)
+                   forControlEvents:UIControlEventTouchUpInside];
+        UIBarButtonItem* rightBarButton = [[UIBarButtonItem alloc]initWithCustomView:rightButton];
+        [self.navigationItem setRightBarButtonItem:rightBarButton
+                                         animated:TRUE];
+         */
+    }
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -234,7 +265,6 @@
     
     //[self initParticipantsListController];
     
-    
     self.datePicker.minimumDate = [NSDate date];
     self.receiveDate.inputView = self.datePicker;
     self.receiveTime.inputView = self.timePicker;
@@ -242,7 +272,7 @@
     NSLog(@"%@",self.entity);
     switch (self.controllerType) {
         case PAPER_CONTROLLER_TYPE_CREATING:{
-            self.titleLabel.text = @"RollingPaper 만들기";
+            self.title = @"RollingPaper 만들기";
             [self.finishButton setTitle:@"완료"
                                forState:UIControlStateNormal];
             [self.finishButton addTarget:self
@@ -251,7 +281,7 @@
         }break;
         case PAPER_CONTROLLER_TYPE_EDITING_CREATOR:{
             [self syncPaperToView];
-            self.titleLabel.text = @"RollingPaper 편집";
+            self.title = @"RollingPaper 편집";
             [self.finishButton setTitle:@"지우기"
                                forState:UIControlStateNormal];
             [self.finishButton addTarget:self
@@ -260,7 +290,7 @@
         }break;
         case PAPER_CONTROLLER_TYPE_EDITING_PARTICIPANTS:{
             [self syncPaperToView];
-            self.titleLabel.text = @"RollingPaper 편집";
+            self.title = @"RollingPaper 편집";
             [self.finishButton setTitle:@"나가기"
                                forState:UIControlStateNormal];
             [self.finishButton addTarget:self
@@ -284,11 +314,10 @@
     self = [self initWithDefaultNib];
     if(self){
         self.entity = aEntity;
-        if([[[FlowithAgent sharedAgent] getUserIdx] compare:self.entity.creator_idx] == NSOrderedSame)
-        {
+        if([[[FlowithAgent sharedAgent] getUserIdx] isEqualToNumber:self.entity.creator_idx]) {
             self.controllerType = PAPER_CONTROLLER_TYPE_EDITING_CREATOR;
         }
-        else{
+        else {
             self.controllerType = PAPER_CONTROLLER_TYPE_EDITING_PARTICIPANTS;
         }
     }

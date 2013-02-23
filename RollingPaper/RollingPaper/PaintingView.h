@@ -56,6 +56,9 @@ typedef enum TOOL_TYPE{
 @property (nonatomic, readwrite) TOOL_TYPE toolType;
 @property (nonatomic, weak) id<PaintingViewDelegate> delegate;
 @property (nonatomic, readwrite) BOOL enablePainting;
+
+-(void) setupCGContext;
+
 -(CGRect) CGPaintedRect;
 -(CGRect) UIPaintedRect;
 -(UIImage*) toImage;

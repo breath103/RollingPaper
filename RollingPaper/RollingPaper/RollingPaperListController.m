@@ -126,29 +126,64 @@ static RollingPaperListController* g_instance = NULL;
     
     [[[UECoreData sharedInstance] managedObjectContext] save:NULL];
 }
+- (void) viewWillAppear:(BOOL)animated{
+    [self.navigationController setNavigationBarHidden:FALSE
+                                             animated:TRUE];
+    {
+        UIButton* plusButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        plusButton.frame = CGRectMake(0, 0, 24,24);
+        [plusButton setImage:[UIImage imageNamed:@"plus"]
+                    forState:UIControlStateNormal];
+        [plusButton addTarget:self action:@selector(onTouchAddPaper:)
+             forControlEvents:UIControlEventTouchUpInside];
+        
+        UIBarButtonItem* rightBarButton = [[UIBarButtonItem alloc]initWithCustomView:plusButton];
+        [self.navigationItem setRightBarButtonItem:rightBarButton
+                                         animated:TRUE];
+    }
+    /*
+     [[UINavigationBar appearance] setTitleTextAttributes: [NSDictionary dictionaryWithObjectsAndKeys:
+     [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0], UITextAttributeTextColor,
+     [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.8],UITextAttributeTextShadowColor,
+     [NSValue valueWithUIOffset:UIOffsetMake(0, 1)],
+     UITextAttributeTextShadowOffset,
+     [UIFont fontWithName:@"HelveticaNeue-CondensedBlack" size:21.0], UITextAttributeFont, nil]];
+     */
+    {
+        UIButton* profileImageView = [UIButton buttonWithType:UIButtonTypeCustom];
+        profileImageView.frame = CGRectMake(0, 0, 24,24);
+        UIBarButtonItem* leftBarButton = [[UIBarButtonItem alloc]initWithCustomView:profileImageView];
+        [profileImageView addTarget:self action:@selector(onTouchProfile:)
+                   forControlEvents:UIControlEventTouchUpInside];
+        [self.navigationItem setLeftBarButtonItem:leftBarButton
+                                         animated:TRUE];
+        if([[FlowithAgent sharedAgent] getUserInfo]){
+            [[FlowithAgent sharedAgent] getProfileImage:^(BOOL isCachedResponse, UIImage *image) {
+                [profileImageView setImage:image forState:UIControlStateNormal];
+                [profileImageView hideToTransparent];
+                [profileImageView fadeIn:0.3f];
+            }];
+            [self refreshPaperList];
+        }
+        else{
+            //이미 로그인 된것이 확인되서 들어왔는데 유저 정보가 없다고 뜨는 크리티컬한 에러
+            [[[UIAlertView alloc] initWithTitle:@"error"
+                                        message:@"유저 정보를 확인할 수 없습니다"
+                                       delegate:NULL
+                              cancelButtonTitle:NULL
+                              otherButtonTitles:@"확인", nil] show];
+            
+            [self.navigationController popViewControllerAnimated:TRUE];
+        }
+    }
+}
 - (void)viewDidLoad
 {
-   /// self.navigationController.navigationBarHidden = FALSE;
-    
+    self.title = @"롤링페이퍼";
     [super viewDidLoad];
-    if([[FlowithAgent sharedAgent] getUserInfo]){
-        [[FlowithAgent sharedAgent] getProfileImage:^(BOOL isCachedResponse, UIImage *image) {
-            [self.profileButton setImage:image forState:UIControlStateNormal];
-            [self.profileButton hideToTransparent];
-            [self.profileButton fadeIn:0.3f];
-        }];
-        [self refreshPaperList];
-    }
-    else{
-        //이미 로그인 된것이 확인되서 들어왔는데 유저 정보가 없다고 뜨는 크리티컬한 에러
-        [[[UIAlertView alloc] initWithTitle:@"error"
-                                   message:@"유저 정보를 확인할 수 없습니다"
-                                  delegate:NULL
-                         cancelButtonTitle:NULL
-                         otherButtonTitles:@"확인", nil] show];
-        
-        [self.navigationController popViewControllerAnimated:TRUE];
-    }
+
+    
+    
 }
 
 -(void) PaperCellTouched : (PaperCellController *) paper

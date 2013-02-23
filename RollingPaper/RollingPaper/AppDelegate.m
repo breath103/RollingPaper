@@ -8,7 +8,7 @@
 
 #import "AppDelegate.h"
 
-#import "RootViewController.h"
+#import "SplashViewController.h"
 #import <FacebookSDK/FacebookSDK.h>
 #import "RollingPaperListController.h"
 
@@ -58,7 +58,7 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions{
     
     CGRect bounds = [[UIScreen mainScreen] bounds];
     self.window = [[UIWindow alloc] initWithFrame:bounds];
-    self.rootViewController = [[RootViewController alloc] initWithDefaultNib];
+    self.rootViewController = [[SplashViewController alloc] initWithDefaultNib];
     self.navigationController = [[UINavigationController alloc] initWithRootViewController:self.rootViewController];
     
     UINavigationBar* navigationBar = self.navigationController.navigationBar;

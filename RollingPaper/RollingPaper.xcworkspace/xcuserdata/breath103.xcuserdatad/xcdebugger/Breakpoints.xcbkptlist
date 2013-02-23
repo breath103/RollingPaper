@@ -8,7 +8,7 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "RollingPaper/PaperViewController.m"
-         timestampString = "383130768.239277"
+         timestampString = "383344356.232245"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "98"
@@ -21,11 +21,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "RollingPaper/PaperViewController.m"
-         timestampString = "383319231.940568"
+         timestampString = "383344356.232245"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "193"
-         endingLineNumber = "193"
+         startingLineNumber = "199"
+         endingLineNumber = "199"
          landmarkName = "-onTapScrollBack:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -34,11 +34,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "RollingPaper/RollingPaperCreator.m"
-         timestampString = "383321478.01087"
+         timestampString = "383344356.232245"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "600"
-         endingLineNumber = "600"
+         startingLineNumber = "629"
+         endingLineNumber = "629"
          landmarkName = "-facebookViewControllerDoneWasPressed:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -47,11 +47,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "RollingPaper/FlowithAgent.m"
-         timestampString = "382907451.656855"
+         timestampString = "383340649.069382"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "334"
-         endingLineNumber = "334"
+         startingLineNumber = "326"
+         endingLineNumber = "326"
          landmarkName = "-getUserWithFacebookID:success:failure:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -60,11 +60,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "RollingPaper/RollingPaperCreator.m"
-         timestampString = "383321478.01087"
+         timestampString = "383344356.232245"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "546"
-         endingLineNumber = "546"
+         startingLineNumber = "575"
+         endingLineNumber = "575"
          landmarkName = "-fillReceiverDataInputsWithFacebookUser:"
          landmarkType = "5">
       </FileBreakpoint>

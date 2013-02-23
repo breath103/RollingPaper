@@ -19,7 +19,6 @@
 #import "UELib/UEUI.h"
 #import "macro.h"
 #import "RecoderController.h"
-//#import "CameraController.h"
 #import "AlbumController.h"
 #import "PencilcaseController.h"
 #import "BlockSupport/NSObject+block.h"
@@ -39,6 +38,7 @@
 -(void) saveToServer : (void(^)(NSMutableArray* syncSuccessedViews,
                                 NSMutableArray* syncFailedViews)) callback;
 @end
+
 
 @implementation PaperViewController
 //@synthesize contentsViews;
@@ -150,6 +150,12 @@
      }];
 }
 
+-(void) viewWillAppear:(BOOL)animated{
+    [self.navigationController setNavigationBarHidden:TRUE
+                                             animated:TRUE];
+    UIViewSetHeight(self.dockController.view, self.view.bounds.size.height);
+}
+
 -(void)viewDidLoad{
     [super viewDidLoad];
     
@@ -253,10 +259,6 @@
 }
 - (void)didReceiveMemoryWarning{
     [super didReceiveMemoryWarning];
-}
-- (void) viewWillAppear:(BOOL)animated{
-    NSLog(@"%@",self.view);
-    UIViewSetHeight(self.dockController.view, self.view.bounds.size.height);
 }
 -(NSArray*) contentsViews{
     return self.contentsScrollContainer.subviews;
@@ -463,7 +465,8 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer : (UIGestureRecognizer *)othe
     NSLog(@"%@ %d %@",dock,menuType,button);
     self.dockController.panGestureRecognizer.enabled = FALSE;
     
-    if(menuType != DockMenuTypeSetting){
+    if(menuType != DockMenuTypeSetting &&
+       menuType != DockMenuTypeCamera){
         [dock hide];
         [dock hideIndicator];
         
@@ -472,20 +475,27 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer : (UIGestureRecognizer *)othe
     
     switch (menuType) {
         case DockMenuTypeCamera:{
-            UIImagePickerController* cameraController = [[UIImagePickerController alloc]init];
-            cameraController.sourceType = UIImagePickerControllerSourceTypeCamera;
-            cameraController.cameraCaptureMode = UIImagePickerControllerCameraCaptureModePhoto;
-            cameraController.cameraFlashMode = UIImagePickerControllerCameraFlashModeAuto;
-            cameraController.allowsEditing = TRUE;
-            cameraController.delegate = self;
-            
-            [self presentViewController:cameraController
-                               animated:TRUE
-                             completion:^{
-                                
-                             }];
-            
-            self.currentEditingViewController = cameraController;
+            if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]){
+                UIImagePickerController* cameraController = [[UIImagePickerController alloc]init];
+                cameraController.sourceType = UIImagePickerControllerSourceTypeCamera;
+                cameraController.cameraCaptureMode = UIImagePickerControllerCameraCaptureModePhoto;
+                cameraController.cameraFlashMode = UIImagePickerControllerCameraFlashModeAuto;
+                cameraController.allowsEditing = TRUE;
+                cameraController.delegate = self;
+                [self presentViewController:cameraController
+                                   animated:TRUE
+                                 completion:^{
+                                     
+                                 }];
+                self.currentEditingViewController = cameraController;
+            }
+            else{
+                [[[UIAlertView alloc] initWithTitle:@"에러"
+                                            message:@"디바이스가 카메라를 지원하지 않습니다"
+                                           delegate:nil
+                                  cancelButtonTitle:@"확인"
+                                  otherButtonTitles: nil]show];
+            }
         }break;
         case DockMenuTypeAlbum:{
             AlbumController* albumController = [[AlbumController alloc]initWithDelegate:self];
@@ -541,9 +551,9 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer : (UIGestureRecognizer *)othe
             [self.navigationController pushViewController:paperSettingView
                                                  animated:TRUE];
         }break;
-        default:
+        default:{
             NSLog(@"Unhandled dock menu %d",menuType);
-            break;
+        }break;
     }
 }
 

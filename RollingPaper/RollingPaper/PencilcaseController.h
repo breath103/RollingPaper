@@ -21,7 +21,7 @@
 
 @interface PencilcaseController : UIViewController<ColorPaletteDelegate,PaintingViewDelegate>
 @property (nonatomic,strong) id<PencilcaseControllerDelegate> delegate;
-@property (nonatomic,strong) PaintingView* paintingView;
+@property (nonatomic,strong) IBOutlet PaintingView* paintingView;
 @property (atomic,readonly) BOOL isInLeftPanningMode;
 @property (nonatomic,strong) UIButton* selectedButton;
 @property (nonatomic,strong) NSMutableArray* toolButtons;

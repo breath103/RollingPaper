@@ -6,7 +6,7 @@
 //  Copyright (c) 2012년 상현 이. All rights reserved.
 //
 
-#import "RootViewController.h"
+#import "SplashViewController.h"
 #import <FacebookSDK/FacebookSDK.h>
 #import "FlowithAgent.h"
 #import <math.h>
@@ -19,11 +19,11 @@
 #import <JSONKit.h>
 
 
-@interface RootViewController ()
+@interface SplashViewController ()
 
 @end
 
-@implementation RootViewController
+@implementation SplashViewController
 @synthesize loadingImageView;
 @synthesize paperPlaneView;
 @synthesize paperImageView;

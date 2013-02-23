@@ -12,6 +12,7 @@
 #import "FlowithAgent.h"
 #import "RollingPaperListController.h"
 #import <JSONKit.h>
+#import "FacebookAgent.h"
 
 @interface LoginMethodViewController ()
 
@@ -41,26 +42,25 @@
 }
 
 - (IBAction)onTouchFacebookLogin:(id)sender {
-    if ( !FBSession.activeSession.isOpen) {
-        NSArray* permissions = [NSArray arrayWithObjects:@"user_photos",@"publish_stream",@"publish_actions",@"email",@"user_likes",@"user_birthday",@"user_education_history",@"user_hometown",@"read_stream",@"user_about_me",@"read_friendlists",@"offline_access", nil];
-        [FBSession openActiveSessionWithPermissions : permissions
-                                       allowLoginUI : YES
-                                  completionHandler : ^(FBSession *session, FBSessionState status, NSError *error) {
-                                      NSLog(@"%@",session.accessToken);
-                                      if (!error)
-                                          [self onFacebookSessionActivated : session];
-                                      else {
-                                          [[[UIAlertView alloc] initWithTitle:@"Error"
-                                                                      message:error.localizedDescription
-                                                                     delegate:nil
-                                                            cancelButtonTitle:@"OK"
-                                                            otherButtonTitles:nil]show];
-                                      }
-                                  }];
-    }
+    [[FacebookAgent sharedAgent] openSession:^(FBSession *session, FBSessionState status, NSError *error) {
+        if (!error)
+            [self onFacebookSessionActivated : session];
+        else {
+            [[[UIAlertView alloc] initWithTitle:@"Error"
+                                        message:error.localizedDescription
+                                       delegate:nil
+                              cancelButtonTitle:@"OK"
+                              otherButtonTitles:nil]show];
+        }
+    }];
 }
 
 - (IBAction)onTouchLogin:(id)sender {
+
+
+}
+- (IBAction)onTouchSignUp:(id)sender {
+    
 }
 -(void) onFacebookSessionActivated : (FBSession*) session{
     FBRequest* fbRequest = [FBRequest requestWithGraphPath:@"/me"
