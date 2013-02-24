@@ -11,7 +11,7 @@
                        message:message
                       delegate:NULL
              cancelButtonTitle:cancelButtonTitle
-             otherButtonTitles:otherButtonTitles, nil];
+             otherButtonTitles:otherButtonTitles];
     if(self){
         blockDelegate = [[UIAlertViewBlockDelegate alloc]initWithBlock:block];
         self.delegate = blockDelegate;
@@ -25,13 +25,10 @@
 -(id) initWithBlock : (AlertViewCallback) aBlock{
     block = aBlock;
     if(self){
-        
     }
     return self;
 }
 -(void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    NSLog(@"%@",block);
-    
     block(alertView,buttonIndex);
 }
 @end

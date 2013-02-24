@@ -36,6 +36,16 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
 }
+-(void) viewDidAppear:(BOOL)animated{
+    NSMutableArray* viewControllers = [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
+    [viewControllers removeAllObjects];
+    [viewControllers addObject:self];
+    NSLog(@"%@",self.navigationController.viewControllers);
+
+    [self.navigationController setViewControllers:viewControllers];
+    
+    NSLog(@"%@",self.navigationController.viewControllers);
+}
 
 - (void)didReceiveMemoryWarning
 {

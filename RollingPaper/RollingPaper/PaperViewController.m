@@ -120,25 +120,40 @@
         ImageContentView* entityView = [[ImageContentView alloc] initWithEntity:image];
         [self.contentsScrollContainer addSubview:entityView];
         [self addTransformTargetGestureToEntityView:entityView];
-        
+        [entityView hideToTransparent];
+        [entityView fadeIn:0.1f];
     }
     
     for(SoundContent* sound in soundContents){
         SoundContentView* entityView = [[SoundContentView alloc] initWithEntity:sound];
         [self.contentsScrollContainer addSubview:entityView];
         [self addTransformTargetGestureToEntityView:entityView];
+        [entityView hideToTransparent];
+        [entityView fadeIn:0.1f];
     }
     // 일단 받았음으로 받은 것을 현재 디바이스에 저장한다
 }
 -(void)loadAndShowContents{
+    UIView* loadingOverView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    UIActivityIndicatorView* activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    loadingOverView.backgroundColor = [UIColor blackColor];
+    loadingOverView.alpha = 0.0f;
+    activityIndicator.center = loadingOverView.center;
+    [loadingOverView addSubview:activityIndicator];
+    [self.view addSubview:loadingOverView];
+    [activityIndicator startAnimating];
+    
+    [loadingOverView fadeTo:0.7 duration:0.2f];
+    
     [[FlowithAgent sharedAgent] getContentsOfPaper:self.entity
                                          afterTime:1
      success:^(BOOL isCachedResponse, NSArray *imageContents,
                                       NSArray *soundContents) {
-         NSLog(@"%@ %@",imageContents,soundContents);
+         [loadingOverView fadeOut:0.2f];
          [self onReceiveContentsResponse : imageContents
                                          : soundContents ];
      }failure:^(NSError *error) {
+         [loadingOverView fadeOut:0.2f];
          [[[UIAlertViewBlock alloc] initWithTitle:@"에러"
                                           message:@"페이퍼 내용을 서버로 부터 받아오는 실패했습니다. 다시 시도해주세요"
                                     blockDelegate:^(UIAlertView *alertView, int clickedButtonIndex) {

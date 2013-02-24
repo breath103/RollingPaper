@@ -30,17 +30,23 @@
     [self setUserInfo:[user toDictionary]];
 }
 -(void) setUserInfo : (NSDictionary*) dict{
-    NSMutableDictionary* mutableDict = [dict mutableCopy];
-    for( NSString* key in dict.allKeys)
-    {
-        if([dict objectForKey:key] == [NSNull null]){
-            [mutableDict removeObjectForKey:key];
+    if(dict){
+        NSMutableDictionary* mutableDict = [dict mutableCopy];
+        for( NSString* key in dict.allKeys)
+        {
+            if([dict objectForKey:key] == [NSNull null]){
+                [mutableDict removeObjectForKey:key];
+            }
         }
+        
+        [[NSUserDefaults standardUserDefaults] setObject:mutableDict
+                                                  forKey:@"userinfo"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
     }
-    
-    [[NSUserDefaults standardUserDefaults] setObject:mutableDict
-                                              forKey:@"userinfo"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    else{
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"userinfo"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
 }
 -(NSDictionary*) getUserInfo {
     return [[NSUserDefaults standardUserDefaults] objectForKey:@"userinfo"];
@@ -105,7 +111,7 @@
                       [dateComponent objectAtIndex:0],
                       [dateComponent objectAtIndex:1]];
     NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
-                            [me id],@"facebook_id" ,
+                            [me id],@"facebook_id",
                             [me objectForKey:@"name"],@"name",
                             [me objectForKey:@"email"],@"email",
                             birthdayString,@"birthday",
@@ -115,9 +121,7 @@
     [httpClient postPath:@"/user/joinWithFacebook.json"
               parameters:params
                  success:^(AFHTTPRequestOperation *operation, NSData* responseObject){
-                     
-                   
-     
+                     success([responseObject objectFromJSONData]);
                  } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                      failure(error);
                  }];
@@ -169,8 +173,9 @@
           imageProcessingBlock : ^UIImage *(UIImage *image) {
               return image ;
         } success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-   //         [[SYCache sharedCache] removeObjectForKey:url];
-    //        [[SYCache sharedCache] setImage:image forKey:url];
+            [[SYCache sharedCache] removeObjectForKey:url];
+            [[SYCache sharedCache] setImage:image
+                                     forKey:url];
             success(FALSE,image);
         } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
             NSLog(@"fail : %@",error);
@@ -212,31 +217,39 @@
                             return originalImage;
                         }
                         success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                                                                                         [[SYCache sharedCache] setImage:image forKey:background];
-                                                                                         callback(FALSE,image);
-                                                                                     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-                                                                                         [self handleRequestFailure:request response:response error:error];
-                                                                                     }];
+                            [[SYCache sharedCache] setImage:image forKey:background];
+                            callback(FALSE,image);
+                        } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+                            [self handleRequestFailure:request response:response error:error];
+                        }];
         [imageRequest start];
     }
 }
 
 -(void) getParticipaitingPapers : (void (^)(BOOL isCachedResponse,NSArray* paperArray))callback
                         failure : (void (^)(NSError *))failure{
-    NSArray* cachedResponse = [[SYCache sharedCache]objectForKey:@"getParticipaitingPapers"];
+    /* /user/:id([0-9]+)/getParticipatingPapers.json */
+    NSString* url = [NSString stringWithFormat:@"/user/%lld/participating_papers.json",
+                     self.getUserIdx.longLongValue];
+    
+    NSArray* cachedResponse = [[SYCache sharedCache]objectForKey:url];
     if(cachedResponse){
         callback(TRUE,cachedResponse);
     }
     
-    /* /user/:id([0-9]+)/getParticipatingPapers.json */
-    NSString* url = [NSString stringWithFormat:@"/user/%lld/getParticipatingPapers.json",
-                                                self.getUserIdx.longLongValue];
     AFJSONRequestOperation* request =
-    [AFJSONRequestOperation JSONRequestOperationWithRequest:SubAddressToNSURLRequest(url) success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-        NSArray* paperArray = JSON;
-        [[SYCache sharedCache] removeObjectForKey:@"getParticipaitingPapers"];
-        [[SYCache sharedCache] setObject:paperArray forKey:@"getParticipaitingPapers"];
-        callback(FALSE,paperArray);
+    [AFJSONRequestOperation JSONRequestOperationWithRequest:SubAddressToNSURLRequest(url)
+    success:^(NSURLRequest *request,NSHTTPURLResponse *response,id JSON) {
+        NSDictionary* responseDict = JSON;
+        NSArray* papers = [responseDict objectForKey:@"papers"];
+        if(papers){
+            [[SYCache sharedCache] removeObjectForKey:url];
+            [[SYCache sharedCache] setObject:papers forKey:url];
+            callback(FALSE,papers);
+        }
+        else{
+            failure( [[NSError alloc] initWithDomain:[responseDict objectForKey:@"error"] code:666 userInfo:NULL] );
+        }
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
         NSLog(@"%@",error);
         failure(error);
@@ -245,20 +258,25 @@
 }
 -(void) getReceivedPapers : (void (^)(BOOL isCachedResponse,NSArray* paperArray))callback
                   failure : (void (^)(NSError *))failure{
-    NSArray* cachedResponse = [[SYCache sharedCache]objectForKey:@"getParticipaitingPapers"];
+    /* /user/:id([0-9]+)/getParticipatingPapers.json */
+    NSString* url = [NSString stringWithFormat:@"/user/%lld/received_papers.json",self.getUserIdx.longLongValue];
+    
+    NSArray* cachedResponse = [[SYCache sharedCache]objectForKey:url];
     if(cachedResponse){
         callback(TRUE,cachedResponse);
     }
-    
-    /* /user/:id([0-9]+)/getParticipatingPapers.json */
-    NSString* url = [NSString stringWithFormat:@"/user/%lld/getParticipatingPapers.json",
-                     self.getUserIdx.longLongValue];
-    AFJSONRequestOperation* request =
-    [AFJSONRequestOperation JSONRequestOperationWithRequest:SubAddressToNSURLRequest(url) success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-        NSArray* paperArray = JSON;
-        [[SYCache sharedCache] removeObjectForKey:@"getParticipaitingPapers"];
-        [[SYCache sharedCache] setObject:paperArray forKey:@"getParticipaitingPapers"];
-        callback(FALSE,paperArray);
+    AFJSONRequestOperation* request = [AFJSONRequestOperation JSONRequestOperationWithRequest:SubAddressToNSURLRequest(url)
+    success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        NSDictionary* responseDict = JSON;
+        NSArray* papers = [responseDict objectForKey:@"papers"];
+        if(papers){
+            [[SYCache sharedCache] removeObjectForKey:url];
+            [[SYCache sharedCache] setObject:papers forKey:url];
+            callback(FALSE,papers);
+        }
+        else{
+            failure( [[NSError alloc] initWithDomain:[responseDict objectForKey:@"error"] code:666 userInfo:NULL] );
+        }
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
         NSLog(@"%@",error);
         failure(error);
@@ -267,20 +285,27 @@
 }
 -(void) getSendedPapers : (void (^)(BOOL isCachedResponse,NSArray* paperArray))callback
                 failure : (void (^)(NSError *))failure{
-    NSArray* cachedResponse = [[SYCache sharedCache]objectForKey:@"getParticipaitingPapers"];
+    NSString* url = [NSString stringWithFormat:@"/user/%lld/sended_papers.json",self.getUserIdx.longLongValue];
+    
+    NSArray* cachedResponse = [[SYCache sharedCache]objectForKey:url];
     if(cachedResponse){
         callback(TRUE,cachedResponse);
     }
     
     /* /user/:id([0-9]+)/getParticipatingPapers.json */
-    NSString* url = [NSString stringWithFormat:@"/user/%lld/getParticipatingPapers.json",
-                     self.getUserIdx.longLongValue];
     AFJSONRequestOperation* request =
-    [AFJSONRequestOperation JSONRequestOperationWithRequest:SubAddressToNSURLRequest(url) success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-        NSArray* paperArray = JSON;
-        [[SYCache sharedCache] removeObjectForKey:@"getParticipaitingPapers"];
-        [[SYCache sharedCache] setObject:paperArray forKey:@"getParticipaitingPapers"];
-        callback(FALSE,paperArray);
+    [AFJSONRequestOperation JSONRequestOperationWithRequest:SubAddressToNSURLRequest(url)
+    success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        NSDictionary* responseDict = JSON;
+        NSArray* papers = [responseDict objectForKey:@"papers"];
+        if(papers){
+            [[SYCache sharedCache] removeObjectForKey:url];
+            [[SYCache sharedCache] setObject:papers forKey:url];
+            callback(FALSE,papers);
+        }
+        else{
+            failure( [[NSError alloc] initWithDomain:[responseDict objectForKey:@"error"] code:666 userInfo:NULL] );
+        }
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
         NSLog(@"%@",error);
         failure(error);

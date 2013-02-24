@@ -8,6 +8,7 @@
 
 #import "RollingPaper.h"
 #import "Content.h"
+#import "FlowithAgent.h"
 
 
 @implementation RollingPaper
@@ -52,6 +53,9 @@
         @"target_email"   : NullToNSNull(self.target_email)
     };
     return params;
+}
+- (NSString*) webViewURL{
+    return [NSString stringWithFormat:@"%@/paper?v=%lld",SERVER_HOST,self.idx.longLongValue ];
 }
 @end
 

@@ -240,6 +240,15 @@
         
     }];
 }
+-(void) fadeTo : (float) alpha
+      duration : (float) duration{
+    self.hidden = FALSE;
+    [UIView animateWithDuration:duration animations:^{
+        self.alpha = alpha;
+    } completion:^(BOOL finished) {
+        
+    }];
+}
 -(void) fadeOut : (float) duration{
     [UIView animateWithDuration:duration animations:^{
         self.alpha = 0.0f;

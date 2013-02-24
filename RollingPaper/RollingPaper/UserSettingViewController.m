@@ -56,4 +56,10 @@
 - (IBAction)onTouchFeedbackButton:(id)sender {
     [TestFlight openFeedbackView];
 }
+
+- (IBAction)onTouchLogout:(id)sender {
+    [[FlowithAgent sharedAgent] setUserInfo:NULL];
+    [self.navigationController popToRootViewControllerAnimated:TRUE];
+    
+}
 @end

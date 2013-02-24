@@ -32,8 +32,8 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "07631DB416B576C700D7F67A"
-               BuildableName = "Specs.octest"
+               BlueprintIdentifier = "07776F1516DA5A9100A19EC4"
+               BuildableName = "Specs.app"
                BlueprintName = "Specs"
                ReferencedContainer = "container:RollingPaper.xcodeproj">
             </BuildableReference>

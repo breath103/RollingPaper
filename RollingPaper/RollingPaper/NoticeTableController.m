@@ -33,8 +33,7 @@
     self.refreshControl = refreshControl;
 
     [[FlowithAgent sharedAgent] getNoticeList:^(BOOL isCaschedResponse, NSArray *aNoticeList) {
-        if(!isCaschedResponse)
-        {
+        if(!isCaschedResponse) {
             self.noticeList = aNoticeList;
             [self loadView];
         }

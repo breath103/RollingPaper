@@ -12,6 +12,7 @@
 @class Content;
 
 @interface RollingPaper : NSManagedObject
+
 @property (nonatomic, retain) NSString * created_time;
 @property (nonatomic, retain) NSNumber * creator_idx;
 @property (nonatomic, retain) NSNumber * height;
@@ -30,6 +31,7 @@
 @property (nonatomic, retain) NSString * target_email;
 @property (nonatomic, retain) NSString * receive_tel;
 @property (nonatomic, retain) NSString * receiver_fb_id;
+
 @end
 
 @interface RollingPaper (CoreDataGeneratedAccessors)
@@ -41,6 +43,7 @@
 
 @interface RollingPaper (NetworkingHelper)
 - (NSDictionary*) dictionaryForUpdateRequest;
+- (NSString*) webViewURL;
 @end
 
 

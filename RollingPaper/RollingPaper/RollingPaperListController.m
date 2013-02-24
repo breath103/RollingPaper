@@ -19,6 +19,8 @@
 #import "UELib/UEUI.h"
 #import "UserSettingViewController.h"
 #import <JSONKit.h>
+#import "UIAlertViewBlockDelegate.h"
+#import "LoginMethodViewController.h"
 
 static RollingPaperListController* g_instance = NULL;
 
@@ -55,15 +57,18 @@ static RollingPaperListController* g_instance = NULL;
     [paperCellControllers removeAllObjects];
 }
 -(void) refreshPaperList{
-    [[FlowithAgent sharedAgent]getParticipaitingPapers:^(BOOL isCachedResponse,
-                                                         NSArray *paperArray) {
+    [[FlowithAgent sharedAgent]getParticipaitingPapers:^(BOOL isCachedResponse,NSArray *paperArray) {
         [self createPaperViewsFromArray:paperArray];
     } failure:^(NSError *error) {
-        [[[UIAlertView alloc] initWithTitle:@"경고"
-                                    message:@"서버로부터 페이퍼 리스트를 받아오는데 실패했습니다"
-                                   delegate:nil
-                          cancelButtonTitle:@"확인"
-                          otherButtonTitles:nil] show];
+        [[[UIAlertViewBlock alloc] initWithTitle:@"경고"
+                                         message:@"서버로부터 페이퍼 리스트를 받아오는데 실패했습니다"
+                                   blockDelegate:^(UIAlertView *alertView, int clickedButtonIndex) {
+                                       if(clickedButtonIndex == 1){
+                                           [self refreshPaperList];
+                                       }
+                                   } 
+                               cancelButtonTitle:@"확인"
+                               otherButtonTitles:@"재시도",nil] show];
     }];
 }
 -(NSMutableDictionary*) fetchAllRollingPaperWithIdxKey{
@@ -103,8 +108,7 @@ static RollingPaperListController* g_instance = NULL;
         else{
             [entity setValuesWithDictionary:p];
         }
-        
-        if([entity.is_sended compare:@"NONE"] == NSOrderedSame)
+        if([entity.is_sended isEqualToString:@"NONE"])
         {
             PaperCellController* cellController = [[PaperCellController alloc] initWithEntity : entity
                                                                                      delegate : self];
@@ -166,14 +170,19 @@ static RollingPaperListController* g_instance = NULL;
             [self refreshPaperList];
         }
         else{
-            //이미 로그인 된것이 확인되서 들어왔는데 유저 정보가 없다고 뜨는 크리티컬한 에러
+            
+            //이미 로그인 된것이 확인되서 들어왔는데 유저 정보가 없다고 뜨는 크리티컬한 에러거나, 로그아웃을 눌러서 이 페이지로 온경우
+            /*
             [[[UIAlertView alloc] initWithTitle:@"error"
                                         message:@"유저 정보를 확인할 수 없습니다"
                                        delegate:NULL
                               cancelButtonTitle:NULL
                               otherButtonTitles:@"확인", nil] show];
-            
-            [self.navigationController popViewControllerAnimated:TRUE];
+            */
+        //    [self.navigationController popViewControllerAnimated:TRUE];
+            LoginMethodViewController* loginMethodViewController = [[LoginMethodViewController alloc] initWithDefaultNib];
+            [self.navigationController pushViewController:loginMethodViewController
+                                                 animated:TRUE];
         }
     }
 }

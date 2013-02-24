@@ -17,6 +17,7 @@
 #import "macro.h"
 #import "LoginMethodViewController.h"
 #import <JSONKit.h>
+#import "UINavigationController+Flowith.h"
 
 
 @interface SplashViewController ()
@@ -37,8 +38,9 @@
     imageView.frame = CGRectMake(0, 0, 32/2, 39/2);
     UIBarButtonItem* nextButton = [[UIBarButtonItem alloc] initWithCustomView:imageView];
     self.navigationItem.rightBarButtonItem = nextButton;
-
-    
+}
+- (void)viewWillAppear:(BOOL)animated{
+    [self.navigationController setNavigationBarHidden:TRUE animated:TRUE];
 }
 - (void)viewDidAppear:(BOOL)animated
 {
@@ -59,7 +61,9 @@
                 NSLog(@"아직 로그인 안됨");
                 LoginMethodViewController* loginViewController = [[LoginMethodViewController alloc] initWithNibName:NSStringFromClass(LoginMethodViewController.class)
                                                                                                  bundle:NULL];
-                [self.navigationController pushViewController:loginViewController animated:TRUE];
+                [self.navigationController pushViewController:loginViewController
+                                                     animated:TRUE];
+                [self.navigationController removeViewControllersExceptTop];
             }
         }];    
 }
@@ -69,11 +73,9 @@
 }
 - (void)showPaperList {
     RollingPaperListController* controller = [[RollingPaperListController alloc] initWithNibName:@"RollingPaperListController" bundle:NULL];
-    [self.navigationController pushViewController:controller animated:TRUE];
-
-    // Navigation Stackd에서 롤링페이퍼 리스트컨트롤러가 제일 위로 오게 루트뷰를 빼버린다.
-    [self removeFromParentViewController];
-    
+    [self.navigationController pushViewController:controller
+                                         animated:TRUE];
+    [self.navigationController removeViewControllersExceptTop];
 }
 - (void)onTouchLoginWithFacebook {
     if ( !FBSession.activeSession.isOpen) {

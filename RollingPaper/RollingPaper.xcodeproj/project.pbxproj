@@ -7,6 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0702046016DA74A9006BA90A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0778B7EF163B7C4E0026B99A /* UIKit.framework */; };
+		0702046116DA74A9006BA90A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0769651E16457AD1002C25B6 /* Foundation.framework */; };
+		0702046216DA74A9006BA90A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0778B7F3163B7C4E0026B99A /* CoreGraphics.framework */; };
+		0702046816DA74A9006BA90A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0702046616DA74A9006BA90A /* InfoPlist.strings */; };
+		0702046A16DA74A9006BA90A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0702046916DA74A9006BA90A /* main.m */; };
+		0702046D16DA74AA006BA90A /* Cedar-iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0702046C16DA74AA006BA90A /* Cedar-iOS.framework */; };
+		0702046F16DA74AA006BA90A /* ExampleSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0702046E16DA74AA006BA90A /* ExampleSpec.mm */; };
+		0702047616DA74DC006BA90A /* UINavigation+Flowith.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0702047416DA74DC006BA90A /* UINavigation+Flowith.mm */; };
+		0702047716DA754A006BA90A /* UINavigationController+Flowith.m in Sources */ = {isa = PBXBuildFile; fileRef = 079C7EE416DA46D80071181B /* UINavigationController+Flowith.m */; };
 		07081EF2165FB5B8005670B5 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07081EF1165FB5B8005670B5 /* QuartzCore.framework */; };
 		07081EFD165FBA74005670B5 /* RollingPaperCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = 07081EF6165FBA74005670B5 /* RollingPaperCreator.m */; };
 		07081EFE165FBA74005670B5 /* RollingPaperCreator.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07081EF7165FBA74005670B5 /* RollingPaperCreator.xib */; };
@@ -48,7 +57,6 @@
 		075A1EBC1684BA5400BB4E3B /* UserSettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 075A1EBA1684BA5400BB4E3B /* UserSettingViewController.xib */; };
 		075BF9FB16D6087400AC76F1 /* UIAlertViewBlockDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 075BF9FA16D6087400AC76F1 /* UIAlertViewBlockDelegate.m */; };
 		07629A54168E46FD00F413A7 /* ContentsScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 07629A53168E46FD00F413A7 /* ContentsScrollView.m */; };
-		07629A5F168F036E00F413A7 /* UINavigationControllerViewOrientation.m in Sources */ = {isa = PBXBuildFile; fileRef = 07629A5E168F036E00F413A7 /* UINavigationControllerViewOrientation.m */; };
 		0769651016457AA7002C25B6 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0769650F16457AA7002C25B6 /* FacebookSDK.framework */; };
 		0769652216457AD1002C25B6 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0769651316457AD1002C25B6 /* libz.dylib */; };
 		0769652316457AD1002C25B6 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0769651416457AD1002C25B6 /* MobileCoreServices.framework */; };
@@ -78,6 +86,7 @@
 		079C2A19169B060D00FB7A9D /* FacebookHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 079C2A18169B060D00FB7A9D /* FacebookHelper.m */; };
 		079C7EE116DA11000071181B /* SignInController.m in Sources */ = {isa = PBXBuildFile; fileRef = 079C7EDF16DA10FF0071181B /* SignInController.m */; };
 		079C7EE216DA11000071181B /* SignInController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 079C7EE016DA10FF0071181B /* SignInController.xib */; };
+		079C7EE516DA46D80071181B /* UINavigationController+Flowith.m in Sources */ = {isa = PBXBuildFile; fileRef = 079C7EE416DA46D80071181B /* UINavigationController+Flowith.m */; };
 		07AAC4EB16C4142200E1EBB0 /* already_joined?.png in Resources */ = {isa = PBXBuildFile; fileRef = 07AAC44116C4142100E1EBB0 /* already_joined?.png */; };
 		07AAC4EC16C4142200E1EBB0 /* already_joined?@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 07AAC44216C4142100E1EBB0 /* already_joined?@2x.png */; };
 		07AAC4ED16C4142200E1EBB0 /* app_loading_no_bar.png in Resources */ = {isa = PBXBuildFile; fileRef = 07AAC44316C4142100E1EBB0 /* app_loading_no_bar.png */; };
@@ -277,6 +286,7 @@
 		07D2556F16CFD5AD00C4715C /* release_notes.md in Resources */ = {isa = PBXBuildFile; fileRef = 07D2556B16CFD5AD00C4715C /* release_notes.md */; };
 		07D2557116CFDF3700C4715C /* setting_icon_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 07D2557016CFDF3700C4715C /* setting_icon_2.png */; };
 		07D3466916B505FB007762BC /* FlowithAgent.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D3466816B505FB007762BC /* FlowithAgent.m */; };
+		07E0BADC16DA6D1C00E32FF2 /* NSMutableArray+Flowith.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BADB16DA6D1C00E32FF2 /* NSMutableArray+Flowith.m */; };
 		07FBDDD7165FEF990011D581 /* UESoundRecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FBDDD6165FEF990011D581 /* UESoundRecoder.m */; };
 		07FBDDE0165FF28A0011D581 /* SoundContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FBDDDF165FF28A0011D581 /* SoundContentView.m */; };
 		07FD933F165FD379008943B0 /* SplashViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07FD933E165FD379008943B0 /* SplashViewController.xib */; };
@@ -284,6 +294,14 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0702045F16DA74A9006BA90A /* Specs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Specs.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		0702046516DA74A9006BA90A /* Specs-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Specs-Info.plist"; sourceTree = "<group>"; };
+		0702046716DA74A9006BA90A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		0702046916DA74A9006BA90A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		0702046B16DA74A9006BA90A /* Specs-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Specs-Prefix.pch"; sourceTree = "<group>"; };
+		0702046C16DA74AA006BA90A /* Cedar-iOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "Cedar-iOS.framework"; path = "Specs/Frameworks/Cedar-iOS.framework"; sourceTree = "<group>"; };
+		0702046E16DA74AA006BA90A /* ExampleSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ExampleSpec.mm; sourceTree = "<group>"; };
+		0702047416DA74DC006BA90A /* UINavigation+Flowith.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UINavigation+Flowith.mm"; sourceTree = "<group>"; };
 		07081EF1165FB5B8005670B5 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		07081EF5165FBA74005670B5 /* RollingPaperCreator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RollingPaperCreator.h; sourceTree = "<group>"; };
 		07081EF6165FBA74005670B5 /* RollingPaperCreator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RollingPaperCreator.m; sourceTree = "<group>"; };
@@ -350,8 +368,6 @@
 		075BF9FA16D6087400AC76F1 /* UIAlertViewBlockDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIAlertViewBlockDelegate.m; sourceTree = "<group>"; };
 		07629A52168E46FD00F413A7 /* ContentsScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContentsScrollView.h; sourceTree = "<group>"; };
 		07629A53168E46FD00F413A7 /* ContentsScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContentsScrollView.m; sourceTree = "<group>"; };
-		07629A5E168F036E00F413A7 /* UINavigationControllerViewOrientation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UINavigationControllerViewOrientation.m; sourceTree = "<group>"; };
-		07631D8D16B574C500D7F67A /* RollingPaper copy2-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "RollingPaper copy2-Info.plist"; path = "/Users/breath103/Documents/workspace/RollingPaper/RollingPaper/RollingPaper copy2-Info.plist"; sourceTree = "<absolute>"; };
 		0769650F16457AA7002C25B6 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = ../../TravelTape/TravelTape/FacebookSDK.framework; sourceTree = "<group>"; };
 		0769651316457AD1002C25B6 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		0769651416457AD1002C25B6 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
@@ -394,6 +410,8 @@
 		079C7EDE16DA10FF0071181B /* SignInController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignInController.h; sourceTree = "<group>"; };
 		079C7EDF16DA10FF0071181B /* SignInController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignInController.m; sourceTree = "<group>"; };
 		079C7EE016DA10FF0071181B /* SignInController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SignInController.xib; sourceTree = "<group>"; };
+		079C7EE316DA46D80071181B /* UINavigationController+Flowith.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+Flowith.h"; sourceTree = "<group>"; };
+		079C7EE416DA46D80071181B /* UINavigationController+Flowith.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+Flowith.m"; sourceTree = "<group>"; };
 		07AAC44116C4142100E1EBB0 /* already_joined?.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "already_joined?.png"; sourceTree = "<group>"; };
 		07AAC44216C4142100E1EBB0 /* already_joined?@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "already_joined?@2x.png"; sourceTree = "<group>"; };
 		07AAC44316C4142100E1EBB0 /* app_loading_no_bar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = app_loading_no_bar.png; sourceTree = "<group>"; };
@@ -600,7 +618,6 @@
 		07B3561A165C143E0094D7D7 /* ccMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ccMacros.h; sourceTree = "<group>"; };
 		07BC507F16A54E9B00F9060F /* NSRandomSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSRandomSupport.h; sourceTree = "<group>"; };
 		07BC508016A54E9B00F9060F /* NSRandomSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSRandomSupport.m; sourceTree = "<group>"; };
-		07BFA0CE16B561B4008295E3 /* RollingPaper copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "RollingPaper copy-Info.plist"; path = "/Users/breath103/Documents/workspace/RollingPaper/RollingPaper/RollingPaper copy-Info.plist"; sourceTree = "<absolute>"; };
 		07C32BAB16AC1194003FB62B /* UETextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UETextField.h; sourceTree = "<group>"; };
 		07C32BAC16AC1194003FB62B /* UETextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UETextField.m; sourceTree = "<group>"; };
 		07CD07BE167C693B00358AD6 /* UIFreeTransformGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIFreeTransformGestureRecognizer.h; sourceTree = "<group>"; };
@@ -619,6 +636,8 @@
 		07D2557016CFDF3700C4715C /* setting_icon_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = setting_icon_2.png; sourceTree = "<group>"; };
 		07D3466716B505FB007762BC /* FlowithAgent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlowithAgent.h; sourceTree = "<group>"; };
 		07D3466816B505FB007762BC /* FlowithAgent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlowithAgent.m; sourceTree = "<group>"; };
+		07E0BADA16DA6D1C00E32FF2 /* NSMutableArray+Flowith.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableArray+Flowith.h"; sourceTree = "<group>"; };
+		07E0BADB16DA6D1C00E32FF2 /* NSMutableArray+Flowith.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+Flowith.m"; sourceTree = "<group>"; };
 		07FBDDD5165FEF990011D581 /* UESoundRecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UESoundRecoder.h; sourceTree = "<group>"; };
 		07FBDDD6165FEF990011D581 /* UESoundRecoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UESoundRecoder.m; sourceTree = "<group>"; };
 		07FBDDDE165FF28A0011D581 /* SoundContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundContentView.h; sourceTree = "<group>"; };
@@ -631,6 +650,17 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		0702045C16DA74A9006BA90A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0702046016DA74A9006BA90A /* UIKit.framework in Frameworks */,
+				0702046116DA74A9006BA90A /* Foundation.framework in Frameworks */,
+				0702046216DA74A9006BA90A /* CoreGraphics.framework in Frameworks */,
+				0702046D16DA74AA006BA90A /* Cedar-iOS.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		0778B7E8163B7C4E0026B99A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -661,6 +691,35 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0702046316DA74A9006BA90A /* Specs */ = {
+			isa = PBXGroup;
+			children = (
+				0702047316DA74DC006BA90A /* Extensions */,
+				0702046E16DA74AA006BA90A /* ExampleSpec.mm */,
+				0702046416DA74A9006BA90A /* Supporting Files */,
+			);
+			path = Specs;
+			sourceTree = "<group>";
+		};
+		0702046416DA74A9006BA90A /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				0702046516DA74A9006BA90A /* Specs-Info.plist */,
+				0702046616DA74A9006BA90A /* InfoPlist.strings */,
+				0702046916DA74A9006BA90A /* main.m */,
+				0702046B16DA74A9006BA90A /* Specs-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		0702047316DA74DC006BA90A /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				0702047416DA74DC006BA90A /* UINavigation+Flowith.mm */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		070268D81673A76E0033408A /* PaperEditing */ = {
 			isa = PBXGroup;
 			children = (
@@ -707,6 +766,10 @@
 				07AB33D016467D13000A27F7 /* NSObject+block.m */,
 				075BF9F916D6087400AC76F1 /* UIAlertViewBlockDelegate.h */,
 				075BF9FA16D6087400AC76F1 /* UIAlertViewBlockDelegate.m */,
+				079C7EE316DA46D80071181B /* UINavigationController+Flowith.h */,
+				079C7EE416DA46D80071181B /* UINavigationController+Flowith.m */,
+				07E0BADA16DA6D1C00E32FF2 /* NSMutableArray+Flowith.h */,
+				07E0BADB16DA6D1C00E32FF2 /* NSMutableArray+Flowith.m */,
 			);
 			name = Extension;
 			sourceTree = "<group>";
@@ -716,13 +779,12 @@
 			children = (
 				0744AFAF16ADAA5E00F5228C /* logo3.png */,
 				0778B7F5163B7C4E0026B99A /* RollingPaper */,
+				0702046316DA74A9006BA90A /* Specs */,
 				0778B7EE163B7C4E0026B99A /* Frameworks */,
 				0778B7EC163B7C4E0026B99A /* Products */,
 				B5742D1475594B17A7934904 /* Pods.xcconfig */,
 				6213265403C4457696F38C51 /* Pods.xcconfig */,
 				79C1079E3D27429083B31B8B /* Pods.xcconfig */,
-				07BFA0CE16B561B4008295E3 /* RollingPaper copy-Info.plist */,
-				07631D8D16B574C500D7F67A /* RollingPaper copy2-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -730,6 +792,7 @@
 			isa = PBXGroup;
 			children = (
 				0778B7EB163B7C4E0026B99A /* RollingPaper.app */,
+				0702045F16DA74A9006BA90A /* Specs.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -737,6 +800,7 @@
 		0778B7EE163B7C4E0026B99A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0702046C16DA74AA006BA90A /* Cedar-iOS.framework */,
 				073CB53816D927A5000EAFDD /* AdSupport.framework */,
 				073CB53616D92767000EAFDD /* Accounts.framework */,
 				073CB53416D92729000EAFDD /* AVFoundation.framework */,
@@ -1144,7 +1208,6 @@
 				075A1EA81684A7B200BB4E3B /* LoginMethodViewController.h */,
 				075A1EA91684A7B200BB4E3B /* LoginMethodViewController.m */,
 				075A1EAA1684A7B200BB4E3B /* LoginMethodViewController.xib */,
-				07629A5E168F036E00F413A7 /* UINavigationControllerViewOrientation.m */,
 				073CB54216D95FAB000EAFDD /* SignUpController.h */,
 				073CB54316D95FAC000EAFDD /* SignUpController.m */,
 				073CB54416D95FAE000EAFDD /* SignUpController.xib */,
@@ -1182,6 +1245,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		0702045E16DA74A9006BA90A /* Specs */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0702047016DA74AA006BA90A /* Build configuration list for PBXNativeTarget "Specs" */;
+			buildPhases = (
+				0702045B16DA74A9006BA90A /* Sources */,
+				0702045C16DA74A9006BA90A /* Frameworks */,
+				0702045D16DA74A9006BA90A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Specs;
+			productName = Specs;
+			productReference = 0702045F16DA74A9006BA90A /* Specs.app */;
+			productType = "com.apple.product-type.application";
+		};
 		0778B7EA163B7C4E0026B99A /* RollingPaper */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0778B80F163B7C4E0026B99A /* Build configuration list for PBXNativeTarget "RollingPaper" */;
@@ -1224,11 +1304,20 @@
 			projectRoot = "";
 			targets = (
 				0778B7EA163B7C4E0026B99A /* RollingPaper */,
+				0702045E16DA74A9006BA90A /* Specs */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		0702045D16DA74A9006BA90A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0702046816DA74A9006BA90A /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		0778B7E9163B7C4E0026B99A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1478,6 +1567,17 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		0702045B16DA74A9006BA90A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0702046A16DA74A9006BA90A /* main.m in Sources */,
+				0702046F16DA74AA006BA90A /* ExampleSpec.mm in Sources */,
+				0702047616DA74DC006BA90A /* UINavigation+Flowith.mm in Sources */,
+				0702047716DA754A006BA90A /* UINavigationController+Flowith.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		0778B7E7163B7C4E0026B99A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1524,7 +1624,6 @@
 				075A1EBB1684BA5400BB4E3B /* UserSettingViewController.m in Sources */,
 				071E3A2E168A317E00A2A281 /* PaintingView.m in Sources */,
 				07629A54168E46FD00F413A7 /* ContentsScrollView.m in Sources */,
-				07629A5F168F036E00F413A7 /* UINavigationControllerViewOrientation.m in Sources */,
 				0729BEE4168F91BD002A300A /* ColorPalette.m in Sources */,
 				079C2A19169B060D00FB7A9D /* FacebookHelper.m in Sources */,
 				077A988916A512F600B864B9 /* TextContent.m in Sources */,
@@ -1542,12 +1641,22 @@
 				073CB53C16D93BA0000EAFDD /* FacebookAgent.m in Sources */,
 				073CB54516D95FB0000EAFDD /* SignUpController.m in Sources */,
 				079C7EE116DA11000071181B /* SignInController.m in Sources */,
+				079C7EE516DA46D80071181B /* UINavigationController+Flowith.m in Sources */,
+				07E0BADC16DA6D1C00E32FF2 /* NSMutableArray+Flowith.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		0702046616DA74A9006BA90A /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0702046716DA74A9006BA90A /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 		0778B7F8163B7C4E0026B99A /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -1559,6 +1668,60 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		0702047116DA74AA006BA90A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Specs/Frameworks\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Specs/Specs-Prefix.pch";
+				INFOPLIST_FILE = "Specs/Specs-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-all_load",
+					"-lstdc++",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		0702047216DA74AA006BA90A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Specs/Frameworks\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Specs/Specs-Prefix.pch";
+				INFOPLIST_FILE = "Specs/Specs-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-all_load",
+					"-lstdc++",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
 		0778B80D163B7C4E0026B99A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1633,6 +1796,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/../../TravelTape/TravelTape\"",
 					"\"$(SRCROOT)/../../../FacebookSDK\"",
+					"\"$(SRCROOT)\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RollingPaper/RollingPaper-Prefix.pch";
@@ -1668,6 +1832,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/../../TravelTape/TravelTape\"",
 					"\"$(SRCROOT)/../../../FacebookSDK\"",
+					"\"$(SRCROOT)\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RollingPaper/RollingPaper-Prefix.pch";
@@ -1693,6 +1858,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		0702047016DA74AA006BA90A /* Build configuration list for PBXNativeTarget "Specs" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0702047116DA74AA006BA90A /* Debug */,
+				0702047216DA74AA006BA90A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		0778B7E5163B7C4E0026B99A /* Build configuration list for PBXProject "RollingPaper" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
