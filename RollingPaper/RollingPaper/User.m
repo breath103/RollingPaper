@@ -9,6 +9,20 @@
 #import "User.h"
 
 @implementation User
+-(id) init {
+    self = [super init];
+    if(self){
+        self.birthday             = [NSNull null];
+        self.email                = [NSNull null];
+        self.facebook_accesstoken = [NSNull null];
+        self.facebook_id          = [NSNull null];
+        self.idx                  = [NSNull null];
+        self.name                 = [NSNull null];
+        self.picture              = [NSNull null];
+        self.phone                = [NSNull null];
+    }
+    return self;
+}
 -(id) initWithDict : (NSDictionary*) dict{
     self = [self init];
     if(self){
@@ -19,8 +33,19 @@
         self.idx                  = [dict objectForKey:@"idx"];
         self.name                 = [dict objectForKey:@"name"];
         self.picture              = [dict objectForKey:@"picture"];
+        self.phone                = [dict objectForKey:@"phone"];
     }
     return self;
+}
+-(NSDictionary*) toDictionary{
+    return @{@"idx": self.idx,
+             @"name" : self.name,
+             @"email" : self.email,
+             @"picture" : self.picture,
+             @"phone" : self.phone,
+             @"birthday" : self.birthday,
+             @"facebook_id" : self.facebook_id,
+             @"facebook_accesstoken" : self.facebook_accesstoken};
 }
 +(NSArray*) userWithDictArray : (NSArray*) dictArray{
     NSMutableArray* users = [[NSMutableArray alloc]initWithCapacity:dictArray.count];

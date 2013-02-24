@@ -25,6 +25,10 @@
 	return sharedAgent;
 }
 
+
+-(void) setCurrentUser : (User*) user{
+    [self setUserInfo:[user toDictionary]];
+}
 -(void) setUserInfo : (NSDictionary*) dict{
     NSMutableDictionary* mutableDict = [dict mutableCopy];
     for( NSString* key in dict.allKeys)
@@ -54,6 +58,37 @@
     
 }
 
+
+-(void) joinWithUser : (User*) user
+            password : (NSString*) password
+             success : (void(^)(User* user)) success
+             failure : (void(^)(NSError* error)) failure{
+    NSURL *url = [NSURL URLWithString:SERVER_HOST];
+    AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:url];
+    
+    NSDictionary *params = @{ @"name"     : user.name ,
+                              @"email"    : user.email,
+                              @"password" : password,
+                              @"pictrue"  : user.picture,
+                              @"birthday" : user.birthday,
+                              @"phone"    : user.phone };
+    [httpClient postPath:@"/user/joinWithFacebook.json"
+              parameters:params
+                 success:^(AFHTTPRequestOperation *operation, NSData* responseObject){
+                     NSDictionary* jsonDict = [responseObject objectFromJSONData];
+                     NSString* result = [jsonDict objectForKey:@"result"];
+                     NSLog(@"%@",jsonDict);
+                     if([result isEqualToString:@"join"]){
+                         success( [[User alloc] initWithDict:[jsonDict objectForKey:@"user"]] );
+                     }
+                     else{
+                         failure( [jsonDict objectForKey:@"reason"] );
+                     }
+                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                     failure(error);
+                 }];
+}
+
 -(void) joinWithFacebook :(id<FBGraphUser>) me
              accessToken : (NSString*) accesstoken
                  success : (void(^)(NSDictionary* response)) success
@@ -69,8 +104,6 @@
                       [dateComponent objectAtIndex:2],
                       [dateComponent objectAtIndex:0],
                       [dateComponent objectAtIndex:1]];
-    
-    
     NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
                             [me id],@"facebook_id" ,
                             [me objectForKey:@"name"],@"name",
@@ -82,13 +115,42 @@
     [httpClient postPath:@"/user/joinWithFacebook.json"
               parameters:params
                  success:^(AFHTTPRequestOperation *operation, NSData* responseObject){
-                     NSDictionary* jsonDict = [responseObject objectFromJSONData];
-                     success(jsonDict);
+                     
+                   
+     
                  } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                      failure(error);
                  }];
    
 }
+
+
+-(void) loginWithEmail : (NSString*) email
+              password : (NSString*) password
+               success : (void(^)(User* user)) success
+               failure : (void(^)(NSError* error)) failure{
+    NSURL *url = [NSURL URLWithString:SERVER_HOST];
+    AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:url];
+    
+    NSDictionary *params = @{@"email" : email,
+                             @"password" : password };
+    [httpClient postPath:@"/user/signin.json"
+              parameters:params
+                 success:^(AFHTTPRequestOperation *operation, NSData* responseObject){
+                     NSDictionary* jsonDict = [responseObject objectFromJSONData];
+                     NSString* result = [jsonDict objectForKey:@"result"];
+                     NSLog(@"%@",jsonDict);
+                     if([result isEqualToString:@"signin"]){
+                         success( [[User alloc] initWithDict:[jsonDict objectForKey:@"user"]] );
+                     }
+                     else{
+                         failure( [jsonDict objectForKey:@"reason"] );
+                     }
+                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                     failure(error);
+                 }];
+}
+
 
 
 -(void) getProfileImage : (void(^)(BOOL isCachedResponse,UIImage* image)) success{

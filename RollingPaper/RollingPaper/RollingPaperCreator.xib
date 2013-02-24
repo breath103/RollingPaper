@@ -1223,7 +1223,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 						<string key="onTouchPickBackground:">id</string>
 						<string key="onTouchPickFriend:">id</string>
 						<string key="onTouchPrevious:">id</string>
-						<string key="onTouchQuit:">UIButton</string>
 						<string key="onTouchReceiveDate:">id</string>
 						<string key="onTouchSend:">id</string>
 					</dictionary>
@@ -1259,10 +1258,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 						<object class="IBActionInfo" key="onTouchPrevious:">
 							<string key="name">onTouchPrevious:</string>
 							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="onTouchQuit:">
-							<string key="name">onTouchQuit:</string>
-							<string key="candidateClassName">UIButton</string>
 						</object>
 						<object class="IBActionInfo" key="onTouchReceiveDate:">
 							<string key="name">onTouchReceiveDate:</string>

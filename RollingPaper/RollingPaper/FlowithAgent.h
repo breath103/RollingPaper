@@ -13,17 +13,24 @@
 
 +(FlowithAgent*) sharedAgent;
 
+-(void) setCurrentUser : (User*) user;
 -(void) setUserInfo : (NSDictionary*) dict;
 -(NSDictionary*) getUserInfo;
 -(NSNumber*) getUserIdx;
 
-/*
- 이함수부터 수정해야댐 2월 3일 여기까지함
- */
+-(void) joinWithUser : (User*) user
+            password : (NSString*) password
+             success : (void(^)(User* user)) success
+             failure : (void(^)(NSError* error)) error;
 -(void) joinWithFacebook :(id<FBGraphUser>) me
              accessToken : (NSString*) accesstoken
                  success : (void(^)(NSDictionary* response)) success
                  failure : (void(^)(NSError* error)) error;
+
+-(void) loginWithEmail : (NSString*) email
+              password : (NSString*) password
+               success : (void(^)(User* user)) success
+               failure : (void(^)(NSError* error)) failure;
 
 
 -(void) getProfileImage : (void(^)(BOOL isCachedResponse,UIImage* image)) success;

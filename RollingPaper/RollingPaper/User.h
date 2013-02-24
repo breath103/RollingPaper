@@ -16,8 +16,10 @@
 @property(nonatomic,strong) NSNumber* idx;
 @property(nonatomic,strong) NSString* name;
 @property(nonatomic,strong) NSString* picture;
+@property(nonatomic,strong) NSString* phone;
 -(id) initWithDict : (NSDictionary*) dict;
 +(NSArray*) userWithDictArray : (NSArray*) dictArray;
+-(NSDictionary*) toDictionary;
 //-(void) getPicture : (void(^)(UIImage* image)) callback;
 
 @end

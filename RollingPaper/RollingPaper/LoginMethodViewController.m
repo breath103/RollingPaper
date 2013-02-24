@@ -13,6 +13,8 @@
 #import "RollingPaperListController.h"
 #import <JSONKit.h>
 #import "FacebookAgent.h"
+#import "SignUpController.h"
+#import "SignInController.h"
 
 @interface LoginMethodViewController ()
 
@@ -56,11 +58,14 @@
 }
 
 - (IBAction)onTouchLogin:(id)sender {
-
-
+    SignInController* signInController = [[SignInController alloc] initWithDefaultNib];
+    [self.navigationController pushViewController:signInController
+                                         animated:TRUE];
 }
 - (IBAction)onTouchSignUp:(id)sender {
-    
+    SignUpController* signUpController = [[SignUpController alloc] initWithDefaultNib];
+    [self.navigationController pushViewController : signUpController
+                                         animated : TRUE];
 }
 -(void) onFacebookSessionActivated : (FBSession*) session{
     FBRequest* fbRequest = [FBRequest requestWithGraphPath:@"/me"

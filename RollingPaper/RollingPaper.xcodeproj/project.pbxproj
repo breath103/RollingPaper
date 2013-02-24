@@ -76,6 +76,8 @@
 		0795D1B8167B70D200272D34 /* RecoderController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0795D1B6167B70D200272D34 /* RecoderController.m */; };
 		0795D1B9167B70D200272D34 /* RecoderController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0795D1B7167B70D200272D34 /* RecoderController.xib */; };
 		079C2A19169B060D00FB7A9D /* FacebookHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 079C2A18169B060D00FB7A9D /* FacebookHelper.m */; };
+		079C7EE116DA11000071181B /* SignInController.m in Sources */ = {isa = PBXBuildFile; fileRef = 079C7EDF16DA10FF0071181B /* SignInController.m */; };
+		079C7EE216DA11000071181B /* SignInController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 079C7EE016DA10FF0071181B /* SignInController.xib */; };
 		07AAC4EB16C4142200E1EBB0 /* already_joined?.png in Resources */ = {isa = PBXBuildFile; fileRef = 07AAC44116C4142100E1EBB0 /* already_joined?.png */; };
 		07AAC4EC16C4142200E1EBB0 /* already_joined?@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 07AAC44216C4142100E1EBB0 /* already_joined?@2x.png */; };
 		07AAC4ED16C4142200E1EBB0 /* app_loading_no_bar.png in Resources */ = {isa = PBXBuildFile; fileRef = 07AAC44316C4142100E1EBB0 /* app_loading_no_bar.png */; };
@@ -389,6 +391,9 @@
 		0795D1B7167B70D200272D34 /* RecoderController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RecoderController.xib; sourceTree = "<group>"; };
 		079C2A17169B060D00FB7A9D /* FacebookHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookHelper.h; sourceTree = "<group>"; };
 		079C2A18169B060D00FB7A9D /* FacebookHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookHelper.m; sourceTree = "<group>"; };
+		079C7EDE16DA10FF0071181B /* SignInController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignInController.h; sourceTree = "<group>"; };
+		079C7EDF16DA10FF0071181B /* SignInController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignInController.m; sourceTree = "<group>"; };
+		079C7EE016DA10FF0071181B /* SignInController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SignInController.xib; sourceTree = "<group>"; };
 		07AAC44116C4142100E1EBB0 /* already_joined?.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "already_joined?.png"; sourceTree = "<group>"; };
 		07AAC44216C4142100E1EBB0 /* already_joined?@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "already_joined?@2x.png"; sourceTree = "<group>"; };
 		07AAC44316C4142100E1EBB0 /* app_loading_no_bar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = app_loading_no_bar.png; sourceTree = "<group>"; };
@@ -1143,6 +1148,9 @@
 				073CB54216D95FAB000EAFDD /* SignUpController.h */,
 				073CB54316D95FAC000EAFDD /* SignUpController.m */,
 				073CB54416D95FAE000EAFDD /* SignUpController.xib */,
+				079C7EDE16DA10FF0071181B /* SignInController.h */,
+				079C7EDF16DA10FF0071181B /* SignInController.m */,
+				079C7EE016DA10FF0071181B /* SignInController.xib */,
 			);
 			name = NavigationViews;
 			sourceTree = "<group>";
@@ -1418,6 +1426,7 @@
 				0720DDC816D0161100368B26 /* PaperBackgroundPicker.xib in Resources */,
 				0720DDCD16D0EB2800368B26 /* PaperParticipantsListController.xib in Resources */,
 				073CB54616D95FB0000EAFDD /* SignUpController.xib in Resources */,
+				079C7EE216DA11000071181B /* SignInController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1532,6 +1541,7 @@
 				075BF9FB16D6087400AC76F1 /* UIAlertViewBlockDelegate.m in Sources */,
 				073CB53C16D93BA0000EAFDD /* FacebookAgent.m in Sources */,
 				073CB54516D95FB0000EAFDD /* SignUpController.m in Sources */,
+				079C7EE116DA11000071181B /* SignInController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
