@@ -2,6 +2,7 @@
 #import "FlowithAgent.h"
 #import "RollingPaperListController.h"
 #import "UIAlertViewBlockDelegate.h"
+#import "UINavigationController+Flowith.h"
 
 @interface SignInController ()
 
@@ -36,6 +37,7 @@
     RollingPaperListController* controller = [[RollingPaperListController alloc] initWithDefaultNib];
     [self.navigationController pushViewController:controller
                                          animated:TRUE];
+    [self.navigationController removeViewControllersExceptTop];
 }
 - (IBAction)onTouchSignIn:(id)sender {
     [[FlowithAgent sharedAgent] loginWithEmail:self.emailInput.text

@@ -782,7 +782,6 @@ didFinishPickingMediaWithInfo : (NSDictionary *)info{
 
 //인스펙팅 모드로 넘어갔을때 아이폰 5등에서도 무조건 컨텐츠들이 스크롤뷰 중앙으로몰리게 
 -(void)scrollViewDidZoom:(UIScrollView *)scrollView{
-    
      
 }
 -(void) scrollViewDidEndZooming:(UIScrollView *)scrollView

@@ -190,9 +190,6 @@ static RollingPaperListController* g_instance = NULL;
 {
     self.title = @"롤링페이퍼";
     [super viewDidLoad];
-
-    
-    
 }
 
 -(void) PaperCellTouched : (PaperCellController *) paper

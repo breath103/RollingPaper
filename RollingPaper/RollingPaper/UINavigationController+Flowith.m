@@ -16,7 +16,6 @@
 
 -(NSUInteger)supportedInterfaceOrientations
 {
-    //    NSLog(@"%@",self.topViewController);
     if(![self isKindOfClass:UIImagePickerController.class])
         return [[self topViewController] supportedInterfaceOrientations];
     else
@@ -24,7 +23,6 @@
 }
 - (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
 {
-    //    NSLog(@"%@",self.topViewController);
     if(![self isKindOfClass:UIImagePickerController.class])
         return [[self topViewController] preferredInterfaceOrientationForPresentation];
     else
@@ -85,11 +83,22 @@
         return 0;
     }
 }
--(BOOL) addViewControllersToStackAboveViewController : (UIViewController*) controller{
+-(BOOL) addViewControllers : (NSArray*) newViewControllers
+ToStackAboveViewController : (UIViewController*) controller{
     
 }
--(BOOL) addViewControllersToStackBellowViewController : (UIViewController*) controlle{
+-(BOOL) addViewControllers : (NSArray*) newViewControllers
+ToStackBellowViewController : (UIViewController*) controller{
     
 }
+-(BOOL) addViewController : (UIViewController*) newViewController
+ToStackAboveViewController : (UIViewController*) controller{
+    return [self addViewControllers:@[newViewController] ToStackAboveViewController:controller];
+}
+-(BOOL) addViewController : (UIViewController*) newViewController
+ToStackBellowViewController : (UIViewController*) controller{
+    return [self addViewControllers:@[newViewController] ToStackBellowViewController:controller];
+}
+
 
 @end

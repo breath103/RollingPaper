@@ -65,6 +65,7 @@
 		0769652616457AD1002C25B6 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0769651716457AD1002C25B6 /* libsqlite3.0.dylib */; };
 		0769652716457AD1002C25B6 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0769651816457AD1002C25B6 /* libsqlite3.dylib */; };
 		0769652A16457AD1002C25B6 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0769651B16457AD1002C25B6 /* AssetsLibrary.framework */; };
+		076CA5A816DAB770000C6313 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 076CA5A716DAB770000C6313 /* Default-568h@2x.png */; };
 		076E89F1165EA92400040F6F /* PaperCellController.m in Sources */ = {isa = PBXBuildFile; fileRef = 076E89EF165EA92300040F6F /* PaperCellController.m */; };
 		076E89F2165EA92400040F6F /* PaperCellController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 076E89F0165EA92400040F6F /* PaperCellController.xib */; };
 		076FE3D8167F6E77006D6ABA /* DockController.m in Sources */ = {isa = PBXBuildFile; fileRef = 076FE3D6167F6E77006D6ABA /* DockController.m */; };
@@ -378,6 +379,7 @@
 		0769651B16457AD1002C25B6 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		0769651C16457AD1002C25B6 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		0769651E16457AD1002C25B6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		076CA5A716DAB770000C6313 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		076E89EE165EA92300040F6F /* PaperCellController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaperCellController.h; sourceTree = "<group>"; };
 		076E89EF165EA92300040F6F /* PaperCellController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaperCellController.m; sourceTree = "<group>"; };
 		076E89F0165EA92400040F6F /* PaperCellController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PaperCellController.xib; sourceTree = "<group>"; };
@@ -777,6 +779,7 @@
 		0778B7E0163B7C4E0026B99A = {
 			isa = PBXGroup;
 			children = (
+				076CA5A716DAB770000C6313 /* Default-568h@2x.png */,
 				0744AFAF16ADAA5E00F5228C /* logo3.png */,
 				0778B7F5163B7C4E0026B99A /* RollingPaper */,
 				0702046316DA74A9006BA90A /* Specs */,
@@ -1315,6 +1318,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0702046816DA74A9006BA90A /* InfoPlist.strings in Resources */,
+				076CA5A816DAB770000C6313 /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1865,6 +1869,7 @@
 				0702047216DA74AA006BA90A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		0778B7E5163B7C4E0026B99A /* Build configuration list for PBXProject "RollingPaper" */ = {
 			isa = XCConfigurationList;

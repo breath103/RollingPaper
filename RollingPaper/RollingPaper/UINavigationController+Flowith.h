@@ -15,10 +15,16 @@
 -(NSInteger) removeViewControllersFromStackWithFilter
     :   (BOOL(^)(UIViewController* viewController,NSUInteger idx, BOOL *stop)) filter;
 -(NSInteger) removeViewControllersFromStackIdentifyWithClass : (__unsafe_unretained  Class) controllerClass;
-
 -(NSInteger) removeViewControllersFromStackAboveViewController : (UIViewController*) controller;
 -(NSInteger) removeViewControllersFromStackBellowViewController : (UIViewController*) controller;
--(BOOL) addViewControllersToStackAboveViewController : (UIViewController*) controller;
--(BOOL) addViewControllersToStackBellowViewController : (UIViewController*) controller;
+-(BOOL) addViewControllers : (NSArray*) newViewControllers
+    ToStackAboveViewController : (UIViewController*) controller;
+-(BOOL) addViewControllers : (NSArray*) newViewControllers
+    ToStackBellowViewController : (UIViewController*) controller;
+-(BOOL) addViewController : (UIViewController*) newViewController
+    ToStackAboveViewController : (UIViewController*) controller;
+-(BOOL) addViewController : (UIViewController*) newViewController
+    ToStackBellowViewController : (UIViewController*) controller;
+
 
 @end
