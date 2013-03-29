@@ -21,3 +21,4 @@ install_resource()
       ;;
   esac
 }
+install_resource 'Facebook-iOS-SDK/src/FacebookSDKResources.bundle'

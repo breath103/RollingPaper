@@ -57,7 +57,6 @@
 		075A1EBC1684BA5400BB4E3B /* UserSettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 075A1EBA1684BA5400BB4E3B /* UserSettingViewController.xib */; };
 		075BF9FB16D6087400AC76F1 /* UIAlertViewBlockDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 075BF9FA16D6087400AC76F1 /* UIAlertViewBlockDelegate.m */; };
 		07629A54168E46FD00F413A7 /* ContentsScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 07629A53168E46FD00F413A7 /* ContentsScrollView.m */; };
-		0769651016457AA7002C25B6 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0769650F16457AA7002C25B6 /* FacebookSDK.framework */; };
 		0769652216457AD1002C25B6 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0769651316457AD1002C25B6 /* libz.dylib */; };
 		0769652316457AD1002C25B6 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0769651416457AD1002C25B6 /* MobileCoreServices.framework */; };
 		0769652416457AD1002C25B6 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0769651516457AD1002C25B6 /* SystemConfiguration.framework */; };
@@ -254,7 +253,6 @@
 		07AAC58E16C4142200E1EBB0 /* tool_dock_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 07AAC4E816C4142200E1EBB0 /* tool_dock_background@2x.png */; };
 		07AAC58F16C4142200E1EBB0 /* undoButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 07AAC4E916C4142200E1EBB0 /* undoButton.png */; };
 		07AAC59016C4142200E1EBB0 /* undoButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 07AAC4EA16C4142200E1EBB0 /* undoButton@2x.png */; };
-		07AB33A416458BFC000A27F7 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07AB33A316458BFC000A27F7 /* FacebookSDK.framework */; };
 		07AB33D116467D13000A27F7 /* NSObject+block.m in Sources */ = {isa = PBXBuildFile; fileRef = 07AB33D016467D13000A27F7 /* NSObject+block.m */; };
 		07AFD55B167303B700F19D64 /* RollingPaperListController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07AFD55A167303B600F19D64 /* RollingPaperListController.xib */; };
 		07B35574165A80CE0094D7D7 /* UEAssets.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B35565165A80CE0094D7D7 /* UEAssets.m */; };
@@ -369,7 +367,6 @@
 		075BF9FA16D6087400AC76F1 /* UIAlertViewBlockDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIAlertViewBlockDelegate.m; sourceTree = "<group>"; };
 		07629A52168E46FD00F413A7 /* ContentsScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContentsScrollView.h; sourceTree = "<group>"; };
 		07629A53168E46FD00F413A7 /* ContentsScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContentsScrollView.m; sourceTree = "<group>"; };
-		0769650F16457AA7002C25B6 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = ../../TravelTape/TravelTape/FacebookSDK.framework; sourceTree = "<group>"; };
 		0769651316457AD1002C25B6 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		0769651416457AD1002C25B6 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		0769651516457AD1002C25B6 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -580,7 +577,6 @@
 		07AAC4E816C4142200E1EBB0 /* tool_dock_background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tool_dock_background@2x.png"; sourceTree = "<group>"; };
 		07AAC4E916C4142200E1EBB0 /* undoButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = undoButton.png; sourceTree = "<group>"; };
 		07AAC4EA16C4142200E1EBB0 /* undoButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "undoButton@2x.png"; sourceTree = "<group>"; };
-		07AB33A316458BFC000A27F7 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = ../../../FacebookSDK/FacebookSDK.framework; sourceTree = "<group>"; };
 		07AB33CF16467D13000A27F7 /* NSObject+block.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSObject+block.h"; path = "BlockSupport/NSObject+block.h"; sourceTree = "<group>"; };
 		07AB33D016467D13000A27F7 /* NSObject+block.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSObject+block.m"; path = "BlockSupport/NSObject+block.m"; sourceTree = "<group>"; };
 		07AFD55A167303B600F19D64 /* RollingPaperListController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RollingPaperListController.xib; sourceTree = "<group>"; };
@@ -673,11 +669,9 @@
 				073CB53116D926D3000EAFDD /* Social.framework in Frameworks */,
 				07081EF2165FB5B8005670B5 /* QuartzCore.framework in Frameworks */,
 				07B355B6165B47340094D7D7 /* CoreData.framework in Frameworks */,
-				07AB33A416458BFC000A27F7 /* FacebookSDK.framework in Frameworks */,
 				0778B7F0163B7C4E0026B99A /* UIKit.framework in Frameworks */,
 				0778B7F2163B7C4E0026B99A /* Foundation.framework in Frameworks */,
 				0778B7F4163B7C4E0026B99A /* CoreGraphics.framework in Frameworks */,
-				0769651016457AA7002C25B6 /* FacebookSDK.framework in Frameworks */,
 				0769652216457AD1002C25B6 /* libz.dylib in Frameworks */,
 				0769652316457AD1002C25B6 /* MobileCoreServices.framework in Frameworks */,
 				0769652416457AD1002C25B6 /* SystemConfiguration.framework in Frameworks */,
@@ -810,7 +804,6 @@
 				073CB53016D926D3000EAFDD /* Social.framework */,
 				07081EF1165FB5B8005670B5 /* QuartzCore.framework */,
 				07B355B5165B47330094D7D7 /* CoreData.framework */,
-				07AB33A316458BFC000A27F7 /* FacebookSDK.framework */,
 				0769651316457AD1002C25B6 /* libz.dylib */,
 				0769651416457AD1002C25B6 /* MobileCoreServices.framework */,
 				0769651516457AD1002C25B6 /* SystemConfiguration.framework */,
@@ -820,7 +813,6 @@
 				0769651B16457AD1002C25B6 /* AssetsLibrary.framework */,
 				0769651C16457AD1002C25B6 /* CoreLocation.framework */,
 				0769651E16457AD1002C25B6 /* Foundation.framework */,
-				0769650F16457AA7002C25B6 /* FacebookSDK.framework */,
 				0778B7EF163B7C4E0026B99A /* UIKit.framework */,
 				0778B7F1163B7C4E0026B99A /* Foundation.framework */,
 				0778B7F3163B7C4E0026B99A /* CoreGraphics.framework */,
@@ -1814,8 +1806,8 @@
 					"\"$(SRCROOT)/RollingPaper/TestFlightSDK1.1\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "1BAB78AC-8940-4CE9-8684-D2C6701F3A7C";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "1BAB78AC-8940-4CE9-8684-D2C6701F3A7C";
+				PROVISIONING_PROFILE = "99A3775A-891B-45E9-AD1E-1AD4FD082326";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "99A3775A-891B-45E9-AD1E-1AD4FD082326";
 				SDKROOT = iphoneos;
 				TEST_AFTER_BUILD = NO;
 				VALIDATE_PRODUCT = YES;
@@ -1850,8 +1842,8 @@
 					"\"$(SRCROOT)/RollingPaper/TestFlightSDK1.1\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "1BAB78AC-8940-4CE9-8684-D2C6701F3A7C";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "1BAB78AC-8940-4CE9-8684-D2C6701F3A7C";
+				PROVISIONING_PROFILE = "99A3775A-891B-45E9-AD1E-1AD4FD082326";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "99A3775A-891B-45E9-AD1E-1AD4FD082326";
 				SDKROOT = iphoneos;
 				TEST_AFTER_BUILD = NO;
 				VALIDATE_PRODUCT = YES;

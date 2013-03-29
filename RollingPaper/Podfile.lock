@@ -1,17 +1,20 @@
 
+PODS: 
+- AFNetworking (1.1.0)
+- Facebook-iOS-SDK (3.2.1)
+- JSONKit (1.5pre)
+- SYCache (1.0)
+
+SPEC CHECKSUMS: 
+  AFNetworking: 761a418233d280c1e0580bcb76ff9cb4c3073d17
+  Facebook-iOS-SDK: 514dc0d7d43358999267c88c088e4b5b339b7da1
+  SYCache: 8ca46f459ce46245db483bf2067f265e63d8ff23
+  JSONKit: 409734ab3407fce90ef7eaa95d7168f38d9a6601
+
 DEPENDENCIES: 
 - AFNetworking (= 1.1.0)
+- Facebook-iOS-SDK
 - JSONKit (= 1.5pre)
 - SYCache (= 1.0)
 
-SPEC CHECKSUMS: 
-  SYCache: 8ca46f459ce46245db483bf2067f265e63d8ff23
-  JSONKit: 3d4708953ea7ae399a49777372d8b060a43ddd27
-  AFNetworking: 761a418233d280c1e0580bcb76ff9cb4c3073d17
-
 COCOAPODS: 0.16.1
-
-PODS: 
-- AFNetworking (1.1.0)
-- JSONKit (1.5pre)
-- SYCache (1.0)
