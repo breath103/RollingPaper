@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
 #import <FacebookSDK/FacebookSDK.h>
 
-#define SERVER_IP   (@"210.122.0.119:8001")
+#define SERVER_IP   (@"www.fbdiary.net:8001")
 #define SERVER_HOST ([@"http://" stringByAppendingString:SERVER_IP])
 
 @class RollingPaper;

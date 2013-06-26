@@ -11,7 +11,7 @@
                        message:message
                       delegate:NULL
              cancelButtonTitle:cancelButtonTitle
-             otherButtonTitles:otherButtonTitles];
+             otherButtonTitles:otherButtonTitles,nil];
     if(self){
         blockDelegate = [[UIAlertViewBlockDelegate alloc]initWithBlock:block];
         self.delegate = blockDelegate;
