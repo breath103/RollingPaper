@@ -15,7 +15,7 @@
 #import "BlockSupport/NSObject+block.h"
 #import "PaperViewController.h"
 #import "macro.h"
-#import "LoginMethodViewController.h"
+#import "LoginViewController.h"
 #import <JSONKit.h>
 #import "UINavigationController+Flowith.h"
 
@@ -52,19 +52,14 @@
             paperPlaneView.alpha = 0.0f;
         } completion:^(BOOL finished) {
             paperPlaneView.hidden = TRUE;
-            
-            if([[FlowithAgent sharedAgent] getUserInfo]){
-                NSLog(@"다음 아이디로 이미 로그인 된 상태 : %@",[[FlowithAgent sharedAgent] getUserInfo]);
-                [self onTouchLoginWithFacebook];
-            }
-            else {
-                NSLog(@"아직 로그인 안됨");
-                LoginMethodViewController* loginViewController = [[LoginMethodViewController alloc] initWithNibName:NSStringFromClass(LoginMethodViewController.class)
-                                                                                                 bundle:NULL];
-                [self.navigationController pushViewController:loginViewController
-                                                     animated:TRUE];
-                [self.navigationController removeViewControllersExceptTop];
-            }
+//            if([[FlowithAgent sharedAgent] getUserInfo]){
+//                [self onTouchLoginWithFacebook];
+//            }
+//            else {
+                LoginViewController* loginViewController = [[LoginViewController alloc]init];
+                [[self navigationController] setViewControllers:@[loginViewController]
+                                                       animated:YES];
+    //        }
         }];    
 }
 - (void)didReceiveMemoryWarning
@@ -72,64 +67,60 @@
     [super didReceiveMemoryWarning];
 }
 - (void)showPaperList {
-    RollingPaperListController* controller = [[RollingPaperListController alloc] initWithNibName:@"RollingPaperListController" bundle:NULL];
-    [self.navigationController pushViewController:controller
-                                         animated:TRUE];
-    [self.navigationController removeViewControllersExceptTop];
+    RollingPaperListController* controller = [[RollingPaperListController alloc] init];
+    [self.navigationController setViewControllers:@[controller] animated:YES];
 }
 - (void)onTouchLoginWithFacebook {
     if ( !FBSession.activeSession.isOpen) {
-        NSArray* permissions = [NSArray arrayWithObjects:@"user_photos",@"publish_stream",@"publish_actions",@"email",
-                                                         @"user_likes",@"user_birthday",@"user_education_history",
-                                                         @"user_hometown",@"read_stream",@"user_about_me",
-                                                         @"read_friendlists",@"offline_access", nil];
+        NSArray* permissions = @[@"user_photos",@"publish_stream",@"publish_actions",@"email",
+                                 @"user_likes",@"user_birthday",@"user_education_history",
+                                 @"user_hometown",@"read_stream",@"user_about_me",
+                                 @"read_friendlists",@"offline_access"];
         [FBSession openActiveSessionWithPermissions : permissions
-                                       allowLoginUI : YES
-                                  completionHandler : ^(FBSession *session, FBSessionState status, NSError *error) {
-                                      NSLog(@"%@",session.accessToken);
-                                      if (!error){
-                                          [self onLoginSuccess:[[FlowithAgent sharedAgent] getUserInfo]];
-                                      }else {
-                                          [[[UIAlertView alloc] initWithTitle:@"Error"
-                                                                      message:error.localizedDescription
-                                                                     delegate:nil
-                                                            cancelButtonTitle:@"OK"
-                                                            otherButtonTitles:nil]show];
-                                      }
-                                  }];
+        allowLoginUI : YES
+        completionHandler : ^(FBSession *session, FBSessionState status, NSError *error) {
+            if (!error){
+                [self onLoginSuccess:[[FlowithAgent sharedAgent] getUserInfo]];
+            }else {
+                [[[UIAlertView alloc] initWithTitle:@"Error"
+                                            message:error.localizedDescription
+                                           delegate:nil
+                                  cancelButtonTitle:@"OK"
+                                  otherButtonTitles:nil]show];
+            }
+        }];
     }
 }
 -(void) onFacebookSessionActivated : (FBSession*) session{
     FBRequest* fbRequest = [FBRequest requestWithGraphPath:@"/me"
-                                                 parameters:[NSDictionary dictionaryWithObjectsAndKeys:@"id,picture,name,birthday,email",@"fields",nil]
-                                                 HTTPMethod:@"GET"];
+                                parameters:@{@"fields":@"id,picture,name,birthday,email"}
+                                                HTTPMethod:@"GET"];
     [fbRequest startWithCompletionHandler:^(FBRequestConnection *connection,id<FBGraphUser> me,NSError *error) {
          if(! error){
              [[FlowithAgent sharedAgent] joinWithFacebook:me
-                                              accessToken:session.accessToken
-                                                  success:^(NSDictionary *response) {
-                                                      NSString* resultType = [response objectForKey:@"result"];
-                                                      if([resultType compare:@"login"] == NSOrderedSame){
-                                                          NSLog(@"이미 가입되어 있는 페이스북 계정임으로 자동으로 로그인 합니다");
-                                                          NSDictionary* logiendUser= [response objectForKey:@"user"];
-                                                          NSLog(@"%@",logiendUser);
-                                                          [self onLoginSuccess:logiendUser];
-                                                      }
-                                                      else if ([resultType compare:@"fail"] == NSOrderedSame){
-                                                          NSLog(@"이미 가입되어있는 이메일 계정입니다");
-                                                          NSLog(@"%@",[response objectForKey:@"email"]);
-                                                      }
-                                                      else if ([resultType compare:@"join"] == NSOrderedSame){
-                                                          NSLog(@"가입 성공하였습니다");
-                                                          NSDictionary* logiendUser= [response objectForKey:@"user"];
-                                                          NSLog(@"%@",logiendUser);
-                                                          [self onJoinSuccess:logiendUser];
-                                                      }
-                                                  } failure:^(NSError *error) {
-                                                      NSLog(@"%@",error);
-                                                      NSLog(@"%@",@"<RollingPaper 서버와 통신 실패>");
-                                                      
-                                                  }];
+              accessToken:session.accessToken
+              success:^(NSDictionary *response) {
+                  NSString* resultType = [response objectForKey:@"result"];
+                  if([resultType compare:@"login"] == NSOrderedSame){
+                      NSLog(@"이미 가입되어 있는 페이스북 계정임으로 자동으로 로그인 합니다");
+                      NSDictionary* logiendUser= [response objectForKey:@"user"];
+                      NSLog(@"%@",logiendUser);
+                      [self onLoginSuccess:logiendUser];
+                  }
+                  else if ([resultType compare:@"fail"] == NSOrderedSame){
+                      NSLog(@"이미 가입되어있는 이메일 계정입니다");
+                      NSLog(@"%@",[response objectForKey:@"email"]);
+                  }
+                  else if ([resultType compare:@"join"] == NSOrderedSame){
+                      NSLog(@"가입 성공하였습니다");
+                      NSDictionary* logiendUser= [response objectForKey:@"user"];
+                      NSLog(@"%@",logiendUser);
+                      [self onJoinSuccess:logiendUser];
+                  }
+              } failure:^(NSError *error) {
+                  NSLog(@"%@",error);
+                  NSLog(@"%@",@"<RollingPaper 서버와 통신 실패>");
+              }];
          }
          else {
              [[[UIAlertView alloc] initWithTitle : @"Error"
@@ -147,7 +138,6 @@
 }
 -(void) onLoginSuccess : (NSDictionary*) userDict {
     [[FlowithAgent sharedAgent] setUserInfo:userDict];
-    NSLog(@"%@",[[FlowithAgent sharedAgent] getUserInfo]);
     [self showPaperList];
 }
 - (void)viewDidUnload {

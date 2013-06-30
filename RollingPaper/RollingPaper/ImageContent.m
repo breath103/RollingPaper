@@ -15,17 +15,16 @@
 @dynamic image;
 @dynamic paper_idx;
 @dynamic user_idx;
-
-
-+(ImageContent*) contentWithDictionary : (NSDictionary*) dict{
-    ImageContent* imageEntity = (ImageContent*)[[UECoreData sharedInstance]insertNewObject:@"ImageContent" initWith:dict];
-    return imageEntity;
+- (id)initWithDictionary:(NSDictionary *)dictionary
+{
+    
 }
+
 +(NSArray*) contentsWithDictionaryArray : (NSArray*) array{
     
     NSMutableArray* entitys = [NSMutableArray arrayWithCapacity:array.count];
     for(NSDictionary*p in array){
-        ImageContent* imageEntity = (ImageContent*)[[UECoreData sharedInstance]insertNewObject:@"ImageContent" initWith:p];
+        ImageContent* imageEntity = [[ImageContent alloc]initWithDictionary:p];
         [entitys addObject:imageEntity];
     }
     return entitys;

@@ -1,16 +1,8 @@
-//
-//  PaperCellController.m
-//  RollingPaper
-//
-//  Created by 이상현 on 12. 11. 23..
-//  Copyright (c) 2012년 상현 이. All rights reserved.
-//
-
 #import "PaperCellController.h"
+
 #import <QuartzCore/QuartzCore.h>
-#import "UEFileManager.h"
 #import "FlowithAgent.h"
-#import "KakaoLinkCenter.h"
+#import "UIImageView+Vingle.h"
 
 @interface PaperCellController ()
 
@@ -36,14 +28,6 @@
     [self.delegate paperCellSettingTouched:self];
 }
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
 - (void) startUpdateDDayLabel{
     [self updateDDayLabelInTime];
     [NSTimer scheduledTimerWithTimeInterval:1.0
@@ -120,19 +104,23 @@
     
     [self refreshViewWithEntity];
     
-    [[FlowithAgent sharedAgent] getBackground:entity.background
-                                     response:^(BOOL isCachedResponse, UIImage *image) {
-                                         self.backgroundImage.image = NULL;//image;
-                                         self.backgroundImage.backgroundColor = [UIColor colorWithPatternImage:image];
-                                         UIImage* mask_image = [ UIImage imageNamed:@"paper_cell_bg"];
-                                         CGSize size = self.backgroundImage.frame.size;
-                                         CALayer* maskLayer = [CALayer layer];
-                                         maskLayer.frame = CGRectMake(0,0,size.width,size.height);
-                                         maskLayer.contents = (__bridge id)[mask_image CGImage];
-                                         self.view.layer.mask = maskLayer;
-                                         [self.backgroundImage setNeedsDisplay];
-                                    }];
-
+    
+    [_backgroundImage setImageWithURL:entity.background
+    withFadeIn:0.3f
+    success:^(BOOL isCached, UIImage *image) {
+        _backgroundImage.image = NULL;//image;
+        _backgroundImage.backgroundColor = [UIColor colorWithPatternImage:image];
+        UIImage* mask_image = [ UIImage imageNamed:@"paper_cell_bg"];
+        CGSize size = _backgroundImage.frame.size;
+        CALayer* maskLayer = [CALayer layer];
+        maskLayer.frame = CGRectMake(0,0,size.width,size.height);
+        maskLayer.contents = (__bridge id)[mask_image CGImage];
+        self.view.layer.mask = maskLayer;
+        [_backgroundImage setNeedsDisplay];
+    } failure:^(NSError *error) {
+    
+    }];
+    
     if(self.entity.is_new.boolValue){
         NSLog(@"%@ 는 New",self.entity);
         self.indicatorForNew.hidden = FALSE;

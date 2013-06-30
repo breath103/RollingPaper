@@ -1,11 +1,3 @@
-//
-//  RollingPaperCreatorController.h
-//  RollingPaper
-//
-//  Created by 이상현 on 12. 11. 17..
-//  Copyright (c) 2012년 상현 이. All rights reserved.
-//
-
 #import <UIKit/UIKit.h>
 #import <FacebookSDK/FacebookSDK.h>
 #import "RollingPaper.h"
@@ -42,8 +34,6 @@ typedef enum ROLLING_PAPER_CONTROLLER_STYLE{
 @property (nonatomic,strong) NSString* receiverFacebookID;
 @property (weak, nonatomic) IBOutlet UIImageView *paperCellImage;
 @property (nonatomic,strong) NSString* selectedBackgroundName;
-//@property (weak, nonatomic) IBOutlet UIScrollView *paperBackgroundsScroll;
-//@property (nonatomic,weak) UIButton* selectedBackgroundButton;
 @property (nonatomic,readwrite) ROLLING_PAPER_CONTROLLER_STYLE controllerType;
 @property (nonatomic,strong) RollingPaper* entity;
 @property (weak, nonatomic) IBOutlet UIButton *finishButton;

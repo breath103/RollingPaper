@@ -20,10 +20,41 @@
 	static FlowithAgent *sharedAgent = nil;
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
-		sharedAgent = [[FlowithAgent alloc]init];
+		sharedAgent = [[FlowithAgent alloc]initWithBaseURL:[NSURL URLWithString:@"http://0.0.0.0:3000/api"]];
 	});
 	return sharedAgent;
 }
+
+- (id)initWithBaseURL:(NSURL *)url {
+    self = [super initWithBaseURL:url];
+    if (self) {
+        [self registerHTTPOperationClass:[AFJSONRequestOperation class]];
+        [self setDefaultHeader:@"User-Agent"
+                         value:[self defaultUserAgentString]];
+        [self setDefaultHeader:@"Accept"
+                         value:[self defaultAcceptHeader]];
+    }
+    return self;
+}
+
+- (NSString *)defaultUserAgentString
+{
+    NSString *appName = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleExecutableKey]
+    ? : [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleIdentifierKey];
+    
+    NSString *version = @"1.0.0";
+    NSString *deviceModel = [[UIDevice currentDevice] model];
+    NSString *systemVersion = [[UIDevice currentDevice] systemVersion];
+    
+    return [NSString stringWithFormat:@"%@ iOS/%@ (%@; iOS %@)", appName, version, deviceModel, systemVersion];
+}
+
+- (NSString *)defaultAcceptHeader
+{
+    NSString *apiVersion = @"v1";
+    return [NSString stringWithFormat:@"application/vnd.flowith-%@+json",apiVersion];
+}
+
 
 
 -(void) setCurrentUser : (User*) user{
@@ -48,11 +79,15 @@
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
 }
+- (User *)getCurrentUser
+{
+    return [[User alloc]initWithDictionary:[self getUserInfo]];
+}
 -(NSDictionary*) getUserInfo {
     return [[NSUserDefaults standardUserDefaults] objectForKey:@"userinfo"];
 }
 -(NSNumber*) getUserIdx{
-    return [[self  getUserInfo] objectForKey:@"idx"];
+    return [self getUserInfo][@"id"];
 }
 -(UIImage*) getImageFromPictrueURL{
     return [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[[self getUserInfo] objectForKey:@"picture"]]]];
@@ -65,97 +100,33 @@
 }
 
 
--(void) joinWithUser : (User*) user
-            password : (NSString*) password
-             success : (void(^)(User* user)) success
-             failure : (void(^)(NSError* error)) failure{
-    NSURL *url = [NSURL URLWithString:SERVER_HOST];
-    AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:url];
-    
-    NSDictionary *params = @{ @"name"     : user.name ,
-                              @"email"    : user.email,
-                              @"password" : password,
-                              @"pictrue"  : user.picture,
-                              @"birthday" : user.birthday,
-                              @"phone"    : user.phone };
-    [httpClient postPath:@"/user/joinWithFacebook.json"
-              parameters:params
-                 success:^(AFHTTPRequestOperation *operation, NSData* responseObject){
-                     NSDictionary* jsonDict = [responseObject objectFromJSONData];
-                     NSString* result = [jsonDict objectForKey:@"result"];
-                     NSLog(@"%@",jsonDict);
-                     if([result isEqualToString:@"join"]){
-                         success( [[User alloc] initWithDict:[jsonDict objectForKey:@"user"]] );
-                     }
-                     else{
-                         failure( [jsonDict objectForKey:@"reason"] );
-                     }
-                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                     failure(error);
-                 }];
-}
-
--(void) joinWithFacebook :(id<FBGraphUser>) me
-             accessToken : (NSString*) accesstoken
-                 success : (void(^)(NSDictionary* response)) success
-                 failure : (void(^)(NSError* error)) failure{
-    NSURL *url = [NSURL URLWithString:SERVER_HOST];
-    
-    AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:url];
-
-    //생일부분이 mysql에는 yyyy-mm-dd 으로 넣어야 하는데 올때는 mm/dd/yyyy로온다. 이걸 재정렬
+-(void) joinWithFacebook:(id<FBGraphUser>) me
+             accessToken:(NSString*) accesstoken
+                 success:(void(^)(NSDictionary* response)) success
+                 failure:(void(^)(NSError* error)) failure
+{
     NSString* birthdayString = [me objectForKey:@"birthday"];
     NSArray* dateComponent = [birthdayString componentsSeparatedByString:@"/"];
     birthdayString = [NSString stringWithFormat:@"%@-%@-%@",
                       [dateComponent objectAtIndex:2],
                       [dateComponent objectAtIndex:0],
                       [dateComponent objectAtIndex:1]];
-    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
-                            [me id],@"facebook_id",
-                            [me objectForKey:@"name"],@"name",
-                            [me objectForKey:@"email"],@"email",
-                            birthdayString,@"birthday",
-                            [[((NSDictionary*)[me objectForKey:@"picture"])objectForKey:@"data"] objectForKey:@"url"],@"picture",
-                            accesstoken,@"facebook_accesstoken",
-                            nil];
-    [httpClient postPath:@"/user/joinWithFacebook.json"
-              parameters:params
-                 success:^(AFHTTPRequestOperation *operation, NSData* responseObject){
-                     success([responseObject objectFromJSONData]);
-                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                     failure(error);
-                 }];
-   
+    [self postPath:@"users/auth.json"
+    parameters:@{
+        @"facebook_id":me[@"id"],
+        @"facebook_accesstoken":accesstoken,
+        @"username":me[@"name"],
+        @"email":me[@"email"],
+        @"birthday":birthdayString,
+        @"picture":me[@"picture"][@"data"][@"url"]
+     } success:^(AFHTTPRequestOperation *operation, NSDictionary* userInfo){
+         User* user = [[User alloc]initWithDictionary:userInfo];
+         [self setCurrentUser:user];
+         success(userInfo);
+     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+         failure(error);
+     }];
 }
-
-
--(void) loginWithEmail : (NSString*) email
-              password : (NSString*) password
-               success : (void(^)(User* user)) success
-               failure : (void(^)(NSError* error)) failure{
-    NSURL *url = [NSURL URLWithString:SERVER_HOST];
-    AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:url];
-    
-    NSDictionary *params = @{@"email" : email,
-                             @"password" : password };
-    [httpClient postPath:@"/user/signin.json"
-              parameters:params
-                 success:^(AFHTTPRequestOperation *operation, NSData* responseObject){
-                     NSDictionary* jsonDict = [responseObject objectFromJSONData];
-                     NSString* result = [jsonDict objectForKey:@"result"];
-                     NSLog(@"%@",jsonDict);
-                     if([result isEqualToString:@"signin"]){
-                         success( [[User alloc] initWithDict:[jsonDict objectForKey:@"user"]] );
-                     }
-                     else{
-                         failure( [jsonDict objectForKey:@"reason"] );
-                     }
-                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                     failure(error);
-                 }];
-}
-
-
 
 -(void) getProfileImage : (void(^)(BOOL isCachedResponse,UIImage* image)) success{
     [self getImageFromURL:[[self getUserInfo] objectForKey:@"picture" ]
@@ -226,40 +197,10 @@
     }
 }
 
--(void) getParticipaitingPapers : (void (^)(BOOL isCachedResponse,NSArray* paperArray))callback
-                        failure : (void (^)(NSError *))failure{
-    /* /user/:id([0-9]+)/getParticipatingPapers.json */
-    NSString* url = [NSString stringWithFormat:@"/user/%lld/participating_papers.json",
-                     self.getUserIdx.longLongValue];
-    
-    NSArray* cachedResponse = [[SYCache sharedCache]objectForKey:url];
-    if(cachedResponse){
-        callback(TRUE,cachedResponse);
-    }
-    
-    AFJSONRequestOperation* request =
-    [AFJSONRequestOperation JSONRequestOperationWithRequest:SubAddressToNSURLRequest(url)
-    success:^(NSURLRequest *request,NSHTTPURLResponse *response,id JSON) {
-        NSDictionary* responseDict = JSON;
-        NSArray* papers = [responseDict objectForKey:@"papers"];
-        if(papers){
-            [[SYCache sharedCache] removeObjectForKey:url];
-            [[SYCache sharedCache] setObject:papers forKey:url];
-            callback(FALSE,papers);
-        }
-        else{
-            failure( [[NSError alloc] initWithDomain:[responseDict objectForKey:@"error"] code:666 userInfo:NULL] );
-        }
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-        NSLog(@"%@",error);
-        failure(error);
-    }];
-    [request start];
-}
 -(void) getReceivedPapers : (void (^)(BOOL isCachedResponse,NSArray* paperArray))callback
                   failure : (void (^)(NSError *))failure{
-    /* /user/:id([0-9]+)/getParticipatingPapers.json */
-    NSString* url = [NSString stringWithFormat:@"/user/%lld/received_papers.json",self.getUserIdx.longLongValue];
+    /* /users/:id([0-9]+)/getParticipatingPapers.json */
+    NSString* url = [NSString stringWithFormat:@"/user/%d/received_papers.json",[[self getUserIdx] integerValue]];
     
     NSArray* cachedResponse = [[SYCache sharedCache]objectForKey:url];
     if(cachedResponse){
@@ -329,43 +270,45 @@
 
 
 
--(void) createPaper : (RollingPaper*) paper
-            success : (void (^)(RollingPaper* paper))success
-            failure : (void (^)(NSError* error))failure{
-    NSURL *url = [NSURL URLWithString:SERVER_HOST];
-    
-    AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:url];
-    // new version of creating paper
-    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
-                                        self.getUserIdx,@"creator_idx" ,
-                                        paper.title,@"title",
-                                        paper.target_email,@"target_email",
-                                        paper.notice,@"notice",
-                                        paper.width,@"width"       ,
-                                        paper.height, @"height"      ,
-                                        paper.receiver_fb_id, @"receiver_fb_id",
-                                        paper.receiver_name,@"receiver_name" ,
-                                        paper.receive_time,@"receive_time"  ,
-                                        paper.receive_tel,@"receive_tel"   ,
-                                        paper.background,@"background"    , nil];
-    [httpClient postPath:@"/paper.json"
-              parameters:params
-                 success:^(AFHTTPRequestOperation *operation, NSData* responseObject){
-                     NSDictionary* jsonDict = [responseObject objectFromJSONData];
-                     if([jsonDict objectForKey:@"success"])
-                     {
-                         RollingPaper* paper = (RollingPaper*)[[UECoreData sharedInstance] insertNewObject : @"RollingPaper"
-                                                                                                  initWith : [jsonDict objectForKey:@"success"]];
-                         NSLog(@"%@",jsonDict);
-                         NSLog(@"%@",paper);
-                         success(paper);
-                     }else{
-                         failure([NSError errorWithDomain:[jsonDict objectForKey:@"error"] code:666 userInfo:NULL]);
-                     }
-                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                     failure(error);
-                 }];
-}
+//-(void) createPaper : (RollingPaper*) paper
+//            success : (void (^)(RollingPaper* paper))success
+//            failure : (void (^)(NSError* error))failure{
+//    NSURL *url = [NSURL URLWithString:SERVER_HOST];
+//    
+//    AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:url];
+//    // new version of creating paper
+//    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
+//                                        self.getUserIdx,@"creator_id" ,
+//                                        paper.title,@"title",
+//                                        paper.notice,@"notice",
+//                                        paper.width,@"width"       ,
+//                                        paper.height, @"height"      ,
+//                                        paper.receiver_fb_id, @"receiver_fb_id",
+//                                        paper.receiver_name,@"receiver_name" ,
+//                                        paper.receive_time,@"receive_time"  ,
+//                                        paper.receive_tel,@"receive_tel"   ,
+//                                        paper.background,@"background"    , nil];
+//    [httpClient postPath:@"/paper.json"
+//    parameters:@{
+//     @"creator_id":self.getUserIdx,
+//     @"title":paper.title
+//     }
+//    success:^(AFHTTPRequestOperation *operation, NSData* responseObject){
+//        NSDictionary* jsonDict = [responseObject objectFromJSONData];
+//        if([jsonDict objectForKey:@"success"])
+//        {
+//        RollingPaper* paper = (RollingPaper*)[[UECoreData sharedInstance] insertNewObject : @"RollingPaper"
+//                                                                              initWith : [jsonDict objectForKey:@"success"]];
+//        NSLog(@"%@",jsonDict);
+//        NSLog(@"%@",paper);
+//        success(paper);
+//        }else{
+//        failure([NSError errorWithDomain:[jsonDict objectForKey:@"error"] code:666 userInfo:NULL]);
+//        }
+//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//        failure(error);
+//    }];
+//}
 -(void) updatePaper : (RollingPaper*) paper
             success : (void (^)(RollingPaper* paper))success
             failure : (void (^)(NSError* error))failure{
@@ -374,34 +317,13 @@
     AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:url];
     // new version of creating paper
     
-    NSMutableDictionary* params = [NSMutableDictionary dictionaryWithDictionary:[paper dictionaryForUpdateRequest]];
-    NSLog(@"%@",params);
-    [httpClient putPath: [NSString stringWithFormat:@"/paper/%lld.json",paper.idx.longLongValue]
-              parameters:params
-                 success:^(AFHTTPRequestOperation *operation, NSData* responseObject){
-                     NSLog(@"%@",responseObject);
-                     success(paper);
-                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                     failure(error);
-                 }];
-}
-
--(void) getContentsOfPaper : (RollingPaper*) paper
-                 afterTime : (long long) timestamp
-                   success : (void (^)(BOOL isCachedResponse,NSArray* imageContents,NSArray* soundContents))success
-                   failure : (void (^)(NSError *))failure{
-    NSString* url = [NSString stringWithFormat:@"/paper/%@.json",
-                     paper.idx.stringValue];
-    NSURLRequest* urlRequest = SubAddressToNSURLRequest(url);
-    [[AFJSONRequestOperation JSONRequestOperationWithRequest:urlRequest
-    success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-        NSDictionary* contentsDictionary = [JSON objectForKey:@"contents"];
-        NSLog(@"%@",contentsDictionary);
-        success(FALSE,[ImageContent contentsWithDictionaryArray:[contentsDictionary objectForKey:@"image"]],
-                [SoundContent contentsWithDictionaryArray:[contentsDictionary objectForKey:@"sound"]]);
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+    [httpClient putPath: [NSString stringWithFormat:@"/paper/%lld.json",paper.id.longLongValue]
+    parameters:[paper toDictionary]
+    success:^(AFHTTPRequestOperation *operation, NSData* responseObject){
+        success(paper);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         failure(error);
-    }] start];
+    }];
 }
 
 -(void) getUserWithFacebookID : (NSString*) facebook_id
@@ -417,7 +339,7 @@
      success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
          NSDictionary* resultDict = JSON;
          if([resultDict objectForKey:@"user"]){
-             success( [[User alloc] initWithDict:[resultDict objectForKey:@"user"]] );
+             success( [[User alloc] initWithDictionary:[resultDict objectForKey:@"user"]] );
          }else{
              failure( [NSError errorWithDomain:@"There is No User" code:100 userInfo:nil]);
          }
@@ -430,11 +352,11 @@
 -(void) getPaperParticipants : (RollingPaper*) paper
                      success : (void (^)(BOOL isCachedResponse,NSArray* participants))success
                      failure : (void (^)(NSError* error))failure{
-    NSString* url = [NSString stringWithFormat:@"/paper/%@/participants.json",paper.idx.stringValue];
+    NSString* url = [NSString stringWithFormat:@"/paper/%@/participants.json",paper.id.stringValue];
     
     NSArray* cachedResponse = [[SYCache sharedCache]objectForKey:url];
     if(cachedResponse){
-        success(TRUE,[User userWithDictArray:cachedResponse]);
+        success(TRUE,[User fromArray:cachedResponse]);
     }
     
     AFJSONRequestOperation* request =
@@ -443,9 +365,8 @@
         NSArray* participantsArray = JSON;
         [[SYCache sharedCache] removeObjectForKey:url];
         [[SYCache sharedCache] setObject:participantsArray forKey:url];
-        success(FALSE,[User userWithDictArray:participantsArray]);
+        success(FALSE,[User fromArray:participantsArray]);
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-        NSLog(@"%@",error);
         failure(error);
     }];
     [request start];
@@ -463,7 +384,7 @@
     
     AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:url];
     // new version of creating paper
-    NSDictionary *params = @{@"paper_idx":paper.idx,
+    NSDictionary *params = @{@"paper_idx":paper.id,
                              @"user_idx" :[self getUserIdx],
                              @"facebook_friends" : [facebook_friends JSONString]};
     [httpClient postPath:@"/paper/inviteWithFacebookID"
@@ -486,7 +407,7 @@
     AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:url];
     
     NSURLRequest *request = [httpClient multipartFormRequestWithMethod:@"POST"
-                                                                  path:[NSString stringWithFormat:@"/paper/%@.json",paper.idx.stringValue]
+                                                                  path:[NSString stringWithFormat:@"/paper/%@.json",paper.id.stringValue]
                                                             parameters:@{@"user_idx": self.getUserIdx }
                                              constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {}];
     [[AFJSONRequestOperation JSONRequestOperationWithRequest:request
@@ -532,7 +453,7 @@
       success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
           NSDictionary* insertedImageDict = [JSON objectForKey:@"success"];
           if(insertedImageDict){
-              success( [ImageContent contentWithDictionary:insertedImageDict] );
+              success( [ImageContent fromArray:insertedImageDict] );
           }
           else{
               failure( [JSON objectForKey:@"error"] );
@@ -675,7 +596,6 @@
     AFJSONRequestOperation* request = [AFJSONRequestOperation JSONRequestOperationWithRequest:urlRequest
                             success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
                                 [[SYCache sharedCache] setObject:JSON forKey:methodName];
-                                NSLog(@"%@",JSON);
                                 success(FALSE, [Notice entitiesWithDictionaryArray:JSON] );
                             }
                             failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
@@ -685,10 +605,9 @@
 }
 
 -(void) sendApplicationLinkToKakao{
+    //TODO FIXME
     if(![KakaoLinkCenter canOpenKakaoLink])
         return;
-
-    
     NSDictionary *metaInfoAndroid = [NSDictionary dictionaryWithObjectsAndKeys:
                                      @"android", @"os",
                                      @"phone", @"devicetype",
@@ -702,7 +621,6 @@
                                  @"http://210.122.0.119:8001/demo.html", @"installurl",
                                  @"example://example", @"executeurl",
                                  nil];
-    
     [KakaoLinkCenter openKakaoAppLinkWithMessage : @"롤링페이퍼에 초대합니다"
                                              URL : @"http://210.122.0.119:8001/demo.html"
                                      appBundleID : [[NSBundle mainBundle] bundleIdentifier]

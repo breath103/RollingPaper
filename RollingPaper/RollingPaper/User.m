@@ -1,60 +1,62 @@
-//
-//  User.m
-//  RollingPaper
-//
-//  Created by 이상현 on 13. 2. 3..
-//  Copyright (c) 2013년 reserved.
-//
-
 #import "User.h"
+#import "FlowithAgent.h"
 
 @implementation User
--(id) init {
-    self = [super init];
-    if(self){
-        self.birthday             = [NSNull null];
-        self.email                = [NSNull null];
-        self.facebook_accesstoken = [NSNull null];
-        self.facebook_id          = [NSNull null];
-        self.idx                  = [NSNull null];
-        self.name                 = [NSNull null];
-        self.picture              = [NSNull null];
-        self.phone                = [NSNull null];
-    }
-    return self;
+- (void)setAttributesWithDictionary:(NSDictionary *) d
+{
+    _birthday             = [d objectForKey:@"birthday"];
+    _email                = [d objectForKey:@"email"];
+    _facebook_accesstoken = [d objectForKey:@"facebook_accesstoken"];
+    _facebook_id          = [d objectForKey:@"facebook_id"];
+    _id                   = [d objectForKey:@"id"];
+    _name                 = [d objectForKey:@"name"];
+    _picture              = [d objectForKey:@"picture"];
 }
--(id) initWithDict : (NSDictionary*) dict{
+- (id)initWithDictionary : (NSDictionary*) dict{
     self = [self init];
-    if(self){
-        self.birthday             = [dict objectForKey:@"birthday"];
-        self.email                = [dict objectForKey:@"email"];
-        self.facebook_accesstoken = [dict objectForKey:@"facebook_accesstoken"];
-        self.facebook_id          = [dict objectForKey:@"facebook_id"];
-        self.idx                  = [dict objectForKey:@"idx"];
-        self.name                 = [dict objectForKey:@"name"];
-        self.picture              = [dict objectForKey:@"picture"];
-        self.phone                = [dict objectForKey:@"phone"];
+    if (self) {
+        [self setAttributesWithDictionary:dict];
     }
     return self;
 }
--(NSDictionary*) toDictionary{
-    return @{@"idx": self.idx,
+-(NSDictionary*) toDictionary
+{
+    return @{@"id" : self.id,
              @"name" : self.name,
              @"email" : self.email,
              @"picture" : self.picture,
-             @"phone" : self.phone,
              @"birthday" : self.birthday,
              @"facebook_id" : self.facebook_id,
              @"facebook_accesstoken" : self.facebook_accesstoken};
 }
-+(NSArray*) userWithDictArray : (NSArray*) dictArray{
-    NSMutableArray* users = [[NSMutableArray alloc]initWithCapacity:dictArray.count];
-    for(NSDictionary* userDict in dictArray){
-        [users addObject:[[User alloc] initWithDict:userDict]];
++(NSArray*) fromArray:(NSArray *) array
+{
+    NSMutableArray* users = [[NSMutableArray alloc]initWithCapacity:[array count]];
+    for(NSDictionary* dictionary in array){
+        [users addObject:[[User alloc] initWithDictionary:dictionary]];
     }
     return users;
 }
+@end
 
--(void) getPicture : (void(^)(UIImage* image)) callback{
+
+@implementation User(Networking)
+-(void) getParticipaitingPapers : (void (^)(NSArray *papers)) callback
+                        failure : (void (^)(NSError *error)) failure
+{
+    [[FlowithAgent sharedAgent] getPath:[NSString stringWithFormat:@"users/%d/participating_papers.json",_id.integerValue]
+    parameters:@{}
+    success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        callback(responseObject);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        failure(error);
+    }];
 }
 @end
+
+
+
+
+
+
+

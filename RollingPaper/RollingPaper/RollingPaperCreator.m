@@ -1,11 +1,3 @@
-//
-//  RollingPaperCreatorController.m
-//  RollingPaper
-//
-//  Created by 이상현 on 12. 11. 17..
-//  Copyright (c) 2012년 상현 이. All rights reserved.
-//
-
 #import "RollingPaperCreator.h"
 #import "FlowithAgent.h"
 #import "NSObject+block.h"
@@ -20,6 +12,7 @@
 #import "User.h"
 #import "UIAlertViewBlockDelegate.h"
 #import "PaperParticipantsListController.h"
+#import "UIImageView+Vingle.h"
 
 @interface RollingPaperCreator ()
 
@@ -38,7 +31,8 @@
 -(void) hideKeyboard{
     [self.view endEditing:TRUE];
 }
--(void) initPaperCellPreview{
+-(void) initPaperCellPreview
+{
     UIImage* mask_image = [ UIImage imageNamed:@"paper_cell_bg"];
     CGSize size = self.paperCellImage.frame.size;
     CALayer* maskLayer = [CALayer layer];
@@ -47,7 +41,8 @@
     self.paperCellImage.layer.mask = maskLayer;
     [self.paperCellImage setNeedsDisplay];
 }
--(void) _addButtonShadow : (UIButton*) button{
+-(void) _addButtonShadow : (UIButton*) button
+{
     button.layer.cornerRadius = 4;
     button.layer.shadowColor = [UIColor blackColor].CGColor;
     button.layer.shouldRasterize = TRUE;
@@ -57,7 +52,8 @@
     button.layer.rasterizationScale = [UIScreen mainScreen].scale;
 }
 
--(void) initScrollView{
+-(void) initScrollView
+{
     [self.scrollView addSubview:self.contentContainer];
     self.scrollView.contentSize = self.contentContainer.frame.size;
 }
@@ -74,12 +70,14 @@
 
 -(void) setPaperCellBackgroundWithName : (NSString*) backgroundName{
     self.selectedBackgroundName = backgroundName;
-    NSLog(@"%@",self.selectedBackgroundName);
-    [[FlowithAgent sharedAgent] getBackground:self.selectedBackgroundName
-    response:^(BOOL isCachedResponse, UIImage *image) {
-        self.paperCellImage.image = NULL;
-        self.paperCellImage.backgroundColor = [UIColor colorWithPatternImage:image];
-        [self.paperCellImage setNeedsDisplay];
+    [_paperCellImage setImageWithURL:backgroundName
+    withFadeIn:0.1f
+    success:^(BOOL isCached, UIImage *image) {
+        _paperCellImage.image = NULL;
+        _paperCellImage.backgroundColor = [UIColor colorWithPatternImage:image];
+        [_paperCellImage setNeedsDisplay];
+    } failure:^(NSError *error) {
+        
     }];
 }
 
@@ -174,53 +172,41 @@
     UIViewSetY(self.bottomViewsContainer, 486+delta);
 }
 - (void)syncViewToPaper{
-    if(self.entity){
-        NSLog(@"%@",self.entity);
-        self.entity.title          = self.titleText.text;
-        self.entity.notice         = self.noticeInput.text;
-        self.entity.target_email   = self.emailInput.text;
-        self.entity.receiver_name  = self.receiverName.text;
-        self.entity.receiver_fb_id = self.receiverFacebookID;
-        self.entity.receive_tel    = @"";
-        self.entity.receive_time   = [self buildRequestDate];
-        self.entity.background     = self.selectedBackgroundName;
-        self.entity.width          = [NSNumber numberWithInt:1440];
-        self.entity.height         = [NSNumber numberWithInt:960];
-        NSLog(@"%@",self.entity);
+    if (self.entity) {
+        self.entity.creatorId = [FlowithAgent sharedAgent].getUserIdx;
+        self.entity.title            = self.titleText.text;
+        self.entity.width            = @(1440);
+        self.entity.height           = @(960);
+        self.entity.notice           = self.noticeInput.text;
+        self.entity.background       = self.selectedBackgroundName;
+        self.entity.friend_facebook_id = self.receiverFacebookID;
+        self.entity.receive_time     = [self buildRequestDate];
     }
 }
-- (void)syncPaperToView{
-    if(self.entity){
-        self.receiverName.text = self.entity.receiver_name;
+- (void)syncPaperToView
+{
+    if (self.entity) {
         self.titleText.text    = self.entity.title;
         self.noticeInput.text  = self.entity.notice;
     
         NSDate* receiveDate = [NSDate dateWithTimeIntervalSince1970: [[NSNumberFormatter new]numberFromString:self.entity.receive_time].longLongValue ];
         self.receiveDate.text = [self dateToString:receiveDate];
         self.receiveTime.text = [self timeToString:receiveDate];
-        self.emailInput.text  = self.entity.target_email;
         [self setPaperCellBackgroundWithName:self.entity.background];
-        
-        [[FlowithAgent sharedAgent] getPaperParticipants:self.entity
-            success:^(BOOL isCachedResponse, NSArray *participants) {
-                [self deleteAllParticipants];
-                for(User* user in participants){
-                    [self addParticipantsView:user];
-                }
-            } failure:^(NSError *error) {
-                NSLog(@"%@",error);
-            }];
-        
+
+        //FIXME
+//        [[FlowithAgent sharedAgent] getPaperParticipants:self.entity
+//        success:^(BOOL isCachedResponse, NSArray *participants) {
+//            [self deleteAllParticipants];
+//            for(User* user in participants){
+//                [self addParticipantsView:user];
+//            }
+//        } failure:^(NSError *error) {
+//            NSLog(@"%@",error);
+//        }];
     }
 }
-/*
-- (void) initParticipantsListController{
-    self.participantsListController = [[PaperParticipantsListController alloc]initWithPaper:self.entity];
-    
-    [self.contentContainer addSubview:self.participantsListController.view];
-    [self addChildViewController:self.participantsListController];
-}
- */
+
 - (void)viewWillAppear:(BOOL)animated{
     
     [self.navigationController setNavigationBarHidden:FALSE
@@ -269,7 +255,6 @@
     self.receiveDate.inputView = self.datePicker;
     self.receiveTime.inputView = self.timePicker;
     
-    NSLog(@"%@",self.entity);
     switch (self.controllerType) {
         case PAPER_CONTROLLER_TYPE_CREATING:{
             self.title = @"RollingPaper 만들기";
@@ -302,19 +287,21 @@
     }
 }
 
-- (id) initForCreating{
-    self = [self initWithDefaultNib];
-    if(self){
+- (id)initForCreating
+{
+    self = [self init];
+    if (self) {
         self.controllerType = PAPER_CONTROLLER_TYPE_CREATING;
-        self.entity = (RollingPaper*)[[UECoreData sharedInstance] insertNewObject : @"RollingPaper"];
+        _entity = [[RollingPaper alloc]init];
+//        self.entity = (RollingPaper*)[[UECoreData sharedInstance] insertNewObject : @"RollingPaper"];
     }
     return self;
 }
-- (id) initForEditing : (RollingPaper*) aEntity{
-    self = [self initWithDefaultNib];
-    if(self){
+- (id)initForEditing:(RollingPaper*) aEntity{
+    self = [self init];
+    if (self) {
         self.entity = aEntity;
-        if([[[FlowithAgent sharedAgent] getUserIdx] isEqualToNumber:self.entity.creator_idx]) {
+        if([[[FlowithAgent sharedAgent] getUserIdx] isEqualToNumber:self.entity.creatorId]) {
             self.controllerType = PAPER_CONTROLLER_TYPE_EDITING_CREATOR;
         }
         else {
@@ -394,32 +381,31 @@
 - (IBAction)onTouchSend:(id)sender {
     if([self confirmInputs]) {
         [self syncViewToPaper];
-        [[FlowithAgent sharedAgent] createPaper:self.entity
-            success:^(RollingPaper *createdPaper) {
-                self.entity = createdPaper;
-                if(self.invitingFreindPicker &&
-                   self.invitingFreindPicker.selection.count > 0){
-                    NSMutableArray* facebook_friends = [NSMutableArray new];
-                    for (id<FBGraphUser> user in self.invitingFreindPicker.selection)
-                        [facebook_friends addObject: [user id]];
-                    [[FlowithAgent sharedAgent] inviteFacebookFreinds:facebook_friends toPaper:self.entity
-                                                              success:^{
-                                                                  
-                                                              } failure:^(NSError *error) {
-                                                                  
-                                                              }];
-                }
-                else{
-                    //친구초대가 없는경우
-                }
-                [self createPaperRequestSuccess];
-            }failure:^(NSError *error) {
-                [[[UIAlertView alloc] initWithTitle:@"실패"
-                                            message:@"롤링페이퍼 서버에 페이퍼 만들기 요청이 실패하였습니다.\n인터넷 연결상태를 확인해주세요"
-                                           delegate:nil
-                                  cancelButtonTitle:nil
-                                  otherButtonTitles:@"확인", nil] show];
+        [_entity saveToServer:^{
+            [self createPaperRequestSuccess];
+        } failure:^(NSError *error) {
+            [[[UIAlertView alloc] initWithTitle:@"실패"
+                                        message:@"롤링페이퍼 서버에 페이퍼 만들기 요청이 실패하였습니다.\n인터넷 연결상태를 확인해주세요"
+                                       delegate:nil
+                              cancelButtonTitle:nil
+                              otherButtonTitles:@"확인", nil] show];
         }];
+       //  [_entity saveToServer:nil failure:nil];
+//        if(self.invitingFreindPicker &&
+//           self.invitingFreindPicker.selection.count > 0){
+//            NSMutableArray* facebook_friends = [NSMutableArray new];
+//            for (id<FBGraphUser> user in self.invitingFreindPicker.selection)
+//                [facebook_friends addObject: [user id]];
+//            [[FlowithAgent sharedAgent] inviteFacebookFreinds:facebook_friends toPaper:self.entity
+//                                                      success:^{
+//                                                          
+//                                                      } failure:^(NSError *error) {
+//                                                          
+//                                                      }];
+//        }
+//        else{
+//            //친구초대가 없는경우
+//        }
     }
     else{
         NSLog(@"입력폼에 문제가 있음");
@@ -503,22 +489,10 @@
     
 }
 
-- (IBAction)onTouchInvite:(id)sender {
+- (IBAction)onTouchInvite:(id)sender
+{
     self.participantsListController = [[PaperParticipantsListController alloc]initWithPaper:self.entity];
     [self.navigationController pushViewController:self.participantsListController animated:TRUE];
-    /*
-    //if(!friendPickerController){
-    self.invitingFreindPicker = [[FBFriendSearchPickerController alloc] init];
-    self.invitingFreindPicker.title    = @"친구 선택";
-    self.invitingFreindPicker.delegate = self;
-    self.invitingFreindPicker.allowsMultipleSelection = TRUE;
-    [self.invitingFreindPicker  loadData];
-    [self.invitingFreindPicker clearSelection];
-    //}
-    [self presentViewController:self.invitingFreindPicker 
-                       animated:YES
-                     completion:^{}];
-     */
 }
 
 - (IBAction)onTouchPickBackground:(id)sender {

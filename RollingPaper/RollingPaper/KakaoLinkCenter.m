@@ -8,12 +8,12 @@
 
 
 static NSString *StringByAddingPercentEscapesForURLArgument(NSString *string) {
-	NSString *escapedString = (NSString *)CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
+	NSString *escapedString = (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
 																				  (CFStringRef)string,
 																				  NULL,
 																				  (CFStringRef)@"!*'();:@&=+$,/?%#[]",
-																				  kCFStringEncodingUTF8);
-	return [escapedString autorelease];
+																				  kCFStringEncodingUTF8));
+	return escapedString;
 }
 
 static NSString *HTTPArgumentsStringForParameters(NSDictionary *parameters) {
@@ -40,7 +40,6 @@ static NSString *const StoryLinkURLBaseString = @"storylink://posting";
 + (NSString *)URLStringForParameters:(NSDictionary *)parameters baseString:(NSString *)baseString {
 	NSString *argumentsString = HTTPArgumentsStringForParameters(parameters);
 	NSString *URLString = [NSString stringWithFormat:@"%@?%@", baseString, argumentsString];
-    NSLog(@"%@",URLString);
 	return URLString;
 }
 

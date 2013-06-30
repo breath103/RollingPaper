@@ -1,5 +1,6 @@
 #import <Foundation/Foundation.h>
 #import <FacebookSDK/FacebookSDK.h>
+#import <AFNetworking/AFNetworking.h>
 
 #define SERVER_IP   (@"www.fbdiary.net:8001")
 #define SERVER_HOST ([@"http://" stringByAppendingString:SERVER_IP])
@@ -9,54 +10,33 @@
 @class SoundContent;
 @class User;
 
-@interface FlowithAgent : NSObject
+@interface FlowithAgent : AFHTTPClient
 
 +(FlowithAgent*) sharedAgent;
 
--(void) setCurrentUser : (User*) user;
--(void) setUserInfo : (NSDictionary*) dict;
--(NSDictionary*) getUserInfo;
--(NSNumber*) getUserIdx;
+- (void) setCurrentUser : (User*) user;
+- (void) setUserInfo : (NSDictionary*) dict;
+- (User *) getCurrentUser;
+- (NSDictionary*) getUserInfo;
+- (NSNumber*) getUserIdx;
 
--(void) joinWithUser : (User*) user
-            password : (NSString*) password
-             success : (void(^)(User* user)) success
-             failure : (void(^)(NSError* error)) error;
--(void) joinWithFacebook :(id<FBGraphUser>) me
-             accessToken : (NSString*) accesstoken
-                 success : (void(^)(NSDictionary* response)) success
-                 failure : (void(^)(NSError* error)) error;
-
--(void) loginWithEmail : (NSString*) email
-              password : (NSString*) password
-               success : (void(^)(User* user)) success
-               failure : (void(^)(NSError* error)) failure;
-
-
+-(void) joinWithFacebook:(id<FBGraphUser>) me
+             accessToken:(NSString*) accesstoken
+                 success:(void(^)(NSDictionary* response)) success
+                 failure:(void(^)(NSError* error)) error;
 -(void) getProfileImage : (void(^)(BOOL isCachedResponse,UIImage* image)) success;
 -(void) getImageFromURL : (NSString*)url
                 success : (void(^)(BOOL isCachedResponse,UIImage* image)) success;
 
 // BACKGROUND METHOD
--(void) getBackgroundList : (void (^)(BOOL isCaschedResponse, NSArray * backgroundList))callback
-                  failure : (void (^)(NSError* error))failure;
--(void) getBackground : (NSString*) background
-             response : (void(^)(BOOL isCachedResponse,UIImage* image)) response;
+-(void) getBackgroundList:(void (^)(BOOL isCaschedResponse, NSArray * backgroundList))callback
+                  failure:(void (^)(NSError* error))failure;
 /////////////////////
 
 // USER
 -(void) getUserWithFacebookID : (NSString*) facebook_id
                       success : (void (^)(User* user))success
                       failure : (void (^)(NSError* error))failure ;
-
-
-// USER - CONNECTION PAPER
--(void) getParticipaitingPapers : (void (^)(BOOL isCachedResponse,NSArray* paperArray))success
-                        failure : (void (^)(NSError* error))failure ;
--(void) getReceivedPapers : (void (^)(BOOL isCachedResponse,NSArray* paperArray))callback
-                  failure : (void (^)(NSError* error))failure ;
--(void) getSendedPapers : (void (^)(BOOL isCachedResponse,NSArray* paperArray))callback
-                failure : (void (^)(NSError* error))failure ;
 // -CONNECTION USERS
 -(void) getUsersWhoAreMyFacebookFriends : (void (^)(BOOL isCachedResponse,NSArray* users))success
                                 failure : (void (^)(NSError* error))failure;
@@ -75,11 +55,6 @@
 -(void) updatePaper : (RollingPaper*) paper
             success : (void (^)(RollingPaper* paper))success
             failure : (void (^)(NSError* error))failure;
--(void) getContentsOfPaper : (RollingPaper*) paper
-                 afterTime : (long long) timestamp
-                   success : (void (^)(BOOL isCachedResponse,NSArray* imageContents,
-                                                             NSArray* soundContents))success
-                   failure : (void (^)(NSError* error))failure;
 -(void) getPaperParticipants : (RollingPaper*) paper
                      success : (void (^)(BOOL isCachedResponse,NSArray* participants))success
                      failure : (void (^)(NSError* error))failure;

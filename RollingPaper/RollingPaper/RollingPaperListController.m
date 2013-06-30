@@ -1,11 +1,3 @@
-//
-//  RollingPaperListController.m
-//  RollingPaper
-//
-//  Created by 이상현 on 12. 11. 18..
-//  Copyright (c) 2012년 상현 이. All rights reserved.
-//
-
 #import "RollingPaperListController.h"
 #import "FlowithAgent.h"
 #import "BlockSupport/NSObject+block.h"
@@ -20,31 +12,58 @@
 #import "UserSettingViewController.h"
 #import <JSONKit.h>
 #import "UIAlertViewBlockDelegate.h"
-#import "LoginMethodViewController.h"
+#import "LoginViewController.h"
+#import "User.h"
 
 static RollingPaperListController* g_instance = NULL;
 
-@interface RollingPaperListController ()
-
-@end
-
 @implementation RollingPaperListController
-@synthesize paperScrollView;
 
-+(RollingPaperListController*) getInstance{
+@synthesize paperScrollView;
++(RollingPaperListController*) getInstance
+{
     return g_instance;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    self = [super initWithNibName:nibNameOrNil
+                           bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
         paperCellControllers = [NSMutableArray new];
         g_instance = self;
     }
     return self;
 }
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    [self setTitle:@"롤링페이퍼"];
+}
+
+- (void)viewDidUnload
+{
+    [self setPaperScrollView:nil];
+    [super viewDidUnload];
+}
+
+-(BOOL)shouldAutorotate
+{
+    return YES;
+}
+
+-(NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
+{
+    return UIInterfaceOrientationPortrait;
+}
+
+
 -(void) removeAllPaperViews{
     for(PaperCellController* controller in paperCellControllers){
         [UIView animateWithDuration:0.3f animations:^{
@@ -56,9 +75,12 @@ static RollingPaperListController* g_instance = NULL;
     }
     [paperCellControllers removeAllObjects];
 }
--(void) refreshPaperList{
-    [[FlowithAgent sharedAgent]getParticipaitingPapers:^(BOOL isCachedResponse,NSArray *paperArray) {
-        [self createPaperViewsFromArray:paperArray];
+
+-(void) refreshPaperList
+{
+    User* currentUser = [[FlowithAgent sharedAgent] getCurrentUser];
+    [currentUser getParticipaitingPapers:^(NSArray *papers) {
+        [self createPaperViewsFromArray:papers];
     } failure:^(NSError *error) {
         [[[UIAlertViewBlock alloc] initWithTitle:@"경고"
                                          message:@"서버로부터 페이퍼 리스트를 받아오는데 실패했습니다"
@@ -66,12 +88,14 @@ static RollingPaperListController* g_instance = NULL;
                                        if(clickedButtonIndex == 1){
                                            [self refreshPaperList];
                                        }
-                                   } 
+                                   }
                                cancelButtonTitle:@"확인"
                                otherButtonTitles:@"재시도",nil] show];
     }];
 }
--(NSMutableDictionary*) fetchAllRollingPaperWithIdxKey{
+
+-(NSMutableDictionary*) fetchAllRollingPaperWithIdxKey
+{
     NSManagedObjectContext* managedObjectContext = [UECoreData sharedInstance].managedObjectContext;
     NSFetchRequest* fetchRequest = [NSFetchRequest new];
     NSEntityDescription *entityDesc = [NSEntityDescription entityForName:@"RollingPaper"
@@ -81,10 +105,11 @@ static RollingPaperListController* g_instance = NULL;
     
     NSMutableDictionary* dict = [[NSMutableDictionary alloc]init];
     for(RollingPaper* rollingPaper in entities){
-        [dict setObject:rollingPaper forKey:rollingPaper.idx];
+        [dict setObject:rollingPaper forKey:rollingPaper.id];
     }
     return dict;
 }
+
 -(void) createPaperViewsFromArray : (NSArray*) paperDictArray{
     int topBorder    = 21;
     int heightMargin = 13;
@@ -93,42 +118,26 @@ static RollingPaperListController* g_instance = NULL;
     float cellContainerWidth = self.paperScrollView.frame.size.width;
     
     [self removeAllPaperViews];
-    NSMutableDictionary* storedPapers = [self fetchAllRollingPaperWithIdxKey];
+    //NSMutableDictionary* storedPapers = [self fetchAllRollingPaperWithIdxKey];
     for(NSDictionary* p in paperDictArray){
-        RollingPaper* entity = NULL;
+        RollingPaper* entity = [[RollingPaper alloc]initWithDictionary:p];
         
-        entity = [storedPapers objectForKey:[p objectForKey:@"idx"]];
-        NSLog(@"%@",entity);
-        if( ! entity ){
-            entity = (RollingPaper*)[[UECoreData sharedInstance] insertNewObject : @"RollingPaper"
-                                                                        initWith : p];
-            entity.is_new = [NSNumber numberWithBool:YES];
-            NSLog(@"%@",entity);
-        }
-        else{
-            [entity setValuesWithDictionary:p];
-        }
-        if([entity.is_sended isEqualToString:@"NONE"])
-        {
-            PaperCellController* cellController = [[PaperCellController alloc] initWithEntity : entity
-                                                                                     delegate : self];
+//        if ([entity.is_sended isEqualToString:@"NONE"]) {
+            PaperCellController* cellController = [[PaperCellController alloc] initWithEntity:entity
+                                                                                     delegate:self];
             float viewHeight = cellController.view.frame.size.height;
             float viewWidth  = cellController.view.frame.size.width;
             UIViewSetOrigin(cellController.view, CGPointMake(cellContainerWidth/2 - viewWidth/2,
                                                              topBorder +  (heightMargin + viewHeight) * index++));
             [paperCellControllers addObject:cellController];
-            
+
             [self addChildViewController:cellController];
             [self.paperScrollView addSubview:cellController.view];
             self.paperScrollView.contentSize = CGSizeMake(self.paperScrollView.frame.size.width,
                                                           topBorder + (heightMargin + viewHeight) * index);
-        }
-        else if ([entity.is_sended compare:@"SENDED"] == NSOrderedSame){
-            NSLog(@"SENDED : %@",entity.idx);
-        }
+//        } else if ([entity.is_sended compare:@"SENDED"] == NSOrderedSame) {
+//        }
     }
-    
-    [[[UECoreData sharedInstance] managedObjectContext] save:NULL];
 }
 - (void) viewWillAppear:(BOOL)animated{
     [self.navigationController setNavigationBarHidden:FALSE
@@ -180,16 +189,11 @@ static RollingPaperListController* g_instance = NULL;
                               otherButtonTitles:@"확인", nil] show];
             */
         //    [self.navigationController popViewControllerAnimated:TRUE];
-            LoginMethodViewController* loginMethodViewController = [[LoginMethodViewController alloc] initWithDefaultNib];
+            LoginViewController* loginMethodViewController = [[LoginViewController alloc] init];
             [self.navigationController pushViewController:loginMethodViewController
                                                  animated:TRUE];
         }
     }
-}
-- (void)viewDidLoad
-{
-    self.title = @"롤링페이퍼";
-    [super viewDidLoad];
 }
 
 -(void) PaperCellTouched : (PaperCellController *) paper
@@ -197,22 +201,12 @@ static RollingPaperListController* g_instance = NULL;
     PaperViewController* paperViewController = [[PaperViewController alloc] initWithEntity:paper.entity];
     [self.navigationController pushViewController:paperViewController animated:TRUE];
 }
--(void) paperCellSettingTouched:(PaperCellController *)paper{
+-(void) paperCellSettingTouched:(PaperCellController *)paper
+{
     RollingPaperCreator* paperSettingView = [[RollingPaperCreator alloc] initForEditing:paper.entity];
     paperSettingView.listController = self;
     [self.navigationController pushViewController : paperSettingView
                                          animated : TRUE];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-}
-
-
-- (void)viewDidUnload {
-    [self setPaperScrollView:nil];
-    [super viewDidUnload];
 }
 
 - (IBAction)onTouchAddPaper:(id)sender {
@@ -230,30 +224,5 @@ static RollingPaperListController* g_instance = NULL;
     UserSettingViewController* settingViewController = [[UserSettingViewController alloc] initWithDefaultNib];
     [self.navigationController pushViewController:settingViewController
                                          animated:TRUE];
-}
--(BOOL)shouldAutorotate
-{
-    return YES;
-}
-
--(NSUInteger)supportedInterfaceOrientations
-{
-    return UIInterfaceOrientationMaskPortrait;// | UIInterfaceOrientationMaskPortraitUpsideDown;
-}
-
-- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
-{
-    return UIInterfaceOrientationPortrait;
-}
--(BOOL) showPaperWithIdx : (NSNumber*) paper_idx{
-    for(PaperCellController* cellController in self.childViewControllers){
-        if(cellController &&
-           cellController.entity &&
-           [cellController.entity.idx compare:paper_idx] == NSOrderedSame){
-            [self PaperCellTouched:cellController];
-            return TRUE;
-        }
-    }
-    return FALSE;
 }
 @end

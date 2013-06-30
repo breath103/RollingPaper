@@ -1,11 +1,3 @@
-//
-//  AppDelegate.m
-//  RollingPaper
-//
-//  Created by 이상현 on 12. 10. 27..
-//  Copyright (c) 2012년 상현 이. All rights reserved.
-//
-
 #import "AppDelegate.h"
 
 #import "SplashViewController.h"
@@ -29,17 +21,10 @@
 -(void) handleRollingPaperOpenURL : (NSURL*) url{
     if([url.host isEqualToString:@"sendInvitation"]){
         NSDictionary* queryDict = [self parseQuery:url.query];
-        NSLog(@"%@",queryDict);
-        
-        /*
-        [self.navigationController popToRootViewControllerAnimated:FALSE];
-        RollingPaperListController* paperListController = (RollingPaperListController*)self.navigationController.presentingViewController;
-        */
         NSNumberFormatter * f = [[NSNumberFormatter alloc] init];
         [f setNumberStyle:NSNumberFormatterDecimalStyle];
-        
         if([RollingPaperListController getInstance]){
-            [[RollingPaperListController getInstance] showPaperWithIdx:[f numberFromString:[queryDict objectForKey:@"paper"]]];
+//            [[RollingPaperListController getInstance] showPaperWithIdx:[f numberFromString:[queryDict objectForKey:@"paper"]]];
         }
     }
 }

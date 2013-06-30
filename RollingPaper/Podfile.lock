@@ -1,20 +1,31 @@
+PODS:
+  - AFNetworking (1.3.1)
+  - Cedar (0.9.1)
+  - Facebook-iOS-SDK (3.5.3)
+  - JSONKit (1.5pre)
+  - MBProgressHUD (0.7)
+  - OCMock (2.1.1)
+  - SYCache (1.0)
+  - Underscore.m (0.2.0)
 
-PODS: 
-- AFNetworking (1.1.0)
-- Facebook-iOS-SDK (3.2.1)
-- JSONKit (1.5pre)
-- SYCache (1.0)
+DEPENDENCIES:
+  - AFNetworking (~> 1.3.0)
+  - Cedar
+  - Facebook-iOS-SDK (~> 3.5.1)
+  - JSONKit
+  - MBProgressHUD
+  - OCMock
+  - SYCache
+  - Underscore.m
 
-SPEC CHECKSUMS: 
-  AFNetworking: 761a418233d280c1e0580bcb76ff9cb4c3073d17
-  Facebook-iOS-SDK: 514dc0d7d43358999267c88c088e4b5b339b7da1
-  SYCache: 8ca46f459ce46245db483bf2067f265e63d8ff23
+SPEC CHECKSUMS:
+  AFNetworking: 9ec8aafb9269236a7630bd8d9838ce2ba30fa2a0
+  Cedar: a4181d8873d5049223c8511a50de4151ad603edc
+  Facebook-iOS-SDK: c11e851555d8cb8b55853ec2990b01d9e343d09e
   JSONKit: 409734ab3407fce90ef7eaa95d7168f38d9a6601
+  MBProgressHUD: 1fd8591a2216d5dec6de24e09187bb03bcbe9946
+  OCMock: 79212e5e328378af5cfd6edb5feacfd6c49cd8a3
+  SYCache: 8ca46f459ce46245db483bf2067f265e63d8ff23
+  Underscore.m: a1363c047e21e601dcabc16abd6faf9413cf4290
 
-DEPENDENCIES: 
-- AFNetworking (= 1.1.0)
-- Facebook-iOS-SDK
-- JSONKit (= 1.5pre)
-- SYCache (= 1.0)
-
-COCOAPODS: 0.16.1
+COCOAPODS: 0.20.2

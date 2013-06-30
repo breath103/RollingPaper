@@ -12,7 +12,7 @@ describe(@"UINavigationController+Flowith", ^{
     -(NSInteger) removeViewControllersFromStackBellowViewController : (UIViewController*) controller;
     -(BOOL) addViewControllersToStackAboveViewController : (UIViewController*) controller;
     -(BOOL) addViewControllersToStackBellowViewController : (UIViewController*) controller;
-*/
+     */
     
     beforeEach(^{
         navigationController = [[UINavigationController alloc] initWithRootViewController:[[UIViewController alloc]init]

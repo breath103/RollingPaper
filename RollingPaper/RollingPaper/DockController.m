@@ -1,10 +1,3 @@
-//
-//  DockController.m
-//  RollingPaper
-//
-//  Created by 이상현 on 12. 12. 18..
-//  Copyright (c) 2012년 상현 이. All rights reserved.
-//
 
 #import "DockController.h"
 #import "macro.h"
@@ -16,14 +9,12 @@
 @end
 
 @implementation DockController
-@synthesize isDockPoped;
-@synthesize delegate;
 @synthesize panGestureRecognizer;
 -(id) initWithDelegate:(id<DockControllerDelegate>)aDelegate{
     self = [self initWithNibName:NSStringFromClass(self.class)
                           bundle:NULL];
     if(self){
-        self.delegate = aDelegate;
+        _delegate = aDelegate;
     }
     return self;
 }
@@ -40,8 +31,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self.view viewWithTag:10].transform = CGAffineTransformMakeRotation(CC_DEGREES_TO_RADIANS(-15));
-    [self.view viewWithTag:15].transform = CGAffineTransformMakeRotation(CC_DEGREES_TO_RADIANS(-30));
+    [[self view] viewWithTag:10].transform = CGAffineTransformMakeRotation(CC_DEGREES_TO_RADIANS(-15));
+    [[self view] viewWithTag:15].transform = CGAffineTransformMakeRotation(CC_DEGREES_TO_RADIANS(-30));
     // Do any additional setup after loading the view from its nib.
 }
 
@@ -52,7 +43,7 @@
 }
 
 -(void) hide{
-    isDockPoped = FALSE;
+    _isDockPoped = FALSE;
     [UIView animateWithDuration:0.1f animations:^{
         UIViewSetX(self.view,-self.dockView.bounds.size.width);
     } completion:^(BOOL finished) {
@@ -62,16 +53,16 @@
     [UIView animateWithDuration:0.1f animations:^{
         UIViewSetX(self.view, 0);
     } completion:^(BOOL finished) {
-        isDockPoped = TRUE;
+        _isDockPoped = TRUE;
     }];
 }
 -(void) onDockGesture : (UIPanGestureRecognizer*) gestureRecognizer{
     CGRect frame = self.view.frame;
     CGPoint translation = [gestureRecognizer translationInView:nil];
     if(frame.origin.x >= 0)
-        isDockPoped = TRUE;
+        _isDockPoped = TRUE;
     else
-        isDockPoped = FALSE;
+        _isDockPoped = FALSE;
     frame.origin.x += translation.x;
     if(frame.origin.x <= -frame.size.width)
         frame.origin.x = -frame.size.width;
@@ -92,40 +83,40 @@
 }
 
 
-- (IBAction)onTouchCamera:(id)sender{
-    NSLog(@"Camera Menu");
+- (IBAction)onTouchCamera:(id)sender
+{
     [self.delegate dockController:self
                          pickMenu:DockMenuTypeCamera
                          inButton:sender];
 }
-- (IBAction)onTouchAlbum:(id)sender{
-    NSLog(@"Album Menu");
+- (IBAction)onTouchAlbum:(id)sender
+{
     [self.delegate dockController:self
                          pickMenu:DockMenuTypeAlbum
                          inButton:sender];
  
 }
-- (IBAction)onTouchKeyboard:(id)sender{
-    NSLog(@"Keyboard Menu");
+- (IBAction)onTouchKeyboard:(id)sender
+{
     [self.delegate dockController : self
                          pickMenu : DockMenuTypeKeyboard
                          inButton : sender];
 }
 
-- (IBAction)onTouchMicrophone:(id)sender{
-    NSLog(@"Microphone Menu");
+- (IBAction)onTouchMicrophone:(id)sender
+{
     [self.delegate dockController : self
                          pickMenu : DockMenuTypeMicrophone
                          inButton : sender];
 }
-- (IBAction)onTouchPencilcase:(id)sender{
-    NSLog(@"Pencilecase Menu");
+- (IBAction)onTouchPencilcase:(id)sender
+{
     [self.delegate dockController : self
                          pickMenu : DockMenuTypePencilcase
                          inButton : sender];
 }
-- (IBAction)onTouchSetting:(id)sender {
-    NSLog(@"Setting Menu");
+- (IBAction)onTouchSetting:(id)sender
+{
     [self.delegate dockController : self
                          pickMenu : DockMenuTypeSetting
                          inButton : sender];
@@ -133,7 +124,7 @@
 }
 
 - (IBAction)onTouchShowToggleButton:(id)sender {
-    if(isDockPoped){
+    if(_isDockPoped){
         [self hide];
     }
     else{

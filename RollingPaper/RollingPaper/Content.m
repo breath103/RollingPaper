@@ -17,6 +17,5 @@
 @dynamic width;
 @dynamic x;
 @dynamic y;
-@dynamic paper;
 
 @end

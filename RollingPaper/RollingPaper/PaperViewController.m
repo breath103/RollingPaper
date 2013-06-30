@@ -1,11 +1,3 @@
-//
-//  PaperViewController.m
-//  RollingPaper
-//
-//  Created by 이상현 on 12. 11. 18..
-//  Copyright (c) 2012년 상현 이. All rights reserved.
-//
-
 #import "PaperViewController.h"
 #import "ImageContent.h"
 #import "SoundContent.h"
@@ -28,11 +20,11 @@
 #import "UECoreData.h"
 #import "RollingPaperCreator.h"
 #import "UIAlertViewBlockDelegate.h"
+#import "UIImageView+Vingle.h"
 
 
 #define BORDER_WIDTH (2.0f)
 #define BORDER_COLOR [UIColor colorWithPatternImage:[UIImage imageNamed:@"content_selectborder.png"]]
-
 
 @interface PaperViewController (PrivateInterface)
 -(void) saveToServer : (void(^)(NSMutableArray* syncSuccessedViews,
@@ -48,8 +40,9 @@
 @synthesize dockController;
 @synthesize contentsScrollContainer;
 @synthesize isEditingMode;
+
 -(id) initWithEntity : (RollingPaper*) aEntity{
-    self = [self initWithNibName:NSStringFromClass(self.class) bundle:NULL];
+    self = [self init];
     if(self){
         self.entity = aEntity;
     }
@@ -57,7 +50,6 @@
 }
 -(void) viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-    NSLog(@"%@",self.dockController.view);
     //사용자가 한번 본 경우에는 해당 엔티티가 더이상 새로운 것이 아니기 때문에 NO로 변경
     self.entity.is_new = [NSNumber numberWithBool:NO];
 }
@@ -79,18 +71,14 @@
                                                                             self.entity.width.floatValue,
                                                                             self.entity.height.floatValue)];
 
-    NSData* backgroundData = [UEFileManager readDataFromLocalFile:[NSString stringWithFormat:@"paperbg_%@",entity.background]];
-    if(backgroundData){
-        self.contentsScrollContainer.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageWithData:backgroundData]];
-    }
-    else{
-        [[FlowithAgent sharedAgent] getBackground:entity.background
-                                         response:^(BOOL isCachedResponse, UIImage *image) {
-            self.contentsScrollContainer.backgroundColor = [UIColor colorWithPatternImage:image];
-            [self.contentsScrollContainer setNeedsDisplay];
-        }];
-    }
-    ///
+    [[[UIImageView alloc] init]setImageWithURL:entity.background
+    withFadeIn:-1
+    success:^(BOOL isCached, UIImage *image) {
+        self.contentsScrollContainer.backgroundColor = [UIColor colorWithPatternImage:image];
+        [self.contentsScrollContainer setNeedsDisplay];
+    } failure:^(NSError *error) {
+        
+    }];
     
     self.contentsScrollContainer.userInteractionEnabled = TRUE;
     UILongPressGestureRecognizer* backFocus = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(onTapScrollBack:)];
@@ -140,62 +128,61 @@
     loadingOverView.alpha = 0.0f;
     activityIndicator.center = loadingOverView.center;
     [loadingOverView addSubview:activityIndicator];
-    [self.view addSubview:loadingOverView];
+    [[self view] addSubview:loadingOverView];
     [activityIndicator startAnimating];
-    
     [loadingOverView fadeTo:0.7 duration:0.2f];
     
-    [[FlowithAgent sharedAgent] getContentsOfPaper:self.entity
-                                         afterTime:1
-     success:^(BOOL isCachedResponse, NSArray *imageContents,
-                                      NSArray *soundContents) {
-         [loadingOverView fadeOut:0.2f];
-         [self onReceiveContentsResponse : imageContents
-                                         : soundContents ];
-     }failure:^(NSError *error) {
-         [loadingOverView fadeOut:0.2f];
-         [[[UIAlertViewBlock alloc] initWithTitle:@"에러"
-                                          message:@"페이퍼 내용을 서버로 부터 받아오는 실패했습니다. 다시 시도해주세요"
-                                    blockDelegate:^(UIAlertView *alertView, int clickedButtonIndex) {
-                                        if(clickedButtonIndex == 1)
-                                            [self loadAndShowContents];
-                                    }
-                                cancelButtonTitle:@"확인"
-                                otherButtonTitles:@"재시도",nil] show];
-     }];
+    [self.entity getContents:^(NSArray *imageContents, NSArray *soundContents) {
+        [loadingOverView fadeOut:0.2f];
+        [self onReceiveContentsResponse:imageContents
+                                       :soundContents];
+    } failure:^(NSError *error) {
+        [loadingOverView fadeOut:0.2f];
+        [[[UIAlertViewBlock alloc] initWithTitle:@"에러"
+                                         message:@"페이퍼 내용을 서버로 부터 받아오는 실패했습니다. 다시 시도해주세요"
+                                   blockDelegate:^(UIAlertView *alertView, int clickedButtonIndex) {
+                                       if(clickedButtonIndex == 1)
+                                           [self loadAndShowContents];
+                                   }
+                               cancelButtonTitle:@"확인"
+                               otherButtonTitles:@"재시도",nil] show];
+    }];
 }
 
--(void) viewWillAppear:(BOOL)animated{
-    [self.navigationController setNavigationBarHidden:TRUE
-                                             animated:TRUE];
+-(void) viewWillAppear:(BOOL)animated
+{
+    [[self navigationController] setNavigationBarHidden:TRUE
+                                               animated:TRUE];
     UIViewSetHeight(self.dockController.view, self.view.bounds.size.height);
 }
 
--(void)viewDidLoad{
+-(void)viewDidLoad
+{
     [super viewDidLoad];
     
     self.contentsContainer.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"main_background"]];
     [self initContentsEditingToolControlers];
     [self initLeftDockMenu];
     [self initContentsScrollContainer];
+
     [self loadAndShowContents];
     
-    [self.saveButton.superview bringSubviewToFront:self.saveButton];
-    [self.refreshButton.superview bringSubviewToFront:self.refreshButton];
+    [_saveButton.superview bringSubviewToFront:self.saveButton];
+    [_refreshButton.superview bringSubviewToFront:self.refreshButton];
     
     [self onChangeToEditingMode];
     
     self.transformTargetView = NULL;
 }
-- (IBAction)onTouchSaveAndQuit:(id)sender {
-    //저장관련된 내용은 ViewWillDisapear 에서처리
+
+- (IBAction)onTouchSaveAndQuit:(id)sender
+{
     [self.navigationController popToRootViewControllerAnimated:TRUE];
 }
 
-
-- (IBAction)onTouchRefresh:(id)sender {
-    [self saveToServer:^(NSMutableArray *syncSuccessedViews,
-                         NSMutableArray *syncFailedViews) {
+- (IBAction)onTouchRefresh:(id)sender
+{
+    [self saveToServer:^(NSMutableArray *syncSuccessedViews, NSMutableArray *syncFailedViews) {
         if(syncFailedViews && syncFailedViews.count > 0){
             [[[UIAlertView alloc] initWithTitle:@"경고"
                                         message:[NSString stringWithFormat:@"%d개 컨텐츠의 업로드가 실패했습니다",syncFailedViews.count]
@@ -217,11 +204,8 @@
         NSLog(@"Long Background : %@",tap);
     }
 }
--(void) saveToServer : (void(^)(NSMutableArray* syncSuccessedViews,
-                                NSMutableArray* syncFailedViews)) callback{
-   // __block int syncSuccessCount = 0;
-   // __block int syncFailureCount = 0;
-    
+-(void) saveToServer:(void(^)(NSMutableArray *syncSuccessedViews, NSMutableArray *syncFailedViews)) callback
+{
     __block NSMutableArray* syncSuccessedViews = [NSMutableArray new];
     __block NSMutableArray* syncFailedViews    = [NSMutableArray new];
     
@@ -255,10 +239,6 @@
     else {
         callback(syncSuccessedViews,syncFailedViews);
     }
-   
-        
-        //    NSLog(@"%d개 업데이트 되었습니다",totalNeedsSyncViewCount);
- 
 }
 -(void) viewWillDisappear:(BOOL)animated{
     [self saveToServer:^(NSMutableArray *syncSuccessedViews,
@@ -375,7 +355,8 @@
         }
     }
 }
--(void) addTransformTargetGestureToEntityView : (UIView*) view{
+-(void) addTransformTargetGestureToEntityView:(UIView *) view
+{
     view.userInteractionEnabled = TRUE;
     UILongPressGestureRecognizer* longTapGestureRecognizer = [[UILongPressGestureRecognizer alloc]
                                                     initWithTarget:self
@@ -384,11 +365,12 @@
     longTapGestureRecognizer.delegate = self;
 }
 
--(SoundContentView*) onCreateSound : (NSString*) file{
+-(SoundContentView*) onCreateSound:(NSString*) file
+{
     
     SoundContent* soundEntity = (SoundContent*)[[UECoreData sharedInstance]insertNewObject:@"SoundContent"];
     soundEntity.idx       = NULL;
-    soundEntity.paper_idx = self.entity.idx;
+    soundEntity.paper_idx = self.entity.id;
     soundEntity.user_idx  = [NSNumber numberWithInt:[[FlowithAgent sharedAgent] getUserIdx].intValue];
     soundEntity.x         = [NSNumber numberWithFloat:self.view.frame.size.width /2];
     soundEntity.y         = [NSNumber numberWithFloat:self.view.frame.size.height/2];
@@ -406,14 +388,15 @@
 }
 
 
--(ImageContentView*) onCreateImage : (UIImage *)image{
+-(ImageContentView*) onCreateImage:(UIImage *) image
+{
     CGImageRef cgImage = image.CGImage;
     CGFloat width   = CGImageGetWidth(cgImage) / APP_SCALE;
     CGFloat height  = CGImageGetHeight(cgImage) / APP_SCALE;
     
     ImageContent* imageEntity = (ImageContent*)[[UECoreData sharedInstance]insertNewObject:@"ImageContent"];
     imageEntity.idx       = NULL;
-    imageEntity.paper_idx = self.entity.idx;
+    imageEntity.paper_idx = self.entity.id;
     imageEntity.user_idx  = [NSNumber numberWithInt:[[FlowithAgent sharedAgent] getUserIdx].intValue];
     imageEntity.x         = [NSNumber numberWithFloat:0.0f];
     imageEntity.y         = [NSNumber numberWithFloat:0.0f];

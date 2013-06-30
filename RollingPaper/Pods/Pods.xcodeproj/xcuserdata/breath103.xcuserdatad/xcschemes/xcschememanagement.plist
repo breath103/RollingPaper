@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>Pods-Specs.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>4</integer>
+		</dict>
 		<key>Pods.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -22,7 +27,22 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>2330DD7035AC478D97A5064E</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>28EC8B93545B48658ECA1C1D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>2DAF9BA7FBE34835BAB685F7</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>5E626E80609544898B275D60</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -38,6 +58,31 @@
 			<true/>
 		</dict>
 		<key>806E11E474AE472F85FE8A3B</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>8B40D554BD354DEDBA380D68</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>B364B258DB6E4C72B7E68D5D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>B79B2767613D4D2BADA692B4</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D0EB816C56F94E34BF18F12F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>F974E4CB1CF244D78581707F</key>
 		<dict>
 			<key>primary</key>
 			<true/>

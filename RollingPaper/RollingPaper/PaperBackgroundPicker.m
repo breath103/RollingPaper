@@ -1,18 +1,10 @@
-//
-//  PaperBackgroundPicker.m
-//  RollingPaper
-//
-//  Created by 이상현 on 13. 2. 17..
-//  Copyright (c) 2013년 ‚Äö√Ñ√∂‚àö‚Ä†‚àö‚àÇ‚Äö√†√∂¬¨√Ü‚Äö√Ñ√∂‚àö‚Ä†‚àö‚àÇ‚Äö√†√∂¬¨¬¢‚Äö√Ñ√∂‚àö‚Ä†‚àö‚àÇ‚Äö√†√∂‚àö¬±‚Äö√Ñ√∂‚àö‚Ä†‚àö‚àÇ‚Äö√†√∂‚Äö√Ñ¬¢‚Äö√Ñ√∂‚àö‚Ä†‚àö‚àÇ‚Äö√Ñ√∂‚àö¬¢¬¨√ü‚Äö√Ñ√∂‚àö‚Ä†‚àö‚àÇ‚Äö√†√∂¬¨¬• ‚Äö√Ñ√∂‚àö‚Ä†‚àö‚àÇ‚Äö√†√∂¬¨√Ü‚Äö√Ñ√∂‚àö‚Ä†‚àö‚àÇ‚âà√¨‚àö√ë¬¨¬®¬¨¬Æ‚Äö√Ñ√∂‚àö√ë¬¨¬¢. All rights reserved.
-//
-
 #import "PaperBackgroundPicker.h"
 #import "FlowithAgent.h"
 #import "UELib/UEUI.h"
 #import <QuartzCore/QuartzCore.h>
 #import "ccMacros.h"
 #import "UIAlertViewBlockDelegate.h"
-
+#import "UIImageView+Vingle.h"
 
 @implementation PaperBackgroundCell
 -(id) initWithFrame:(CGRect)frame{
@@ -27,10 +19,6 @@
 @end
 
 
-
-@interface PaperBackgroundPicker ()
-
-@end
 
 @implementation PaperBackgroundPicker
 - (IBAction)onTouchDone:(id)sender {
@@ -53,6 +41,7 @@
     }
     return self;
 }
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -63,23 +52,23 @@
 }
 
 - (void)refreshBackgrounds{
-    
-    // Do any additional setup after loading the view from its nib.
-    [[FlowithAgent sharedAgent] getBackgroundList:^(BOOL isCaschedResponse,
-                                                    NSArray *backgroundList){
-        self.backgroundList = backgroundList;
-        [self.collectionView reloadData];
-        
+    [[FlowithAgent sharedAgent] getPath:@"papers/backgrounds.json"
+    parameters:@{}
+    success:^(AFHTTPRequestOperation *operation, NSArray* backgrounds) {
+        NSLog(@"%@",backgrounds);
+        _backgroundList = backgrounds;
+        [_collectionView reloadData];
+
         //기본 값을 선택
-        for(int i=0;i<self.backgroundList.count;i++){
-            NSString* backgroundName = [self.backgroundList objectAtIndex:i];
-            if([backgroundName compare: self.selectedBackgroundName] == NSOrderedSame){
-                [self.collectionView selectItemAtIndexPath:[NSIndexPath indexPathForItem:i inSection:0]
-                                                  animated:TRUE
-                                            scrollPosition:UICollectionViewScrollPositionCenteredVertically];
+        for(int i=0;i<_backgroundList.count;i++){
+            NSString* backgroundName = _backgroundList[i];
+            if ([backgroundName compare: _selectedBackgroundName] == NSOrderedSame) {
+                [_collectionView selectItemAtIndexPath:[NSIndexPath indexPathForItem:i inSection:0]
+                                              animated:TRUE
+                                        scrollPosition:UICollectionViewScrollPositionCenteredVertically];
             }
         }
-    }failure:^(NSError *error) {
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [[[UIAlertViewBlock alloc]initWithTitle:@"경고"
                                         message:@"서버로부터 종이 배경들을 받아오는대 실패했습니다"
                                   blockDelegate:^(UIAlertView *alertView, int clickedButtonIndex) {
@@ -100,46 +89,36 @@
     [self refreshBackgrounds];
 }
 
-- (void)didReceiveMemoryWarning
+#pragma UICollectionViewDataSource Implementation
+- (NSInteger)collectionView:(UICollectionView *)view numberOfItemsInSection:(NSInteger)section
 {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    return [_backgroundList count];
 }
 
-#pragma UICollectionViewDataSource Implementation
-- (NSInteger)collectionView:(UICollectionView *)view numberOfItemsInSection:(NSInteger)section {
-    return self.backgroundList.count;
-}
-- (NSInteger)numberOfSectionsInCollectionView: (UICollectionView *)collectionView {
+- (NSInteger)numberOfSectionsInCollectionView: (UICollectionView *)collectionView
+{
     return 1;
 }
-- (UICollectionViewCell *)collectionView:(UICollectionView *)cv
-                  cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    UICollectionViewCell *cell = [cv dequeueReusableCellWithReuseIdentifier:@"BackgroundCell"
-                                                               forIndexPath:indexPath];
-    if (!cell) {
-        NSLog(@"NO CELL");
-    }
-    NSString* backgroundName = [self.backgroundList objectAtIndex:[indexPath indexAtPosition:1]];
-    [[FlowithAgent sharedAgent] getBackground:backgroundName
-    response:^(BOOL isCachedResponse, UIImage *image) {
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
+                  cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"BackgroundCell"
+                                                                           forIndexPath:indexPath];
+    UIImageView* tempImageView = [[UIImageView alloc]init];
+    [tempImageView setImageWithURL:_backgroundList[indexPath.item]
+    success:^(BOOL isCached, UIImage *image) {
         cell.backgroundColor = [UIColor colorWithPatternImage:image];
+    } failure:^(NSError *error) {
+        
     }];
-    
-   return cell;
+    return cell;
 }
-// 4
-/*-	 (UICollectionReusableView *)collectionView:
- (UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
- {
- return [[UICollectionReusableView alloc] init];
- }*/
 
 #pragma mark - UICollectionViewDelegate
 - (void)collectionView:(UICollectionView *)collectionView
 didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
-    self.selectedBackgroundName = [self.backgroundList objectAtIndex:[indexPath indexAtPosition:1]];
-    NSLog(@"%@",self.selectedBackgroundName );
+    self.selectedBackgroundName = [self.backgroundList objectAtIndex:[indexPath item]];
 }
 - (void)collectionView:(UICollectionView *)collectionView
 didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -150,7 +129,8 @@ didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
 
 - (CGSize)collectionView:(UICollectionView *)collectionView
                   layout:(UICollectionViewLayout*)collectionViewLayout
-  sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
-    return CGSizeMake(50 , (double) arc4random() / RAND_MAX * 50);
+  sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    return CGSizeMake(50,50);
 }
 @end

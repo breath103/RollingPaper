@@ -17,6 +17,5 @@
 @property (nonatomic, retain) NSString * image;
 @property (nonatomic, retain) NSNumber * paper_idx;
 @property (nonatomic, retain) NSNumber * user_idx;
-+(ImageContent*) contentWithDictionary : (NSDictionary*) dict;
-+(NSArray*) contentsWithDictionaryArray : (NSArray*) array;
+
 @end

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="2057" systemVersion="12C60" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="2061" systemVersion="12E55" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Content" representedClassName="Content" isAbstract="YES" syncable="YES">
         <attribute name="height" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="rotation" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
@@ -24,17 +24,13 @@
         <attribute name="background" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="created_time" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="creator_idx" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="friend_facebook_id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="height" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="idx" optional="YES" attributeType="Integer 64" defaultValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="is_new" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="is_sended" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="notice" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="participants_count" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
-        <attribute name="receive_tel" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="receive_time" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="receiver_fb_id" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="receiver_name" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="target_email" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="update_time" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="width" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
@@ -57,9 +53,9 @@
     <elements>
         <element name="Content" positionX="-200" positionY="-135" width="128" height="133"/>
         <element name="ImageContent" positionX="-360" positionY="95" width="128" height="103"/>
-        <element name="RollingPaper" positionX="-144" positionY="54" width="128" height="315"/>
+        <element name="Notice" positionX="160" positionY="192" width="128" height="105"/>
+        <element name="RollingPaper" positionX="-144" positionY="54" width="128" height="255"/>
         <element name="SoundContent" positionX="117" positionY="90" width="128" height="103"/>
         <element name="TextContent" positionX="9" positionY="-106" width="128" height="133"/>
-        <element name="Notice" positionX="160" positionY="192" width="128" height="105"/>
     </elements>
 </model>
