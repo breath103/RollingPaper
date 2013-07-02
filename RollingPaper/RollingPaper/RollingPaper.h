@@ -1,9 +1,10 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
+#import "FlowithObject.h"
 
 @class Content;
 
-@interface RollingPaper : NSObject
+@interface RollingPaper : FlowithObject
 
 @property (nonatomic, strong) NSNumber *id;
 @property (nonatomic, strong) NSString *createdTime;
@@ -21,10 +22,6 @@
 @property (nonatomic, strong) NSString *is_sended;
 @property (nonatomic, strong) NSNumber *participants_count;
 @property (nonatomic, strong) NSSet    *contents;
-
-- (id)initWithDictionary:(NSDictionary *)dictionary;
-+ (NSArray*) fromArray:(NSArray *)array;
-- (NSDictionary*) toDictionary;
 
 @end
 

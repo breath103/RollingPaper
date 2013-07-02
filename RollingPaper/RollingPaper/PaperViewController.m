@@ -365,18 +365,17 @@
     longTapGestureRecognizer.delegate = self;
 }
 
--(SoundContentView*) onCreateSound:(NSString*) file
+- (SoundContentView *)onCreateSound:(NSString *)file
 {
-    
-    SoundContent* soundEntity = (SoundContent*)[[UECoreData sharedInstance]insertNewObject:@"SoundContent"];
-    soundEntity.idx       = NULL;
-    soundEntity.paper_idx = self.entity.id;
-    soundEntity.user_idx  = [NSNumber numberWithInt:[[FlowithAgent sharedAgent] getUserIdx].intValue];
-    soundEntity.x         = [NSNumber numberWithFloat:self.view.frame.size.width /2];
-    soundEntity.y         = [NSNumber numberWithFloat:self.view.frame.size.height/2];
-    soundEntity.width     = [NSNumber numberWithFloat:SOUND_CONTENT_WIDTH];
-    soundEntity.height    = [NSNumber numberWithFloat:SOUND_CONTENT_HEIGHT];
-    soundEntity.sound     = [file mutableCopy];
+    SoundContent* soundEntity = [[SoundContent alloc]init];
+    soundEntity.id       = NULL;
+    soundEntity.paper_id = self.entity.id;
+    soundEntity.user_id  = @([[FlowithAgent sharedAgent] getUserIdx].intValue);
+    soundEntity.x        = @(self.view.frame.size.width /2);
+    soundEntity.y        = @(self.view.frame.size.height/2);
+    soundEntity.width    = @(SOUND_CONTENT_WIDTH);
+    soundEntity.height   = @(SOUND_CONTENT_HEIGHT);
+    soundEntity.sound    = [file mutableCopy];
     
     SoundContentView* entityView = [[SoundContentView alloc] initWithEntity:soundEntity];
     entityView.isNeedToSyncWithServer = TRUE;
@@ -394,16 +393,16 @@
     CGFloat width   = CGImageGetWidth(cgImage) / APP_SCALE;
     CGFloat height  = CGImageGetHeight(cgImage) / APP_SCALE;
     
-    ImageContent* imageEntity = (ImageContent*)[[UECoreData sharedInstance]insertNewObject:@"ImageContent"];
-    imageEntity.idx       = NULL;
-    imageEntity.paper_idx = self.entity.id;
-    imageEntity.user_idx  = [NSNumber numberWithInt:[[FlowithAgent sharedAgent] getUserIdx].intValue];
-    imageEntity.x         = [NSNumber numberWithFloat:0.0f];
-    imageEntity.y         = [NSNumber numberWithFloat:0.0f];
-    imageEntity.rotation  = [NSNumber numberWithFloat:0.0f];
-    imageEntity.image     = NULL;
-    imageEntity.width     = [NSNumber numberWithFloat:width];
-    imageEntity.height    = [NSNumber numberWithFloat:height];
+    ImageContent* imageEntity = [[ImageContent alloc]init];
+    imageEntity.id       = NULL;
+    imageEntity.paper_id = self.entity.id;
+    imageEntity.user_id  = [NSNumber numberWithInt:[[FlowithAgent sharedAgent] getUserIdx].intValue];
+    imageEntity.x        = [NSNumber numberWithFloat:0.0f];
+    imageEntity.y        = [NSNumber numberWithFloat:0.0f];
+    imageEntity.rotation = [NSNumber numberWithFloat:0.0f];
+    imageEntity.image    = NULL;
+    imageEntity.width    = [NSNumber numberWithFloat:width];
+    imageEntity.height   = [NSNumber numberWithFloat:height];
     
     ImageContentView* entityView = [[ImageContentView alloc] initWithEntity:imageEntity];
     entityView.isNeedToSyncWithServer = TRUE;
@@ -562,7 +561,7 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer : (UIGestureRecognizer *)othe
 }
 -(void) imagePickerController : (UIImagePickerController *)picker
 didFinishPickingMediaWithInfo : (NSDictionary *)info{
-    ImageContentView* contentView = [self onCreateImage:[info objectForKey:UIImagePickerControllerEditedImage]];
+    ImageContentView *contentView = [self onCreateImage:info[UIImagePickerControllerEditedImage]];
     contentView.center = ccpAdd(ccp(self.view.frame.size.width/2 ,
                                     self.view.frame.size.height/2),self.contentsContainer.contentOffset);
     
@@ -582,7 +581,7 @@ didFinishPickingMediaWithInfo : (NSDictionary *)info{
 -(void) albumController:(AlbumController *)albumController
               pickImage:(UIImage *)image
                withInfo:(NSDictionary *)infodict{
-    ImageContentView* contentView = [self onCreateImage:image];
+    ImageContentView *contentView = [self onCreateImage:image];
     contentView.center = ccpAdd(ccp(self.view.frame.size.width/2 ,
                                     self.view.frame.size.height/2),self.contentsContainer.contentOffset);
     

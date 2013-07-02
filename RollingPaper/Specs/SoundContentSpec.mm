@@ -1,25 +1,25 @@
-#import "ImageContent.h"
+#import "SoundContent.h"
 
 using namespace Cedar::Matchers;
 using namespace Cedar::Doubles;
 
-SPEC_BEGIN(ImageContentSpec)
+SPEC_BEGIN(SoundContentSpec)
 
-describe(@"ImageContent", ^{
-    __block ImageContent *model;
-
+describe(@"SoundContent", ^{
+    __block SoundContent *model;
+    
     beforeEach(^{
-        model = [[ImageContent alloc]initWithDictionary:@{
-                @"x": @(100),
-                @"y": @(150),
-                @"height": @(4321),
-                @"id": @(1),
-                @"image": @"http://us.123rf.com/400wm/400/400/aparagraph/aparagraph1103/aparagraph110300057/9109200-ripped-striped-background.jpg",
-                @"paper_id": @(4),
-                @"rotation": @(45),
-                @"user_id": @(5),
-                @"width": @(1234)
-        }];
+        model = [[SoundContent alloc]initWithDictionary:@{
+                 @"x": @(100),
+                 @"y": @(150),
+                 @"height": @(4321),
+                 @"id": @(1),
+                 @"sound": @"http://us.123rf.com/400wm/400/400/aparagraph/aparagraph1103/aparagraph110300057/9109200-ripped-striped-background.jpg",
+                 @"paper_id": @(4),
+                 @"rotation": @(45),
+                 @"user_id": @(5),
+                 @"width": @(1234)
+                 }];
     });
     
     describe(@"-initWithDictionary", ^{
@@ -30,7 +30,7 @@ describe(@"ImageContent", ^{
             [model width] should equal(@(1234));
             [model height] should equal(@(4321));
             [model rotation] should equal(@(45));
-            [model image] should equal(@"http://us.123rf.com/400wm/400/400/aparagraph/aparagraph1103/aparagraph110300057/9109200-ripped-striped-background.jpg");
+            [model sound] should equal(@"http://us.123rf.com/400wm/400/400/aparagraph/aparagraph1103/aparagraph110300057/9109200-ripped-striped-background.jpg");
             [model paper_id] should equal(@(4));
             [model user_id] should equal(@(5));
         });
@@ -38,16 +38,16 @@ describe(@"ImageContent", ^{
     
     describe(@"+fromArray", ^{
         it(@"should return empty array for empty array",^{
-            [ImageContent fromArray:@[]] should equal(@[]);
+            [SoundContent fromArray:@[]] should equal(@[]);
         });
-
+        
         it(@"should return array from array",^{
-            NSArray *result = [ImageContent fromArray:@[
+            NSArray *result = [SoundContent fromArray:@[
                                @{@"id" : @(1)},@{@"id" : @(2)},@{@"id" : @(3)},@{@"id" : @(4)},
                                ]];
             [result count] should equal(4);
-            for(ImageContent *content in result) {
-                content should be_instance_of([ImageContent class]);
+            for(SoundContent *content in result) {
+                content should be_instance_of([SoundContent class]);
             }
             [result[0] id] should equal(@(1));
             [result[1] id] should equal(@(2));
@@ -63,7 +63,7 @@ describe(@"ImageContent", ^{
                                               @"y": @(150),
                                               @"height": @(4321),
                                               @"id": @(1),
-                                              @"image": @"http://us.123rf.com/400wm/400/400/aparagraph/aparagraph1103/aparagraph110300057/9109200-ripped-striped-background.jpg",
+                                              @"sound": @"http://us.123rf.com/400wm/400/400/aparagraph/aparagraph1103/aparagraph110300057/9109200-ripped-striped-background.jpg",
                                               @"paper_id": @(4),
                                               @"rotation": @(45),
                                               @"user_id": @(5),

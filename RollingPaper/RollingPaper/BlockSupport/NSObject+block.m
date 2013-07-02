@@ -1,11 +1,3 @@
-//
-//  NSObject+block.m
-//  MyJournal
-//
-//  Created by 이상현 on 12. 9. 8..
-//  Copyright (c) 2012년 상현 이. All rights reserved.
-//
-
 #import "NSObject+block.h"
 
 @implementation NSObject(PerformSelectorBlockSupport)

@@ -63,26 +63,16 @@
           failure : (void (^)(NSError* error))failure;
 
 //Contents
--(void) insertImageContent : (ImageContent*) imageContent
-                     image : (NSData*) image
-                   success : (void (^)(ImageContent* insertedImageContent))success
-                   failure : (void (^)(NSError* error))failure;
 
 -(void) insertSoundContent : (SoundContent*) soundContent
                      sound : (NSData*) sound
                    success : (void (^)(SoundContent* insertedSoundContent))success
                    failure : (void (^)(NSError* error))failure;
 
--(void) updateImageContent : (ImageContent*) entity
-                   success : (void (^)(ImageContent* updatedImageContent))success
-                   failure : (void (^)(NSError* error))failure;
 -(void) updateSoundContent : (SoundContent*) entity
                    success : (void (^)(SoundContent* updatedSoundContent))success
                    failure : (void (^)(NSError* error))failure;
 
--(void) deleteImageContent : (ImageContent*) imageContent
-                   success : (void (^)())success
-                   failure : (void (^)(NSError* error))failure;
 -(void) deleteSoundContent : (SoundContent*) imageContent
                    success : (void (^)())success
                    failure : (void (^)(NSError* error))failure;

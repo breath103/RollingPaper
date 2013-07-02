@@ -52,7 +52,7 @@
 
 - (IBAction)onTouchSaveAndQuit:(id)sender;
 -(IBAction)onTouchRefresh:(id)sender;
--(ImageContentView*) onCreateImage : (UIImage *)image;
--(id) initWithEntity : (RollingPaper*) entity;
--(NSArray*) contentsViews;
+-(ImageContentView *)onCreateImage:(UIImage *)image;
+-(id)initWithEntity:(RollingPaper *)entity;
+-(NSArray *)contentsViews;
 @end

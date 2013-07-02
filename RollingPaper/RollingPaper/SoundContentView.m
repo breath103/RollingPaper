@@ -94,58 +94,58 @@
     self.entity.y        = FLOAT_TO_NSNUMBER(self.center.y);
 }
 -(void) syncEntityWithServer: (void (^)(NSError * error,
-                                        UIView<RollingPaperContentViewProtocol> *))callback{
-    
-    if(self.entity.idx && self.hidden) {
-        NSLog(@"DELETE SOUND : %@",self.entity.idx);
-        [[FlowithAgent sharedAgent] deleteSoundContent:self.entity
-         success:^{
-             callback(NULL,self);
-        }failure:^(NSError *error) {
-            callback(error,self);
-        }];
-    }
-    else{
-        if(isNeedToSyncWithServer) {
-            if(self.entity.idx == NULL){
-                [self updateEntityWithView];
-                
-                NSLog(@"INSERT SOUND : %@",self.entity.idx);
-                
-                NSData* sound = [NSData dataWithContentsOfFile:self.entity.sound];
-                [[FlowithAgent sharedAgent] insertSoundContent:self.entity
-                                                         sound:sound
-                                                       success:^(SoundContent *insertedSoundContent) {
-                                                           self.entity = insertedSoundContent;
-                                                           callback(NULL,self);
-                                                       } failure:^(NSError *error) {
-                                                           callback(error,self);
-                                                       }];
-                isNeedToSyncWithServer = FALSE;
-            }
-            else {
-                [self updateEntityWithView];
-                
-                NSLog(@"DELETE SOUND : %@",self.entity.idx);
-                
-                [[FlowithAgent sharedAgent] updateSoundContent:self.entity
-                                                       success:^(SoundContent *updatedSoundContent) {
-                                                           NSLog(@"%@",updatedSoundContent);
-                                                           self.entity = updatedSoundContent;
-                                                           callback(NULL,self);
-                                                       } failure:^(NSError *error) {
-                                                           callback(error,self);
-                                                       }];
-                
-                isNeedToSyncWithServer = false;
-            }
-        }
-        else{
-            callback(NULL,self);
-        }
-    }
+                                        UIView<RollingPaperContentViewProtocol> *))callback
+{
+//    if(self.entity.idx && self.hidden) {
+//        NSLog(@"DELETE SOUND : %@",self.entity.idx);
+//        [[FlowithAgent sharedAgent] deleteSoundContent:self.entity
+//         success:^{
+//             callback(NULL,self);
+//        }failure:^(NSError *error) {
+//            callback(error,self);
+//        }];
+//    }
+//    else{
+//        if(isNeedToSyncWithServer) {
+//            if(self.entity.idx == NULL){
+//                [self updateEntityWithView];
+//                
+//                NSLog(@"INSERT SOUND : %@",self.entity.idx);
+//                
+//                NSData* sound = [NSData dataWithContentsOfFile:self.entity.sound];
+//                [[FlowithAgent sharedAgent] insertSoundContent:self.entity
+//                                                         sound:sound
+//                                                       success:^(SoundContent *insertedSoundContent) {
+//                                                           self.entity = insertedSoundContent;
+//                                                           callback(NULL,self);
+//                                                       } failure:^(NSError *error) {
+//                                                           callback(error,self);
+//                                                       }];
+//                isNeedToSyncWithServer = FALSE;
+//            }
+//            else {
+//                [self updateEntityWithView];
+//                
+//                NSLog(@"DELETE SOUND : %@",self.entity.idx);
+//                
+//                [[FlowithAgent sharedAgent] updateSoundContent:self.entity
+//                                                       success:^(SoundContent *updatedSoundContent) {
+//                                                           NSLog(@"%@",updatedSoundContent);
+//                                                           self.entity = updatedSoundContent;
+//                                                           callback(NULL,self);
+//                                                       } failure:^(NSError *error) {
+//                                                           callback(error,self);
+//                                                       }];
+//                
+//                isNeedToSyncWithServer = false;
+//            }
+//        }
+//        else{
+//            callback(NULL,self);
+//        }
+//    }
 }
 -(NSNumber*) getUserIdx{
-    return self.entity.user_idx;
+    return self.entity.user_id;
 }
 @end

@@ -97,12 +97,10 @@
 -(void) syncEntityWithServer : (void (^)(NSError * error,
                                          UIView<RollingPaperContentViewProtocol> *))callback{
     // 서버에서 받아온 것이고 숨겨진경우. 즉, 삭제 예약된 경우
-    if(self.entity.idx && self.hidden) {
-        [[FlowithAgent sharedAgent] deleteImageContent:self.entity
-        success:^{
-            NSLog(@"Image : %@ delete ",self.entity.idx);
+    if(self.entity.id && self.hidden) {
+        [_entity deleteFromServer:^{
             callback(NULL,self);
-        }failure:^(NSError *error) {
+        } failure:^(NSError *error) {
             callback(error,self);
         }];
     }
@@ -110,34 +108,35 @@
         if(isNeedToSyncWithServer) {
             if(self.entity.image == NULL)
             {
-                NSData* jpegImage = UIImagePNGRepresentation(self.image);
-                
+//                NSData* jpegImage = UIImagePNGRepresentation(self.image);
                 [self updateEntityWithView];
-                
-                [[FlowithAgent sharedAgent]insertImageContent:self.entity
-                    image:jpegImage
-                    success:^(ImageContent *insertedImageContent) {
-                        self.entity = insertedImageContent;
-                        callback(NULL,self);
-                    } failure:^(NSError *error) {
-                        callback(error,self);
-                }];
-                isNeedToSyncWithServer = false;
-            }
-            //원래 존재하는 엔티티인데, 값이 수정된경우
-            else{
-                [self updateEntityWithView];
-                
-                [[FlowithAgent sharedAgent] updateImageContent:self.entity success:^(ImageContent *updatedImageContent) {
-                    NSLog(@"%@",updatedImageContent);
-                    self.entity = updatedImageContent;
+                [_entity setImage:self.image];
+                [_entity saveToServer:^{
                     callback(NULL,self);
                 } failure:^(NSError *error) {
                     callback(error,self);
                 }];
-                
-                isNeedToSyncWithServer = false;
+
+//                [[FlowithAgent sharedAgent]insertImageContent:self.entity
+//                    image:jpegImage
+//                    success:^(ImageContent *insertedImageContent) {
+//                        self.entity = insertedImageContent;
+//                        callback(NULL,self);
+//                    } failure:^(NSError *error) {
+//                        callback(error,self);
+//                }];
             }
+            //원래 존재하는 엔티티인데, 값이 수정된경우
+            else{
+                [self updateEntityWithView];
+
+                [_entity saveToServer:^{
+                    callback(NULL,self);
+                } failure:^(NSError *error) {
+                    callback(error,self);
+                }];
+            }
+            isNeedToSyncWithServer = NO;
         }
         else {
             //할일이 전혀 없는경우
@@ -147,7 +146,7 @@
     
 }
 -(NSNumber*) getUserIdx{
-    return self.entity.user_idx;
+    return self.entity.user_id;
 }
 
 @end

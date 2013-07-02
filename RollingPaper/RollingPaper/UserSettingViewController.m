@@ -1,6 +1,7 @@
 #import "UserSettingViewController.h"
 #import "FlowithAgent.h"
 #import "NoticeTableController.h"
+#import "TestFlightSDK1.1/TestFlight.h"
 
 @implementation UserSettingViewController
 

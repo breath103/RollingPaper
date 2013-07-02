@@ -20,7 +20,7 @@
 	static FlowithAgent *sharedAgent = nil;
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
-		sharedAgent = [[FlowithAgent alloc]initWithBaseURL:[NSURL URLWithString:@"http://0.0.0.0:3000/api"]];
+		sharedAgent = [[FlowithAgent alloc]initWithBaseURL:[NSURL URLWithString:@"http://rollingpaper-production.herokuapp.com/api"]];
 	});
 	return sharedAgent;
 }
@@ -433,11 +433,10 @@
     NSURL *url = [NSURL URLWithString:SERVER_HOST];
     
     AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:url];
-    
     NSURLRequest *request = [httpClient multipartFormRequestWithMethod:@"POST"
             path:@"/paper/addContent/image"
             parameters:@{@"user_idx" : [self getUserIdx],
-                         @"paper_idx" : imageContent.paper_idx,
+                         @"paper_idx" : imageContent.paper_id,
                          @"x" : imageContent.x,
                          @"y" : imageContent.y,
                          @"width" :imageContent.width,
@@ -453,7 +452,7 @@
       success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
           NSDictionary* insertedImageDict = [JSON objectForKey:@"success"];
           if(insertedImageDict){
-              success( [ImageContent fromArray:insertedImageDict] );
+              success( [[ImageContent alloc]initWithDictionary:insertedImageDict] );
           }
           else{
               failure( [JSON objectForKey:@"error"] );
@@ -474,7 +473,7 @@
     NSURLRequest *request = [httpClient multipartFormRequestWithMethod:@"POST"
                     path:@"/paper/addContent/sound"
                     parameters:@{@"user_idx" : [self getUserIdx],
-                                @"paper_idx" : soundContent.paper_idx,
+                                @"paper_idx" : soundContent.paper_id,
                                 @"x" : soundContent.x,
                                 @"y" : soundContent.y,
                                 @"width" :soundContent.width,
@@ -490,7 +489,7 @@
             success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
                 NSDictionary* insertedSoundContent = [JSON objectForKey:@"success"];
                 if(insertedSoundContent){
-                    success( [SoundContent contentWithDictionary:insertedSoundContent] );
+                    success( [[SoundContent alloc]initWithDictionary:insertedSoundContent] );
                 }
                 else{
                     failure( [JSON objectForKey:@"error"] );
@@ -510,20 +509,15 @@
     
     AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:url];
     [httpClient postPath:@"/paper/editContent/image"
-              parameters:@{@"idx"      : entity.idx,
+              parameters:@{@"idx"      : entity.id,
                            @"rotation" : entity.rotation,
                            @"width"    : entity.width,
                            @"height"   : entity.height,
                            @"x"        : entity.x,
                            @"y"        : entity.y,
                            @"image"    : entity.image}
-                 success:^(AFHTTPRequestOperation *operation, NSData* responseObject){
-                     NSDictionary* results = [responseObject objectFromJSONData];
-                     NSDictionary* updatedDict = [results objectForKey:@"success"];
-                     NSLog(@"%@",results);
-                     ImageContent* updatedContent = [ImageContent contentWithDictionary:updatedDict];
-                     NSLog(@"%@",updatedContent);
-                     success(updatedContent);
+                 success:^(AFHTTPRequestOperation *operation, NSDictionary *updatedContent){
+                     success([[ImageContent alloc]initWithDictionary:updatedContent]);
                  } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                      failure(error);
                  }];
@@ -535,7 +529,7 @@
     
     AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:url];
     [httpClient postPath:@"/paper/editContent/sound"
-              parameters:@{@"idx" : entity.idx,
+              parameters:@{@"idx" : entity.id,
                            @"rotation": entity.rotation,
                            @"width":entity.width,
                            @"height":entity.height,
@@ -545,9 +539,7 @@
                  success:^(AFHTTPRequestOperation *operation, NSData* responseObject){
                      NSDictionary* results = [responseObject objectFromJSONData];
                      NSDictionary* updatedDict = [results objectForKey:@"success"];
-                     NSLog(@"%@",results);
-                     SoundContent* updatedContent = [SoundContent contentWithDictionary:updatedDict];
-                     NSLog(@"%@",updatedContent);
+                     SoundContent* updatedContent = [[SoundContent alloc]initWithDictionary:updatedDict];
                      success(updatedContent);
                  } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                      failure(error);
@@ -561,7 +553,7 @@
     AFHTTPClient *client = [AFHTTPClient clientWithBaseURL:[NSURL URLWithString:SERVER_HOST]];
     [client postPath:@"/paper/deleteContent/image"
           parameters:@{@"user_idx"  : [self getUserIdx],
-                       @"image_idx" : imageContent.idx}
+                       @"image_idx" : imageContent.id}
              success:^(AFHTTPRequestOperation *operation, id responseObject) {
                  success();
              } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -574,7 +566,7 @@
     AFHTTPClient *client = [AFHTTPClient clientWithBaseURL:[NSURL URLWithString:SERVER_HOST]];
     [client postPath:@"/paper/deleteContent/sound"
           parameters:@{@"user_idx"  : [self getUserIdx],
-                       @"sound_idx" : soundContent.idx}
+                       @"sound_idx" : soundContent.id}
              success:^(AFHTTPRequestOperation *operation, id responseObject) {
                  success();
              } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -589,14 +581,14 @@
     NSArray* noticeList = [[SYCache sharedCache]objectForKey:methodName];
     
     if(noticeList){
-        success(TRUE,[Notice entitiesWithDictionaryArray:noticeList]);
+        success(TRUE,[Notice fromArray:noticeList]);
     }
     
     NSURLRequest *urlRequest =  SubAddressToNSURLRequest(@"/notice.json");
     AFJSONRequestOperation* request = [AFJSONRequestOperation JSONRequestOperationWithRequest:urlRequest
                             success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
                                 [[SYCache sharedCache] setObject:JSON forKey:methodName];
-                                success(FALSE, [Notice entitiesWithDictionaryArray:JSON] );
+                                success(FALSE, [Notice fromArray:JSON] );
                             }
                             failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
                                 failure(error);

@@ -16,6 +16,7 @@ describe(@"RollingPaper", ^{
                  @"notice" : @"paper notice",
                  @"width":@(1000),
                  @"height":@(500),
+                 @"receive_time" : @"receive time",
                  @"background":@"background url",
                  @"friend_facebook_id":@"facebook id",
                  }];
@@ -30,13 +31,14 @@ describe(@"RollingPaper", ^{
             [model width] should equal(@(1000));
             [model height] should equal(@(500));
             [model background] should equal(@"background url");
-            [model friendFacebookId] should equal(@"facebook id");
+            [model receive_time] should equal(@"receive time");
+            [model friend_facebook_id] should equal(@"facebook id");
         });
     });
     
     
     describe(@"-toDictionary", ^{
-        it(@"should be serialized",^{
+        it(@"should be serialized include id",^{
             [model toDictionary] should equal(@{
                                               @"id" : @(4321),
                                               @"creator_id" : @(1234),
@@ -44,10 +46,25 @@ describe(@"RollingPaper", ^{
                                               @"notice" : @"paper notice",
                                               @"width":@(1000),
                                               @"height":@(500),
+                                              @"receive_time" : @"receive time",
                                               @"background":@"background url",
                                               @"friend_facebook_id":@"facebook id",
                                               });
         });
+        it(@"should be serialized include id",^{
+            [model setId:nil];
+            [model toDictionary] should equal(@{
+                                              @"creator_id" : @(1234),
+                                              @"title":@"paper title",
+                                              @"notice" : @"paper notice",
+                                              @"width":@(1000),
+                                              @"height":@(500),
+                                              @"receive_time" : @"receive time",
+                                              @"background":@"background url",
+                                              @"friend_facebook_id":@"facebook id",
+                                              });
+        });
+
     });
     
     describe(@"+fromArray", ^{

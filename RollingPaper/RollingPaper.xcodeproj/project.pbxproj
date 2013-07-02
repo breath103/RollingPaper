@@ -314,6 +314,33 @@
 		07FBDDE0165FF28A0011D581 /* SoundContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FBDDDF165FF28A0011D581 /* SoundContentView.m */; };
 		07FD933F165FD379008943B0 /* SplashViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07FD933E165FD379008943B0 /* SplashViewController.xib */; };
 		6CF6B2370AD5489B9EFE36E8 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BD55E3AA3CF249618C4D1C46 /* libPods.a */; };
+		A5A9AC8F1780ADCA007044F7 /* ImageContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B35609165BFAD90094D7D7 /* ImageContentView.m */; };
+		A5A9AC921780AF30007044F7 /* FlowithObject.m in Sources */ = {isa = PBXBuildFile; fileRef = A5A9AC911780AF2F007044F7 /* FlowithObject.m */; };
+		A5A9AC931780AF30007044F7 /* FlowithObject.m in Sources */ = {isa = PBXBuildFile; fileRef = A5A9AC911780AF2F007044F7 /* FlowithObject.m */; };
+		A5A9AC971780B17E007044F7 /* SoundContentSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A5A9AC951780B17E007044F7 /* SoundContentSpec.mm */; };
+		A5A9AC981780B253007044F7 /* UEFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 07CD07C6167CBC1400358AD6 /* UEFileManager.m */; };
+		A5A9AC991780B269007044F7 /* UEAssets.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B35565165A80CE0094D7D7 /* UEAssets.m */; };
+		A5A9AC9A1780B269007044F7 /* UEDataStructure.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B35567165A80CE0094D7D7 /* UEDataStructure.m */; };
+		A5A9AC9B1780B269007044F7 /* UEImageLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B3556B165A80CE0094D7D7 /* UEImageLibrary.m */; };
+		A5A9AC9C1780B269007044F7 /* UEInfoList.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B3556D165A80CE0094D7D7 /* UEInfoList.m */; };
+		A5A9AC9D1780B269007044F7 /* UEMemoryManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B3556F165A80CE0094D7D7 /* UEMemoryManager.m */; };
+		A5A9AC9E1780B269007044F7 /* UEUI.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B35571165A80CE0094D7D7 /* UEUI.m */; };
+		A5A9AC9F1780B269007044F7 /* URLDataLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B35573165A80CE0094D7D7 /* URLDataLoader.m */; };
+		A5A9ACA01780B269007044F7 /* UEEntitiyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B355B3165B41250094D7D7 /* UEEntitiyView.m */; };
+		A5A9ACA11780B269007044F7 /* UESoundRecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FBDDD6165FEF990011D581 /* UESoundRecoder.m */; };
+		A5A9ACA21780B27F007044F7 /* NSObject+block.m in Sources */ = {isa = PBXBuildFile; fileRef = 07AB33D016467D13000A27F7 /* NSObject+block.m */; };
+		A5A9ACA31780B27F007044F7 /* UIAlertViewBlockDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 075BF9FA16D6087400AC76F1 /* UIAlertViewBlockDelegate.m */; };
+		A5A9ACA41780B27F007044F7 /* NSMutableArray+Flowith.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BADB16DA6D1C00E32FF2 /* NSMutableArray+Flowith.m */; };
+		A5A9ACA51780B28A007044F7 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 073CB53416D92729000EAFDD /* AVFoundation.framework */; };
+		A5A9ACA61780B2A7007044F7 /* CGPointExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B35618165C12CB0094D7D7 /* CGPointExtension.m */; };
+		A5A9ACA71780B2A7007044F7 /* macro.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B35584165A8B1E0094D7D7 /* macro.m */; };
+		A5A9ACA81780B2A7007044F7 /* FacebookHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 079C2A18169B060D00FB7A9D /* FacebookHelper.m */; };
+		A5A9ACA91780B2A7007044F7 /* NSRandomSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BC508016A54E9B00F9060F /* NSRandomSupport.m */; };
+		A5A9ACAA1780B2AD007044F7 /* UserSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 075A1EB91684BA5300BB4E3B /* UserSettingViewController.m */; };
+		A5A9ACAB1780B2AD007044F7 /* NoticeTableController.m in Sources */ = {isa = PBXBuildFile; fileRef = 073EB69116BB36F00071DE77 /* NoticeTableController.m */; };
+		A5A9ACAC1780B2E1007044F7 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 07D2556916CFD5AD00C4715C /* libTestFlight.a */; };
+		A5A9ACAF1780CE9E007044F7 /* PaperclipImageUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = A5A9ACAE1780CE9E007044F7 /* PaperclipImageUploader.m */; };
+		A5A9ACB01780CE9E007044F7 /* PaperclipImageUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = A5A9ACAE1780CE9E007044F7 /* PaperclipImageUploader.m */; };
 		F002B777080E4D9989F88184 /* libPods-Specs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E8BB0AF666644339D68CD04 /* libPods-Specs.a */; };
 /* End PBXBuildFile section */
 
@@ -668,6 +695,11 @@
 		6213265403C4457696F38C51 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 		6E8BB0AF666644339D68CD04 /* libPods-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		79C1079E3D27429083B31B8B /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
+		A5A9AC901780AF2F007044F7 /* FlowithObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlowithObject.h; sourceTree = "<group>"; };
+		A5A9AC911780AF2F007044F7 /* FlowithObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlowithObject.m; sourceTree = "<group>"; };
+		A5A9AC951780B17E007044F7 /* SoundContentSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SoundContentSpec.mm; sourceTree = "<group>"; };
+		A5A9ACAD1780CE9E007044F7 /* PaperclipImageUploader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaperclipImageUploader.h; sourceTree = "<group>"; };
+		A5A9ACAE1780CE9E007044F7 /* PaperclipImageUploader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaperclipImageUploader.m; sourceTree = "<group>"; };
 		B5742D1475594B17A7934904 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 		BD55E3AA3CF249618C4D1C46 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2070CBA92FF4201AB866B03 /* Pods-Specs.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Specs.xcconfig"; path = "Pods/Pods-Specs.xcconfig"; sourceTree = SOURCE_ROOT; };
@@ -678,6 +710,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A5A9ACAC1780B2E1007044F7 /* libTestFlight.a in Frameworks */,
+				A5A9ACA51780B28A007044F7 /* AVFoundation.framework in Frameworks */,
 				0739C9B3177F5341002B0890 /* AdSupport.framework in Frameworks */,
 				0739C9AF177F5325002B0890 /* Accounts.framework in Frameworks */,
 				0739C9BA177F538C002B0890 /* AssetsLibrary.framework in Frameworks */,
@@ -790,6 +824,7 @@
 			children = (
 				0739C9AD177F52DB002B0890 /* RollingPaperSpec.mm */,
 				072B1E7817802AAD00628590 /* ImageContentSpec.mm */,
+				A5A9AC951780B17E007044F7 /* SoundContentSpec.mm */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -806,6 +841,8 @@
 		075BF9F816D6085100AC76F1 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				A5A9ACAD1780CE9E007044F7 /* PaperclipImageUploader.h */,
+				A5A9ACAE1780CE9E007044F7 /* PaperclipImageUploader.m */,
 				0739C9CC177F5D71002B0890 /* UIImageView+Vingle.h */,
 				0739C9CD177F5D71002B0890 /* UIImageView+Vingle.m */,
 				0739C9CE177F5D71002B0890 /* UIView+AnimationMacro.h */,
@@ -1062,6 +1099,8 @@
 		07B3557D165A86840094D7D7 /* Entity */ = {
 			isa = PBXGroup;
 			children = (
+				A5A9AC901780AF2F007044F7 /* FlowithObject.h */,
+				A5A9AC911780AF2F007044F7 /* FlowithObject.m */,
 				072829D616832D4000B488EF /* SoundContent.h */,
 				072829D716832D4000B488EF /* SoundContent.m */,
 				072829DC16832D4100B488EF /* Content.h */,
@@ -1661,6 +1700,29 @@
 				0739C9DD177FF889002B0890 /* KakaoLinkCenter.m in Sources */,
 				0739C9DE177FF890002B0890 /* UECoreData.m in Sources */,
 				072B1E7917802AAD00628590 /* ImageContentSpec.mm in Sources */,
+				A5A9AC8F1780ADCA007044F7 /* ImageContentView.m in Sources */,
+				A5A9AC931780AF30007044F7 /* FlowithObject.m in Sources */,
+				A5A9AC971780B17E007044F7 /* SoundContentSpec.mm in Sources */,
+				A5A9AC981780B253007044F7 /* UEFileManager.m in Sources */,
+				A5A9AC991780B269007044F7 /* UEAssets.m in Sources */,
+				A5A9AC9A1780B269007044F7 /* UEDataStructure.m in Sources */,
+				A5A9AC9B1780B269007044F7 /* UEImageLibrary.m in Sources */,
+				A5A9AC9C1780B269007044F7 /* UEInfoList.m in Sources */,
+				A5A9AC9D1780B269007044F7 /* UEMemoryManager.m in Sources */,
+				A5A9AC9E1780B269007044F7 /* UEUI.m in Sources */,
+				A5A9AC9F1780B269007044F7 /* URLDataLoader.m in Sources */,
+				A5A9ACA01780B269007044F7 /* UEEntitiyView.m in Sources */,
+				A5A9ACA11780B269007044F7 /* UESoundRecoder.m in Sources */,
+				A5A9ACA21780B27F007044F7 /* NSObject+block.m in Sources */,
+				A5A9ACA31780B27F007044F7 /* UIAlertViewBlockDelegate.m in Sources */,
+				A5A9ACA41780B27F007044F7 /* NSMutableArray+Flowith.m in Sources */,
+				A5A9ACA61780B2A7007044F7 /* CGPointExtension.m in Sources */,
+				A5A9ACA71780B2A7007044F7 /* macro.m in Sources */,
+				A5A9ACA81780B2A7007044F7 /* FacebookHelper.m in Sources */,
+				A5A9ACA91780B2A7007044F7 /* NSRandomSupport.m in Sources */,
+				A5A9ACAA1780B2AD007044F7 /* UserSettingViewController.m in Sources */,
+				A5A9ACAB1780B2AD007044F7 /* NoticeTableController.m in Sources */,
+				A5A9ACB01780CE9E007044F7 /* PaperclipImageUploader.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1729,6 +1791,8 @@
 				07E0BADC16DA6D1C00E32FF2 /* NSMutableArray+Flowith.m in Sources */,
 				0739C9D0177F5D71002B0890 /* UIImageView+Vingle.m in Sources */,
 				0739C9D2177F5D71002B0890 /* UIView+AnimationMacro.m in Sources */,
+				A5A9AC921780AF30007044F7 /* FlowithObject.m in Sources */,
+				A5A9ACAF1780CE9E007044F7 /* PaperclipImageUploader.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1771,6 +1835,10 @@
 				GCC_PREFIX_HEADER = "Specs/Specs-Prefix.pch";
 				INFOPLIST_FILE = "Specs/Specs-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/RollingPaper/TestFlightSDK1.1\"",
+				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-all_load",
@@ -1799,6 +1867,10 @@
 				GCC_PREFIX_HEADER = "Specs/Specs-Prefix.pch";
 				INFOPLIST_FILE = "Specs/Specs-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/RollingPaper/TestFlightSDK1.1\"",
+				);
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				OTHER_LDFLAGS = (
 					"-ObjC",

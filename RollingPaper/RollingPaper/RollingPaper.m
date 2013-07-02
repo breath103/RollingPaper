@@ -21,16 +21,19 @@
 }
 - (NSDictionary *)toDictionary
 {
-    return @{
-             @"creator_id"         : self.creatorId,
-             @"title"              : self.title,
-             @"width"              : self.width,
-             @"height"             : self.height,
-             @"notice"             : self.notice,
-             @"background"         : self.background,
-             @"friend_facebook_id" : self.friend_facebook_id,
-             @"receive_time"       : self.receive_time,
-             };
+    NSMutableDictionary *dictionary = [NSMutableDictionary dictionaryWithDictionary:@{
+                                       @"creator_id"         : self.creatorId,
+                                       @"title"              : self.title,
+                                       @"width"              : self.width,
+                                       @"height"             : self.height,
+                                       @"notice"             : self.notice,
+                                       @"background"         : self.background,
+                                       @"friend_facebook_id" : self.friend_facebook_id,
+                                       @"receive_time"       : self.receive_time,
+                                       }];
+    if (_id)
+        dictionary[@"id"] = _id;
+    return dictionary;
 }
 
 - (id)initWithDictionary:(NSDictionary *)dictionary
@@ -71,7 +74,6 @@
              failure:(void(^)(NSError* error)) failure
 {
     id dict = [self toDictionary];
-    NSLog(@"%@",dict);
     [[FlowithAgent sharedAgent] postPath:@"papers.json"
     parameters:dict
     success:^(AFHTTPRequestOperation *operation, NSDictionary* paper){

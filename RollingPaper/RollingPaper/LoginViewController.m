@@ -33,8 +33,7 @@
             success:^(NSDictionary *user) {
                 [[FlowithAgent sharedAgent] setUserInfo:user];
                 RollingPaperListController* controller = [[RollingPaperListController alloc] init];
-                [[self navigationController] pushViewController:controller
-                                                        animated:TRUE];
+                [[self navigationController] setViewControllers:@[controller] animated:YES];
             } failure:^(NSError *error) {
                 [[[UIAlertView alloc]initWithTitle:@"에러" message:@"서버와 통신 실패" delegate:nil cancelButtonTitle:@"cancel" otherButtonTitles: nil] show];
             }];

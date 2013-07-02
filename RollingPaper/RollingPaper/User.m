@@ -9,7 +9,7 @@
     _facebook_accesstoken = [d objectForKey:@"facebook_accesstoken"];
     _facebook_id          = [d objectForKey:@"facebook_id"];
     _id                   = [d objectForKey:@"id"];
-    _name                 = [d objectForKey:@"name"];
+//    _name                 = [d objectForKey:@"name"];
     _picture              = [d objectForKey:@"picture"];
 }
 - (id)initWithDictionary : (NSDictionary*) dict{
