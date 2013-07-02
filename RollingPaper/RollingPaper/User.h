@@ -7,7 +7,7 @@
 @property(nonatomic, strong) NSString *facebook_accesstoken;
 @property(nonatomic, strong) NSString *facebook_id;
 @property(nonatomic, strong) NSNumber *id;
-@property(nonatomic, strong) NSString *name;
+@property(nonatomic, strong) NSString *username;
 @property(nonatomic, strong) NSString *picture;
 @end
 

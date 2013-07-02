@@ -314,6 +314,7 @@
 		07FBDDE0165FF28A0011D581 /* SoundContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FBDDDF165FF28A0011D581 /* SoundContentView.m */; };
 		07FD933F165FD379008943B0 /* SplashViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07FD933E165FD379008943B0 /* SplashViewController.xib */; };
 		6CF6B2370AD5489B9EFE36E8 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BD55E3AA3CF249618C4D1C46 /* libPods.a */; };
+		A56DE71E17831CC900F3AD96 /* UserSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A56DE71D17831CC900F3AD96 /* UserSpec.mm */; };
 		A5A9AC8F1780ADCA007044F7 /* ImageContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B35609165BFAD90094D7D7 /* ImageContentView.m */; };
 		A5A9AC921780AF30007044F7 /* FlowithObject.m in Sources */ = {isa = PBXBuildFile; fileRef = A5A9AC911780AF2F007044F7 /* FlowithObject.m */; };
 		A5A9AC931780AF30007044F7 /* FlowithObject.m in Sources */ = {isa = PBXBuildFile; fileRef = A5A9AC911780AF2F007044F7 /* FlowithObject.m */; };
@@ -695,6 +696,7 @@
 		6213265403C4457696F38C51 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 		6E8BB0AF666644339D68CD04 /* libPods-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		79C1079E3D27429083B31B8B /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
+		A56DE71D17831CC900F3AD96 /* UserSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = UserSpec.mm; sourceTree = "<group>"; };
 		A5A9AC901780AF2F007044F7 /* FlowithObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlowithObject.h; sourceTree = "<group>"; };
 		A5A9AC911780AF2F007044F7 /* FlowithObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlowithObject.m; sourceTree = "<group>"; };
 		A5A9AC951780B17E007044F7 /* SoundContentSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SoundContentSpec.mm; sourceTree = "<group>"; };
@@ -825,6 +827,7 @@
 				0739C9AD177F52DB002B0890 /* RollingPaperSpec.mm */,
 				072B1E7817802AAD00628590 /* ImageContentSpec.mm */,
 				A5A9AC951780B17E007044F7 /* SoundContentSpec.mm */,
+				A56DE71D17831CC900F3AD96 /* UserSpec.mm */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -1723,6 +1726,7 @@
 				A5A9ACAA1780B2AD007044F7 /* UserSettingViewController.m in Sources */,
 				A5A9ACAB1780B2AD007044F7 /* NoticeTableController.m in Sources */,
 				A5A9ACB01780CE9E007044F7 /* PaperclipImageUploader.m in Sources */,
+				A56DE71E17831CC900F3AD96 /* UserSpec.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -177,7 +177,7 @@
 
 - (IBAction)onTouchSaveAndQuit:(id)sender
 {
-    [self.navigationController popToRootViewControllerAnimated:TRUE];
+    [[self navigationController] popViewControllerAnimated:YES];
 }
 
 - (IBAction)onTouchRefresh:(id)sender

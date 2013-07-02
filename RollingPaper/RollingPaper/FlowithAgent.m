@@ -20,7 +20,9 @@
 	static FlowithAgent *sharedAgent = nil;
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
-		sharedAgent = [[FlowithAgent alloc]initWithBaseURL:[NSURL URLWithString:@"http://rollingpaper-production.herokuapp.com/api"]];
+        sharedAgent = [[FlowithAgent alloc]initWithBaseURL:[NSURL URLWithString:@"http://0.0.0.0:3000/api"]];
+
+//		sharedAgent = [[FlowithAgent alloc]initWithBaseURL:[NSURL URLWithString:@"http://rollingpaper-production.herokuapp.com/api"]];
 	});
 	return sharedAgent;
 }
@@ -111,6 +113,7 @@
                       [dateComponent objectAtIndex:2],
                       [dateComponent objectAtIndex:0],
                       [dateComponent objectAtIndex:1]];
+   
     [self postPath:@"users/auth.json"
     parameters:@{
         @"facebook_id":me[@"id"],
@@ -119,13 +122,14 @@
         @"email":me[@"email"],
         @"birthday":birthdayString,
         @"picture":me[@"picture"][@"data"][@"url"]
-     } success:^(AFHTTPRequestOperation *operation, NSDictionary* userInfo){
-         User* user = [[User alloc]initWithDictionary:userInfo];
-         [self setCurrentUser:user];
-         success(userInfo);
-     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-         failure(error);
-     }];
+    } success:^(AFHTTPRequestOperation *operation, NSDictionary* userInfo){
+        NSLog(@"%@",userInfo);
+        User* user = [[User alloc]initWithDictionary:userInfo];
+        [self setCurrentUser:user];
+        success(userInfo);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        failure(error);
+    }];
 }
 
 -(void) getProfileImage : (void(^)(BOOL isCachedResponse,UIImage* image)) success{

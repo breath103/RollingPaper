@@ -61,7 +61,7 @@
                                       reuseIdentifier:CellIdentifier];
     }
     User* user = [self.users objectAtIndex: [indexPath indexAtPosition:1]];
-    cell.textLabel.text = user.name;
+    cell.textLabel.text = [user username];
     [cell.imageView setImageWithURL:[NSURL URLWithString:user.picture]];
     return cell;
 }

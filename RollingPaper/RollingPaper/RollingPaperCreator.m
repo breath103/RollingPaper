@@ -147,7 +147,7 @@
     
     button.frame = CGRectMake(0, buttonSize.height * (self.participantsContainer.subviews.count-1),
                               buttonSize.width, buttonSize.height);
-    [button setTitle:participant.name forState:UIControlStateNormal];
+    [button setTitle:[participant username] forState:UIControlStateNormal];
     [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     
     UIImageView* profileView = [[UIImageView alloc] initWithImage:NULL];

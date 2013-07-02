@@ -35,9 +35,11 @@
                 RollingPaperListController* controller = [[RollingPaperListController alloc] init];
                 [[self navigationController] setViewControllers:@[controller] animated:YES];
             } failure:^(NSError *error) {
+                NSLog(@"%@",error);
                 [[[UIAlertView alloc]initWithTitle:@"에러" message:@"서버와 통신 실패" delegate:nil cancelButtonTitle:@"cancel" otherButtonTitles: nil] show];
             }];
         } else {
+            NSLog(@"%@",error);
             [[[UIAlertView alloc] initWithTitle : @"Error"
                                         message : error.localizedDescription
                                        delegate : nil

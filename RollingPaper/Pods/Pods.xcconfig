@@ -1,8 +1,11 @@
+#include "Pods-AFNetworking.xcconfig"
+#include "Pods-Facebook-iOS-SDK.xcconfig"
+#include "Pods-JSONKit.xcconfig"
+#include "Pods-MBProgressHUD.xcconfig"
+#include "Pods-SYCache.xcconfig"
+#include "Pods-Underscore.m.xcconfig"
 ALWAYS_SEARCH_USER_PATHS = YES
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
-HEADER_SEARCH_PATHS = ${PODS_HEADERS_SEARCH_PATHS}
-OTHER_LDFLAGS = -ObjC -lsqlite3.0 -framework CoreGraphics -framework CoreLocation -framework MobileCoreServices -framework Security -framework SystemConfiguration -weak_framework Accounts -weak_framework AdSupport -weak_framework Security -weak_framework Social
-PODS_BUILD_HEADERS_SEARCH_PATHS = "${PODS_ROOT}/BuildHeaders" "${PODS_ROOT}/BuildHeaders/AFNetworking" "${PODS_ROOT}/BuildHeaders/Cedar" "${PODS_ROOT}/BuildHeaders/Cedar/Cedar-iOS" "${PODS_ROOT}/BuildHeaders/Facebook-iOS-SDK" "${PODS_ROOT}/BuildHeaders/Facebook-iOS-SDK/FacebookSDK" "${PODS_ROOT}/BuildHeaders/JSONKit" "${PODS_ROOT}/BuildHeaders/MBProgressHUD" "${PODS_ROOT}/BuildHeaders/OCMock" "${PODS_ROOT}/BuildHeaders/SYCache" "${PODS_ROOT}/BuildHeaders/Underscore.m"
-PODS_HEADERS_SEARCH_PATHS = ${PODS_PUBLIC_HEADERS_SEARCH_PATHS}
-PODS_PUBLIC_HEADERS_SEARCH_PATHS = "${PODS_ROOT}/Headers" "${PODS_ROOT}/Headers/AFNetworking" "${PODS_ROOT}/Headers/Cedar" "${PODS_ROOT}/Headers/Cedar/Cedar-iOS" "${PODS_ROOT}/Headers/Facebook-iOS-SDK" "${PODS_ROOT}/Headers/Facebook-iOS-SDK/FacebookSDK" "${PODS_ROOT}/Headers/JSONKit" "${PODS_ROOT}/Headers/MBProgressHUD" "${PODS_ROOT}/Headers/OCMock" "${PODS_ROOT}/Headers/SYCache" "${PODS_ROOT}/Headers/Underscore.m"
+HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers" "${PODS_ROOT}/Headers/AFNetworking" "${PODS_ROOT}/Headers/Cedar" "${PODS_ROOT}/Headers/Cedar/Cedar-iOS" "${PODS_ROOT}/Headers/Facebook-iOS-SDK" "${PODS_ROOT}/Headers/Facebook-iOS-SDK/FacebookSDK" "${PODS_ROOT}/Headers/JSONKit" "${PODS_ROOT}/Headers/MBProgressHUD" "${PODS_ROOT}/Headers/OCMock" "${PODS_ROOT}/Headers/SYCache" "${PODS_ROOT}/Headers/Underscore.m"
+OTHER_LDFLAGS = -ObjC ${PODS_AFNETWORKING_OTHER_LDFLAGS} ${PODS_FACEBOOK_IOS_SDK_OTHER_LDFLAGS} ${PODS_MBPROGRESSHUD_OTHER_LDFLAGS}
 PODS_ROOT = ${SRCROOT}/Pods

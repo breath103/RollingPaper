@@ -95,19 +95,20 @@
     FBRequest* fbRequest = [FBRequest requestWithGraphPath:@"/me"
                                 parameters:@{@"fields":@"id,picture,name,birthday,email"}
                                                 HTTPMethod:@"GET"];
-    [fbRequest startWithCompletionHandler:^(FBRequestConnection *connection,id<FBGraphUser> me,NSError *error) {
-         if(! error){
-             [[FlowithAgent sharedAgent] joinWithFacebook:me
-              accessToken:session.accessToken
-              success:^(NSDictionary *response) {
-                  NSString* resultType = [response objectForKey:@"result"];
-                  if([resultType compare:@"login"] == NSOrderedSame){
-                      NSLog(@"이미 가입되어 있는 페이스북 계정임으로 자동으로 로그인 합니다");
-                      NSDictionary* logiendUser= [response objectForKey:@"user"];
-                      NSLog(@"%@",logiendUser);
-                      [self onLoginSuccess:logiendUser];
-                  }
-                  else if ([resultType compare:@"fail"] == NSOrderedSame){
+    [fbRequest startWithCompletionHandler:^(FBRequestConnection *connection,id<FBGraphUser> me,NSError *error)
+    {
+        if(! error){
+            [[FlowithAgent sharedAgent] joinWithFacebook:me
+            accessToken:[[session accessTokenData] accessToken]
+            success:^(NSDictionary *response) {
+                NSString* resultType = [response objectForKey:@"result"];
+                if([resultType compare:@"login"] == NSOrderedSame){
+                    NSLog(@"이미 가입되어 있는 페이스북 계정임으로 자동으로 로그인 합니다");
+                    NSDictionary* logiendUser= [response objectForKey:@"user"];
+                    NSLog(@"%@",logiendUser);
+                    [self onLoginSuccess:logiendUser];
+                }
+            else if ([resultType compare:@"fail"] == NSOrderedSame){
                       NSLog(@"이미 가입되어있는 이메일 계정입니다");
                       NSLog(@"%@",[response objectForKey:@"email"]);
                   }

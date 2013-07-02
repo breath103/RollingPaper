@@ -9,33 +9,19 @@
     _facebook_accesstoken = [d objectForKey:@"facebook_accesstoken"];
     _facebook_id          = [d objectForKey:@"facebook_id"];
     _id                   = [d objectForKey:@"id"];
-//    _name                 = [d objectForKey:@"name"];
+    _username             = [d objectForKey:@"username"];
     _picture              = [d objectForKey:@"picture"];
-}
-- (id)initWithDictionary : (NSDictionary*) dict{
-    self = [self init];
-    if (self) {
-        [self setAttributesWithDictionary:dict];
-    }
-    return self;
 }
 -(NSDictionary*) toDictionary
 {
-    return @{@"id" : self.id,
-             @"name" : self.name,
-             @"email" : self.email,
-             @"picture" : self.picture,
+    return @{@"id"       : self.id,
+             @"username" : self.username,
+             @"email"    : self.email,
+             @"picture"  : self.picture,
              @"birthday" : self.birthday,
-             @"facebook_id" : self.facebook_id,
+             @"picture" : self.picture,
+             @"facebook_id"           : self.facebook_id,
              @"facebook_accesstoken" : self.facebook_accesstoken};
-}
-+(NSArray*) fromArray:(NSArray *) array
-{
-    NSMutableArray* users = [[NSMutableArray alloc]initWithCapacity:[array count]];
-    for(NSDictionary* dictionary in array){
-        [users addObject:[[User alloc] initWithDictionary:dictionary]];
-    }
-    return users;
 }
 @end
 
