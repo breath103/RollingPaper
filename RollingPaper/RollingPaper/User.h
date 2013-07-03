@@ -12,6 +12,10 @@
 @end
 
 @interface User (Networking)
--(void) getParticipaitingPapers : (void (^)(NSArray *papers)) callback
-                        failure : (void (^)(NSError *error)) failure;
++ (User *)currentUser;
+- (void)getParticipaitingPapers:(void (^)(NSArray *papers)) callback
+                        failure:(void (^)(NSError *error)) failure;
+- (void)setAPNKey:(NSString *)key
+          success:(void (^)()) success
+          failure:(void (^)(NSError *error)) failure;
 @end

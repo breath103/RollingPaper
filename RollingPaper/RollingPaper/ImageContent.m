@@ -12,7 +12,8 @@
 - (NSDictionary *)toDictionary
 {
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionaryWithDictionary:[super toDictionary]];
-    dictionary[@"image"] = _image;
+    if(_image)
+        dictionary[@"image"] = _image;
     return dictionary;
 }
 @end
@@ -20,19 +21,19 @@
 @implementation ImageContent (Networking)
 - (NSString *)RestAPIGetPath
 {
-    return [NSString stringWithFormat:@"papers/%d/image_contents/%d",self.paper_id.integerValue,self.id.integerValue];
+    return [NSString stringWithFormat:@"image_contents/%d.json",self.id.integerValue];
 }
 - (NSString *)RestAPIPostPath
 {
-    return [NSString stringWithFormat:@"papers/%d/image_contents",self.paper_id.integerValue];
+    return [NSString stringWithFormat:@"image_contents.json"];
 }
 - (NSString *)RestAPIPutPath
 {
-    return [NSString stringWithFormat:@"papers/%d/image_contents/%d",self.paper_id.integerValue,self.id.integerValue];
+    return [NSString stringWithFormat:@"image_contents/%d.json",self.id.integerValue];
 }
 - (NSString *)RestAPIDeletePath
 {
-    return [NSString stringWithFormat:@"papers/%d/image_contents/%d",self.paper_id.integerValue,self.id.integerValue];
+    return [NSString stringWithFormat:@"image_contents/%d.json",self.id.integerValue];
 }
 - (void)saveToServer:(void(^)()) success
              failure:(void(^)(NSError *error)) failure
@@ -49,40 +50,24 @@
     } else {
         NSMutableDictionary *entityDictionary = [NSMutableDictionary dictionaryWithDictionary:[self toDictionary]];
         [entityDictionary removeObjectForKey:@"image"];
-//        NSURLRequest *request =
-//        [[FlowithAgent sharedAgent] multipartFormRequestWithMethod:@"POST"
-//                                                              path:[self RestAPIPostPath]
-//                                                        parameters:entityDictionary
-//                                         constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-//                                             [formData appendPartWithFileData:[self image]
-//                                                                         name:@"image"
-//                                                                     fileName:@"image1.png"
-//                                                                     mimeType:@"image/png"];
-//                                         }];
-        NSURLRequest *request = [PaperclipImageUploader uploadRequestForImage:[self image]
-                                                           ofImageContentType:PaperclipImageTypePng
-                                                             withImageQuality:1.0f
-                                                    forAttachedAttributeNamed:@"image"
-                                                                 onModelNamed:@"image_content"
-                                                          withOtherAttributes:entityDictionary
-                                                                        toUrl:[NSURL URLWithString:[self RestAPIPostPath]
-                                                                                     relativeToURL:[[FlowithAgent sharedAgent] baseURL]]];
-        AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc]initWithRequest:request];
-        [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-            NSLog(@"%@",responseObject);
+        NSURLRequest *request =
+        [[FlowithAgent sharedAgent] multipartFormRequestWithMethod:@"POST"
+                                                              path:[self RestAPIPostPath]
+                                                        parameters:entityDictionary
+                                         constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+                                             [formData appendPartWithFileData:[self imageData]
+                                                                         name:@"image"
+                                                                     fileName:@"image1.png"
+                                                                     mimeType:@"image/png"];
+                                             [self setImageData:nil];
+                                         }];
+        [[FlowithAgent sharedAgent] enqueueHTTPRequestOperation:[[FlowithAgent sharedAgent] HTTPRequestOperationWithRequest:request
+        success:^(AFHTTPRequestOperation *operation, NSDictionary * imageContent) {
+            [self setAttributesWithDictionary:imageContent];
+            success();
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            NSLog(@"%@",error);
-        }];
-        [operation start];
-
-        
-//        [[FlowithAgent sharedAgent] enqueueHTTPRequestOperation:[[FlowithAgent sharedAgent] HTTPRequestOperationWithRequest:request
-//        success:^(AFHTTPRequestOperation *operation, NSDictionary * imageContent) {
-//            [self setAttributesWithDictionary:imageContent];
-//            success();
-//        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//            failure(error);
-//        }]];
+            failure(error);
+        }]];
     }
 }
 - (void)deleteFromServer:(void(^)()) success

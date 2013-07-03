@@ -386,8 +386,7 @@
     return entityView;
 }
 
-
--(ImageContentView*) onCreateImage:(UIImage *) image
+- (ImageContentView *)onCreateImage:(UIImage *)image
 {
     CGImageRef cgImage = image.CGImage;
     CGFloat width   = CGImageGetWidth(cgImage) / APP_SCALE;
@@ -406,7 +405,7 @@
     
     ImageContentView* entityView = [[ImageContentView alloc] initWithEntity:imageEntity];
     entityView.isNeedToSyncWithServer = TRUE;
-    entityView.image = image;
+    entityView.imageView.image = image;
     [self.contentsScrollContainer addSubview:entityView];
     [self addTransformTargetGestureToEntityView:entityView];
     

@@ -24,10 +24,6 @@
              accessToken:(NSString*) accesstoken
                  success:(void(^)(NSDictionary* response)) success
                  failure:(void(^)(NSError* error)) error;
--(void) getProfileImage : (void(^)(BOOL isCachedResponse,UIImage* image)) success;
--(void) getImageFromURL : (NSString*)url
-                success : (void(^)(BOOL isCachedResponse,UIImage* image)) success;
-
 // BACKGROUND METHOD
 -(void) getBackgroundList:(void (^)(BOOL isCaschedResponse, NSArray * backgroundList))callback
                   failure:(void (^)(NSError* error))failure;

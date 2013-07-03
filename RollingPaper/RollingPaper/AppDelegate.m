@@ -3,6 +3,7 @@
 #import "SplashViewController.h"
 #import <FacebookSDK/FacebookSDK.h>
 #import "RollingPaperListController.h"
+#import "User.h"
 
 @implementation AppDelegate
 
@@ -28,8 +29,34 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions{
 #endif
     [TestFlight takeOff:@"134d6c9817a6a69e9e1cf71568dfc69c_MTg3OTgzMjAxMy0wMi0xNiAwOTo1NDo1Mi4xNTg5MzA"];
    
+
+    
     return YES;
 }
+
+#pragma APN
+- (void)application:(UIApplication *)application
+didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+{
+    NSLog(@"didRegisterForRemoteNotificationsWithDeviceToken: %@", deviceToken);
+    [[User currentUser] setAPNKey:[deviceToken description] success:^{
+        NSLog(@"registered");
+    } failure:^(NSError *error) {
+        NSLog(@"%@",error);
+    }];
+}
+
+- (void)application:(UIApplication *)application
+didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
+{
+    NSLog(@"didFailToRegisterForRemoteNotificationsWithError: %@", error);
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
+{
+    NSLog(@"%@",userInfo);
+}
+
 
 - (BOOL)application:(UIApplication *)application
             openURL:(NSURL *)url
@@ -41,7 +68,7 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions{
 
 - (void)applicationWillResignActive:(UIApplication *)application { }
 - (void)applicationDidEnterBackground:(UIApplication *)application {
-    [[UECoreData sharedInstance]saveContext];
+   // [[UECoreData sharedInstance]saveContext];
 }
 - (void)applicationWillEnterForeground:(UIApplication *)application {}
 - (void)applicationDidBecomeActive:(UIApplication *)application {}

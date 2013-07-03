@@ -6,13 +6,13 @@
 
 - (void)setAttributesWithDictionary:(NSDictionary *)dictionary
 {
-    _id = dictionary[@"id"];
+    _id       = dictionary[@"id"];
     _paper_id = dictionary[@"paper_id"];
-    _user_id = dictionary[@"user_id"];
-    _width = dictionary[@"width"];
-    _height = dictionary[@"height"];
-    _x = dictionary[@"x"];
-    _y = dictionary[@"y"];
+    _user_id  = dictionary[@"user_id"];
+    _width    = dictionary[@"width"];
+    _height   = dictionary[@"height"];
+    _x        = dictionary[@"x"];
+    _y        = dictionary[@"y"];
     _rotation = dictionary[@"rotation"];
 }
 - (NSDictionary *)toDictionary

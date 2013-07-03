@@ -14,6 +14,7 @@
 #import "UIAlertViewBlockDelegate.h"
 #import "LoginViewController.h"
 #import "User.h"
+#import "UIImageView+Vingle.h"
 
 static RollingPaperListController* g_instance = NULL;
 
@@ -171,10 +172,13 @@ static RollingPaperListController* g_instance = NULL;
         [self.navigationItem setLeftBarButtonItem:leftBarButton
                                          animated:TRUE];
         if([[FlowithAgent sharedAgent] getUserInfo]){
-            [[FlowithAgent sharedAgent] getProfileImage:^(BOOL isCachedResponse, UIImage *image) {
+            [[[UIImageView alloc]init]setImageWithURL:[[User currentUser] picture]
+            success:^(BOOL isCached, UIImage *image) {
                 [profileImageView setImage:image forState:UIControlStateNormal];
                 [profileImageView hideToTransparent];
                 [profileImageView fadeIn:0.3f];
+            } failure:^(NSError *error) {
+                
             }];
             [self refreshPaperList];
         }

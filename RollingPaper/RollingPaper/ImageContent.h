@@ -3,7 +3,8 @@
 #import "Content.h"
 
 @interface ImageContent : Content
-@property (nonatomic, retain) NSString * image;
+@property (nonatomic, strong) NSData * imageData;
+@property (nonatomic, strong) NSString * image;
 @end
 
 @interface ImageContent (Networking)

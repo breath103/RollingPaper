@@ -14,19 +14,37 @@
 }
 -(NSDictionary*) toDictionary
 {
-    return @{@"id"       : self.id,
-             @"username" : self.username,
-             @"email"    : self.email,
-             @"picture"  : self.picture,
-             @"birthday" : self.birthday,
-             @"picture" : self.picture,
-             @"facebook_id"           : self.facebook_id,
+    return @{@"id"                   : self.id,
+             @"username"             : self.username,
+             @"email"                : self.email,
+             @"picture"              : self.picture,
+             @"birthday"             : self.birthday,
+             @"picture"              : self.picture,
+             @"facebook_id"          : self.facebook_id,
              @"facebook_accesstoken" : self.facebook_accesstoken};
 }
 @end
 
 
 @implementation User(Networking)
++ (User *)currentUser
+{
+    return [[FlowithAgent sharedAgent] getCurrentUser];
+}
+- (void)setAPNKey:(NSString *)key
+          success:(void (^)())success
+          failure:(void (^)(NSError *))failure
+{
+    [[FlowithAgent sharedAgent] postPath:[NSString stringWithFormat:@"users/%d/apn_key.json",_id.integerValue]
+    parameters:@{@"apn_key" : key}
+    success:^(AFHTTPRequestOperation *operation, NSDictionary *updatedUser) {
+        NSLog(@"%@",updatedUser);
+        success();
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        failure(error);
+    }];
+}
+
 -(void) getParticipaitingPapers : (void (^)(NSArray *papers)) callback
                         failure : (void (^)(NSError *error)) failure
 {

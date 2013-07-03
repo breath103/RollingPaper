@@ -4,14 +4,20 @@
 #import <JSONKit.h>
 #import "FlowithAgent.h"
 #import "FacebookAgent.h"
+#import <MBProgressHUD/MBProgressHUD.h>
 
 @implementation LoginViewController
 
-- (IBAction)onTouchFacebookLogin:(id)sender {
+- (IBAction)onTouchFacebookLogin:(id)sender
+{
+    MBProgressHUD *view = [MBProgressHUD showHUDAddedTo:[self view] animated:YES];
+    [view setMode:MBProgressHUDModeIndeterminate];
+    [view setLabelText:@"Sign in..."];
     [[FacebookAgent sharedAgent] openSession:^(FBSession *session, FBSessionState status, NSError *error) {
         if (!error)
             [self onFacebookSessionActivated:session];
         else {
+            [MBProgressHUD hideAllHUDsForView:[self view] animated:YES];
             [[[UIAlertView alloc] initWithTitle:@"Error"
                                         message:error.localizedDescription
                                        delegate:nil
@@ -31,15 +37,16 @@
             [[FlowithAgent sharedAgent] joinWithFacebook:me
             accessToken:[[session accessTokenData] accessToken]
             success:^(NSDictionary *user) {
+                [MBProgressHUD hideAllHUDsForView:[self view] animated:YES];
                 [[FlowithAgent sharedAgent] setUserInfo:user];
                 RollingPaperListController* controller = [[RollingPaperListController alloc] init];
                 [[self navigationController] setViewControllers:@[controller] animated:YES];
             } failure:^(NSError *error) {
-                NSLog(@"%@",error);
+                [MBProgressHUD hideAllHUDsForView:[self view] animated:YES];
                 [[[UIAlertView alloc]initWithTitle:@"에러" message:@"서버와 통신 실패" delegate:nil cancelButtonTitle:@"cancel" otherButtonTitles: nil] show];
             }];
         } else {
-            NSLog(@"%@",error);
+            [MBProgressHUD hideAllHUDsForView:[self view] animated:YES];
             [[[UIAlertView alloc] initWithTitle : @"Error"
                                         message : error.localizedDescription
                                        delegate : nil

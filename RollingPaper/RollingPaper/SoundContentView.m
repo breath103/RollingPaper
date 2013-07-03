@@ -1,11 +1,3 @@
-//
-//  SoundContentView.m
-//  RollingPaper
-//
-//  Created by 이상현 on 12. 11. 24..
-//  Copyright (c) 2012년 상현 이. All rights reserved.
-//
-
 #import "SoundContentView.h"
 #import "UECoreData.h"
 #import "UEFileManager.h"
@@ -14,25 +6,17 @@
 #import <JSONKit.h>
 #import "FlowithAgent.h"
 
-
-
 @implementation SoundContentView
 @synthesize isNeedToSyncWithServer;
-@synthesize entity;
 -(id) initWithEntity : (SoundContent*) aEntity{
     self = [self initWithFrame:CGRectMake(0,0,1,1)];
     if(self){
-        self.entity = aEntity;
+        _entity = aEntity;
         self.userInteractionEnabled = TRUE;
         self.frame = CGRectMake(0,0,SOUND_CONTENT_WIDTH,SOUND_CONTENT_HEIGHT);
-        if(entity.sound){
+        if([_entity sound]){
             self.image = [UIImage imageNamed:@"sound_icon.png"];
-            NSString* urlString = [entity.sound stringByReplacingOccurrencesOfString:@"localhost" withString:SERVER_IP];
-            NSData* soundData = [UEFileManager readDataFromLocalFile:[self urlToLocalFilePath:urlString]];
-            if( !soundData ){
-                NSLog(@"%@사운드가 로컬에 없음",urlString);
-                soundData = [self loadSoundFromURLAndSaveToLocalStorage:urlString];
-            }
+            NSData *soundData = [NSData dataWithContentsOfURL:[NSURL URLWithString:[_entity sound]]];
             audioPlayer = [[AVAudioPlayer alloc] initWithData:soundData
                                                         error:NULL];
         }
@@ -44,26 +28,8 @@
     }
     return self;
 }
--(NSString*) urlToLocalFilePath : (NSString*) url{
-    NSArray* array = [url componentsSeparatedByString:@"/"];
-    return [array lastObject];
-}
--(NSData*) loadSoundFromURLAndSaveToLocalStorage : (NSString*) url{
-    NSData* soundData = [NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
-    NSString* localPath = [self urlToLocalFilePath:url];
-    if ( soundData ){
-        [UEFileManager writeData : soundData
-                     ToLocalFile : localPath];
-        return soundData;
-    }
-    else{
-        NSLog(@"RollingPaper서버에서 리소스 조회 실패 : %@",url);
-        return NULL;
-    };
-}
 -(void) onTouchView{
-    NSLog(@"%@ : playSound",self);
-    if(audioPlayer && !audioPlayer.playing){
+    if (audioPlayer&&!audioPlayer.playing) {
         [audioPlayer play];
     }
     else {
@@ -93,59 +59,36 @@
     self.entity.x        = FLOAT_TO_NSNUMBER(self.center.x);
     self.entity.y        = FLOAT_TO_NSNUMBER(self.center.y);
 }
--(void) syncEntityWithServer: (void (^)(NSError * error,
-                                        UIView<RollingPaperContentViewProtocol> *))callback
+-(void) syncEntityWithServer: (void (^)(NSError * error, UIView<RollingPaperContentViewProtocol> *))callback
 {
-//    if(self.entity.idx && self.hidden) {
-//        NSLog(@"DELETE SOUND : %@",self.entity.idx);
-//        [[FlowithAgent sharedAgent] deleteSoundContent:self.entity
-//         success:^{
-//             callback(NULL,self);
-//        }failure:^(NSError *error) {
-//            callback(error,self);
-//        }];
-//    }
-//    else{
-//        if(isNeedToSyncWithServer) {
-//            if(self.entity.idx == NULL){
-//                [self updateEntityWithView];
-//                
-//                NSLog(@"INSERT SOUND : %@",self.entity.idx);
-//                
-//                NSData* sound = [NSData dataWithContentsOfFile:self.entity.sound];
-//                [[FlowithAgent sharedAgent] insertSoundContent:self.entity
-//                                                         sound:sound
-//                                                       success:^(SoundContent *insertedSoundContent) {
-//                                                           self.entity = insertedSoundContent;
-//                                                           callback(NULL,self);
-//                                                       } failure:^(NSError *error) {
-//                                                           callback(error,self);
-//                                                       }];
-//                isNeedToSyncWithServer = FALSE;
-//            }
-//            else {
-//                [self updateEntityWithView];
-//                
-//                NSLog(@"DELETE SOUND : %@",self.entity.idx);
-//                
-//                [[FlowithAgent sharedAgent] updateSoundContent:self.entity
-//                                                       success:^(SoundContent *updatedSoundContent) {
-//                                                           NSLog(@"%@",updatedSoundContent);
-//                                                           self.entity = updatedSoundContent;
-//                                                           callback(NULL,self);
-//                                                       } failure:^(NSError *error) {
-//                                                           callback(error,self);
-//                                                       }];
-//                
-//                isNeedToSyncWithServer = false;
-//            }
-//        }
-//        else{
-//            callback(NULL,self);
-//        }
-//    }
+    if(self.entity.id && self.hidden) {
+        [_entity deleteFromServer:^{
+            callback(NULL,self);
+        } failure:^(NSError *error) {
+            callback(error,self);
+        }];
+    }
+    else{
+        if([self isNeedToSyncWithServer]) {
+            [self updateEntityWithView];
+            if (![_entity id]) {
+                [_entity setSoundData:[NSData dataWithContentsOfFile:self.entity.sound]];
+            }
+            [_entity saveToServer:^{
+                callback(NULL,self);
+            } failure:^(NSError *error) {
+                callback(error,self);
+            }];
+            isNeedToSyncWithServer = NO;
+        }
+        else {
+            //할일이 전혀 없는경우
+            callback(NULL,self);
+        }
+    }
 }
--(NSNumber*) getUserIdx{
+- (NSNumber *)getUserIdx
+{
     return self.entity.user_id;
 }
 @end
