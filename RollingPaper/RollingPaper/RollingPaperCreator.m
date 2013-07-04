@@ -556,15 +556,13 @@
     }];
     self.receiverFacebookID = user.id;
     receiverName.text = user.name;
-    
-    [[FlowithAgent sharedAgent] getUserWithFacebookID:[user id]
-                                              success:^(User* user) {
-                                                  if(user.email)
-                                                      self.emailInput.text = user.email;
-                                              } failure:^(NSError *error) {
-                                                  NSLog(@"%@",error);
-                                              }];
-
+//    [[FlowithAgent sharedAgent] getUserWithFacebookID:[user id]
+//                                              success:^(User* user) {
+//                                                  if(user.email)
+//                                                      self.emailInput.text = user.email;
+//                                              } failure:^(NSError *error) {
+//                                                  NSLog(@"%@",error);
+//                                              }];
 }
 
 

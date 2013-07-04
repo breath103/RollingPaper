@@ -30,9 +30,9 @@
 /////////////////////
 
 // USER
--(void) getUserWithFacebookID : (NSString*) facebook_id
-                      success : (void (^)(User* user))success
-                      failure : (void (^)(NSError* error))failure ;
+//-(void) getUserWithFacebookID : (NSString*) facebook_id
+//                      success : (void (^)(User* user))success
+//                      failure : (void (^)(NSError* error))failure ;
 // -CONNECTION USERS
 -(void) getUsersWhoAreMyFacebookFriends : (void (^)(BOOL isCachedResponse,NSArray* users))success
                                 failure : (void (^)(NSError* error))failure;
