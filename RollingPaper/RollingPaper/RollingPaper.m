@@ -6,7 +6,6 @@
 #import "SoundContent.h"
 
 @implementation RollingPaper
-
 - (void) setAttributesWithDictionary:(NSDictionary *)d
 {
     self.id                 = d[@"id"];
@@ -19,6 +18,7 @@
     self.receive_time       = d[@"receive_time"];
     self.friend_facebook_id = d[@"friend_facebook_id"];
 }
+
 - (NSDictionary *)toDictionary
 {
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionaryWithDictionary:@{
