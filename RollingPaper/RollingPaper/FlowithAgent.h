@@ -43,36 +43,9 @@
                       success : (void (^)(void))success
                       failure : (void (^)(NSError* error))failure;
 
-
-// PAPER
--(void) createPaper : (RollingPaper*) paper
-            success : (void (^)(RollingPaper* paper))success
-            failure : (void (^)(NSError* error))failure;
--(void) updatePaper : (RollingPaper*) paper
-            success : (void (^)(RollingPaper* paper))success
-            failure : (void (^)(NSError* error))failure;
--(void) getPaperParticipants : (RollingPaper*) paper
-                     success : (void (^)(BOOL isCachedResponse,NSArray* participants))success
-                     failure : (void (^)(NSError* error))failure;
 -(void) quitPaper : (RollingPaper*) paper
           success : (void (^)())success
           failure : (void (^)(NSError* error))failure;
-
-//Contents
-
--(void) insertSoundContent : (SoundContent*) soundContent
-                     sound : (NSData*) sound
-                   success : (void (^)(SoundContent* insertedSoundContent))success
-                   failure : (void (^)(NSError* error))failure;
-
--(void) updateSoundContent : (SoundContent*) entity
-                   success : (void (^)(SoundContent* updatedSoundContent))success
-                   failure : (void (^)(NSError* error))failure;
-
--(void) deleteSoundContent : (SoundContent*) imageContent
-                   success : (void (^)())success
-                   failure : (void (^)(NSError* error))failure;
-
 // NOTICE
 -(void) getNoticeList : (void (^)(BOOL isCaschedResponse, NSArray * noticeList))success
               failure : (void (^)(NSError* error))failure;

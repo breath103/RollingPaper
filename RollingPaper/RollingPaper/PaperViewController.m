@@ -543,7 +543,6 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer : (UIGestureRecognizer *)othe
         }break;
         case DockMenuTypeSetting : {
             RollingPaperCreator* paperSettingView = [[RollingPaperCreator alloc] initForEditing:self.entity];
-            paperSettingView.listController = [self.navigationController.viewControllers objectAtIndex:0];
             [self.navigationController pushViewController:paperSettingView
                                                  animated:TRUE];
         }break;

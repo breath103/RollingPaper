@@ -73,15 +73,25 @@
 - (void)saveToServer:(void(^)()) success
              failure:(void(^)(NSError* error)) failure
 {
-    id dict = [self toDictionary];
-    [[FlowithAgent sharedAgent] postPath:@"papers.json"
-    parameters:dict
-    success:^(AFHTTPRequestOperation *operation, NSDictionary* paper){
-        [self setAttributesWithDictionary:paper];
-        success();
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        failure(error);
-    }];
+    if ([self id]) { //UPDATE
+        [[FlowithAgent sharedAgent] putPath:[NSString stringWithFormat:@"papers/%d.json",[[self id] integerValue]]
+        parameters:[self toDictionary]
+        success:^(AFHTTPRequestOperation *operation, NSDictionary* paper){
+            [self setAttributesWithDictionary:paper];
+            success();
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            failure(error);
+        }];
+    } else { //POST
+        [[FlowithAgent sharedAgent] postPath:@"papers.json"
+        parameters:[self toDictionary]
+        success:^(AFHTTPRequestOperation *operation, NSDictionary* paper){
+            [self setAttributesWithDictionary:paper];
+            success();
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            failure(error);
+        }];
+    }
 }
 - (NSString*) webViewURL{
     return [NSString stringWithFormat:@"%@/paper?v=%lld",SERVER_HOST,self.id.longLongValue ];

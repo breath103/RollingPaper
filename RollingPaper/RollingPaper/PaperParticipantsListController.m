@@ -22,17 +22,18 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     if(self.paper){
-        [[FlowithAgent sharedAgent] getPaperParticipants:self.paper
-        success:^(BOOL isCachedResponse, NSArray *participants) {
-            self.users = [[NSMutableArray alloc] initWithArray:participants];
-            [self.tableView reloadData];
-        } failure:^(NSError *error) {
-            [[[UIAlertView alloc]initWithTitle:@"경고"
-                                       message:@"참여자들을 서버에서 가져오는데 실패했습니다"
-                                      delegate:nil
-                             cancelButtonTitle:@"확인"
-                             otherButtonTitles:nil] show];
-        }];
+        //TODO FIX
+//        [[FlowithAgent sharedAgent] getPaperParticipants:self.paper
+//        success:^(BOOL isCachedResponse, NSArray *participants) {
+//            self.users = [[NSMutableArray alloc] initWithArray:participants];
+//            [self.tableView reloadData];
+//        } failure:^(NSError *error) {
+//            [[[UIAlertView alloc]initWithTitle:@"경고"
+//                                       message:@"참여자들을 서버에서 가져오는데 실패했습니다"
+//                                      delegate:nil
+//                             cancelButtonTitle:@"확인"
+//                             otherButtonTitles:nil] show];
+//        }];
     }
 }
 

@@ -31,7 +31,6 @@ typedef enum ROLLING_PAPER_CONTROLLER_STYLE{
 @property (weak, nonatomic) IBOutlet UIDatePicker *datePicker;
 @property (weak, nonatomic) IBOutlet UIDatePicker *timePicker;
 @property (nonatomic,weak) IBOutlet UIScrollView* scrollView;
-@property (nonatomic,strong) NSString* receiverFacebookID;
 @property (weak, nonatomic) IBOutlet UIImageView *paperCellImage;
 @property (nonatomic,strong) NSString* selectedBackgroundName;
 @property (nonatomic,readwrite) ROLLING_PAPER_CONTROLLER_STYLE controllerType;
@@ -42,8 +41,6 @@ typedef enum ROLLING_PAPER_CONTROLLER_STYLE{
 @property (nonatomic,strong) FBFriendSearchPickerController* receivingFriendPicker;
 @property (nonatomic,strong) FBFriendSearchPickerController* invitingFreindPicker;
 @property (nonatomic,strong) PaperParticipantsListController* participantsListController;
-
-@property (nonatomic,weak) RollingPaperListController* listController;
 - (id) initForCreating;
 - (id) initForEditing : (RollingPaper*) entity;
 

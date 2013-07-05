@@ -14,19 +14,7 @@
 #import "PaperParticipantsListController.h"
 #import "UIImageView+Vingle.h"
 
-@interface RollingPaperCreator ()
-
-@end
-
 @implementation RollingPaperCreator
-@synthesize titleText;
-@synthesize emailInput;
-@synthesize noticeInput;
-@synthesize receiverName;
-@synthesize receiveTime;
-@synthesize contentContainer;
-@synthesize receiverFacebookID;
-
 
 -(void) hideKeyboard{
     [self.view endEditing:TRUE];
@@ -178,22 +166,25 @@
         self.entity.width            = @(1440);
         self.entity.height           = @(960);
         self.entity.notice           = self.noticeInput.text;
-        self.entity.background       = self.selectedBackgroundName;
-        self.entity.friend_facebook_id = self.receiverFacebookID;
-        self.entity.receive_time     = [self buildRequestDate];
+        self.entity.background          = self.selectedBackgroundName;
+        self.entity.receive_time        = [self buildRequestDate];
     }
 }
 - (void)syncPaperToView
 {
-    if (self.entity) {
-        self.titleText.text    = self.entity.title;
-        self.noticeInput.text  = self.entity.notice;
+    if (_entity) {
+        _titleText.text    = _entity.title;
+        _noticeInput.text  = _entity.notice;
     
         NSDate* receiveDate = [NSDate dateWithTimeIntervalSince1970: [[NSNumberFormatter new]numberFromString:self.entity.receive_time].longLongValue ];
-        self.receiveDate.text = [self dateToString:receiveDate];
-        self.receiveTime.text = [self timeToString:receiveDate];
-        [self setPaperCellBackgroundWithName:self.entity.background];
+        _receiveDate.text = [self dateToString:receiveDate];
+        _receiveTime.text = [self timeToString:receiveDate];
+        [self setPaperCellBackgroundWithName:_entity.background];
 
+        [[FBRequest requestForGraphPath:[_entity friend_facebook_id]]
+         startWithCompletionHandler:^(FBRequestConnection *connection, id<FBGraphUser> result, NSError *error) {
+             [_receiverName setText:[result name]];
+        }];
         //FIXME
 //        [[FlowithAgent sharedAgent] getPaperParticipants:self.entity
 //        success:^(BOOL isCachedResponse, NSArray *participants) {
@@ -293,11 +284,10 @@
     if (self) {
         self.controllerType = PAPER_CONTROLLER_TYPE_CREATING;
         _entity = [[RollingPaper alloc]init];
-//        self.entity = (RollingPaper*)[[UECoreData sharedInstance] insertNewObject : @"RollingPaper"];
     }
     return self;
 }
-- (id)initForEditing:(RollingPaper*) aEntity{
+- (id)initForEditing:(RollingPaper *)aEntity{
     self = [self init];
     if (self) {
         self.entity = aEntity;
@@ -344,22 +334,18 @@
 - (IBAction)onTouchPrevious:(id)sender {
     if(self.controllerType == PAPER_CONTROLLER_TYPE_EDITING_CREATOR){
         [self syncViewToPaper];
-        [[FlowithAgent sharedAgent] updatePaper:self.entity
-          success:^(RollingPaper *paper) {
-              self.entity = paper;
-              [self.listController refreshPaperList];
-              [self.navigationController popViewControllerAnimated:TRUE];
+        [_entity saveToServer:^{
+            [[self navigationController] popViewControllerAnimated:YES];
         } failure:^(NSError *error) {
-            NSLog(@"%@",error);
             [[[UIAlertView alloc] initWithTitle:@"에러"
-                                        message:@"서버와 통신 실패"
+                                        message:[error localizedDescription]
                                        delegate:nil
                               cancelButtonTitle:@"확인"
                               otherButtonTitles:nil] show];
         }];
     }
     else{
-        [self.navigationController popViewControllerAnimated:TRUE];
+        [[self navigationController] popViewControllerAnimated:YES];
     }
 }
 
@@ -375,8 +361,6 @@
     self.navigationController.delegate = self;
     [self.navigationController pushViewController : paperViewController
                                          animated : TRUE];
-    if(self.listController)
-        [self.listController refreshPaperList];
 }
 - (IBAction)onTouchSend:(id)sender {
     if([self confirmInputs]) {
@@ -419,8 +403,6 @@
                                        [[FlowithAgent sharedAgent] quitPaper:self.entity
                                         success:^{
                                             [self.navigationController popViewControllerAnimated:TRUE];
-                                            if(self.listController)
-                                                [self.listController refreshPaperList];
                                         } failure:^(NSError *error) {
                                             [[[UIAlertView alloc] initWithTitle:@"에러"
                                                                         message:@"서버와의 통신에 실패했습니다.\n인터넷 연결 상태를 확인해주세요"
@@ -554,8 +536,9 @@
             self.receiveTime.text = @"00:00:00";
         }
     }];
-    self.receiverFacebookID = user.id;
-    receiverName.text = user.name;
+    _receiverName.text = user.name;
+    _entity.friend_facebook_id = user.id;
+
 //    [[FlowithAgent sharedAgent] getUserWithFacebookID:[user id]
 //                                              success:^(User* user) {
 //                                                  if(user.email)

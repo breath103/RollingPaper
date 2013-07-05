@@ -17,7 +17,6 @@
 @property (nonatomic, strong) NSString *friend_facebook_id;
 @property (nonatomic, strong) NSString *receive_time;
 @property (nonatomic, strong) NSString *title;
-
 @property (nonatomic, strong) NSNumber *is_new;
 @property (nonatomic, strong) NSString *is_sended;
 @property (nonatomic, strong) NSNumber *participants_count;
