@@ -4,6 +4,7 @@
 #import "UECoreData.h"
 #import "ImageContent.h"
 #import "SoundContent.h"
+#import "User.h"
 
 @implementation RollingPaper
 - (void) setAttributesWithDictionary:(NSDictionary *)d
@@ -17,6 +18,10 @@
     self.background         = d[@"background"];
     self.receive_time       = d[@"receive_time"];
     self.friend_facebook_id = d[@"friend_facebook_id"];
+    _createdAt = d[@"created_at"];
+    _updatedAt = d[@"updated_at"];
+    
+    _participants = [User fromArray:d[@"participants"]];
 }
 
 - (NSDictionary *)toDictionary
@@ -56,6 +61,7 @@
 
 @end
 
+
 #define NullToNSNull(x) ( (x)?(x):[NSNull null] )
 
 @implementation RollingPaper(NetworkingHelper)
@@ -94,7 +100,21 @@
     }
 }
 - (NSString*) webViewURL{
-    return [NSString stringWithFormat:@"%@/paper?v=%lld",SERVER_HOST,self.id.longLongValue ];
+    return [NSString stringWithFormat:@"http://rollingpaper-production.herokuapp.com/papers/%lld",self.id.longLongValue ];
+}
+- (void)presentFacebookDialog
+{
+    [FBWebDialogs presentFeedDialogModallyWithSession:[FBSession activeSession]
+    parameters:@{
+     @"name" : [self title],
+     @"description" : [self notice],
+     @"link" : [self webViewURL],
+     @"picture" : @"https://photos-2.dropbox.com/t/0/AAD98gDYQvXuR5ilF9SDE_Gx3CdcRs35e6pAPueuGeB1tA/12/38281474/png/1024x768/3/1373061600/0/2/logo3.png/KCRsKl14p0JGsSEWdGh_5lz2zEWkzXqGmZhPnSXv8co",
+     @"to" : [self friend_facebook_id]
+     }
+    handler:^(FBWebDialogResult result, NSURL *resultURL, NSError *error) {
+        NSLog(@"%@",resultURL);
+    }];
 }
 @end
 

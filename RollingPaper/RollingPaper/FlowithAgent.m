@@ -20,9 +20,10 @@
 	static FlowithAgent *sharedAgent = nil;
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
-        sharedAgent = [[FlowithAgent alloc]initWithBaseURL:[NSURL URLWithString:@"http://0.0.0.0:3000/api"]];
+//        sharedAgent = [[FlowithAgent alloc]initWithBaseURL:[NSURL URLWithString:@"http://10.0.1.97:3000/api"]];
 //        sharedAgent = [[FlowithAgent alloc]initWithBaseURL:[NSURL URLWithString:@"http://172.30.1.7:3000/api"]];
-//        sharedAgent = [[FlowithAgent alloc]initWithBaseURL:[NSURL URLWithString:@"http://rollingpaper-production.herokuapp.com/api"]];
+        sharedAgent = [[FlowithAgent alloc]initWithBaseURL:[NSURL URLWithString:@"http://rollingpaper-production.herokuapp.com/api"]];
+//        sharedAgent = [[FlowithAgent alloc]initWithBaseURL:[NSURL URLWithString:@"http://0.0.0.0:3000/api"]];
 	});
 	return sharedAgent;
 }
@@ -113,7 +114,6 @@
                       [dateComponent objectAtIndex:2],
                       [dateComponent objectAtIndex:0],
                       [dateComponent objectAtIndex:1]];
-   
     [self postPath:@"users/authorize.json"
     parameters:@{
         @"facebook_id":me[@"id"],
@@ -123,7 +123,6 @@
         @"birthday":birthdayString,
         @"picture":me[@"picture"][@"data"][@"url"]
     } success:^(AFHTTPRequestOperation *operation, NSDictionary* userInfo){
-        NSLog(@"%@",userInfo);
         User* user = [[User alloc]initWithDictionary:userInfo];
         [self setCurrentUser:user];
         [[UIApplication sharedApplication] registerForRemoteNotificationTypes:UIRemoteNotificationTypeAlert|UIRemoteNotificationTypeBadge|UIRemoteNotificationTypeSound];

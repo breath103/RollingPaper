@@ -49,6 +49,7 @@
 
 -(void) hideTopNavigationBar;
 -(void) showTopNavigationBar;
+- (IBAction)onTouchFB:(id)sender;
 
 - (IBAction)onTouchSaveAndQuit:(id)sender;
 -(IBAction)onTouchRefresh:(id)sender;

@@ -48,11 +48,8 @@
     }
     return self;
 }
--(void) viewDidAppear:(BOOL)animated{
-    [super viewDidAppear:animated];
-    //사용자가 한번 본 경우에는 해당 엔티티가 더이상 새로운 것이 아니기 때문에 NO로 변경
-    self.entity.is_new = [NSNumber numberWithBool:NO];
-}
+
+
 -(void) initContentsEditingToolControlers{
     self.freeTransformGestureRecognizer = [[UIFreeTransformGestureRecognizer alloc] initWithTarget:self
                                                                                             action:@selector(onFreeTransformGesture)];
@@ -156,6 +153,8 @@
     UIViewSetHeight(self.dockController.view, self.view.bounds.size.height);
 }
 
+
+
 -(void)viewDidLoad
 {
     [super viewDidLoad];
@@ -177,19 +176,14 @@
 
 - (IBAction)onTouchSaveAndQuit:(id)sender
 {
-    [[self navigationController] popViewControllerAnimated:YES];
+    [self saveToServer:^(NSMutableArray *syncSuccessedViews, NSMutableArray *syncFailedViews) {
+        [[self navigationController] popViewControllerAnimated:YES];
+    }];
 }
 
 - (IBAction)onTouchRefresh:(id)sender
 {
     [self saveToServer:^(NSMutableArray *syncSuccessedViews, NSMutableArray *syncFailedViews) {
-        if(syncFailedViews && syncFailedViews.count > 0){
-            [[[UIAlertView alloc] initWithTitle:@"경고"
-                                        message:[NSString stringWithFormat:@"%d개 컨텐츠의 업로드가 실패했습니다",syncFailedViews.count]
-                                       delegate:nil
-                              cancelButtonTitle:@"확인"
-                              otherButtonTitles:nil] show];
-        }
         self.contentsContainer.backgroundColor =
             [UIColor colorWithPatternImage:[UIImage imageNamed:@"main_background"]];
         [self loadAndShowContents];
@@ -198,7 +192,8 @@
 }
 
 
--(void) onTapScrollBack : (UITapGestureRecognizer*) tap{
+- (void)onTapScrollBack:(UITapGestureRecognizer *)tap
+{
     if(tap.state == UIGestureRecognizerStateBegan){
         self.transformTargetView = NULL;
         NSLog(@"Long Background : %@",tap);
@@ -239,21 +234,6 @@
     else {
         callback(syncSuccessedViews,syncFailedViews);
     }
-}
--(void) viewWillDisappear:(BOOL)animated{
-    [self saveToServer:^(NSMutableArray *syncSuccessedViews,
-                         NSMutableArray *syncFailedViews) {
-        if(syncFailedViews && syncFailedViews.count > 0){
-            [[[UIAlertView alloc] initWithTitle:@"경고"
-                                        message:[NSString stringWithFormat:@"%d개 컨텐츠의 업로드가 실패했습니다",syncFailedViews.count]
-                                       delegate:nil
-                              cancelButtonTitle:@"확인"
-                              otherButtonTitles:nil] show];
-        }
-    }];
-}
-- (void)didReceiveMemoryWarning{
-    [super didReceiveMemoryWarning];
 }
 -(NSArray*) contentsViews{
     return self.contentsScrollContainer.subviews;
@@ -395,13 +375,13 @@
     ImageContent* imageEntity = [[ImageContent alloc]init];
     imageEntity.id       = NULL;
     imageEntity.paper_id = self.entity.id;
-    imageEntity.user_id  = [NSNumber numberWithInt:[[FlowithAgent sharedAgent] getUserIdx].intValue];
-    imageEntity.x        = [NSNumber numberWithFloat:0.0f];
-    imageEntity.y        = [NSNumber numberWithFloat:0.0f];
-    imageEntity.rotation = [NSNumber numberWithFloat:0.0f];
-    imageEntity.image    = NULL;
-    imageEntity.width    = [NSNumber numberWithFloat:width];
-    imageEntity.height   = [NSNumber numberWithFloat:height];
+    imageEntity.user_id  = @([[FlowithAgent sharedAgent] getUserIdx].intValue);
+    imageEntity.x        = @(0.0f);
+    imageEntity.y        = @(0.0f);
+    imageEntity.rotation = @(0.0f);
+    imageEntity.image    = nil;
+    imageEntity.width    = @(width);
+    imageEntity.height   = @(height);
     
     ImageContentView* entityView = [[ImageContentView alloc] initWithEntity:imageEntity];
     entityView.isNeedToSyncWithServer = TRUE;
@@ -415,19 +395,6 @@
 -(BOOL) canBecomeFirstResponder{
     return YES;
 }
-/*
-- (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event{
-    if (event.type    == UIEventTypeMotion &&
-        event.subtype == UIEventSubtypeMotionShake) {
-        [self.navigationController popViewControllerAnimated:TRUE];
-    }
-}
- */
-- (void)viewDidUnload {
-    [self setContentsContainer:nil];
-    [super viewDidUnload];
-}
-
 
 -(BOOL) gestureRecognizer : (UIGestureRecognizer *)gestureRecognizer
 shouldRecognizeSimultaneouslyWithGestureRecognizer : (UIGestureRecognizer *)otherGestureRecognizer
@@ -453,12 +420,31 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer : (UIGestureRecognizer *)othe
     [self.refreshButton fadeIn:0.3f];
 }
 
+- (IBAction)onTouchFB:(id)sender {
+//    [entity presentFacebookDialog]
+    [FBWebDialogs presentFeedDialogModallyWithSession:[FBSession activeSession]
+                                           parameters:@{
+     @"name" : [entity title],
+     @"description" : [entity notice],
+     @"link" : [entity webViewURL],
+     @"picture" : @"https://photos-2.dropbox.com/t/0/AAD98gDYQvXuR5ilF9SDE_Gx3CdcRs35e6pAPueuGeB1tA/12/38281474/png/1024x768/3/1373061600/0/2/logo3.png/KCRsKl14p0JGsSEWdGh_5lz2zEWkzXqGmZhPnSXv8co",
+     @"to" : [entity friend_facebook_id]
+     }
+    handler:^(FBWebDialogResult result, NSURL *resultURL, NSError *error) {
+        [[[UIAlertView alloc] initWithTitle:nil
+                                    message:@"전송되었습니다!"
+                                   delegate:nil
+                          cancelButtonTitle:@"확인"
+                          otherButtonTitles: nil]show];
+        [[self navigationController] popViewControllerAnimated:YES];
+    }];
+}
+
 
 #pragma mark DockControllerDelegate
 -(void) dockController:(DockController *)dock
               pickMenu:(DockMenuType)menuType
               inButton:(UIButton *)button{
-    NSLog(@"%@ %d %@",dock,menuType,button);
     self.dockController.panGestureRecognizer.enabled = FALSE;
     
     if(menuType != DockMenuTypeSetting &&
@@ -641,8 +627,6 @@ didFinishPickingMediaWithInfo : (NSDictionary *)info{
     SoundContentView* createdSoundView = [self onCreateSound:file];
     [recoderController removeFromParentViewController];
     [recoderController.view removeFromSuperview];
-
-    NSLog(@"%@",createdSoundView);
     CGRect rect = createdSoundView.frame;
     rect.size   = CGSizeMake(50, 50);
     rect.origin = ccp(480/2, 320/2);
@@ -650,9 +634,6 @@ didFinishPickingMediaWithInfo : (NSDictionary *)info{
     //브러쉬로 그리는 화면은 스크롤 위치가 포함 안되기 때문에 정리
     rect.origin = ccpAdd(rect.origin, self.contentsContainer.contentOffset);
     createdSoundView.frame = rect;
-    NSLog(@"%@",createdSoundView);
-    
-    
     [self onEditingViewDismissed];
 }
 -(void) recoderViewControllerCancelRecoding:(RecoderController *)recoder

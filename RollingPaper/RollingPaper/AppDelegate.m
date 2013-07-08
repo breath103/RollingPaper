@@ -29,8 +29,9 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions{
 #endif
     [TestFlight takeOff:@"134d6c9817a6a69e9e1cf71568dfc69c_MTg3OTgzMjAxMy0wMi0xNiAwOTo1NDo1Mi4xNTg5MzA"];
    
-
-    
+    [NSURLCache setSharedURLCache:[[NSURLCache alloc]initWithMemoryCapacity:1024*5
+                                                               diskCapacity:1024*10
+                                                                   diskPath:@"rollingpaper"]];
     return YES;
 }
 
@@ -54,7 +55,19 @@ didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
-    NSLog(@"%@",userInfo);
+//    NSString *type = userInfo[@"type"];
+//    if ([type isEqualToString:@"alert"]) {
+//        [[[UIAlertView alloc]initWithTitle:nil
+//                                   message:userInfo[@"message"]
+//                                  delegate:nil
+//                         cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+//    }
+//    NSLog(@"%@",userInfo);
+        [[[UIAlertView alloc]initWithTitle:nil
+                                   message:userInfo[@"aps"][@"alert"]
+                                  delegate:nil
+                         cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+
 }
 
 

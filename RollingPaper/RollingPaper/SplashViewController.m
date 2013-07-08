@@ -52,15 +52,10 @@
             paperPlaneView.alpha = 0.0f;
         } completion:^(BOOL finished) {
             paperPlaneView.hidden = TRUE;
-//            if([[FlowithAgent sharedAgent] getUserInfo]){
-//                [self onTouchLoginWithFacebook];
-//            }
-//            else {
-                LoginViewController* loginViewController = [[LoginViewController alloc]init];
-                [[self navigationController] setViewControllers:@[loginViewController]
-                                                       animated:YES];
-    //        }
-        }];    
+            LoginViewController* loginViewController = [[LoginViewController alloc]init];
+            [[self navigationController] setViewControllers:@[loginViewController]
+                                                   animated:YES];
+        }];
 }
 - (void)didReceiveMemoryWarning
 {
@@ -148,6 +143,7 @@
     [super viewDidUnload];
 }
 
+#pragma rotation
 -(BOOL)shouldAutorotate
 {
     return YES;

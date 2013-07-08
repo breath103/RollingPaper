@@ -1,5 +1,7 @@
 #import "User.h"
 #import "FlowithAgent.h"
+#import "RollingPaper.h"
+
 
 @implementation User
 - (void)setAttributesWithDictionary:(NSDictionary *) d
@@ -38,7 +40,6 @@
     [[FlowithAgent sharedAgent] postPath:[NSString stringWithFormat:@"users/%d/apn_key.json",_id.integerValue]
     parameters:@{@"apn_key" : key}
     success:^(AFHTTPRequestOperation *operation, NSDictionary *updatedUser) {
-        NSLog(@"%@",updatedUser);
         success();
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         failure(error);
@@ -50,12 +51,41 @@
 {
     [[FlowithAgent sharedAgent] getPath:[NSString stringWithFormat:@"users/%d/participating_papers.json",_id.integerValue]
     parameters:@{}
-    success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        callback(responseObject);
+    success:^(AFHTTPRequestOperation *operation, NSArray *papers) {
+        callback([RollingPaper fromArray:papers]);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         failure(error);
     }];
 }
+
+- (void)getReceivedPapers:(void (^)(NSArray *papers)) callback
+                  failure:(void (^)(NSError *error)) failure
+{
+    [[FlowithAgent sharedAgent] getPath:[NSString stringWithFormat:@"users/%d/received_papers.json",_id.integerValue]
+    parameters:@{}
+    success:^(AFHTTPRequestOperation *operation, NSArray *papers) {
+        callback([RollingPaper fromArray:papers]);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        failure(error);
+    }];
+}
+
+- (void)inviteFriends:(NSArray *)facebook_friends
+              toPaper:(RollingPaper *)paper
+              success:(void (^)())success
+              failure:(void (^)(NSError *error))failure
+{
+    [[FlowithAgent sharedAgent] postPath:[NSString stringWithFormat:@"users/%d/invite_friends.json",_id.integerValue]
+    parameters:@{@"paper_id" : [paper id],
+                 @"friends"  : facebook_friends}
+    success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        success();
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        failure(error);
+    }];
+
+}
+
 @end
 
 

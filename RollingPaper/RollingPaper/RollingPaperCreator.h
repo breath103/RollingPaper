@@ -18,7 +18,6 @@ typedef enum ROLLING_PAPER_CONTROLLER_STYLE{
 @interface RollingPaperCreator : UIViewController<FBFriendPickerDelegate,
                                                   UIAlertViewDelegate,
                                                   UISearchBarDelegate,
-                                                  UINavigationControllerDelegate,
                                                   PaperBackgroundPickerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView* contentContainer;
@@ -32,7 +31,7 @@ typedef enum ROLLING_PAPER_CONTROLLER_STYLE{
 @property (weak, nonatomic) IBOutlet UIDatePicker *timePicker;
 @property (nonatomic,weak) IBOutlet UIScrollView* scrollView;
 @property (weak, nonatomic) IBOutlet UIImageView *paperCellImage;
-@property (nonatomic,strong) NSString* selectedBackgroundName;
+@property (nonatomic,strong) NSString *selectedBackgroundName;
 @property (nonatomic,readwrite) ROLLING_PAPER_CONTROLLER_STYLE controllerType;
 @property (nonatomic,strong) RollingPaper* entity;
 @property (weak, nonatomic) IBOutlet UIButton *finishButton;

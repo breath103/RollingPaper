@@ -1,12 +1,9 @@
-#import "PaperCellController.h"
-
 #import <QuartzCore/QuartzCore.h>
+
+#import "PaperCellController.h"
 #import "FlowithAgent.h"
 #import "UIImageView+Vingle.h"
 
-@interface PaperCellController ()
-
-@end
 
 @implementation PaperCellController
 @synthesize entity;
@@ -85,7 +82,8 @@
     return ddayString;
 }
 
--(void) showShadow{
+- (void)showShadow
+{
     self.view.layer.shadowRadius = 3.0;
     self.view.layer.shadowOffset = CGSizeMake(0,0);
     self.view.layer.shadowOpacity = 0.5;
@@ -96,23 +94,18 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
     [self showShadow];
-    
     UITapGestureRecognizer* tapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onTap)];
     [self.view addGestureRecognizer:tapGestureRecognizer];
-    
     [self refreshViewWithEntity];
-    
-    
     [_backgroundImage setImageWithURL:entity.background
     withFadeIn:0.3f
     success:^(BOOL isCached, UIImage *image) {
         _backgroundImage.image = NULL;//image;
         _backgroundImage.backgroundColor = [UIColor colorWithPatternImage:image];
-        UIImage* mask_image = [ UIImage imageNamed:@"paper_cell_bg"];
+        UIImage* mask_image = [UIImage imageNamed:@"paper_cell_bg"];
         CGSize size = _backgroundImage.frame.size;
-        CALayer* maskLayer = [CALayer layer];
+        CALayer *maskLayer = [CALayer layer];
         maskLayer.frame = CGRectMake(0,0,size.width,size.height);
         maskLayer.contents = (__bridge id)[mask_image CGImage];
         self.view.layer.mask = maskLayer;
@@ -130,7 +123,8 @@
     }
 }
 
--(void) refreshViewWithEntity{
+-(void) refreshViewWithEntity
+{
     [self startUpdateDDayLabel];
     self.titleLabel.text = self.entity.title;
 }

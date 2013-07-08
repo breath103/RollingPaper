@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "07776F1516DA5A9100A19EC4"
+               BlueprintIdentifier = "0702045E16DA74A9006BA90A"
                BuildableName = "Specs.app"
                BlueprintName = "Specs"
                ReferencedContainer = "container:RollingPaper.xcodeproj">
@@ -32,7 +32,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "07776F1516DA5A9100A19EC4"
+            BlueprintIdentifier = "0702045E16DA74A9006BA90A"
             BuildableName = "Specs.app"
             BlueprintName = "Specs"
             ReferencedContainer = "container:RollingPaper.xcodeproj">
@@ -51,12 +51,19 @@
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "07776F1516DA5A9100A19EC4"
+            BlueprintIdentifier = "0702045E16DA74A9006BA90A"
             BuildableName = "Specs.app"
             BlueprintName = "Specs"
             ReferencedContainer = "container:RollingPaper.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <EnvironmentVariables>
+         <EnvironmentVariable
+            key = "CEDAR_REPORTER_OPTS"
+            value = "nested"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+      </EnvironmentVariables>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -69,7 +76,7 @@
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "07776F1516DA5A9100A19EC4"
+            BlueprintIdentifier = "0702045E16DA74A9006BA90A"
             BuildableName = "Specs.app"
             BlueprintName = "Specs"
             ReferencedContainer = "container:RollingPaper.xcodeproj">

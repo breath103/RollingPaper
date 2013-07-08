@@ -309,6 +309,12 @@
 		07D2556F16CFD5AD00C4715C /* release_notes.md in Resources */ = {isa = PBXBuildFile; fileRef = 07D2556B16CFD5AD00C4715C /* release_notes.md */; };
 		07D2557116CFDF3700C4715C /* setting_icon_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 07D2557016CFDF3700C4715C /* setting_icon_2.png */; };
 		07D3466916B505FB007762BC /* FlowithAgent.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D3466816B505FB007762BC /* FlowithAgent.m */; };
+		07D4D4A01786ED8800EC73DE /* Invitation.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D4D49F1786ED8800EC73DE /* Invitation.m */; };
+		07D4D4A11786ED8800EC73DE /* Invitation.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D4D49F1786ED8800EC73DE /* Invitation.m */; };
+		07D4D4A417874DA600EC73DE /* PaperTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D4D4A317874DA600EC73DE /* PaperTableViewCell.m */; };
+		07D4D4A517874DA600EC73DE /* PaperTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D4D4A317874DA600EC73DE /* PaperTableViewCell.m */; };
+		07D4D4A717874DCA00EC73DE /* PaperTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07D4D4A617874DCA00EC73DE /* PaperTableViewCell.xib */; };
+		07D4D4A817874DCA00EC73DE /* PaperTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07D4D4A617874DCA00EC73DE /* PaperTableViewCell.xib */; };
 		07E0BADC16DA6D1C00E32FF2 /* NSMutableArray+Flowith.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BADB16DA6D1C00E32FF2 /* NSMutableArray+Flowith.m */; };
 		07FBDDD7165FEF990011D581 /* UESoundRecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FBDDD6165FEF990011D581 /* UESoundRecoder.m */; };
 		07FBDDE0165FF28A0011D581 /* SoundContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FBDDDF165FF28A0011D581 /* SoundContentView.m */; };
@@ -686,6 +692,11 @@
 		07D2557016CFDF3700C4715C /* setting_icon_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = setting_icon_2.png; sourceTree = "<group>"; };
 		07D3466716B505FB007762BC /* FlowithAgent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlowithAgent.h; sourceTree = "<group>"; };
 		07D3466816B505FB007762BC /* FlowithAgent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlowithAgent.m; sourceTree = "<group>"; };
+		07D4D49E1786ED8800EC73DE /* Invitation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Invitation.h; sourceTree = "<group>"; };
+		07D4D49F1786ED8800EC73DE /* Invitation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Invitation.m; sourceTree = "<group>"; };
+		07D4D4A217874DA500EC73DE /* PaperTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaperTableViewCell.h; sourceTree = "<group>"; };
+		07D4D4A317874DA600EC73DE /* PaperTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaperTableViewCell.m; sourceTree = "<group>"; };
+		07D4D4A617874DCA00EC73DE /* PaperTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PaperTableViewCell.xib; sourceTree = "<group>"; };
 		07E0BADA16DA6D1C00E32FF2 /* NSMutableArray+Flowith.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableArray+Flowith.h"; sourceTree = "<group>"; };
 		07E0BADB16DA6D1C00E32FF2 /* NSMutableArray+Flowith.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+Flowith.m"; sourceTree = "<group>"; };
 		07FBDDD5165FEF990011D581 /* UESoundRecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UESoundRecoder.h; sourceTree = "<group>"; };
@@ -1118,6 +1129,8 @@
 				073EB69616BB382E0071DE77 /* Notice.m */,
 				071A1C7A16BDC81800393627 /* User.h */,
 				071A1C7B16BDC81800393627 /* User.m */,
+				07D4D49E1786ED8800EC73DE /* Invitation.h */,
+				07D4D49F1786ED8800EC73DE /* Invitation.m */,
 			);
 			name = Entity;
 			sourceTree = "<group>";
@@ -1299,6 +1312,9 @@
 				075A1EAE1684B77100BB4E3B /* PhoneAuthViewController.h */,
 				075A1EAF1684B77100BB4E3B /* PhoneAuthViewController.m */,
 				075A1EB01684B77100BB4E3B /* PhoneAuthViewController.xib */,
+				07D4D4A217874DA500EC73DE /* PaperTableViewCell.h */,
+				07D4D4A317874DA600EC73DE /* PaperTableViewCell.m */,
+				07D4D4A617874DCA00EC73DE /* PaperTableViewCell.xib */,
 			);
 			name = NavigationViews;
 			sourceTree = "<group>";
@@ -1403,6 +1419,7 @@
 			files = (
 				0702046816DA74A9006BA90A /* InfoPlist.strings in Resources */,
 				076CA5A816DAB770000C6313 /* Default-568h@2x.png in Resources */,
+				07D4D4A817874DCA00EC73DE /* PaperTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1602,6 +1619,7 @@
 				07D2557116CFDF3700C4715C /* setting_icon_2.png in Resources */,
 				0720DDC816D0161100368B26 /* PaperBackgroundPicker.xib in Resources */,
 				0720DDCD16D0EB2800368B26 /* PaperParticipantsListController.xib in Resources */,
+				07D4D4A717874DCA00EC73DE /* PaperTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1727,6 +1745,8 @@
 				A5A9ACAB1780B2AD007044F7 /* NoticeTableController.m in Sources */,
 				A5A9ACB01780CE9E007044F7 /* PaperclipImageUploader.m in Sources */,
 				A56DE71E17831CC900F3AD96 /* UserSpec.mm in Sources */,
+				07D4D4A11786ED8800EC73DE /* Invitation.m in Sources */,
+				07D4D4A517874DA600EC73DE /* PaperTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1797,6 +1817,8 @@
 				0739C9D2177F5D71002B0890 /* UIView+AnimationMacro.m in Sources */,
 				A5A9AC921780AF30007044F7 /* FlowithObject.m in Sources */,
 				A5A9ACAF1780CE9E007044F7 /* PaperclipImageUploader.m in Sources */,
+				07D4D4A01786ED8800EC73DE /* Invitation.m in Sources */,
+				07D4D4A417874DA600EC73DE /* PaperTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
