@@ -13,6 +13,7 @@
 #import "UIAlertViewBlockDelegate.h"
 #import "PaperParticipantsListController.h"
 #import "UIImageView+Vingle.h"
+#import "UserTableViewController.h"
 
 @implementation RollingPaperCreator
 - (id)initForCreating
@@ -208,15 +209,16 @@
     UIViewSetY(self.bottomViewsContainer, 486+delta);
 }
 
-- (void)syncViewToPaper{
-    if (self.entity) {
-        self.entity.creatorId    = [FlowithAgent sharedAgent].getUserIdx;
-        self.entity.title        = self.titleText.text;
-        self.entity.width        = @(1440);
-        self.entity.height       = @(960);
-        self.entity.notice       = self.noticeInput.text;
-        self.entity.background   = self.selectedBackgroundName;
-        self.entity.receive_time = [self buildRequestDate];
+- (void)syncViewToPaper
+{
+    if (_entity) {
+        _entity.creatorId    = [FlowithAgent sharedAgent].getUserIdx;
+        _entity.title        = self.titleText.text;
+        _entity.width        = @(1440);
+        _entity.height       = @(960);
+        _entity.notice       = self.noticeInput.text;
+        _entity.background   = self.selectedBackgroundName;
+        _entity.receive_time = [self buildRequestDate];
     }
 }
 - (void)syncPaperToView
@@ -235,21 +237,22 @@
         }];
         
         [self deleteAllParticipants];
-        for (User* user in [_entity participants]) {
+        for (User *user in [_entity participants]) {
             [self addParticipantsView:user];
         }
     }
 }
-- (BOOL) confirmInputs{
-    if(self.titleText.text.length <= 0){
+- (BOOL)confirmInputs
+{
+    if([[_titleText text] length] <= 0){
         [[[UIAlertView alloc]initWithTitle:@"경고"
                                    message:@"제목을 입력해주세요"
                                   delegate:NULL
                          cancelButtonTitle:@"확인"
                          otherButtonTitles:NULL, nil] show];
-        return FALSE;
+        return NO;
     }
-    return TRUE;
+    return YES;
 }
 - (IBAction)onTouchPrevious:(id)sender {
     if(self.controllerType == PAPER_CONTROLLER_TYPE_EDITING_CREATOR){
@@ -387,15 +390,21 @@
                      completion:^{}];
 }
 
-- (IBAction)onTouchPickBackground:(id)sender {
-    PaperBackgroundPicker* picker = [[PaperBackgroundPicker alloc]initWithInitialBackgroundName:[self selectedBackgroundName]
+- (IBAction)onTouchPickBackground:(id)sender
+{
+    PaperBackgroundPicker *picker = [[PaperBackgroundPicker alloc]initWithInitialBackgroundName:[self selectedBackgroundName]
                                                                                        Delegate:self];
     [self presentViewController:picker
                        animated:TRUE
                      completion:^{
-                         
                      }];
-
+}
+- (IBAction)onTouchUserList:(id)sender
+{
+    UserTableViewController *userTableViewController = [[UserTableViewController alloc]init];
+    [[self navigationController] pushViewController:userTableViewController animated:YES];
+    
+    [userTableViewController setUsers:[_entity invitations]];
 }
 
 #pragma mark FacebookDate/Time handling
@@ -451,6 +460,7 @@
 
 
 #pragma mark FBFriendSearchPickerControllerDelegate
+
 - (void)facebookViewControllerDoneWasPressed : (FBFriendSearchPickerController *)sender{
     if (_controllerType == PAPER_CONTROLLER_TYPE_CREATING) {
         if (_receivingFriendPicker == sender) {
@@ -475,15 +485,12 @@
             [self dismissViewControllerAnimated:YES completion:^{
             }];
         } else if(_invitingFreindPicker == sender) {
-            NSMutableArray* facebook_friends = [NSMutableArray new];
-            for (id<FBGraphUser> user in _invitingFreindPicker.selection)
-                [facebook_friends addObject:[user id]];
-            [[User currentUser] inviteFriends:facebook_friends
+            [[User currentUser] inviteFriends:[_invitingFreindPicker selection]
             toPaper:_entity
             success:^{
                 [self syncPaperToView];
                 [self dismissViewControllerAnimated:YES completion:^{}];
-            }failure:^(NSError *error){
+            } failure:^(NSError *error) {
                 [[[UIAlertView alloc] initWithTitle:@"에러"
                                             message:[error localizedDescription]
                                            delegate:nil

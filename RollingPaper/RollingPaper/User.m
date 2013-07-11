@@ -75,7 +75,7 @@
               success:(void (^)())success
               failure:(void (^)(NSError *error))failure
 {
-    [[FlowithAgent sharedAgent] postPath:[NSString stringWithFormat:@"users/%d/invite_friends.json",_id.integerValue]
+    [[FlowithAgent sharedAgent] postPath:[NSString stringWithFormat:@"users/%d/invite_friends.json",[_id integerValue]]
     parameters:@{@"paper_id" : [paper id],
                  @"friends"  : facebook_friends}
     success:^(AFHTTPRequestOperation *operation, id responseObject) {

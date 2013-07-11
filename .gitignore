@@ -14,6 +14,7 @@ RollingPaper/Pods/
 *.xcworkspace
 !default.xcworkspace
 xcuserdata
+*.xcuserstate
 profile
 *.moved-aside
 uispecs.output

@@ -2,6 +2,7 @@
 #import "UserTableViewCell.h"
 
 static NSString *const UserTableViewCellReuseIdentifier = @"UserTableViewCellReuseIdentifier";
+
 @implementation UserTableViewController
 - (id)init
 {
@@ -11,15 +12,19 @@ static NSString *const UserTableViewCellReuseIdentifier = @"UserTableViewCellReu
     }
     return self;
 }
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [[self tableView] registerNib:[UINib nibWithNibName:@"UserTableViewCell" bundle:nil] forCellReuseIdentifier:UserTableViewCellReuseIdentifier];
+    [[self tableView] registerNib:[UINib nibWithNibName:@"UserTableViewCell" bundle:nil]
+           forCellReuseIdentifier:UserTableViewCellReuseIdentifier];
 }
+
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 1;
 }
+
 - (NSInteger) tableView:(UITableView *)tableView
   numberOfRowsInSection:(NSInteger)section
 {
@@ -28,16 +33,19 @@ static NSString *const UserTableViewCellReuseIdentifier = @"UserTableViewCellReu
     }
     return 0;
 }
+
 - (User *)userForIndexPath:(NSIndexPath *)indexPath
 {
     return _users[indexPath.row];
 }
+
 - (UITableViewCell *)tableView:(UITableView *)tableView
          cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UserTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:UserTableViewCellReuseIdentifier
                                                               forIndexPath:indexPath];
-    [cell setUser:[self userForIndexPath:indexPath]];
+//    [cell setUser:[self userForIndexPath:indexPath]];
+    [cell setInvitation:_users[indexPath.row]];
     return cell;
 }
 @end

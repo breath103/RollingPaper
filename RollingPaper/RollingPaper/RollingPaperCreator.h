@@ -53,6 +53,7 @@ typedef enum ROLLING_PAPER_CONTROLLER_STYLE{
 - (IBAction)onPickTime:(UIDatePicker *)sender;
 - (IBAction)onTouchReceiveDate:(id)sender;
 - (IBAction)onTouchInvite:(id)sender;
+- (IBAction)onTouchUserList:(id)sender;
 - (IBAction)onTouchPickBackground:(id)sender;
 
 @end

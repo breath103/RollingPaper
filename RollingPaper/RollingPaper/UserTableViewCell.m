@@ -10,4 +10,10 @@
                             withFadeIn:0.1f];
     [_usernameLabel setText:[user username]];
 }
+- (void)setInvitation:(Invitation *)invitation
+{
+    _invitation = invitation;
+    [_profileImageView setImageWithURL:[invitation receiverPicture] withFadeIn:0.1f];
+    [_usernameLabel setText:[invitation receiverName]];
+}
 @end

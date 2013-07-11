@@ -3,10 +3,6 @@
 #import "User.h"
 #import <UIImageView+AFNetworking.h>
 
-@interface PaperParticipantsListController ()
-
-@end
-
 @implementation PaperParticipantsListController
 
 -(id) initWithPaper:(RollingPaper*) paper{
@@ -70,6 +66,5 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
 }
-
 
 @end
