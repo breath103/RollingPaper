@@ -304,6 +304,13 @@
 		07CD0806167D91DA00358AD6 /* TypewriterController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07CD0804167D91D700358AD6 /* TypewriterController.m */; };
 		07CD0824167DC11B00358AD6 /* AlbumController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07CD0822167DC11900358AD6 /* AlbumController.m */; };
 		07CD0825167DC11B00358AD6 /* AlbumController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07CD0823167DC11A00358AD6 /* AlbumController.xib */; };
+		07D11236178B138D006057C5 /* InvitationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07D11235178B138D006057C5 /* InvitationSpec.mm */; };
+		07D11239178B1A49006057C5 /* UserTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D11238178B1A49006057C5 /* UserTableViewController.m */; };
+		07D1123A178B1A49006057C5 /* UserTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D11238178B1A49006057C5 /* UserTableViewController.m */; };
+		07D1123C178B1B55006057C5 /* UserTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07D1123B178B1B55006057C5 /* UserTableViewCell.xib */; };
+		07D1123D178B1B55006057C5 /* UserTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07D1123B178B1B55006057C5 /* UserTableViewCell.xib */; };
+		07D11240178B1C13006057C5 /* UserTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D1123F178B1C13006057C5 /* UserTableViewCell.m */; };
+		07D11241178B1C13006057C5 /* UserTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D1123F178B1C13006057C5 /* UserTableViewCell.m */; };
 		07D2556D16CFD5AD00C4715C /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 07D2556916CFD5AD00C4715C /* libTestFlight.a */; };
 		07D2556E16CFD5AD00C4715C /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 07D2556A16CFD5AD00C4715C /* README.md */; };
 		07D2556F16CFD5AD00C4715C /* release_notes.md in Resources */ = {isa = PBXBuildFile; fileRef = 07D2556B16CFD5AD00C4715C /* release_notes.md */; };
@@ -685,6 +692,12 @@
 		07CD0821167DC11900358AD6 /* AlbumController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumController.h; sourceTree = "<group>"; };
 		07CD0822167DC11900358AD6 /* AlbumController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlbumController.m; sourceTree = "<group>"; };
 		07CD0823167DC11A00358AD6 /* AlbumController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlbumController.xib; sourceTree = "<group>"; };
+		07D11235178B138D006057C5 /* InvitationSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = InvitationSpec.mm; sourceTree = "<group>"; };
+		07D11237178B1A49006057C5 /* UserTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserTableViewController.h; sourceTree = "<group>"; };
+		07D11238178B1A49006057C5 /* UserTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserTableViewController.m; sourceTree = "<group>"; };
+		07D1123B178B1B55006057C5 /* UserTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserTableViewCell.xib; sourceTree = "<group>"; };
+		07D1123E178B1C13006057C5 /* UserTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserTableViewCell.h; sourceTree = "<group>"; };
+		07D1123F178B1C13006057C5 /* UserTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserTableViewCell.m; sourceTree = "<group>"; };
 		07D2556916CFD5AD00C4715C /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTestFlight.a; sourceTree = "<group>"; };
 		07D2556A16CFD5AD00C4715C /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		07D2556B16CFD5AD00C4715C /* release_notes.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = release_notes.md; sourceTree = "<group>"; };
@@ -839,6 +852,7 @@
 				072B1E7817802AAD00628590 /* ImageContentSpec.mm */,
 				A5A9AC951780B17E007044F7 /* SoundContentSpec.mm */,
 				A56DE71D17831CC900F3AD96 /* UserSpec.mm */,
+				07D11235178B138D006057C5 /* InvitationSpec.mm */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -1315,6 +1329,11 @@
 				07D4D4A217874DA500EC73DE /* PaperTableViewCell.h */,
 				07D4D4A317874DA600EC73DE /* PaperTableViewCell.m */,
 				07D4D4A617874DCA00EC73DE /* PaperTableViewCell.xib */,
+				07D11237178B1A49006057C5 /* UserTableViewController.h */,
+				07D11238178B1A49006057C5 /* UserTableViewController.m */,
+				07D1123B178B1B55006057C5 /* UserTableViewCell.xib */,
+				07D1123E178B1C13006057C5 /* UserTableViewCell.h */,
+				07D1123F178B1C13006057C5 /* UserTableViewCell.m */,
 			);
 			name = NavigationViews;
 			sourceTree = "<group>";
@@ -1420,6 +1439,7 @@
 				0702046816DA74A9006BA90A /* InfoPlist.strings in Resources */,
 				076CA5A816DAB770000C6313 /* Default-568h@2x.png in Resources */,
 				07D4D4A817874DCA00EC73DE /* PaperTableViewCell.xib in Resources */,
+				07D1123D178B1B55006057C5 /* UserTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1620,6 +1640,7 @@
 				0720DDC816D0161100368B26 /* PaperBackgroundPicker.xib in Resources */,
 				0720DDCD16D0EB2800368B26 /* PaperParticipantsListController.xib in Resources */,
 				07D4D4A717874DCA00EC73DE /* PaperTableViewCell.xib in Resources */,
+				07D1123C178B1B55006057C5 /* UserTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1747,6 +1768,9 @@
 				A56DE71E17831CC900F3AD96 /* UserSpec.mm in Sources */,
 				07D4D4A11786ED8800EC73DE /* Invitation.m in Sources */,
 				07D4D4A517874DA600EC73DE /* PaperTableViewCell.m in Sources */,
+				07D11236178B138D006057C5 /* InvitationSpec.mm in Sources */,
+				07D1123A178B1A49006057C5 /* UserTableViewController.m in Sources */,
+				07D11241178B1C13006057C5 /* UserTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1819,6 +1843,8 @@
 				A5A9ACAF1780CE9E007044F7 /* PaperclipImageUploader.m in Sources */,
 				07D4D4A01786ED8800EC73DE /* Invitation.m in Sources */,
 				07D4D4A417874DA600EC73DE /* PaperTableViewCell.m in Sources */,
+				07D11239178B1A49006057C5 /* UserTableViewController.m in Sources */,
+				07D11240178B1C13006057C5 /* UserTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

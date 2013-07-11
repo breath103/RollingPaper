@@ -165,51 +165,15 @@
 }
 
 
-- (void)deleteAllParticipants{
+- (void)deleteAllParticipants
+{
     for(UIView* view in self.participantsContainer.subviews){
         if(view != [self.participantsContainer.subviews objectAtIndex:0])
             [view removeFromSuperview];
     }
 }
-
-- (void)createNewParticipnatsCell:(id<FBGraphUser>) user
+- (void)addParticipantsView:(User *)participant
 {
-    CGSize buttonSize = CGSizeMake(270, 37);
-    UIButton* button = [UIButton buttonWithType:UIButtonTypeCustom];
-    if( (self.participantsContainer.subviews.count-1) == 0)
-        [button setBackgroundImage:[UIImage imageNamed:@"userlist_top"] forState:UIControlStateNormal];
-    else
-        [button setBackgroundImage:[UIImage imageNamed:@"userlist_center"] forState:UIControlStateNormal];
-    
-    button.frame = CGRectMake(0, buttonSize.height * (self.participantsContainer.subviews.count-1),
-                              buttonSize.width, buttonSize.height);
-    [button setTitle:[user objectForKey:@"name"] forState:UIControlStateNormal];
-    [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    
-    UIImageView* profileView = [[UIImageView alloc] initWithImage:NULL];
-    profileView.frame = CGRectMake(12.5, 10, 19, 19);
-    [button addSubview:profileView];
-    [self.participantsContainer addSubview:button];
-
-    NSString* profileURL =[[[user objectForKey:@"picture"] objectForKey:@"data"]objectForKey :@"url" ];
-
-    [profileView setImageWithURL:[NSURL URLWithString:profileURL]];
-    
-    UIViewSetHeight(self.participantsContainer,
-                    self.participantsContainer.subviews.count * buttonSize.height);
-    UIViewSetY([self.participantsContainer.subviews objectAtIndex:0],
-               (self.participantsContainer.subviews.count-1) * buttonSize.height);
-    
-    float delta = buttonSize.height * self.participantsContainer.subviews.count;
-    
-    CGSize contentSize = self.scrollView.contentSize;
-    contentSize.height = 667 + delta;
-    self.scrollView.contentSize = contentSize;
-    UIViewSetHeight(self.contentContainer, 667 + delta);
-    UIViewSetY(self.bottomViewsContainer, 486+delta);
-}
-
-- (void)addParticipantsView:(User *)participant{
     CGSize buttonSize = CGSizeMake(270, 37);
     
     UIButton* button = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -243,6 +207,7 @@
     UIViewSetHeight(self.contentContainer, 667 + delta);
     UIViewSetY(self.bottomViewsContainer, 486+delta);
 }
+
 - (void)syncViewToPaper{
     if (self.entity) {
         self.entity.creatorId    = [FlowithAgent sharedAgent].getUserIdx;
@@ -495,12 +460,13 @@
             }];
         }
         else if (_invitingFreindPicker == sender) {
-            [self deleteAllParticipants];
-            for (id<FBGraphUser> user in self.invitingFreindPicker.selection)
-                [self createNewParticipnatsCell:user];
-            [self dismissViewControllerAnimated:TRUE completion:^{
-            
-            }];
+            //FIXME
+//            [self deleteAllParticipants];
+//            for (id<FBGraphUser> user in self.invitingFreindPicker.selection)
+//                [self createNewParticipnatsCell:user];
+//            [self dismissViewControllerAnimated:TRUE completion:^{
+//            
+//            }];
         }
     } else { //방 편집모드
         if (_receivingFriendPicker == sender) {

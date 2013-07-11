@@ -5,17 +5,15 @@ PODS:
   - JSONKit (1.5pre)
   - MBProgressHUD (0.7)
   - OCMock (2.1.1)
-  - SYCache (1.0)
   - Underscore.m (0.2.0)
 
 DEPENDENCIES:
-  - AFNetworking (~> 1.3.0)
+  - AFNetworking
   - Cedar
-  - Facebook-iOS-SDK (~> 3.5.1)
+  - Facebook-iOS-SDK
   - JSONKit
   - MBProgressHUD
   - OCMock
-  - SYCache
   - Underscore.m
 
 SPEC CHECKSUMS:
@@ -25,7 +23,6 @@ SPEC CHECKSUMS:
   JSONKit: 409734ab3407fce90ef7eaa95d7168f38d9a6601
   MBProgressHUD: 1fd8591a2216d5dec6de24e09187bb03bcbe9946
   OCMock: 79212e5e328378af5cfd6edb5feacfd6c49cd8a3
-  SYCache: 8ca46f459ce46245db483bf2067f265e63d8ff23
   Underscore.m: a1363c047e21e601dcabc16abd6faf9413cf4290
 
 COCOAPODS: 0.21.0

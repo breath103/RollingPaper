@@ -29,6 +29,10 @@ describe(@"RollingPaper", ^{
                         @{@"id": @(2),
                           @"username": @"Na Yeon Lee",
                           @"facebook_id": @"100001033134560"}
+                    ],
+                    @"invitations": @[
+                        @{@"id": @(1)},
+                        @{@"id": @(2)},
                     ]
                  }];
     });
@@ -48,12 +52,17 @@ describe(@"RollingPaper", ^{
             [model friend_facebook_id] should equal(@"facebook id");
 
             [[model participants] count] should equal(2);
-            [[model participants][0] id] should equal(@(2));
+            [[model participants][0] id] should equal(@(1));
             [[model participants][0] username] should equal(@"Sanghyun Lee");
             [[model participants][0] facebook_id] should equal(@"100002717246207");
+            
             [[model participants][1] id] should equal(@(2));
             [[model participants][1] username] should equal(@"Na Yeon Lee");
             [[model participants][1] facebook_id] should equal(@"100001033134560");
+            
+            [[model invitations] count] should equal(2);
+            [[model invitations][0] id] should equal(@(1));
+            [[model invitations][1] id] should equal(@(2));
         });
     });
     

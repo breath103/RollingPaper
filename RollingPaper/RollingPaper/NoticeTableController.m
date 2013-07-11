@@ -23,15 +23,7 @@
 
     UIRefreshControl* refreshControl = [[UIRefreshControl alloc] init];
     self.refreshControl = refreshControl;
-
-    [[FlowithAgent sharedAgent] getNoticeList:^(BOOL isCaschedResponse, NSArray *aNoticeList) {
-        if(!isCaschedResponse) {
-            self.noticeList = aNoticeList;
-            [self loadView];
-        }
-    } failure:^(NSError *error) {
-        NSLog(@"fail to get NoticeList : %@",error);
-    }];
+    
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;

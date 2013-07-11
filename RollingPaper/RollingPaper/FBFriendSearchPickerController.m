@@ -40,12 +40,12 @@
     for(id view in toolbar.items){
         NSLog(@"%@",view);
     }
-    [[FlowithAgent sharedAgent] getUsersWhoAreMyFacebookFriends:^(BOOL isCachedResponse, NSArray *users) {
-        NSLog(@"%@",users);
-        
-    } failure:^(NSError *error) {
-        NSLog(@"%@",error);
-    }];
+//    [[FlowithAgent sharedAgent] getUsersWhoAreMyFacebookFriends:^(BOOL isCachedResponse, NSArray *users) {
+//        NSLog(@"%@",users);
+//        
+//    } failure:^(NSError *error) {
+//        NSLog(@"%@",error);
+//    }];
     /*
     ASIFormDataRequest* request = [NetworkTemplate requestForSearchingFacebookFriendUsingRollingPaper:[[FlowithAgent sharedAgent] getUserIdx].stringValue];
     [request setCompletionBlock:^{

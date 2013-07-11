@@ -19,6 +19,7 @@
 
 //connection
 @property (nonatomic, strong) NSArray *participants;
+@property (nonatomic, strong) NSArray *invitations;
 @property (nonatomic, strong) NSSet *contents;
 @end
 

@@ -5,6 +5,7 @@
 #import "ImageContent.h"
 #import "SoundContent.h"
 #import "User.h"
+#import "Invitation.h"
 
 @implementation RollingPaper
 - (void) setAttributesWithDictionary:(NSDictionary *)d
@@ -22,6 +23,7 @@
     _updatedAt = d[@"updated_at"];
     
     _participants = [User fromArray:d[@"participants"]];
+    _invitations  = [Invitation fromArray:d[@"invitations"]];
 }
 
 - (NSDictionary *)toDictionary
