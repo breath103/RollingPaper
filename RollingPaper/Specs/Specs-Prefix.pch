@@ -6,5 +6,8 @@
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
     #import <Cedar-iOS/SpecHelper.h>
+    #import "UIColor+Vingle.h"
+    #import "UIView+VerticalLayout.h"
+    #import "UIView+AnimationMacro.h"
     #import "macro.h"
 #endif

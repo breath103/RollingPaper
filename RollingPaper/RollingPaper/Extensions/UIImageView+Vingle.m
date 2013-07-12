@@ -1,18 +1,18 @@
 #import "UIImageView+Vingle.h"
-#import <AFNetworking/AFNetworking.h>
-#import <QuartzCore/QuartzCore.h>
+#import "AFImageRequestOperation.h"
+#import <UIImageView+AFNetworking.h>
+#import "UIImage+animatedGIF.h"
+#import "UIImageView+AFNetworking.h"
 #import "UIView+AnimationMacro.h"
+#import "UIView+NibSupport.h"
+#import <QuartzCore/QuartzCore.h>
+#import "UIView+VerticalLayout.h"
+
+
+#define CARD_INFO_PADDING 6.f
+#define CARD_IMAGE_COUNT_LABEL_WIDTH 10.f
+
 @implementation UIImageView (Vingle)
-
-- (void)addActivtyIndicator
-{
-    UIActivityIndicatorView *view = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    [view startAnimating];
-    view.center = self.center;
-    [self addSubview:view];
-}
-
-
 
 - (void)setImageWithURL:(NSString *)url
              withFadeIn:(NSTimeInterval)timeInterval
@@ -74,4 +74,6 @@
                   success:success
                   failure:failure];
 }
+
+
 @end

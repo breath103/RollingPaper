@@ -11,8 +11,9 @@
 #ifdef __OBJC__
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
-    #import "TestFlight.h"
-    #import "macro.h"
+    #import "UIColor+Vingle.h"  
+    #import "UIView+VerticalLayout.h"
+    #import "UIView+AnimationMacro.h"
    // #define NSLog(__FORMAT__, ...) TFLog((@"%s [Line %d] " __FORMAT__), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
     #define _SYSTEMCONFIGURATION_H
 #endif

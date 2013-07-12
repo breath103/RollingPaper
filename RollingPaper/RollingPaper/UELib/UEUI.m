@@ -7,10 +7,10 @@
 //
 
 #import "UEUI.h"
-#import "macro.h"
 #import "ccMacros.h"
 #import "CGPointExtension.h"
 #import <QuartzCore/QuartzCore.h>
+
 @implementation UEKeyboardBackgroundButton
 @synthesize targetView;
 -(id) initWithTargetView:(UIView *)view
@@ -143,7 +143,7 @@
     [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
     [UIView setAnimationDuration:0.3];
     [UIView beginAnimations:@"KeyboardAnimation" context:NULL];
-        UIViewSetY(view, view.frame.origin.y - KEYBOARD_HEIGHT);
+        UIViewSetY(view, view.frame.origin.y - 416);
     [UIView commitAnimations];
 }
 +(void) CGAffineTransformWithTouches : (UITouch *) firstTouch
