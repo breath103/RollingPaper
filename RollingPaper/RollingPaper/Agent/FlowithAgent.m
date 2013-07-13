@@ -20,9 +20,9 @@
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
         //sharedAgent = [[FlowithAgent alloc]initWithBaseURL:[NSURL URLWithString:@"http://10.0.1.97:3000/api"]];
-        sharedAgent = [[FlowithAgent alloc]initWithBaseURL:[NSURL URLWithString:@"http://192.168.1.23:3000/api"]];
+        //sharedAgent = [[FlowithAgent alloc]initWithBaseURL:[NSURL URLWithString:@"http://192.168.1.23:3000/api"]];
         //sharedAgent = [[FlowithAgent alloc]initWithBaseURL:[NSURL URLWithString:@"http://rollingpaper-production.herokuapp.com/api"]];
-        //sharedAgent = [[FlowithAgent alloc]initWithBaseURL:[NSURL URLWithString:@"http://0.0.0.0:3000/api"]];
+        sharedAgent = [[FlowithAgent alloc]initWithBaseURL:[NSURL URLWithString:@"http://0.0.0.0:3000/api"]];
 	});
 	return sharedAgent;
 }

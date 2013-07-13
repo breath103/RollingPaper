@@ -30,14 +30,15 @@
     _participatingPaperList = [[PaperListViewController alloc]init];
     [_participatingPaperList setDelegate:self];
     [self addChildViewController:_participatingPaperList];
+    
     _sendedPaperList = [[PaperListViewController alloc]init];
     [_sendedPaperList setDelegate:self];
     [self addChildViewController:_sendedPaperList];
+    
     _receivedPaperList = [[PaperListViewController alloc]init];
     [_receivedPaperList setDelegate:self];
     [self addChildViewController:_receivedPaperList];
 
-    
     int index = 0;
     for (UIViewController *childViewController in [self childViewControllers]) {
         [[childViewController view] setLeft:(index++) * [_paperScrollView getWidth]];
@@ -175,7 +176,9 @@
 
 - (void)paperListViewController:(PaperListViewController *)controller backgroundToched:(RollingPaper *)paper
 {
-    
+    PaperViewController *paperViewController = [[PaperViewController alloc]initWithEntity:paper];
+    [[self navigationController] pushViewController:paperViewController
+                                           animated:YES];
 }
 - (void)paperListViewController:(PaperListViewController *)controller settingTouched:(RollingPaper *)paper
 {

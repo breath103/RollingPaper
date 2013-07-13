@@ -9,5 +9,6 @@
     #import "UIColor+Vingle.h"
     #import "UIView+VerticalLayout.h"
     #import "UIView+AnimationMacro.h"
+    #import "NSString+Vingle.h"
     #import "macro.h"
 #endif

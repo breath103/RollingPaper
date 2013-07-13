@@ -16,10 +16,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-//    [[FlowithAgent sharedAgent] getProfileImage:^(BOOL isCachedResponse, UIImage *image) {
-//        [_userImageView setImage:image];
-//    }];
-    // Do any additional setup after loading the view from its nib.
 }
 -(void) viewDidAppear:(BOOL)animated{
     self.navigationController.navigationBarHidden = FALSE;

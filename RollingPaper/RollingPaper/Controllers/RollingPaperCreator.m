@@ -233,11 +233,9 @@
         _receiveDate.text = [self dateToString:receiveDate];
         _receiveTime.text = [self timeToString:receiveDate];
         [self setSelectedBackgroundName:[_entity background]];
-        [[FBRequest requestForGraphPath:[_entity friend_facebook_id]]
-        startWithCompletionHandler:^(FBRequestConnection *connection, id<FBGraphUser> result, NSError *error) {
-             [_receiverName setText:[result name]];
-        }];
-        
+    
+        [_receiverName setText:[_entity recipient_name]];
+
         [self deleteAllParticipants];
         for (User *user in [_entity participants]) {
             [self addParticipantsView:user];

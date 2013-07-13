@@ -525,11 +525,8 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer : (UIGestureRecognizer *)othe
             self.currentEditingViewController = pencilcaseController;
         }break;
         case DockMenuTypeSetting : {
-//            PaperSettingsViewController *settingsViewController = [[PaperSettingsViewController alloc]initWithPaper:[self entity]];
-//            [[self navigationController] pushViewController:settingsViewController animated:YES];
-            RollingPaperCreator* paperSettingView = [[RollingPaperCreator alloc] initForEditing:self.entity];
-            [self.navigationController pushViewController:paperSettingView
-                                                 animated:TRUE];
+            PaperSettingsViewController *settingsViewController = [[PaperSettingsViewController alloc]initWithPaper:[self entity]];
+            [[self navigationController] pushViewController:settingsViewController animated:YES];
         }break;
         default:{
             NSLog(@"Unhandled dock menu %d",menuType);

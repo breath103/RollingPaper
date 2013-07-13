@@ -18,9 +18,9 @@ describe(@"PaperSettingsViewController", ^{
                      @"notice" : @"paper notice",
                      @"width":@(1440),
                      @"height":@(960),
-                     @"created_at" : @"2013-07-05T21:10:15Z",
-                     @"updated_at" : @"2013-07-05T21:13:25Z",
-                     @"receive_time" : @"receive time",
+                     @"created_at" : @"2013-07-05 21:10:15",
+                     @"updated_at" : @"2013-07-05 21:13:25",
+                     @"receive_time" : @"2013-08-06 18:23:37",
                      @"background":@"background url",
                      @"friend_facebook_id":@"facebook id",
                      @"recipient_name" : @"Sean Moon",
@@ -53,6 +53,16 @@ describe(@"PaperSettingsViewController", ^{
         });
     });
 
+    describe(@"setReceiveTime", ^{
+        subjectAction(^{
+            [controller setReceiveTime:@"2013-08-06 18:23:37"];
+        });
+        it(@"should update receiveTime Fields",^{
+            [controller receiveTime] should equal(@"2013-08-06 18:23:37");
+            [[controller receiveDateField] text] should equal(@"2013-08-06");
+            [[controller receiveTimeField] text] should equal(@"18:23:37");
+        });
+    });
     
     describe(@"setRecipient", ^{
         __block id recipient;
@@ -92,6 +102,7 @@ describe(@"PaperSettingsViewController", ^{
             [[controller noticeField] text] should equal(@"paper notice");
             
             [controller background] should equal(@"background url");
+            [controller receiveTime] should equal(@"2013-08-06 18:23:37");
         });
     });
 });
