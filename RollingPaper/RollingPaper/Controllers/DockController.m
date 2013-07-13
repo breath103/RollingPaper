@@ -20,8 +20,8 @@
 
 -(void) willMoveToParentViewController:(UIViewController *)parent{
     [self.parentViewController.view addSubview:self.view];
-    UIViewSetOrigin(self.view, CGPointMake(-self.dockView.bounds.size.width,
-                                parent.view.frame.size.height / 2 - self.view.bounds.size.height / 2));
+    [self.view setOrigin:CGPointMake(-self.dockView.bounds.size.width,
+                                     parent.view.frame.size.height / 2 - self.view.bounds.size.height / 2)];
     self.panGestureRecognizer = [[ UIPanGestureRecognizer alloc] initWithTarget:self
                                                                          action:@selector(onDockGesture:)];
     [parent.view addGestureRecognizer:self.panGestureRecognizer];
@@ -44,13 +44,13 @@
 -(void) hide{
     _isDockPoped = FALSE;
     [UIView animateWithDuration:0.1f animations:^{
-        UIViewSetX(self.view,-self.dockView.bounds.size.width);
+        [self.view setLeft:-self.dockView.bounds.size.width];
     } completion:^(BOOL finished) {
     }];
 }
 -(void) show{
     [UIView animateWithDuration:0.1f animations:^{
-        UIViewSetX(self.view, 0);
+        [[self view] setLeft:0];
     } completion:^(BOOL finished) {
         _isDockPoped = TRUE;
     }];
@@ -131,15 +131,12 @@
     }
 }
 
-
 -(void) hideIndicator{
     [self.view fadeOut:0.1f];
 }
+
 -(void) showIndicator{
     [self.view fadeIn:0.1f];
 }
-
-
-
 
 @end

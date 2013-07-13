@@ -14,6 +14,7 @@
     #import "UIColor+Vingle.h"  
     #import "UIView+VerticalLayout.h"
     #import "UIView+AnimationMacro.h"
+    #import "macro.h"
    // #define NSLog(__FORMAT__, ...) TFLog((@"%s [Line %d] " __FORMAT__), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
     #define _SYSTEMCONFIGURATION_H
 #endif

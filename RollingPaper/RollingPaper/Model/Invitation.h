@@ -12,3 +12,13 @@
 @property (nonatomic, readonly, strong) NSString *updatedAt;
 
 @end
+
+
+@interface Invitation (Networking)
+
+- (void)accept:(void(^)()) success
+       failure:(void(^)(NSError* error)) failure;
+- (void)reject:(void(^)()) success
+       failure:(void(^)(NSError* error)) failure;
+
+@end

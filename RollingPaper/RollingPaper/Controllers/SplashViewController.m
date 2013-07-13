@@ -3,7 +3,7 @@
 #import "FlowithAgent.h"
 #import <math.h>
 #import "RollingPaperCreator.h"
-#import "RollingPaperListController.h"
+#import "MainPaperViewController.h"
 #import "PaperViewController.h"
 #import "LoginViewController.h"
 
@@ -50,7 +50,7 @@
     [super didReceiveMemoryWarning];
 }
 - (void)showPaperList {
-    RollingPaperListController* controller = [[RollingPaperListController alloc] init];
+    MainPaperViewController* controller = [[MainPaperViewController alloc] init];
     [self.navigationController setViewControllers:@[controller] animated:YES];
 }
 - (void)onTouchLoginWithFacebook {

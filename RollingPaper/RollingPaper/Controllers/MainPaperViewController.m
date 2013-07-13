@@ -1,4 +1,4 @@
-#import "RollingPaperListController.h"
+#import "MainPaperViewController.h"
 #import "FlowithAgent.h"
 #import "RollingPaper.h"
 #import "UECoreData.h"
@@ -13,13 +13,12 @@
 #import "User.h"
 #import "UIImageView+Vingle.h"
 
-@implementation RollingPaperListController
+@implementation MainPaperViewController
 
 - (id)init
 {
     self = [super init];
     if (self) {
-        paperCellControllers = [NSMutableArray new];
     }
     return self;
 }
@@ -27,6 +26,24 @@
 {
     [super viewDidLoad];
     [self setTitle:@"롤링페이퍼"];
+    
+    _participatingPaperList = [[PaperListViewController alloc]init];
+    [_participatingPaperList setDelegate:self];
+    [self addChildViewController:_participatingPaperList];
+    _sendedPaperList = [[PaperListViewController alloc]init];
+    [_sendedPaperList setDelegate:self];
+    [self addChildViewController:_sendedPaperList];
+    _receivedPaperList = [[PaperListViewController alloc]init];
+    [_receivedPaperList setDelegate:self];
+    [self addChildViewController:_receivedPaperList];
+
+    
+    int index = 0;
+    for (UIViewController *childViewController in [self childViewControllers]) {
+        [[childViewController view] setLeft:(index++) * [_paperScrollView getWidth]];
+        [_paperScrollView addSubview:[childViewController view]];
+    }
+    [_paperScrollView setContentSize:CGSizeMake([_paperScrollView getWidth] * 3, [_paperScrollView getHeight])];
 }
 - (void)viewDidUnload
 {
@@ -34,24 +51,8 @@
     [super viewDidUnload];
 }
 
-
--(void) removeAllPaperViews
-{
-    for(PaperCellController* controller in paperCellControllers){
-        [UIView animateWithDuration:0.3f animations:^{
-            controller.view.alpha = 0.0f;
-        } completion:^(BOOL finished) {
-            [controller.view removeFromSuperview];
-        }];
-        [controller removeFromParentViewController];
-    }
-    [paperCellControllers removeAllObjects];
-}
-
 -(void) refreshPaperList
 {
-    [self removeAllPaperViews];
-    
     id failureBlock = ^(NSError *error) {
         [[[UIAlertViewBlock alloc] initWithTitle:@"경고"
                                          message:@"서버로부터 페이퍼 리스트를 받아오는데 실패했습니다"
@@ -67,58 +68,34 @@
     User* currentUser = [[FlowithAgent sharedAgent] getCurrentUser];
     
     [currentUser getParticipaitingPapers:^(NSArray *papers) {
-        [self createPaperViewsFromArray:papers];
+        [_participatingPaperList setPapers:papers];
+        [[_participatingPaperList tableView] reloadData];
     } failure:failureBlock];
-    
+    [currentUser getSendedPapers:^(NSArray *papers) {
+        [_sendedPaperList setPapers:papers];
+        [[_sendedPaperList tableView] reloadData];
+    } failure:failureBlock];
     [currentUser getReceivedPapers:^(NSArray *papers) {
-        [self createReceivedPapers:papers];
+        [_receivedPaperList setPapers:papers];
+        [[_receivedPaperList tableView] reloadData];
     } failure:failureBlock];
 }
 
-- (void)createPaperViewsFromArray:(NSArray *)papers
+- (void)selectTab:(NSInteger) index
 {
-    int topBorder    = 21;
-    int heightMargin = 13;
-    int index        = 0;
-    float cellContainerWidth = self.paperScrollView.frame.size.width;
-    for(RollingPaper* paper in papers){
-        PaperCellController* cellController = [[PaperCellController alloc] initWithEntity:paper
-                                                                                 delegate:self];
-        float viewHeight = cellController.view.frame.size.height;
-        float viewWidth  = cellController.view.frame.size.width;
-        UIViewSetOrigin(cellController.view, CGPointMake(cellContainerWidth/2 - viewWidth/2,
-                                                         topBorder +  (heightMargin + viewHeight) * index++));
-        [paperCellControllers addObject:cellController];
-
-        [self addChildViewController:cellController];
-        [self.paperScrollView addSubview:cellController.view];
-        self.paperScrollView.contentSize = CGSizeMake(self.paperScrollView.frame.size.width * 2,
-                                                      topBorder + (heightMargin + viewHeight) * index);
-    }
+    [_paperScrollView setContentOffset:CGPointMake([_paperScrollView getWidth] * index, 0)
+                              animated:YES];
 }
 
-- (void)createReceivedPapers:(NSArray *)papers
-{
-    int topBorder    = 21;
-    int heightMargin = 13;
-    int index        = 0;
-    float cellContainerWidth = self.paperScrollView.frame.size.width;
-    for(RollingPaper* paper in papers){
-        PaperCellController* cellController = [[PaperCellController alloc] initWithEntity:paper
-                                                                                 delegate:self];
-        float viewHeight = cellController.view.frame.size.height;
-        float viewWidth  = cellController.view.frame.size.width;
-        UIViewSetOrigin(cellController.view, CGPointMake(cellContainerWidth/2 - viewWidth/2 + _paperScrollView.frame.size.width,
-                                                         topBorder +  (heightMargin + viewHeight) * index++));
-        [paperCellControllers addObject:cellController];
-        
-        [self addChildViewController:cellController];
-        [self.paperScrollView addSubview:cellController.view];
-        self.paperScrollView.contentSize = CGSizeMake(self.paperScrollView.frame.size.width * 2,
-                                                      topBorder + (heightMargin + viewHeight) * index);
+- (IBAction)onTouchTabButton:(UIButton *)sender {
+    if (sender == _participatingTabButton) {
+        [self selectTab:0];
+    } else if (sender == _receivedTabButton) {
+        [self selectTab:1];
+    } else if (sender == _sendedTabButton) {
+        [self selectTab:2];
     }
 }
-
 - (void) viewWillAppear:(BOOL)animated
 {
     [self.navigationController setNavigationBarHidden:FALSE
@@ -131,16 +108,16 @@
          forControlEvents:UIControlEventTouchUpInside];
     
     UIBarButtonItem* rightBarButton = [[UIBarButtonItem alloc]initWithCustomView:plusButton];
-    [self.navigationItem setRightBarButtonItem:rightBarButton
-                                     animated:TRUE];
-
+    [[self navigationItem] setRightBarButtonItem:rightBarButton
+                                        animated:TRUE];
     UIButton* profileImageView = [UIButton buttonWithType:UIButtonTypeCustom];
     profileImageView.frame = CGRectMake(0, 0, 24,24);
     UIBarButtonItem* leftBarButton = [[UIBarButtonItem alloc]initWithCustomView:profileImageView];
     [profileImageView addTarget:self action:@selector(onTouchProfile:)
                forControlEvents:UIControlEventTouchUpInside];
-    [self.navigationItem setLeftBarButtonItem:leftBarButton
-                                     animated:TRUE];
+    [[self navigationItem] setLeftBarButtonItem:leftBarButton
+                                       animated:TRUE];
+    
     [[[UIImageView alloc]init]setImageWithURL:[[User currentUser] picture]
     success:^(BOOL isCached, UIImage *image) {
         [profileImageView setImage:image forState:UIControlStateNormal];
@@ -150,18 +127,6 @@
         
     }];
     [self refreshPaperList];
-}
-
-- (void)PaperCellTouched:(PaperCellController *)paper
-{
-    PaperViewController *paperViewController = [[PaperViewController alloc] initWithEntity:paper.entity];
-    [self.navigationController pushViewController:paperViewController animated:TRUE];
-}
-- (void)paperCellSettingTouched:(PaperCellController *)paper
-{
-    RollingPaperCreator *paperSettingView = [[RollingPaperCreator alloc] initForEditing:paper.entity];
-    [self.navigationController pushViewController : paperSettingView
-                                         animated : TRUE];
 }
 
 - (IBAction)onTouchAddPaper:(id)sender
@@ -206,5 +171,17 @@
 - (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
 {
     return UIInterfaceOrientationPortrait;
+}
+
+- (void)paperListViewController:(PaperListViewController *)controller backgroundToched:(RollingPaper *)paper
+{
+    
+}
+- (void)paperListViewController:(PaperListViewController *)controller settingTouched:(RollingPaper *)paper
+{
+    RollingPaperCreator* paperSettingView = [[RollingPaperCreator alloc] initForEditing:paper];
+    [self.navigationController pushViewController:paperSettingView
+                                         animated:TRUE];
+
 }
 @end

@@ -22,6 +22,7 @@ describe(@"RollingPaper", ^{
                     @"receive_time" : @"receive time",
                     @"background":@"background url",
                     @"friend_facebook_id":@"facebook id",
+                    @"recipient_name" : @"Sean Moon",
                     @"participants":@[
                         @{@"id" : @(1),
                           @"username": @"Sanghyun Lee",
@@ -50,7 +51,8 @@ describe(@"RollingPaper", ^{
             [model background] should equal(@"background url");
             [model receive_time] should equal(@"receive time");
             [model friend_facebook_id] should equal(@"facebook id");
-
+            [model recipient_name] should equal(@"Sean Moon");
+            
             [[model participants] count] should equal(2);
             [[model participants][0] id] should equal(@(1));
             [[model participants][0] username] should equal(@"Sanghyun Lee");
@@ -79,6 +81,7 @@ describe(@"RollingPaper", ^{
                                               @"receive_time" : @"receive time",
                                               @"background":@"background url",
                                               @"friend_facebook_id":@"facebook id",
+                                              @"recipient_name" : @"Sean Moon"
                                               });
         });
         it(@"should be serialized include id",^{
@@ -92,6 +95,7 @@ describe(@"RollingPaper", ^{
                                               @"receive_time" : @"receive time",
                                               @"background":@"background url",
                                               @"friend_facebook_id":@"facebook id",
+                                              @"recipient_name" : @"Sean Moon"
                                               });
         });
 

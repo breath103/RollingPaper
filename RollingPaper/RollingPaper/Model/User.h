@@ -13,16 +13,20 @@
 @end
 
 @interface User (Networking)
-+ (User *)currentUser;
-- (void)getParticipaitingPapers:(void (^)(NSArray *papers)) callback
-                        failure:(void (^)(NSError *error)) failure;
-- (void)getReceivedPapers:(void (^)(NSArray *papers)) callback
-                  failure:(void (^)(NSError *error)) failure;
-- (void)inviteFriends:(NSArray *)facebook_friends
-              toPaper:(RollingPaper *)paper
-              success:(void (^)()) callback
-              failure:(void (^)(NSError *error)) failure;
-- (void)setAPNKey:(NSString *)key
-          success:(void (^)()) success
-          failure:(void (^)(NSError *error)) failure;
++(User *)currentUser;
+-(void)getParticipaitingPapers:(void (^)(NSArray *papers)) callback
+                       failure:(void (^)(NSError *error)) failure;
+-(void)getReceivedPapers:(void (^)(NSArray *papers)) callback
+                 failure:(void (^)(NSError *error)) failure;
+-(void)getSendedPapers:(void (^)(NSArray *papers)) callback
+                failure:(void (^)(NSError *error)) failure;
+-(void)getNotifications:(void (^)(NSArray *notifications)) callback
+                failure:(void (^)(NSError *error)) failure;
+-(void)inviteFriends:(NSArray *)facebook_friends
+             toPaper:(RollingPaper *)paper
+             success:(void (^)()) callback
+             failure:(void (^)(NSError *error)) failure;
+-(void)setAPNKey:(NSString *)key
+         success:(void (^)()) success
+         failure:(void (^)(NSError *error)) failure;
 @end

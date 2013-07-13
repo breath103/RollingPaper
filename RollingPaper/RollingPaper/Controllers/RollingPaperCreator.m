@@ -12,6 +12,7 @@
 #import "PaperParticipantsListController.h"
 #import "UIImageView+Vingle.h"
 #import "UserTableViewController.h"
+#import "NSString+Vingle.h"
 
 @implementation RollingPaperCreator
 - (id)initForCreating
@@ -122,11 +123,11 @@
 }
 
 - (void)viewDidUnload {
-    [self setTitleText :nil];
-    [self setEmailInput :nil];
-    [self setNoticeInput :nil];
-    [self setReceiverName :nil];
-    [self setReceiveTime :nil];
+    [self setTitleText:nil];
+    [self setEmailInput:nil];
+    [self setNoticeInput:nil];
+    [self setReceiverName:nil];
+    [self setReceiveTime:nil];
     [self setDatePicker:nil];
     [self setReceiveTime:nil];
     [self setReceiveDate:nil];
@@ -228,7 +229,7 @@
         _titleText.text    = _entity.title;
         _noticeInput.text  = _entity.notice;
     
-        NSDate* receiveDate = [NSDate dateWithTimeIntervalSince1970:[[[NSNumberFormatter new]numberFromString:[_entity receive_time]] longLongValue] ];
+        NSDate* receiveDate = [[_entity receive_time] toDefaultDate];
         _receiveDate.text = [self dateToString:receiveDate];
         _receiveTime.text = [self timeToString:receiveDate];
         [self setSelectedBackgroundName:[_entity background]];
@@ -257,7 +258,7 @@
     return YES;
 }
 - (IBAction)onTouchPrevious:(id)sender {
-    if(self.controllerType == PAPER_CONTROLLER_TYPE_EDITING_CREATOR){
+    if([self controllerType] == PAPER_CONTROLLER_TYPE_EDITING_CREATOR){
         [self syncViewToPaper];
         [_entity saveToServer:^{
             [[self navigationController] popViewControllerAnimated:YES];
@@ -460,6 +461,7 @@
     }];
     _receiverName.text = user.name;
     _entity.friend_facebook_id = user.id;
+    _entity.recipient_name     = user.name;
 }
 
 

@@ -2,6 +2,14 @@
 #import "RollingPaper.h"
 
 
+//@implementation NSNull (FF)
+//- (NSInteger)length
+//{
+//    return 0;
+//}
+//
+//@end
+
 @implementation Content
 
 - (void)setAttributesWithDictionary:(NSDictionary *)dictionary

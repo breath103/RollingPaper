@@ -1,5 +1,5 @@
 #import "LoginViewController.h"
-#import "RollingPaperListController.h"
+#import "MainPaperViewController.h"
 #import <FacebookSDK/FacebookSDK.h>
 #import <JSONKit.h>
 #import "FlowithAgent.h"
@@ -40,7 +40,7 @@
             success:^(NSDictionary *user) {
                 [MBProgressHUD hideAllHUDsForView:[self view] animated:YES];
                 [[FlowithAgent sharedAgent] setUserInfo:user];
-                RollingPaperListController* controller = [[RollingPaperListController alloc] init];
+                MainPaperViewController* controller = [[MainPaperViewController alloc] init];
                 [[self navigationController] setViewControllers:@[controller] animated:YES];
             } failure:^(NSError *error) {
                 [MBProgressHUD hideAllHUDsForView:[self view] animated:YES];

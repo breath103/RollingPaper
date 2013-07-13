@@ -1,4 +1,5 @@
 #import "Invitation.h"
+#import "FlowithAgent.h"
 
 @implementation Invitation
 
@@ -12,6 +13,33 @@
     _receiverPicture = dictionary[@"receiver_picture"];
     _createdAt = dictionary[@"created_at"];
     _updatedAt = dictionary[@"updated_at"];
+}
+
+@end
+
+@implementation Invitation (Networking)
+
+- (void)accept:(void(^)()) success
+       failure:(void(^)(NSError* error)) failure
+{
+    [[FlowithAgent sharedAgent] postPath:[NSString stringWithFormat:@"invitations/%d/accept.json",_id.integerValue]
+    parameters:@{}
+    success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        success();
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        failure(error);
+    }];
+}
+- (void)reject:(void(^)()) success
+       failure:(void(^)(NSError* error)) failure
+{
+    [[FlowithAgent sharedAgent] deletePath:[NSString stringWithFormat:@"invitations/%d/reject.json",_id.integerValue]
+    parameters:@{}
+    success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        success();
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        failure(error);
+    }];
 }
 
 @end

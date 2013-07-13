@@ -2,7 +2,7 @@
 #import <FacebookSDK/FacebookSDK.h>
 #import "RollingPaper.h"
 #import "FBFriendSearchPickerController.h"
-#import "RollingPaperListController.h"
+#import "MainPaperViewController.h"
 #import "PaperBackgroundPicker.h"
 #import "PaperParticipantsListController.h"
 

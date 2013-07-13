@@ -32,4 +32,17 @@
                                                                (CFStringRef)@"!*'\"();:@&=+$,/?%#[]% ",
                                                                CFStringConvertNSStringEncodingToEncoding(encoding)));
 }
+
+- (NSDate *) toDefaultDate
+{
+    NSDateFormatter *inFormat = [[NSDateFormatter alloc] init];
+    [inFormat setCalendar:[NSCalendar currentCalendar]];
+    [inFormat setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
+    [inFormat setDateFormat:@"yyyy-MM-dd HH:mm:ss"];// H:M:SZ"];
+    return [inFormat dateFromString:self];
+}
+- (NSInteger) toUnixTimestamp
+{
+    return [[self toDefaultDate] timeIntervalSince1970];
+}
 @end

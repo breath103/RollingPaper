@@ -17,7 +17,7 @@
 #import "RollingPaperCreator.h"
 #import "UIAlertViewBlockDelegate.h"
 #import "UIImageView+Vingle.h"
-
+#import "PaperSettingsViewController.h"
 
 #define BORDER_WIDTH (2.0f)
 #define BORDER_COLOR [UIColor colorWithPatternImage:[UIImage imageNamed:@"content_selectborder.png"]]
@@ -147,9 +147,9 @@
 {
     [[self navigationController] setNavigationBarHidden:TRUE
                                                animated:TRUE];
-    UIViewSetHeight(self.dockController.view, self.view.bounds.size.height);
+    [self.dockController.view setHeight:[self.view getHeight]];
 }
-
+ 
 
 
 -(void)viewDidLoad
@@ -480,7 +480,7 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer : (UIGestureRecognizer *)othe
             AlbumController* albumController = [[AlbumController alloc]initWithDelegate:self];
             [self addChildViewController:albumController];
             [self.view addSubview:albumController.view];
-            UIViewSetHeight(albumController.view, self.view.frame.size.height);
+            [albumController.view setHeight:[self.view getHeight]];
             [albumController.view layoutSubviews];
             
             self.currentEditingViewController = albumController;
@@ -489,10 +489,10 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer : (UIGestureRecognizer *)othe
             TypewriterController* typewriterController = [[TypewriterController alloc]initWithDelegate:self];
             [self addChildViewController:typewriterController];
             [self.view addSubview:typewriterController.view];
-            UIViewSetHeight(typewriterController.view, self.view.frame.size.height);
+            [typewriterController.view setHeight:self.view.frame.size.height];
             [typewriterController.view layoutSubviews];
             
-            UIViewSetY(typewriterController.view, self.view.frame.size.height);
+            [typewriterController.view setTop:self.view.frame.size.height];
             [UIView animateWithDuration:0.3f animations:^{
                 UIViewSetY(typewriterController.view, 0);
             } completion:^(BOOL finished) {
@@ -525,6 +525,8 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer : (UIGestureRecognizer *)othe
             self.currentEditingViewController = pencilcaseController;
         }break;
         case DockMenuTypeSetting : {
+//            PaperSettingsViewController *settingsViewController = [[PaperSettingsViewController alloc]initWithPaper:[self entity]];
+//            [[self navigationController] pushViewController:settingsViewController animated:YES];
             RollingPaperCreator* paperSettingView = [[RollingPaperCreator alloc] initForEditing:self.entity];
             [self.navigationController pushViewController:paperSettingView
                                                  animated:TRUE];

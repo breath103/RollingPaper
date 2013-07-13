@@ -43,7 +43,7 @@ void 	UIViewSetX(UIView* view, int x);
 void 	UIViewSetY(UIView* view, int y);
 void 	UIViewSetOrigin(UIView* view, CGPoint origin);
 void 	UIViewSetWidth(UIView* view, int width);
-void 	UIViewSetHeight(UIView* view, int height);
+void 	UIViewSetHeight(UIView* view, int hseight);
 void 	UIViewSetSize(UIView* view, CGSize size);
 void    ShowAlertView(NSString* title,NSString* message,NSString* button1,NSString* button2);
 

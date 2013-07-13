@@ -19,6 +19,7 @@
     self.background         = d[@"background"];
     self.receive_time       = d[@"receive_time"];
     self.friend_facebook_id = d[@"friend_facebook_id"];
+    self.recipient_name     = d[@"recipient_name"];
     _createdAt = d[@"created_at"];
     _updatedAt = d[@"updated_at"];
     
@@ -36,6 +37,7 @@
                                        @"notice"             : self.notice,
                                        @"background"         : self.background,
                                        @"friend_facebook_id" : self.friend_facebook_id,
+                                       @"recipient_name"     : self.recipient_name,
                                        @"receive_time"       : self.receive_time,
                                        }];
     if (_id)

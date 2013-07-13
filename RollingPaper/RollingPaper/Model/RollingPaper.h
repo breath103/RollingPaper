@@ -12,6 +12,7 @@
 @property (nonatomic, strong) NSString *notice;
 @property (nonatomic, strong) NSString *background;
 @property (nonatomic, strong) NSString *friend_facebook_id;
+@property (nonatomic, strong) NSString *recipient_name;
 @property (nonatomic, strong) NSString *receive_time;
 @property (nonatomic, strong) NSString *title;
 @property (nonatomic, strong) NSNumber *is_new;
@@ -25,11 +26,11 @@
 
 
 @interface RollingPaper (NetworkingHelper)
--(void) getContents:(void (^)(NSArray* imageContents,NSArray* soundContents))success
+- (void)getContents:(void (^)(NSArray* imageContents,NSArray* soundContents))success
             failure:(void (^)(NSError *))failure;
 - (void)saveToServer:(void(^)()) success
              failure:(void(^)(NSError* error)) failure;
-- (NSString*) webViewURL;
+- (NSString *)webViewURL;
 - (void)presentFacebookDialog;
 @end
 

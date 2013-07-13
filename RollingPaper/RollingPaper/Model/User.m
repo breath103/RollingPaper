@@ -1,10 +1,10 @@
 #import "User.h"
 #import "FlowithAgent.h"
 #import "RollingPaper.h"
-
+#import "Notification.h"
 
 @implementation User
-- (void)setAttributesWithDictionary:(NSDictionary *) d
+- (void)setAttributesWithDictionary:(NSDictionary *)d
 {
     _birthday             = [d objectForKey:@"birthday"];
     _email                = [d objectForKey:@"email"];
@@ -58,6 +58,19 @@
     }];
 }
 
+-(void) getSendedPapers : (void (^)(NSArray *papers)) callback
+                failure : (void (^)(NSError *error)) failure
+{
+    [[FlowithAgent sharedAgent] getPath:[NSString stringWithFormat:@"users/%d/sended_papers.json",_id.integerValue]
+                             parameters:@{}
+                                success:^(AFHTTPRequestOperation *operation, NSArray *papers) {
+                                    callback([RollingPaper fromArray:papers]);
+                                } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                    failure(error);
+                                }];
+}
+
+
 - (void)getReceivedPapers:(void (^)(NSArray *papers)) callback
                   failure:(void (^)(NSError *error)) failure
 {
@@ -65,6 +78,18 @@
     parameters:@{}
     success:^(AFHTTPRequestOperation *operation, NSArray *papers) {
         callback([RollingPaper fromArray:papers]);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        failure(error);
+    }];
+}
+
+- (void)getNotifications:(void (^)(NSArray *notifications)) callback
+                 failure:(void (^)(NSError *error)) failure
+{
+    [[FlowithAgent sharedAgent] getPath:[NSString stringWithFormat:@"users/%d/notifications",_id.integerValue]
+    parameters:@{}
+    success:^(AFHTTPRequestOperation *operation, NSArray *papers) {
+        callback([Notification fromArray:papers]);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         failure(error);
     }];
@@ -83,9 +108,7 @@
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         failure(error);
     }];
-
 }
-
 @end
 
 

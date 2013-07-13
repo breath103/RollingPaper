@@ -2,7 +2,7 @@
 
 #import "SplashViewController.h"
 #import <FacebookSDK/FacebookSDK.h>
-#import "RollingPaperListController.h"
+#import "MainPaperViewController.h"
 #import "User.h"
 
 @implementation AppDelegate
