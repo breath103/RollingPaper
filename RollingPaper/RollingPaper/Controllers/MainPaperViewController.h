@@ -24,5 +24,6 @@
 - (IBAction)onTouchProfile:(id)sender;
 - (void) refreshPaperList;
 - (IBAction)onTouchTabButton:(id)sender;
+- (IBAction)onTouchNotificationsButton:(id)sender;
 
 @end

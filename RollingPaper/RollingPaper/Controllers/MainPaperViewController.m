@@ -12,6 +12,7 @@
 #import "LoginViewController.h"
 #import "User.h"
 #import "UIImageView+Vingle.h"
+#import "NotificationsViewController.h"
 
 @implementation MainPaperViewController
 
@@ -72,10 +73,12 @@
         [_participatingPaperList setPapers:papers];
         [[_participatingPaperList tableView] reloadData];
     } failure:failureBlock];
+    
     [currentUser getSendedPapers:^(NSArray *papers) {
         [_sendedPaperList setPapers:papers];
         [[_sendedPaperList tableView] reloadData];
     } failure:failureBlock];
+    
     [currentUser getReceivedPapers:^(NSArray *papers) {
         [_receivedPaperList setPapers:papers];
         [[_receivedPaperList tableView] reloadData];
@@ -147,6 +150,12 @@
     UserSettingViewController* settingViewController = [[UserSettingViewController alloc] init];
     [self.navigationController pushViewController:settingViewController
                                          animated:TRUE];
+}
+
+- (IBAction)onTouchNotificationsButton:(id)sender
+{
+    NotificationsViewController *controller = [[NotificationsViewController alloc]init];
+    [[self navigationController] pushViewController:controller animated:YES];
 }
 
 

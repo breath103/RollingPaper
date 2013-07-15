@@ -86,7 +86,7 @@
 - (void)getNotifications:(void (^)(NSArray *notifications)) callback
                  failure:(void (^)(NSError *error)) failure
 {
-    [[FlowithAgent sharedAgent] getPath:[NSString stringWithFormat:@"users/%d/notifications",_id.integerValue]
+    [[FlowithAgent sharedAgent] getPath:[NSString stringWithFormat:@"users/%d/notifications.json",_id.integerValue]
     parameters:@{}
     success:^(AFHTTPRequestOperation *operation, NSArray *papers) {
         callback([Notification fromArray:papers]);

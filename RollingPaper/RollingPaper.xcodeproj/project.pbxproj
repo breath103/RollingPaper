@@ -13,6 +13,7 @@
 		0702046816DA74A9006BA90A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0702046616DA74A9006BA90A /* InfoPlist.strings */; };
 		0702046A16DA74A9006BA90A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0702046916DA74A9006BA90A /* main.m */; };
 		07081EF2165FB5B8005670B5 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07081EF1165FB5B8005670B5 /* QuartzCore.framework */; };
+		071C5235179415EF00042206 /* NotificationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 071C5234179415EF00042206 /* NotificationSpec.mm */; };
 		072B1E7917802AAD00628590 /* ImageContentSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 072B1E7817802AAD00628590 /* ImageContentSpec.mm */; };
 		0739C9AE177F52DB002B0890 /* RollingPaperSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0739C9AD177F52DB002B0890 /* RollingPaperSpec.mm */; };
 		0739C9AF177F5325002B0890 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 073CB53616D92767000EAFDD /* Accounts.framework */; };
@@ -587,6 +588,7 @@
 		0702046916DA74A9006BA90A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0702046B16DA74A9006BA90A /* Specs-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Specs-Prefix.pch"; sourceTree = "<group>"; };
 		07081EF1165FB5B8005670B5 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		071C5234179415EF00042206 /* NotificationSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NotificationSpec.mm; sourceTree = "<group>"; };
 		072B1E7817802AAD00628590 /* ImageContentSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ImageContentSpec.mm; sourceTree = "<group>"; };
 		0739C9AD177F52DB002B0890 /* RollingPaperSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RollingPaperSpec.mm; sourceTree = "<group>"; };
 		0739C9BC177F5407002B0890 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -1085,6 +1087,7 @@
 				A5A9AC951780B17E007044F7 /* SoundContentSpec.mm */,
 				A56DE71D17831CC900F3AD96 /* UserSpec.mm */,
 				07D11235178B138D006057C5 /* InvitationSpec.mm */,
+				071C5234179415EF00042206 /* NotificationSpec.mm */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -2293,6 +2296,7 @@
 				0762F5221790905B0028C6DB /* PaperListViewController.m in Sources */,
 				0762F526179091590028C6DB /* PaperTableViewCell.m in Sources */,
 				0762F52C1791201F0028C6DB /* NSString+VingleSpec.mm in Sources */,
+				071C5235179415EF00042206 /* NotificationSpec.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
