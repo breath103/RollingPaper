@@ -27,8 +27,13 @@ static NSString * const NotificationCellIdentifier = @"NotificationCellIdentifie
     [super viewDidLoad];
     [[self tableView] registerNib:[UINib nibWithNibName:@"NotificationCell" bundle:nil]
            forCellReuseIdentifier:NotificationCellIdentifier];
+    [[self tableView] setBackgroundView:[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"alert_img_background"]]];
+    UIRefreshControl *refreshControl = [[UIRefreshControl alloc]init];
+    [self setRefreshControl:refreshControl];
+    
     [self loadItems];
 }
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -131,6 +136,12 @@ static NSString * const NotificationCellIdentifier = @"NotificationCellIdentifie
     } else {
         
     }
+}
+
+#pragma mark NotifcationCellDelegate
+- (void)notificationCell:(NotificationCell *)cell touchDetailButton:(UIButton *)button
+{
+    
 }
 
 @end
