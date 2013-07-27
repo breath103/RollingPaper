@@ -22,6 +22,7 @@ describe(@"RollingPaper", ^{
                     @"receive_time" : @"receive time",
                     @"background":@"background url",
                     @"friend_facebook_id":@"facebook id",
+                    @"thumbnail" : @"thumbnail url",
                     @"recipient_name" : @"Sean Moon",
                     @"participants":@[
                         @{@"id" : @(1),
@@ -48,10 +49,12 @@ describe(@"RollingPaper", ^{
             [model notice] should equal(@"paper notice");
             [model width] should equal(@(1000));
             [model height] should equal(@(500));
+            [model thumbnail] should equal(@"thumbnail url");
             [model background] should equal(@"background url");
             [model receive_time] should equal(@"receive time");
             [model friend_facebook_id] should equal(@"facebook id");
             [model recipient_name] should equal(@"Sean Moon");
+            
             
             [[model participants] count] should equal(2);
             [[model participants][0] id] should equal(@(1));

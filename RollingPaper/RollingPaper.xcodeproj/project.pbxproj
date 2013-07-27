@@ -12,6 +12,9 @@
 		0702046216DA74A9006BA90A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0778B7F3163B7C4E0026B99A /* CoreGraphics.framework */; };
 		0702046816DA74A9006BA90A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0702046616DA74A9006BA90A /* InfoPlist.strings */; };
 		0702046A16DA74A9006BA90A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0702046916DA74A9006BA90A /* main.m */; };
+		07051579179852FF003EE091 /* NSDate+Vingle.m in Sources */ = {isa = PBXBuildFile; fileRef = 07051578179852FF003EE091 /* NSDate+Vingle.m */; };
+		0705157A179852FF003EE091 /* NSDate+Vingle.m in Sources */ = {isa = PBXBuildFile; fileRef = 07051578179852FF003EE091 /* NSDate+Vingle.m */; };
+		0705157C1798536E003EE091 /* NSDate+VingleSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0705157B1798536E003EE091 /* NSDate+VingleSpec.mm */; };
 		07081EF2165FB5B8005670B5 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07081EF1165FB5B8005670B5 /* QuartzCore.framework */; };
 		071C5235179415EF00042206 /* NotificationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 071C5234179415EF00042206 /* NotificationSpec.mm */; };
 		071C52371794523B00042206 /* alert_btn_right arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 071C52361794523B00042206 /* alert_btn_right arrow.png */; };
@@ -595,6 +598,9 @@
 		0702046716DA74A9006BA90A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		0702046916DA74A9006BA90A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0702046B16DA74A9006BA90A /* Specs-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Specs-Prefix.pch"; sourceTree = "<group>"; };
+		07051577179852FF003EE091 /* NSDate+Vingle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+Vingle.h"; sourceTree = "<group>"; };
+		07051578179852FF003EE091 /* NSDate+Vingle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Vingle.m"; sourceTree = "<group>"; };
+		0705157B1798536E003EE091 /* NSDate+VingleSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSDate+VingleSpec.mm"; sourceTree = SOURCE_ROOT; };
 		07081EF1165FB5B8005670B5 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		071C5234179415EF00042206 /* NotificationSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NotificationSpec.mm; sourceTree = "<group>"; };
 		071C52361794523B00042206 /* alert_btn_right arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "alert_btn_right arrow.png"; sourceTree = "<group>"; };
@@ -1087,6 +1093,7 @@
 			isa = PBXGroup;
 			children = (
 				0762F52B1791201F0028C6DB /* NSString+VingleSpec.mm */,
+				0705157B1798536E003EE091 /* NSDate+VingleSpec.mm */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1269,6 +1276,8 @@
 				076946A4179056AC00575048 /* UIView+VerticalLayout.m */,
 				076946A5179056AC00575048 /* UIView+Vingle.h */,
 				076946A6179056AC00575048 /* UIView+Vingle.m */,
+				07051577179852FF003EE091 /* NSDate+Vingle.h */,
+				07051578179852FF003EE091 /* NSDate+Vingle.m */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -2321,6 +2330,8 @@
 				0762F526179091590028C6DB /* PaperTableViewCell.m in Sources */,
 				0762F52C1791201F0028C6DB /* NSString+VingleSpec.mm in Sources */,
 				071C5235179415EF00042206 /* NotificationSpec.mm in Sources */,
+				0705157A179852FF003EE091 /* NSDate+Vingle.m in Sources */,
+				0705157C1798536E003EE091 /* NSDate+VingleSpec.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2407,6 +2418,7 @@
 				076947B017905DD300575048 /* PaperSettingsViewController.m in Sources */,
 				0762F5211790905B0028C6DB /* PaperListViewController.m in Sources */,
 				0762F525179091590028C6DB /* PaperTableViewCell.m in Sources */,
+				07051579179852FF003EE091 /* NSDate+Vingle.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2603,8 +2615,8 @@
 					"\"$(SRCROOT)/RollingPaper/TestFlightSDK1.1\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "5569E071-AA1E-4FB0-B3D1-F6577E7FCE18";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "5569E071-AA1E-4FB0-B3D1-F6577E7FCE18";
+				PROVISIONING_PROFILE = "04824CF1-FDD8-43A3-890D-D4B0CC10ED5D";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "04824CF1-FDD8-43A3-890D-D4B0CC10ED5D";
 				SDKROOT = iphoneos;
 				TEST_AFTER_BUILD = NO;
 				VALIDATE_PRODUCT = YES;
@@ -2639,8 +2651,8 @@
 					"\"$(SRCROOT)/RollingPaper/TestFlightSDK1.1\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "5569E071-AA1E-4FB0-B3D1-F6577E7FCE18";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "5569E071-AA1E-4FB0-B3D1-F6577E7FCE18";
+				PROVISIONING_PROFILE = "04824CF1-FDD8-43A3-890D-D4B0CC10ED5D";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "04824CF1-FDD8-43A3-890D-D4B0CC10ED5D";
 				SDKROOT = iphoneos;
 				TEST_AFTER_BUILD = NO;
 				VALIDATE_PRODUCT = YES;

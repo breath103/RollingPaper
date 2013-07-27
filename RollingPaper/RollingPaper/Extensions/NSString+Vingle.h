@@ -4,6 +4,6 @@
 - (NSString *)stringByAddingInteger:(NSInteger)aInteger;
 - (NSString *)timeAgoInWordsFromTimestamp;
 - (NSString *)urlEncodeUsingEncoding:(NSStringEncoding)encoding;
-- (NSDate *) toDefaultDate;
+- (NSDate *) toUTCDate;
 - (NSInteger)toUnixTimestamp;
 @end

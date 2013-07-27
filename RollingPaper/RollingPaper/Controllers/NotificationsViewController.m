@@ -1,4 +1,4 @@
- #import "NotificationsViewController.h"
+#import "NotificationsViewController.h"
 #import "LoadingTableViewCell.h"
 #import "UIView+VerticalLayout.h"
 #import "User.h"
@@ -27,7 +27,16 @@ static NSString * const NotificationCellIdentifier = @"NotificationCellIdentifie
     [super viewDidLoad];
     [[self tableView] registerNib:[UINib nibWithNibName:@"NotificationCell" bundle:nil]
            forCellReuseIdentifier:NotificationCellIdentifier];
-    [[self tableView] setBackgroundView:[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"alert_img_background"]]];
+    UIView *overlayWhite = [[UIView alloc]initWithFrame:CGRectMake(0, -1000, [[self tableView] getWidth], 1000)];
+    UIImageView *line = [[UIImageView alloc]initWithFrame:CGRectMake(0, 1000, [[self tableView] getWidth], 3)];
+    [line setImage:[UIImage imageNamed:@"alert_img_line"]];
+    [overlayWhite addSubview:line];
+    
+    [overlayWhite setBackgroundColor:UIColorWA(255, 0.4)];
+    [[self tableView] addSubview:overlayWhite];
+    [[self tableView] setContentInset:UIEdgeInsetsMake(1, 0, 0, 0)];
+    [[self tableView] setBackgroundView:[[UIImageView alloc]initWithImage:[UIImage  
+imageNamed:@"alert_img_background"]]];
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc]init];
     [self setRefreshControl:refreshControl];
     
@@ -37,13 +46,13 @@ static NSString * const NotificationCellIdentifier = @"NotificationCellIdentifie
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-//    [[self navigationController] setNavigationBarHidden:YES];
 }
 
 - (void)loadItems
 {
     if ([self isInLoading]) return;
     [self setInLoading:YES];
+    
     User *user = [User currentUser];
     [user getNotifications:^(NSArray *notifications) {
         [self setItems:notifications];
@@ -89,14 +98,6 @@ static NSString * const NotificationCellIdentifier = @"NotificationCellIdentifie
     return 0;
 }
 
-//- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    if (indexPath.section == 1){
-//        return 32.0f;
-//    }
-//    return 0;
-//}
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 1){
@@ -111,6 +112,8 @@ static NSString * const NotificationCellIdentifier = @"NotificationCellIdentifie
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
     Notification *item = [self items][indexPath.row];
     if ([[item notificationType] isEqualToString:@"invitation_received"]) {
         [[[UIAlertViewBlock alloc]initWithTitle:@"확인"

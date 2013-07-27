@@ -10,7 +10,6 @@
     [_detailButton setHidden:YES];
 }
 - (IBAction)onTouchDetailButton:(id)sender {
-    [[self delegate] notificationCell:self
-                    touchDetailButton:sender];
+    [[self delegate] notificationCell:self touchDetailButton:sender];
 }
 @end

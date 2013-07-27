@@ -33,7 +33,7 @@
                                                                CFStringConvertNSStringEncodingToEncoding(encoding)));
 }
 
-- (NSDate *) toDefaultDate
+- (NSDate *) toUTCDate
 {
     NSDateFormatter *inFormat = [[NSDateFormatter alloc] init];
     [inFormat setCalendar:[NSCalendar currentCalendar]];
@@ -43,6 +43,6 @@
 }
 - (NSInteger) toUnixTimestamp
 {
-    return [[self toDefaultDate] timeIntervalSince1970];
+    return [[self toUTCDate] timeIntervalSince1970];
 }
 @end

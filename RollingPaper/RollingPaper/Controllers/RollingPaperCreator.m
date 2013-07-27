@@ -229,7 +229,7 @@
         _titleText.text    = _entity.title;
         _noticeInput.text  = _entity.notice;
     
-        NSDate* receiveDate = [[_entity receive_time] toDefaultDate];
+        NSDate* receiveDate = [[_entity receive_time] toUTCDate];
         _receiveDate.text = [self dateToString:receiveDate];
         _receiveTime.text = [self timeToString:receiveDate];
         [self setSelectedBackgroundName:[_entity background]];
@@ -442,7 +442,8 @@
     }
     return [[NSCalendar currentCalendar] dateFromComponents:fbBirthdayComponents];
 }
-- (NSString *)buildRequestDate {
+- (NSString *)buildRequestDate
+{
     return [NSString stringWithFormat:@"%@ %@",self.receiveDate.text,self.receiveTime.text];
 }
 

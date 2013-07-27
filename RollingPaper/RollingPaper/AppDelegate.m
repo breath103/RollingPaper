@@ -4,6 +4,8 @@
 #import <FacebookSDK/FacebookSDK.h>
 #import "MainPaperViewController.h"
 #import "User.h"
+#import "RollingPaper.h"
+#import "Notification.h"
 
 @implementation AppDelegate
 
@@ -28,7 +30,6 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions{
 //    [TestFlight setDeviceIdentifier:[[[UIDevice currentDevice] identifierForVendor] UUIDString]];
 //#endif
 //    [TestFlight takeOff:@"134d6c9817a6a69e9e1cf71568dfc69c_MTg3OTgzMjAxMy0wMi0xNiAwOTo1NDo1Mi4xNTg5MzA"];
-   
     [NSURLCache setSharedURLCache:[[NSURLCache alloc]initWithMemoryCapacity:1024*5
                                                                diskCapacity:1024*10
                                                                    diskPath:@"rollingpaper"]];
@@ -57,10 +58,26 @@ didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
 {
     NSLog(@"%@",userInfo);
     [[[UIAlertView alloc]initWithTitle:nil
-                               message:userInfo[@"aps"][@"alert"]
+                               message:[userInfo description]
                               delegate:nil
                      cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+    
+    Notification *notification = [Notification fromAPNDictionary:userInfo];
+    if ([[notification notificationType] isEqualToString:@"paper_needs_to_be_sended"]) {
+        RollingPaper *paper = [[RollingPaper alloc]init];
+        [paper setId:userInfo[@"source_id"]];
+        [paper reload:^{
+            [paper presentFacebookDialog];
+        } failure:^(NSError *error) {
+            [[[UIAlertView alloc]initWithTitle:nil
+                                       message:[error description]
+                                      delegate:nil
+                             cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
 
+        }];
+    } else {
+        
+    }
 }
 
 

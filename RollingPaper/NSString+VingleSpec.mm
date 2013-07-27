@@ -14,7 +14,11 @@ describe(@"NSString_Vingle", ^{
             [@"2013-07-12 16:53:19" toUnixTimestamp] should equal(1373647999);
         });
     });
-
+    describe(@"toUTCDate", ^{
+        it(@"should convert to date",^{
+            [[@"2013-07-19 10:00:03" toUTCDate] description] should equal(@"2013-07-19 10:00:03 +0000");
+        });
+    });
 });
 
 SPEC_END

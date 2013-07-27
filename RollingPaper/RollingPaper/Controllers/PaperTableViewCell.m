@@ -17,19 +17,20 @@
 - (void)setPaper:(RollingPaper *)paper
 {
     _paper = paper;
-    [_backgroundImage setImageWithURL:[paper background]
+    [_backgroundImage setImageWithURL:[paper thumbnail]
     withFadeIn:0.3f
     success:^(BOOL isCached, UIImage *image) {
-        _backgroundImage.image = nil;
-        _backgroundImage.backgroundColor = [UIColor colorWithPatternImage:image];
-//        UIImage* mask_image = [UIImage imageNamed:@"paper_cell_bg"];
-//        CGSize size = _backgroundImage.frame.size;
-//        CALayer *maskLayer = [CALayer layer];
-//        maskLayer.frame = CGRectMake(0,0,size.width,size.height);
-//        maskLayer.contents = (__bridge id)[mask_image CGImage];
-//        self.layer.mask = maskLayer;
-        [_backgroundImage setNeedsDisplay];
+//        _backgroundImage.image = nil;
+//        _backgroundImage.backgroundColor = [UIColor colorWithPatternImage:image];
+////        UIImage* mask_image = [UIImage imageNamed:@"paper_cell_bg"];
+////        CGSize size = _backgroundImage.frame.size;
+////        CALayer *maskLayer = [CALayer layer];
+////        maskLayer.frame = CGRectMake(0,0,size.width,size.height);
+////        maskLayer.contents = (__bridge id)[mask_image CGImage];
+////        self.layer.mask = maskLayer;
+//        [_backgroundImage setNeedsDisplay];
     } failure:^(NSError *error) {
+
     }];
     
     self.titleLabel.text = paper.title;
@@ -43,7 +44,7 @@
 }
 - (void) updateDDayLabelInTime{
     NSDate* currentDate = [NSDate date];
-    NSDate* receiveDate = [[_paper receive_time] toDefaultDate];
+    NSDate* receiveDate = [[_paper receive_time] toUTCDate];
     NSCalendar *sysCalendar = [NSCalendar currentCalendar];
     // Get conversion to months, days, hours, minutes
     unsigned int unitFlags = NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit | NSDayCalendarUnit;

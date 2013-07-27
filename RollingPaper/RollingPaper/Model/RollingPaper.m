@@ -20,6 +20,7 @@
     self.receive_time       = d[@"receive_time"];
     self.friend_facebook_id = d[@"friend_facebook_id"];
     self.recipient_name     = d[@"recipient_name"];
+    self.thumbnail          = d[@"thumbnail"];
     _createdAt = d[@"created_at"];
     _updatedAt = d[@"updated_at"];
     
@@ -80,6 +81,21 @@
         failure(error);
     }];
 }
+
+- (void)reload:(void(^)()) success
+       failure:(void(^)(NSError* error)) failure
+{
+    if ([self id]) {
+        [[FlowithAgent sharedAgent] getPath:[NSString stringWithFormat:@"papers/%d.json",[[self id] integerValue]]
+        parameters:@{}
+        success:^(AFHTTPRequestOperation *operation, NSDictionary* paper){
+            [self setAttributesWithDictionary:paper];
+            success();
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            failure(error);
+        }];
+    }
+}
 - (void)saveToServer:(void(^)()) success
              failure:(void(^)(NSError* error)) failure
 {
@@ -108,14 +124,16 @@
 }
 - (void)presentFacebookDialog
 {
+    NSDictionary *dict = @{
+                           @"name" : [self title],
+                           @"description" : [self notice],
+                           @"link" : [self webViewURL],
+                           @"picture" : @"https://photos-2.dropbox.com/t/0/AAD98gDYQvXuR5ilF9SDE_Gx3CdcRs35e6pAPueuGeB1tA/12/38281474/png/1024x768/3/1373061600/0/2/logo3.png/KCRsKl14p0JGsSEWdGh_5lz2zEWkzXqGmZhPnSXv8co",
+                           @"to" : [self friend_facebook_id]
+                           };
+    NSLog(@"%@",dict);
     [FBWebDialogs presentFeedDialogModallyWithSession:[FBSession activeSession]
-    parameters:@{
-     @"name" : [self title],
-     @"description" : [self notice],
-     @"link" : [self webViewURL],
-     @"picture" : @"https://photos-2.dropbox.com/t/0/AAD98gDYQvXuR5ilF9SDE_Gx3CdcRs35e6pAPueuGeB1tA/12/38281474/png/1024x768/3/1373061600/0/2/logo3.png/KCRsKl14p0JGsSEWdGh_5lz2zEWkzXqGmZhPnSXv8co",
-     @"to" : [self friend_facebook_id]
-     }
+    parameters:dict
     handler:^(FBWebDialogResult result, NSURL *resultURL, NSError *error) {
         NSLog(@"%@",resultURL);
     }];

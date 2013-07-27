@@ -12,4 +12,13 @@
     _sourceId = dictionary[@"source_id"];
 }
 
++ (Notification *)fromAPNDictionary:(NSDictionary *)dictionary
+{
+    Notification *notification = [[Notification alloc]init];
+    [notification setId:dictionary[@"id"]];
+    [notification setNotificationType:dictionary[@"type"]];
+    [notification setSourceId:dictionary[@"source_id"]];
+    return notification;
+}
+
 @end

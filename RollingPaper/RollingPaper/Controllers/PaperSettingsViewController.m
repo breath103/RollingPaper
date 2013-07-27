@@ -35,18 +35,16 @@
 
 - (void)setReceiveTime:(NSString *)receiveTime
 {
-    NSDate *date = [receiveTime toDefaultDate];
-    NSCalendar *calendar = [NSCalendar currentCalendar];
-    [calendar setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
-    NSInteger flag = NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit;
-    NSDateComponents *components = [calendar components:flag
-                                               fromDate:date];
-    [_receiveDateField setText:[NSString stringWithFormat:@"%d-%02d-%02d",components.year,components.month,components.day]];
-    [_receiveTimeField setText:[NSString stringWithFormat:@"%02d:%02d:%02d",components.hour,components.minute,components.second]];
+    NSDate *date = [[receiveTime toUTCDate] UTCTimeToLocalTime];
+    NSString *dateString = [date description];
+    [_receiveDateField setText:[dateString componentsSeparatedByString:@" "][0]];
+    [_receiveTimeField setText:[dateString componentsSeparatedByString:@" "][1]];
 }
 - (NSString *)receiveTime
 {
-    return [NSString stringWithFormat:@"%@ %@",[_receiveDateField text],[_receiveTimeField text]];
+    NSString* time = [NSString stringWithFormat:@"%@ %@",[_receiveDateField text],[_receiveTimeField text]];
+    NSDate * date = [[time toUTCDate] LocalTimeToUTCTime];
+    return [date description];
 }
 
 - (void)setPaper:(RollingPaper *)paper
@@ -54,12 +52,10 @@
     _paper = paper;
 //    id<FBGraphUser> user = @{@"id": paper.friend_facebook_id,@"name" : paper.recipient_name};
 //    [self setRecipient:user];
-    
     [_recipientNameField setText:[paper recipient_name]];
-
     [_titleField setText:[paper title]];
     [_noticeField setText:[paper notice]];
-    
+
     [self setBackground:[paper background]];
     [self setReceiveTime:[paper receive_time]];
 }
@@ -85,9 +81,6 @@
     [_paper setTitle:[_titleField text]];
     [_paper setNotice:[_noticeField text]];
     
-    //[_paper setFriend_facebook_id:[_recipient id]];
-    //[_paper setRecipient_name:[_recipient name]];
-    
     [_paper setBackground:[self background]];
     [_paper setReceive_time:[self receiveTime]];
     
@@ -99,8 +92,8 @@
 }
 
 - (IBAction)onTouchBackgroundButton:(id)sender {
-    PaperBackgroundPicker *picker = [[PaperBackgroundPicker alloc]initWithInitialBackgroundName:[self background]
-                                                                                       Delegate:self];
+    PaperBackgroundPicker *picker = [[PaperBackgroundPicker alloc] initWithInitialBackgroundName:[self background]
+                                                                                        Delegate:self];
     [self presentViewController:picker animated:YES completion:^{
         
     }];
