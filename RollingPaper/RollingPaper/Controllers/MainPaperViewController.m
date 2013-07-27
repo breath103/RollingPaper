@@ -13,6 +13,7 @@
 #import "User.h"
 #import "UIImageView+Vingle.h"
 #import "NotificationsViewController.h"
+#import "PaperSettingsViewController.h"
 
 @implementation MainPaperViewController
 
@@ -135,7 +136,7 @@
 
 - (IBAction)onTouchAddPaper:(id)sender
 {
-    RollingPaperCreator* controller = [[RollingPaperCreator alloc]initForCreating];
+    PaperSettingsViewController *controller = [[PaperSettingsViewController alloc]init];
     [self.navigationController pushViewController:controller
                                          animated:TRUE];
 }
@@ -191,9 +192,8 @@
 }
 - (void)paperListViewController:(PaperListViewController *)controller settingTouched:(RollingPaper *)paper
 {
-    RollingPaperCreator* paperSettingView = [[RollingPaperCreator alloc] initForEditing:paper];
-    [self.navigationController pushViewController:paperSettingView
+    PaperSettingsViewController *settingController = [[PaperSettingsViewController alloc]initWithPaper:paper];
+    [self.navigationController pushViewController:settingController
                                          animated:TRUE];
-
 }
 @end

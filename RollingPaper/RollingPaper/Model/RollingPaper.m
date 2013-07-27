@@ -6,6 +6,9 @@
 #import "SoundContent.h"
 #import "User.h"
 #import "Invitation.h"
+#import <FacebookSDK/FacebookSDK.h>
+
+#define NilToBlank(x) (!x?@"":x)
 
 @implementation RollingPaper
 - (void) setAttributesWithDictionary:(NSDictionary *)d
@@ -31,15 +34,15 @@
 - (NSDictionary *)toDictionary
 {
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionaryWithDictionary:@{
-                                       @"creator_id"         : self.creatorId,
-                                       @"title"              : self.title,
-                                       @"width"              : self.width,
-                                       @"height"             : self.height,
-                                       @"notice"             : self.notice,
-                                       @"background"         : self.background,
-                                       @"friend_facebook_id" : self.friend_facebook_id,
-                                       @"recipient_name"     : self.recipient_name,
-                                       @"receive_time"       : self.receive_time,
+                                       @"creator_id"         : NilToBlank(self.creatorId),
+                                       @"title"              : NilToBlank(self.title),
+                                       @"width"              : NilToBlank(self.width),
+                                       @"height"             : NilToBlank(self.height),
+                                       @"notice"             : NilToBlank(self.notice),
+                                       @"background"         : NilToBlank(self.background),
+                                       @"friend_facebook_id" : NilToBlank(self.friend_facebook_id),
+                                       @"recipient_name"     : NilToBlank(self.recipient_name),
+                                       @"receive_time"       : NilToBlank(self.receive_time),
                                        }];
     if (_id)
         dictionary[@"id"] = _id;
@@ -63,6 +66,32 @@
     }
     return result;
 }
+
+- (NSDictionary *) recipientDictionary
+{
+    NSMutableDictionary *dict = [NSMutableDictionary new];
+    if (_recipient_name)
+        dict[@"name"] = _recipient_name;
+    if (_friend_facebook_id)
+        dict[@"id"] = _friend_facebook_id;
+    return dict;
+}
+- (void) setRecipient:(id<FBGraphUser>)recipient
+{
+    [self setRecipient_name:recipient[@"name"]];
+    [self setFriend_facebook_id:recipient[@"id"]];
+}
+
+- (NSString *) validate
+{
+//    if(![_title length] > 0) return @"제목을 입력해주세요";
+//    if(![_width integerValue] > 0) return @"너비를 지정해주세요";
+//    if(![_height integerValue] > 0) return @"높이를 지정해주세요";
+//    if(!_notice) return @"공지사항을 입력해주세요";
+//    if(!(_receive_time && _recipient_name && _friend_facebook_id) ) return @"받는사람 정보를 입력해주세요";
+    return nil;
+}
+
 
 @end
 

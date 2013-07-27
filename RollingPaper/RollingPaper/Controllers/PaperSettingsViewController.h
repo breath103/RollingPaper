@@ -1,9 +1,10 @@
 #import <UIKit/UIKit.h>
 #import <FacebookSDK/FacebookSDK.h>
 #import "PaperBackgroundPicker.h"
+#import "FBFriendSearchPickerController.h"
 @class RollingPaper;
 
-@interface PaperSettingsViewController : UIViewController<PaperBackgroundPickerDelegate>
+@interface PaperSettingsViewController : UIViewController<PaperBackgroundPickerDelegate,FBFriendPickerDelegate>
 @property (nonatomic, strong) RollingPaper *paper;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (strong, nonatomic) IBOutlet UIView *containerView;
@@ -19,9 +20,12 @@
 
 @property (nonatomic, strong) NSString *background;
 @property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;
-- (IBAction)onTouchBackgroundButton:(id)sender;
 
 - (id)initWithPaper:(RollingPaper *)paper;
-- (IBAction)onTouchSave:(id)sender;
 
+- (FBFriendSearchPickerController *)recipientPicker;
+
+- (IBAction)onTouchPickRecipient:(id)sender;
+- (IBAction)onTouchBackgroundButton:(id)sender;
+- (IBAction)onTouchSave:(id)sender;
 @end

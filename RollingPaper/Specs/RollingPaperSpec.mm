@@ -123,6 +123,30 @@ describe(@"RollingPaper", ^{
             [papers[3] id] should equal(@(4));
         });
     });
+    
+    describe(@"-recipientDictionary", ^{
+        it(@"should build mock facebook user object with dictionary",^{
+            [model recipientDictionary] should equal(@{
+                                                     @"id" : @"facebook id",
+                                                     @"name" : @"Sean Moon"
+                                                     });
+            [model setRecipient_name:nil];
+            [model setFriend_facebook_id:nil];
+            [model recipientDictionary] should equal(@{});
+        });
+    });
+    describe(@"-setRecipient", ^{
+        subjectAction(^{
+            [model setRecipient:(id)@{
+             @"name" : @"Sang Hyun",
+             @"id" : @"new recipient id"
+             }];
+        });
+        it(@"should set recipient",^{
+            [model recipient_name] should equal(@"Sang Hyun");
+            [model friend_facebook_id] should equal(@"new recipient id");
+        });
+    });
 });
 
 SPEC_END
