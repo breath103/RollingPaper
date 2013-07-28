@@ -111,6 +111,32 @@
     }];
 }
 
+- (void)getParticipants:(void (^)(NSArray *participants))success
+                failure:(void (^)(NSError *error))failure
+{
+    [[FlowithAgent sharedAgent] getPath:[NSString stringWithFormat:@"papers/%d/participants.json",_id.integerValue]
+    parameters:@{}
+    success:^(AFHTTPRequestOperation *operation, NSArray *participants) {
+        _participants = [User fromArray:participants];
+        success(_participants);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        failure(error);
+    }];
+}
+
+- (void)getInvitations:(void (^)(NSArray *invitations))success
+               failure:(void (^)(NSError *error))failure
+{
+    [[FlowithAgent sharedAgent] getPath:[NSString stringWithFormat:@"papers/%d/invitations.json",_id.integerValue]
+    parameters:@{}
+    success:^(AFHTTPRequestOperation *operation, NSArray *invitations) {
+        _invitations = [Invitation fromArray:invitations];
+        success(_invitations);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        failure(error);
+    }];
+}
+
 - (void)reload:(void(^)()) success
        failure:(void(^)(NSError* error)) failure
 {

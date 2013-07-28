@@ -95,6 +95,19 @@
     }];
 }
 
+- (void)quitPaper:(RollingPaper *)paper
+          success:(void (^)()) success
+          failure:(void (^)(NSError *error)) failure
+{
+    NSString *path = [NSString stringWithFormat:@"users/%d/papers/%d",_id.integerValue,paper.id.integerValue];
+    [[FlowithAgent sharedAgent] deletePath:path
+    parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if(success) success();
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if(failure) failure(error);
+    }];
+}
+
 - (void)inviteFriends:(NSArray *)facebook_friends
               toPaper:(RollingPaper *)paper
               success:(void (^)())success

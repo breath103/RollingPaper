@@ -2,6 +2,7 @@
 #import "RollingPaper.h"
 #import "UIImageView+Vingle.h"
 #import "FBFriendSearchPickerController.h"
+#import "User.h"
 
 using namespace Cedar::Matchers;
 using namespace Cedar::Doubles;
@@ -54,17 +55,35 @@ describe(@"PaperSettingsViewController", ^{
             [controller paper] should be_instance_of([RollingPaper class]);
             [[controller paper] id] == nil should equal(YES);
         });
+        it(@"should hide create button", ^{
+            [[controller exitButton] isHidden] should equal(YES);
+        });
     });
     
-    it(@"should be initialized",^{
-        controller should be_instance_of([PaperSettingsViewController class]);
-        [controller paper] should equal(paper);
+    describe(@"init", ^{
+        it(@"should be initialized",^{
+            controller should be_instance_of([PaperSettingsViewController class]);
+            [controller paper] should equal(paper);
+        });
+        it(@"should init date pickers",^{
+            [controller datePicker] should be_instance_of([UIDatePicker class]);
+            [controller timePicker] should be_instance_of([UIDatePicker class]);
+            
+            [[controller receiveDateField] inputView] should equal([controller datePicker]);
+            [[controller receiveTimeField] inputView] should equal([controller timePicker]);
+        });
+        it(@"should have participants view", ^{
+            [controller participantsTableView] should be_instance_of([UITableView class]);
+            [[controller participantsTableView] delegate] should equal(controller);
+            [[controller participantsTableView] dataSource] should equal(controller);
+        });
     });
     
     describe(@"scrollView", ^{
         it(@"should place container",^{
             [[controller containerView] superview] should equal([controller scrollView]);
-            NSStringFromCGSize([[controller scrollView] contentSize]) should equal(NSStringFromCGSize([controller containerView].frame.size));
+            NSStringFromCGSize([[controller scrollView] contentSize])
+                should equal(NSStringFromCGSize([controller containerView].frame.size));
         });
     });
 
@@ -78,7 +97,12 @@ describe(@"PaperSettingsViewController", ^{
                 // set Time as a local time
                 // in this case GMT to KST . +9hour
                 [[controller receiveDateField] text] should equal(@"2013-08-07");
+                [[[controller datePicker] date] description]
+                        should equal(@"2013-08-06 18:23:37 +0000");
+
                 [[controller receiveTimeField] text] should equal(@"03:23:37");
+                [[[controller timePicker] date] description]
+                        should equal(@"2013-08-06 18:23:37 +0000");
             });
         });
         describe(@"getter", ^{
@@ -107,12 +131,21 @@ describe(@"PaperSettingsViewController", ^{
         });
     });
     
-    describe(@"-onTouchSave", ^{
+    describe(@"-onTouchCancel", ^{
+        subjectAction(^{
+            [controller onTouchBack:nil];
+        });
+        xit(@"should do nothing and pop", ^{
+            [navController topViewController] should_not equal(controller);
+        });
+    });
+    
+    describe(@"-onTouchDone", ^{
         beforeEach(^{
             spy_on(paper);
         });
         subjectAction(^{
-            [controller onTouchSave:nil];
+            [controller onTouchDone:nil];
         });
         describe(@"title", ^{
             beforeEach(^{
@@ -155,6 +188,12 @@ describe(@"PaperSettingsViewController", ^{
                 paper should have_received(@selector(setRecipient:)).with(@{@"name" : @"me", @"id" : @"fb id"});
             });
         });
+        describe(@"size", ^{
+            it(@"Should have default value",^{
+                [paper width] should equal(@(1440));
+                [paper height] should equal(@(960));
+            });
+        });
         context(@"if paper value is valid",^{
             it(@"should save to server",^{
                 paper should have_received(@selector(saveToServer:failure:));
@@ -169,6 +208,19 @@ describe(@"PaperSettingsViewController", ^{
             });
         });
     });
+        
+    describe(@"-onTouchQuit", ^{
+        beforeEach(^{
+            spy_on([User currentUser]);
+        });
+        subjectAction(^{
+            [controller onTouchQuit:nil];
+        });
+        xit(@"should call quit room", ^{
+            [User currentUser]
+                should have_received(@selector(quitPaper:success:failure:));
+        });
+    });
     
     describe(@"-recipientPicker", ^{
         __block FBFriendSearchPickerController *recipientPicker;
@@ -180,6 +232,19 @@ describe(@"PaperSettingsViewController", ^{
             [recipientPicker delegate] should equal(controller);
         });
     });
+    
+    describe(@"-invitePicker", ^{
+        __block FBFriendSearchPickerController *invitePicker;
+        subjectAction(^{
+            invitePicker = [controller invitePicker];
+        });
+        it(@"should return recipient Picker",^{
+            invitePicker should be_instance_of([FBFriendSearchPickerController class]);
+            [invitePicker delegate] should equal(controller);
+            [invitePicker allowsMultipleSelection] should equal(YES);
+        });
+    });
+
     
     xdescribe(@"-onTouchPickRecipient", ^{
         beforeEach(^{
@@ -193,6 +258,18 @@ describe(@"PaperSettingsViewController", ^{
         });
     });
     
+    describe(@"-onTouchInviteFriend", ^{
+        beforeEach(^{
+            spy_on(controller);
+        });
+        subjectAction(^{
+            [controller onTouchInviteFriend:nil];
+        });
+        xit(@"should show invitePicker",^{
+            [controller presentedViewController] should equal([controller invitePicker]);
+        });
+    });
+
     describe(@"-setBackground", ^{
         beforeEach(^{
             spy_on([controller backgroundImageView]);
@@ -205,6 +282,7 @@ describe(@"PaperSettingsViewController", ^{
             //[controller backgroundImageView] should have_received(@selector(setImageWithURL:withFadeIn:)).with(@"new background").and_with(0.1f);
         });
     });
+    
     
     describe(@"-setPaper", ^{
         beforeEach(^{
@@ -219,6 +297,34 @@ describe(@"PaperSettingsViewController", ^{
             
             [controller background] should equal(@"background url");
             [controller receiveTime] should equal(@"2013-08-06 18:23:37 +0000");
+        });
+    });
+    
+    describe(@"FBFriendPickerDelegate", ^{
+        describe(@"-facebookViewControllerDoneWasPressed", ^{
+            context(@"with recipientPicker",^{
+                beforeEach(^{
+                });
+                subjectAction(^{
+                    [controller facebookViewControllerDoneWasPressed:[controller recipientPicker]];
+                });
+                xit(@"should set recipient if selected",^{
+                    [controller recipient] should equal([[controller recipientPicker] selection][0]);
+                });
+            });
+            context(@"with invitePicker",^{
+                beforeEach(^{
+                    spy_on([User currentUser]);
+                });
+                subjectAction(^{
+                    [controller facebookViewControllerDoneWasPressed:[controller invitePicker]];
+                });
+                xit(@"should invite them",^{
+                    [User currentUser] should
+                    have_received(@selector(inviteFriends:toPaper:success:failure:))
+                        .with(@[]).with(paper);
+                });
+            });
         });
     });
 });

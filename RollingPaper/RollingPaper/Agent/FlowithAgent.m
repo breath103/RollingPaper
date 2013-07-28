@@ -19,9 +19,8 @@
 	static FlowithAgent *sharedAgent = nil;
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
-        //sharedAgent = [[FlowithAgent alloc]initWithBaseURL:[NSURL URLWithString:@"http://rollingpaper-production.herokuapp.com/api"]];
-        //sharedAgent = [[FlowithAgent alloc]initWithBaseURL:[NSURL URLWithString:@"http://210.122.0.119/api"]];
-        sharedAgent = [[FlowithAgent alloc]initWithBaseURL:[NSURL URLWithString:@"http://0.0.0.0:3000/api"]];
+//        sharedAgent = [[FlowithAgent alloc]initWithBaseURL:[NSURL URLWithString:@"http://210.122.0.119/api"]];
+        sharedAgent = [[FlowithAgent alloc]initWithBaseURL:[NSURL URLWithString:@"http://192.168.1.3:3000/api"]];
 	});
 	return sharedAgent;
 }
@@ -58,10 +57,10 @@
 
 
 
--(void) setCurrentUser : (User*) user{
+- (void)setCurrentUser:(User *)user{
     [self setUserInfo:[user toDictionary]];
 }
--(void) setUserInfo : (NSDictionary*) dict{
+- (void)setUserInfo:(NSDictionary *)dict{
     if(dict){
         NSMutableDictionary* mutableDict = [dict mutableCopy];
         for( NSString* key in dict.allKeys)

@@ -183,7 +183,7 @@
 								<int key="IBUIContentHorizontalAlignment">0</int>
 								<int key="IBUIContentVerticalAlignment">0</int>
 								<string key="IBUITitleShadowOffset">{1, 1}</string>
-								<string key="IBUINormalTitle">받은</string>
+								<string key="IBUINormalTitle">보낸</string>
 								<reference key="IBUIHighlightedTitleColor" ref="688447967"/>
 								<reference key="IBUINormalTitleColor" ref="340009509"/>
 								<reference key="IBUINormalTitleShadowColor" ref="220516742"/>
@@ -203,7 +203,7 @@
 								<int key="IBUIContentHorizontalAlignment">0</int>
 								<int key="IBUIContentVerticalAlignment">0</int>
 								<string key="IBUITitleShadowOffset">{1, 1}</string>
-								<string key="IBUINormalTitle">보낸</string>
+								<string key="IBUINormalTitle">받은</string>
 								<reference key="IBUIHighlightedTitleColor" ref="688447967"/>
 								<reference key="IBUINormalTitleColor" ref="340009509"/>
 								<reference key="IBUINormalTitleShadowColor" ref="220516742"/>

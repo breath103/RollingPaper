@@ -57,6 +57,7 @@
 -(void) refreshPaperList
 {
     id failureBlock = ^(NSError *error) {
+        NSLog(@"%@",error);
         [[[UIAlertViewBlock alloc] initWithTitle:@"경고"
                                          message:@"서버로부터 페이퍼 리스트를 받아오는데 실패했습니다"
                                    blockDelegate:^(UIAlertView *alertView, int clickedButtonIndex) {
@@ -88,7 +89,7 @@
 
 - (void)selectTab:(NSInteger) index
 {
-    [_paperScrollView setContentOffset:CGPointMake([_paperScrollView getWidth] * index, 0)
+    [_paperScrollView setContentOffset:CGPointMake([_paperScrollView getWidth]*index, 0)
                               animated:YES];
 }
 

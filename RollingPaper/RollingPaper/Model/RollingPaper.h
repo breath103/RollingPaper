@@ -38,6 +38,10 @@
        failure:(void(^)(NSError* error)) failure;
 - (void)getContents:(void (^)(NSArray* imageContents,NSArray* soundContents))success
             failure:(void (^)(NSError *))failure;
+- (void)getParticipants:(void (^)(NSArray *participants))success
+                failure:(void (^)(NSError *error))failure;
+- (void)getInvitations:(void (^)(NSArray *invitations))success
+               failure:(void (^)(NSError *error))failure;
 - (void)saveToServer:(void(^)()) success
              failure:(void(^)(NSError* error)) failure;
 - (NSString *)webViewURL;

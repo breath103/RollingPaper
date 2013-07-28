@@ -12,15 +12,6 @@
 @implementation FBFriendSearchPickerController
 @synthesize searchBar;
 @synthesize searchText;
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -40,33 +31,7 @@
     for(id view in toolbar.items){
         NSLog(@"%@",view);
     }
-//    [[FlowithAgent sharedAgent] getUsersWhoAreMyFacebookFriends:^(BOOL isCachedResponse, NSArray *users) {
-//        NSLog(@"%@",users);
-//        
-//    } failure:^(NSError *error) {
-//        NSLog(@"%@",error);
-//    }];
-    /*
-    ASIFormDataRequest* request = [NetworkTemplate requestForSearchingFacebookFriendUsingRollingPaper:[[FlowithAgent sharedAgent] getUserIdx].stringValue];
-    [request setCompletionBlock:^{
-        NSDictionary* dict = parseJSON(request.responseString);
-        self.appUsingFriends = [dict objectForKey:@"friends"];
-        NSLog(@"%@",self.appUsingFriends);
-    }];
-    [request setFailedBlock:^{
-        
-    }];
-    [request startAsynchronous];
-     */
 }
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-
 -(BOOL) isAppUsingFriend : (NSString*) friend_id{
     for(NSString* fb_id in self.appUsingFriends){
         if([fb_id compare:friend_id] == NSOrderedSame)
@@ -75,9 +40,8 @@
     return FALSE;
 }
 -(BOOL) delegateFriendPickerViewController:(FBFriendPickerViewController *)friendPicker
-                         shouldIncludeUser:(id<FBGraphUser>)user{
-    
-    
+                         shouldIncludeUser:(id<FBGraphUser>)user
+{
     if(1)// [self isAppUsingFriend:[user id]])
     {
         if (self.searchText && ![self.searchText isEqualToString:@""]) {
@@ -102,7 +66,7 @@
 
 - (void)addSearchBarToFriendPickerView
 {
-    if (self.searchBar == nil) {
+    if ([self searchBar] == nil) {
         CGFloat searchBarHeight = 44.0;
         self.searchBar = [[UISearchBar alloc] initWithFrame: CGRectMake(0,0,self.view.bounds.size.width,searchBarHeight)];
         self.searchBar.autoresizingMask = self.searchBar.autoresizingMask | UIViewAutoresizingFlexibleWidth;
@@ -117,22 +81,21 @@
     }
 }
 -(void) searchBar:(UISearchBar *)aSearchBar
-    textDidChange:(NSString *)searchText{
+    textDidChange:(NSString *)searchText
+{
     self.searchText = aSearchBar.text;
     [self updateView];
 }
-- (void)searchBarSearchButtonClicked:(UISearchBar*)aSearchBar{
+- (void)searchBarSearchButtonClicked:(UISearchBar*)aSearchBar
+{
     [aSearchBar resignFirstResponder];
     self.searchText = aSearchBar.text;
     [self updateView];
 }
 
-- (void)searchBarCancelButtonClicked:(UISearchBar *)aSearchBar {
+- (void)searchBarCancelButtonClicked:(UISearchBar *)aSearchBar
+{
     self.searchText = nil;
     [aSearchBar resignFirstResponder];
 }
-
-
-
-
 @end
