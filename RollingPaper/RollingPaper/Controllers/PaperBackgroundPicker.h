@@ -18,8 +18,8 @@
 @property (nonatomic,strong) NSString* selectedBackgroundName;
 - (IBAction)onTouchDone:(id)sender;
 - (IBAction)onTouchCancel:(id)sender;
--(id) initWithInitialBackgroundName : (NSString*) backgroundName
-                           Delegate : (id<PaperBackgroundPickerDelegate>)delegate;
+-(id) initWithInitialBackgroundName:(NSString *)backgroundName
+                           delegate:(id<PaperBackgroundPickerDelegate>)delegate;
 
 
 @end

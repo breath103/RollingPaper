@@ -3,6 +3,7 @@
 #import "UIImageView+Vingle.h"
 #import "FBFriendSearchPickerController.h"
 #import "User.h"
+#import "FlowithAgent.h"
 
 using namespace Cedar::Matchers;
 using namespace Cedar::Doubles;
@@ -45,7 +46,7 @@ describe(@"PaperSettingsViewController", ^{
         navController = [[UINavigationController alloc]initWithRootViewController:controller];
         navController.view = navController.view;
     });
-    
+        
     describe(@"for creating paper", ^{
         beforeEach(^{
             controller = [[PaperSettingsViewController alloc]init];
@@ -58,9 +59,40 @@ describe(@"PaperSettingsViewController", ^{
         it(@"should hide create button", ^{
             [[controller exitButton] isHidden] should equal(YES);
         });
+        
+        describe(@"-facebookViewControllerDoneWasPressed", ^{
+            context(@"with invitePicker",^{
+                __block NSArray *friendList;
+                beforeEach(^{
+                    friendList = @[@"1",@"2",@"3"];
+                    spy_on(controller);
+                    [controller setInvitePicker:nice_fake_for([FBFriendSearchPickerController class])];
+                    [controller invitePicker] stub_method(@selector(selection)).and_return(friendList);
+                });
+                subjectAction(^{
+                    [controller facebookViewControllerDoneWasPressed:[controller invitePicker]];
+                });
+                it(@"should set friends list",^{
+                    [controller friendList] should equal(friendList);
+                });
+            });
+        });
+        
+        describe(@"showParticipantsButton", ^{
+            it(@"should hide it",^{
+                [[controller showParticipantsButton] isHidden] should equal(YES);
+            });
+        });
     });
     
     describe(@"init", ^{
+        subjectAction(^{
+            controller = [[PaperSettingsViewController alloc]initWithPaper:paper];
+            controller.view = controller.view;
+            navController = [[UINavigationController alloc]initWithRootViewController:controller];
+            navController.view = navController.view;
+        });
+        
         it(@"should be initialized",^{
             controller should be_instance_of([PaperSettingsViewController class]);
             [controller paper] should equal(paper);
@@ -77,10 +109,50 @@ describe(@"PaperSettingsViewController", ^{
             [[controller participantsTableView] delegate] should equal(controller);
             [[controller participantsTableView] dataSource] should equal(controller);
         });
+        
+        describe(@"for edting paper", ^{
+            context(@"for paper master",^{
+                beforeEach(^{
+                    [[FlowithAgent sharedAgent] setUserInfo:@{@"id": @(1234)}];
+                });
+                it(@"should be able to edit paper setting", ^{
+                    [[controller recipientPickerButton] isEnabled] should equal(YES);
+                    [[controller recipientNameField] isEnabled] should equal(NO);
+                    
+                    [[controller titleField] isEnabled] should equal(YES);
+                    [[controller noticeField] isEnabled] should equal(YES);
+                    [[controller receiveDateField] isEnabled] should equal(YES);
+                    [[controller receiveTimeField] isEnabled] should equal(YES);
+                    [[controller backgroundPickerButton] isEnabled] should equal(YES);
+                    
+                    [[controller exitButton] isHidden] should equal(NO);
+                    [[controller exitButton] isEnabled] should equal(YES);
+                });
+            });
+            context(@"for paper participants",^{
+                beforeEach(^{
+                    [[FlowithAgent sharedAgent] setUserInfo:@{@"id": @(1)}];
+                });
+                it(@"should not be able to edit paper setting", ^{
+                    [[controller recipientPickerButton] isEnabled] should equal(NO);
+                    [[controller recipientNameField] isEnabled] should equal(NO);
+                    
+                    [[controller titleField] isEnabled] should equal(NO);
+                    [[controller noticeField] isEnabled] should equal(NO);
+                    [[controller receiveDateField] isEnabled] should equal(NO);
+                    [[controller receiveTimeField] isEnabled] should equal(NO);
+                    [[controller backgroundPickerButton] isEnabled] should equal(NO);
+                    
+                    [[controller exitButton] isHidden] should equal(NO);
+                    [[controller exitButton] isEnabled] should equal(YES);
+                });
+            });
+        });
+
     });
     
     describe(@"scrollView", ^{
-        it(@"should place container",^{
+        xit(@"should place container",^{
             [[controller containerView] superview] should equal([controller scrollView]);
             NSStringFromCGSize([[controller scrollView] contentSize])
                 should equal(NSStringFromCGSize([controller containerView].frame.size));
@@ -210,15 +282,27 @@ describe(@"PaperSettingsViewController", ^{
     });
         
     describe(@"-onTouchQuit", ^{
-        beforeEach(^{
-            spy_on([User currentUser]);
-        });
         subjectAction(^{
             [controller onTouchQuit:nil];
         });
-        xit(@"should call quit room", ^{
-            [User currentUser]
-                should have_received(@selector(quitPaper:success:failure:));
+        
+        context(@"for paper master",^{
+            beforeEach(^{
+                [[FlowithAgent sharedAgent] setUserInfo:@{@"id": @(1234)}];
+                spy_on([User currentUser]);
+            });
+            it(@"should call quit room", ^{
+                [User currentUser] should have_received(@selector(quitPaper:success:failure:));
+            });
+        });
+        context(@"for paper participants",^{
+            beforeEach(^{
+                [[FlowithAgent sharedAgent] setUserInfo:@{@"id": @(5241)}];
+                spy_on([User currentUser]);
+            });
+            it(@"should call quit room", ^{
+                [User currentUser] should have_received(@selector(quitPaper:success:failure:));
+            });
         });
     });
     

@@ -19,8 +19,8 @@
 	static FlowithAgent *sharedAgent = nil;
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
-//        sharedAgent = [[FlowithAgent alloc]initWithBaseURL:[NSURL URLWithString:@"http://210.122.0.119/api"]];
-        sharedAgent = [[FlowithAgent alloc]initWithBaseURL:[NSURL URLWithString:@"http://192.168.1.3:3000/api"]];
+        sharedAgent = [[FlowithAgent alloc]initWithBaseURL:[NSURL URLWithString:@"http://www.fbdiary.net//api"]];
+        sharedAgent = [[FlowithAgent alloc]initWithBaseURL:[NSURL URLWithString:@"http://192.168.1.2:3000/api"]];
 	});
 	return sharedAgent;
 }
@@ -73,15 +73,21 @@
         [[NSUserDefaults standardUserDefaults] setObject:mutableDict
                                                   forKey:@"userinfo"];
         [[NSUserDefaults standardUserDefaults] synchronize];
+        user = [[User alloc]initWithDictionary:[self getUserInfo]];
     }
     else{
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"userinfo"];
         [[NSUserDefaults standardUserDefaults] synchronize];
+        user = nil;
     }
 }
+static User *user = nil;
 - (User *)getCurrentUser
 {
-    return [[User alloc]initWithDictionary:[self getUserInfo]];
+    if (!user && [self getUserInfo]){
+        [self setUserInfo:[self getUserInfo]];
+    }
+    return user;
 }
 -(NSDictionary*) getUserInfo {
     return [[NSUserDefaults standardUserDefaults] objectForKey:@"userinfo"];

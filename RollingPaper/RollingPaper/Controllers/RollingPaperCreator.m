@@ -396,7 +396,7 @@
 - (IBAction)onTouchPickBackground:(id)sender
 {
     PaperBackgroundPicker *picker = [[PaperBackgroundPicker alloc]initWithInitialBackgroundName:[self selectedBackgroundName]
-                                                                                       Delegate:self];
+                                                                                       delegate:self];
     [self presentViewController:picker
                        animated:TRUE
                      completion:^{

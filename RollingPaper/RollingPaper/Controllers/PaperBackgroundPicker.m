@@ -31,8 +31,8 @@
 - (IBAction)onTouchCancel:(id)sender {
     [self.delegate paperBackgroundPickerDidCancelPicking:self];
 }
--(id) initWithInitialBackgroundName : (NSString*) backgroundName
-                           Delegate : (id<PaperBackgroundPickerDelegate>)delegate{
+-(id) initWithInitialBackgroundName:(NSString *)backgroundName
+                           delegate:(id<PaperBackgroundPickerDelegate>)delegate{
     self = [self init];
     if(self){
         self.delegate               = delegate;

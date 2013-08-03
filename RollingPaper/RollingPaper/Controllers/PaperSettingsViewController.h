@@ -12,6 +12,7 @@
 
 @property (nonatomic, strong) id<FBGraphUser> recipient;
 @property (weak, nonatomic) IBOutlet UITextField *recipientNameField;
+@property (weak, nonatomic) IBOutlet UIButton *recipientPickerButton;
 @property (weak, nonatomic) IBOutlet UITextField *titleField;
 @property (weak, nonatomic) IBOutlet UITextField *noticeField;
 
@@ -26,10 +27,15 @@
 @property (weak, nonatomic) IBOutlet UIView *bottomContainer;
 @property (nonatomic, strong) NSString *background;
 @property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;
+@property (weak, nonatomic) IBOutlet UIButton *backgroundPickerButton;
 
 @property (weak, nonatomic) IBOutlet UIDatePicker *datePicker;
 @property (weak, nonatomic) IBOutlet UIDatePicker *timePicker;
 @property (weak, nonatomic) IBOutlet UIButton *exitButton;
+
+@property (nonatomic, strong) FBFriendSearchPickerController *invitePicker;
+@property (nonatomic, strong) FBFriendSearchPickerController *recipientPicker;
+@property (nonatomic, strong) NSArray *friendList;
 
 - (id)initWithPaper:(RollingPaper *)paper;
 

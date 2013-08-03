@@ -104,31 +104,12 @@
 }
 - (void) viewWillAppear:(BOOL)animated
 {
-    [self.navigationController setNavigationBarHidden:FALSE
-                                             animated:TRUE];
-    UIButton* plusButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    plusButton.frame = CGRectMake(0, 0, 24,24);
-    [plusButton setImage:[UIImage imageNamed:@"plus"]
-                forState:UIControlStateNormal];
-    [plusButton addTarget:self action:@selector(onTouchAddPaper:)
-         forControlEvents:UIControlEventTouchUpInside];
-    
-    UIBarButtonItem* rightBarButton = [[UIBarButtonItem alloc]initWithCustomView:plusButton];
-    [[self navigationItem] setRightBarButtonItem:rightBarButton
-                                        animated:TRUE];
-    UIButton* profileImageView = [UIButton buttonWithType:UIButtonTypeCustom];
-    profileImageView.frame = CGRectMake(0, 0, 24,24);
-    UIBarButtonItem* leftBarButton = [[UIBarButtonItem alloc]initWithCustomView:profileImageView];
-    [profileImageView addTarget:self action:@selector(onTouchProfile:)
-               forControlEvents:UIControlEventTouchUpInside];
-    [[self navigationItem] setLeftBarButtonItem:leftBarButton
-                                       animated:TRUE];
-    
+    [self.navigationController setNavigationBarHidden:YES
+                                             animated:NO];
     [[[UIImageView alloc]init]setImageWithURL:[[User currentUser] picture]
     success:^(BOOL isCached, UIImage *image) {
-        [profileImageView setImage:image forState:UIControlStateNormal];
-        [profileImageView hideToTransparent];
-        [profileImageView fadeIn:0.3f];
+        [_profileButton setImage:image
+                        forState:UIControlStateNormal];
     } failure:^(NSError *error) {
         
     }];

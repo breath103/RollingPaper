@@ -37,8 +37,6 @@ static NSString * const NotificationCellIdentifier = @"NotificationCellIdentifie
     [[self tableView] setContentInset:UIEdgeInsetsMake(1, 0, 0, 0)];
     [[self tableView] setBackgroundView:[[UIImageView alloc]initWithImage:[UIImage  
 imageNamed:@"alert_img_background"]]];
-    UIRefreshControl *refreshControl = [[UIRefreshControl alloc]init];
-    [self setRefreshControl:refreshControl];
     
     [self loadItems];
 }
@@ -46,6 +44,10 @@ imageNamed:@"alert_img_background"]]];
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+}
+
+- (IBAction)onTouchBack:(id)sender {
+    [[self navigationController] popViewControllerAnimated:YES];
 }
 
 - (void)loadItems
@@ -142,7 +144,8 @@ imageNamed:@"alert_img_background"]]];
 }
 
 #pragma mark NotifcationCellDelegate
-- (void)notificationCell:(NotificationCell *)cell touchDetailButton:(UIButton *)button
+- (void)notificationCell:(NotificationCell *)cell
+       touchDetailButton:(UIButton *)button
 {
     
 }

@@ -11,6 +11,7 @@
 @synthesize ddayLabel;
 @synthesize titleLabel;
 @synthesize ddayUpdatingTimer;
+
 -(id) initWithEntity : (RollingPaper*) aEntity
             delegate : (id<PaperCellDelegate>) aDelegate{
     self = [self initWithNibName:@"PaperCellController" bundle:NULL];

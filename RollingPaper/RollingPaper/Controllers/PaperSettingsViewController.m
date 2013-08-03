@@ -5,14 +5,11 @@
 #import "FBFriendSearchPickerController.h"
 #import "PaperParticipantsListController.h"
 #import "User.h"
-#import <UIImageView+Vingle.h>
+#import "UIImageView+Vingle.h"
 #import <MBProgressHUD/MBProgressHUD.h>
 
 
 @interface PaperSettingsViewController()
-@property (nonatomic, strong) FBFriendSearchPickerController *invitePicker;
-@property (nonatomic, strong) FBFriendSearchPickerController *recipientPicker;
-@property (nonatomic, strong) NSArray *friendList;
 @end
 
 @implementation PaperSettingsViewController
@@ -76,7 +73,20 @@
         [self setFriendList:[paper participants]];
 
         [_exitButton setHidden:NO];
+    
+        if ([[[User currentUser] id] isEqualToNumber:[paper creatorId]]) {
+            [_backgroundPickerButton setEnabled:YES];
+        } else {
+            [_recipientPickerButton setEnabled:NO];
+            [_recipientNameField setEnabled:NO];
+            [_titleField setEnabled:NO];
+            [_noticeField setEnabled:NO];
+            [_receiveDateField setEnabled:NO];
+            [_receiveTimeField setEnabled:NO];
+            [_backgroundPickerButton setEnabled:NO];
+        }
     } else {
+        [_showParticipantsButton setHidden:YES];
         [_exitButton setHidden:YES];
     }
 }
@@ -247,7 +257,7 @@
 
 - (IBAction)onTouchBackgroundButton:(id)sender {
     PaperBackgroundPicker *picker = [[PaperBackgroundPicker alloc] initWithInitialBackgroundName:[self background]
-                                                                                        Delegate:self];
+                                                                                        delegate:self];
     [self presentViewController:picker animated:YES completion:^{}];
 }
 
@@ -291,6 +301,8 @@
                                    otherButtonTitles:nil] show];
                 }];
             }
+        } else {
+            [self setFriendList:[sender selection]];
         }
     }
     [self dismissViewControllerAnimated:YES completion:^{}];
@@ -304,11 +316,12 @@
 - (void)setFriendList:(NSArray *)friendList
 {
     _friendList = friendList;
-    [[self participantsTableView] reloadData];
-    [[self participantsTableView] setHeight:MIN([[self friendList] count],3) * 44];
-    [[self showParticipantsButton] setTopBelow:[self participantsTableView]];
-    [[self bottomContainer] setTopBelow:[self showParticipantsButton] margin:0];
-    [[self scrollView] setContentSize:CGSizeMake([[self view] getWidth], [[self bottomContainer]getBottom])];
+    [_participantsTableView reloadData];
+    [_participantsTableView setHeight:[self tableView:nil
+                                      numberOfRowsInSection:0] * 44];
+    [_showParticipantsButton setTopBelow:_participantsTableView];
+    [_bottomContainer setTopBelow:_showParticipantsButton margin:0];
+    [_scrollView setContentSize:CGSizeMake([[self view] getWidth], [_bottomContainer getBottom])];
 }
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -316,8 +329,13 @@
 }
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return MIN([[self friendList] count],3);
+    if ([_paper id])
+        return MIN([[self friendList] count],3);
+    else
+        return [[self friendList] count];
 }
+
+// TODO SPEC
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"UserCell";
@@ -326,9 +344,16 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
                                       reuseIdentifier:CellIdentifier];
     }
-    User* user = [self friendList][indexPath.row];
-    cell.textLabel.text = [user username];
-    [[cell imageView] setImageWithURL:[user picture] withFadeIn:0.1f];
+    id data = [self friendList][indexPath.row];
+    if ([data isMemberOfClass:[User class]]) {
+        User * user = data;
+        cell.textLabel.text = [user username];
+        [[cell imageView] setImageWithURL:[user picture] withFadeIn:0.1f];
+    } else if ([data isKindOfClass:[NSDictionary class]]) {
+        cell.textLabel.text = data[@"name"];
+        [[cell imageView] setImageWithURL:data[@"picture"][@"data"][@"url"]
+                               withFadeIn:0.1f];
+    }
     return cell;
 }
 @end
