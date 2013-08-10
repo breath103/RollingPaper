@@ -12,6 +12,7 @@ static NSString * const PaperListCellIdentifier = @"PaperListCellIdentifier";
     [[self tableView] registerNib:[UINib nibWithNibName:@"PaperTableViewCell" bundle:nil]
            forCellReuseIdentifier:PaperListCellIdentifier];
     [[self tableView] setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+//    [[self tableView] setContentInset:UIEdgeInsetsMake(20, 0, 0, 0)];
 }
 
 #pragma mark - Table view data source
@@ -38,7 +39,7 @@ static NSString * const PaperListCellIdentifier = @"PaperListCellIdentifier";
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 96.0f;
+    return 106.0f;
 }
 
 #pragma mark - Table view delegate

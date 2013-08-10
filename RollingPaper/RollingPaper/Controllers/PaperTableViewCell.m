@@ -20,17 +20,17 @@
     [_backgroundImage setImageWithURL:[paper thumbnail]
     withFadeIn:0.3f
     success:^(BOOL isCached, UIImage *image) {
-//        _backgroundImage.image = nil;
-//        _backgroundImage.backgroundColor = [UIColor colorWithPatternImage:image];
-////        UIImage* mask_image = [UIImage imageNamed:@"paper_cell_bg"];
-////        CGSize size = _backgroundImage.frame.size;
-////        CALayer *maskLayer = [CALayer layer];
-////        maskLayer.frame = CGRectMake(0,0,size.width,size.height);
-////        maskLayer.contents = (__bridge id)[mask_image CGImage];
-////        self.layer.mask = maskLayer;
-//        [_backgroundImage setNeedsDisplay];
+        _backgroundImage.image = nil;
+        _backgroundImage.backgroundColor = [UIColor colorWithPatternImage:image];
+//        UIImage* mask_image = [UIImage imageNamed:@"paper_cell_bg"];
+//        CGSize size = _backgroundImage.frame.size;
+//        CALayer *maskLayer = [CALayer layer];
+//        maskLayer.frame = CGRectMake(0,0,size.width,size.height);
+//        maskLayer.contents = (__bridge id)[mask_image CGImage];
+//        self.layer.mask = maskLayer;
+        [_backgroundImage setNeedsDisplay];
     } failure:^(NSError *error) {
-
+        NSLog(@"%@",error);
     }];
     
     self.titleLabel.text = paper.title;

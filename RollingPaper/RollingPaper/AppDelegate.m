@@ -25,11 +25,7 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions{
     self.window.rootViewController = self.navigationController;
     [self.window makeKeyAndVisible];
 
-//#define TESTING 1
-//#ifdef TESTING
-//    [TestFlight setDeviceIdentifier:[[[UIDevice currentDevice] identifierForVendor] UUIDString]];
-//#endif
-//    [TestFlight takeOff:@"134d6c9817a6a69e9e1cf71568dfc69c_MTg3OTgzMjAxMy0wMi0xNiAwOTo1NDo1Mi4xNTg5MzA"];
+    
     [NSURLCache setSharedURLCache:[[NSURLCache alloc]initWithMemoryCapacity:1024*5
                                                                diskCapacity:1024*10
                                                                    diskPath:@"rollingpaper"]];

@@ -14,6 +14,9 @@
 #import "UIImageView+Vingle.h"
 #import "NotificationsViewController.h"
 #import "PaperSettingsViewController.h"
+#import "UIImageView+Vingle.h"
+#import "AppSettingsViewController.h"
+#import <QuartzCore/QuartzCore.h>
 
 @implementation MainPaperViewController
 
@@ -28,6 +31,16 @@
 {
     [super viewDidLoad];
     [self setTitle:@"롤링페이퍼"];
+    
+    [[_profileImageView layer] setCornerRadius:1.5f];
+    [_profileImageView setClipsToBounds:YES];
+    
+    [_participatingTabButton setImage:[UIImage imageNamed:@"main_btn_editing_click"]
+                             forState:UIControlStateNormal|UIControlStateSelected];
+    [_sendedTabButton setImage:[UIImage imageNamed:@"main_btn_received_click"]
+                        forState:UIControlStateNormal|UIControlStateSelected];
+    [_receivedTabButton setImage:[UIImage imageNamed:@"main_btn_sent_click"]
+                      forState:UIControlStateNormal|UIControlStateSelected];
     
     _participatingPaperList = [[PaperListViewController alloc]init];
     [_participatingPaperList setDelegate:self];
@@ -89,6 +102,16 @@
 
 - (void)selectTab:(NSInteger) index
 {
+    int i = 0;
+    for (UIButton *button in _tabButtons) {
+        if (i== index) {
+            [button setSelected:YES];
+        } else {
+            [button setSelected:NO];
+        }
+        i++;
+    }
+
     [_paperScrollView setContentOffset:CGPointMake([_paperScrollView getWidth]*index, 0)
                               animated:YES];
 }
@@ -106,13 +129,7 @@
 {
     [self.navigationController setNavigationBarHidden:YES
                                              animated:NO];
-    [[[UIImageView alloc]init]setImageWithURL:[[User currentUser] picture]
-    success:^(BOOL isCached, UIImage *image) {
-        [_profileButton setImage:image
-                        forState:UIControlStateNormal];
-    } failure:^(NSError *error) {
-        
-    }];
+    [_profileImageView setImageWithURL:[[User currentUser] picture] withFadeIn:0.1f];
     [self refreshPaperList];
 }
 
@@ -130,9 +147,8 @@
 
 - (IBAction)onTouchProfile:(id)sender
 {
-    UserSettingViewController* settingViewController = [[UserSettingViewController alloc] init];
-    [self.navigationController pushViewController:settingViewController
-                                         animated:TRUE];
+    [[self navigationController] pushViewController:[[AppSettingsViewController alloc]init]
+                                           animated:YES];
 }
 
 - (IBAction)onTouchNotificationsButton:(id)sender
@@ -145,9 +161,29 @@
 #pragma UIScrollViewDelegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    CGFloat width = [scrollView frame].size.width;
-    CGFloat x     = [scrollView contentOffset].x;
-    [_pageControl setCurrentPage:(x + width*0.5)/width];
+//    CGFloat width = [scrollView frame].size.width;
+//    CGFloat x     = [scrollView contentOffset].x;
+//    [UIView animateWithDuration:0.1f animations:^{
+//        int index = 0;
+//        for (UIView *view in _buttonUnderlines) {
+//            if (index == (NSInteger)((x + width*0.5)/width)) {
+//                [view setAlpha:1.0f];
+//            } else {
+//                [view setAlpha:0.2f];
+//            }
+//            index++;
+//        }
+//    }];
+//    
+//    int index = 0;
+//    for (UIButton *button in _tabButtons) {
+//        if (index == (NSInteger)((x + width*0.5)/width)) {
+//            [button setSelected:YES];
+//        } else {
+//            [button setSelected:NO];
+//        }
+//        index++;
+//    }
 }
 
 #pragma Rotation
@@ -168,14 +204,12 @@
 
 - (void)paperListViewController:(PaperListViewController *)controller backgroundToched:(RollingPaper *)paper
 {
-    PaperViewController *paperViewController = [[PaperViewController alloc]initWithEntity:paper];
-    [[self navigationController] pushViewController:paperViewController
+    [[self navigationController] pushViewController:[[PaperViewController alloc]initWithEntity:paper]
                                            animated:YES];
 }
 - (void)paperListViewController:(PaperListViewController *)controller settingTouched:(RollingPaper *)paper
 {
-    PaperSettingsViewController *settingController = [[PaperSettingsViewController alloc]initWithPaper:paper];
-    [self.navigationController pushViewController:settingController
-                                         animated:TRUE];
+    [[self navigationController] pushViewController:[[PaperSettingsViewController alloc]initWithPaper:paper]
+                                           animated:TRUE];
 }
 @end

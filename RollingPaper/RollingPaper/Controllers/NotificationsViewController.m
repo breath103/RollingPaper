@@ -38,6 +38,17 @@ static NSString * const NotificationCellIdentifier = @"NotificationCellIdentifie
     [[self tableView] setBackgroundView:[[UIImageView alloc]initWithImage:[UIImage  
 imageNamed:@"alert_img_background"]]];
     
+    _refreshControl = [[UIRefreshControl alloc] init];
+    [_refreshControl addTarget:self
+                       action:@selector(onPullToRefresh:)
+             forControlEvents:UIControlEventValueChanged];
+    [[self tableView] addSubview:_refreshControl];
+    
+    [self loadItems];
+}
+
+- (IBAction)onPullToRefresh:(id)sender
+{
     [self loadItems];
 }
 
@@ -59,9 +70,11 @@ imageNamed:@"alert_img_background"]]];
     [user getNotifications:^(NSArray *notifications) {
         [self setItems:notifications];
         [self setInLoading:NO];
+        [_refreshControl endRefreshing];
         [[self tableView] reloadData];
     } failure:^(NSError *error) {
         [self setInLoading:NO];
+        [_refreshControl endRefreshing];
         [[self tableView] reloadData];
     }];
 }

@@ -18,6 +18,7 @@
 #import "UIAlertViewBlockDelegate.h"
 #import "UIImageView+Vingle.h"
 #import "PaperSettingsViewController.h"
+#import <MBProgressHUD/MBProgressHUD.h>
 
 #define BORDER_WIDTH (2.0f)
 #define BORDER_COLOR [UIColor colorWithPatternImage:[UIImage imageNamed:@"content_selectborder.png"]]
@@ -29,7 +30,6 @@
 
 
 @implementation PaperViewController
-//@synthesize contentsViews;
 @synthesize entity;
 @synthesize contentsContainer;
 @synthesize transformTargetView = _transformTargetView;
@@ -173,7 +173,9 @@
 
 - (IBAction)onTouchSaveAndQuit:(id)sender
 {
+    MBProgressHUD* view = [MBProgressHUD showHUDAddedTo:[self view] animated:YES];
     [self saveToServer:^(NSMutableArray *syncSuccessedViews, NSMutableArray *syncFailedViews) {
+        [view hide:YES];
         [[self navigationController] popViewControllerAnimated:YES];
     }];
 }

@@ -320,7 +320,7 @@
     [_participantsTableView setHeight:[self tableView:nil
                                       numberOfRowsInSection:0] * 44];
     [_showParticipantsButton setTopBelow:_participantsTableView];
-    [_bottomContainer setTopBelow:_showParticipantsButton margin:0];
+    [_bottomContainer setTopBelow:_showParticipantsButton margin:20];
     [_scrollView setContentSize:CGSizeMake([[self view] getWidth], [_bottomContainer getBottom])];
 }
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView

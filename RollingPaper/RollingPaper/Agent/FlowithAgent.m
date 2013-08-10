@@ -19,8 +19,7 @@
 	static FlowithAgent *sharedAgent = nil;
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
-        sharedAgent = [[FlowithAgent alloc]initWithBaseURL:[NSURL URLWithString:@"http://www.fbdiary.net//api"]];
-        sharedAgent = [[FlowithAgent alloc]initWithBaseURL:[NSURL URLWithString:@"http://192.168.1.2:3000/api"]];
+        sharedAgent = [[FlowithAgent alloc]initWithBaseURL:[NSURL URLWithString:@"http://www.fbdiary.net/api"]];
 	});
 	return sharedAgent;
 }
@@ -117,15 +116,21 @@ static User *user = nil;
                       [dateComponent objectAtIndex:2],
                       [dateComponent objectAtIndex:0],
                       [dateComponent objectAtIndex:1]];
+    NSMutableDictionary* params = [NSMutableDictionary dictionaryWithDictionary:@{
+                                   @"facebook_id":me[@"id"],
+                                   @"facebook_accesstoken":accesstoken,
+                                   }];
+    if (me[@"name"])
+        params[@"username"] = me[@"name"];
+    if (me[@"email"])
+        params[@"email"] = me[@"email"];
+    if (birthdayString)
+        params[@"birthday"] = birthdayString;
+    if (me[@"picture"][@"data"][@"url"])
+        params[@"picture"] = me[@"picture"][@"data"][@"url"];
+
     [self postPath:@"users/authorize.json"
-    parameters:@{
-        @"facebook_id":me[@"id"],
-        @"facebook_accesstoken":accesstoken,
-        @"username":me[@"name"],
-        @"email":me[@"email"],
-        @"birthday":birthdayString,
-        @"picture":me[@"picture"][@"data"][@"url"]
-    } success:^(AFHTTPRequestOperation *operation, NSDictionary* userInfo){
+    parameters:params success:^(AFHTTPRequestOperation *operation, NSDictionary* userInfo){
         User* user = [[User alloc]initWithDictionary:userInfo];
         [self setCurrentUser:user];
         [[UIApplication sharedApplication] registerForRemoteNotificationTypes:UIRemoteNotificationTypeAlert|UIRemoteNotificationTypeBadge|UIRemoteNotificationTypeSound];

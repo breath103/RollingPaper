@@ -18,7 +18,6 @@
 	// Do any additional setup after loading the view.
     [self addSearchBarToFriendPickerView];
     
-    UINavigationBar* navigationBar = self.navigationController.navigationBar;
     UIToolbar* toolbar = NULL;
     for(id view in self.view.subviews)
         if( [view isKindOfClass:UIToolbar.class])

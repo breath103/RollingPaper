@@ -2,6 +2,7 @@
 #import "NotificationCell.h"
 
 @interface NotificationsViewController : UIViewController<UITableViewDelegate,UITableViewDataSource,NotificationCellDelegate>
+@property (nonatomic, strong) UIRefreshControl *refreshControl;
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
 @property (nonatomic,strong) NSArray *items;
 @property (nonatomic,assign,getter = isInLoading) BOOL inLoading;
