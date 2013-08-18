@@ -37,10 +37,27 @@
     
     [_participatingTabButton setImage:[UIImage imageNamed:@"main_btn_editing_click"]
                              forState:UIControlStateNormal|UIControlStateSelected];
+    [_participatingTabButton setImage:[UIImage imageNamed:@"main_btn_editing_click"]
+                             forState:UIControlStateHighlighted|UIControlStateSelected];
+    [_participatingTabButton setImage:[UIImage imageNamed:@"main_btn_editing_click"]
+                             forState:UIControlStateHighlighted];
+    
     [_sendedTabButton setImage:[UIImage imageNamed:@"main_btn_received_click"]
                         forState:UIControlStateNormal|UIControlStateSelected];
+    [_sendedTabButton setImage:[UIImage imageNamed:@"main_btn_received_click"]
+                      forState:UIControlStateHighlighted|UIControlStateSelected];
+    [_sendedTabButton setImage:[UIImage imageNamed:@"main_btn_received_click"]
+                      forState:UIControlStateHighlighted];
+
+    
     [_receivedTabButton setImage:[UIImage imageNamed:@"main_btn_sent_click"]
                       forState:UIControlStateNormal|UIControlStateSelected];
+    [_receivedTabButton setImage:[UIImage imageNamed:@"main_btn_sent_click"]
+                        forState:UIControlStateHighlighted|UIControlStateSelected];
+    [_receivedTabButton setImage:[UIImage imageNamed:@"main_btn_sent_click"]
+                        forState:UIControlStateHighlighted];
+
+
     
     _participatingPaperList = [[PaperListViewController alloc]init];
     [_participatingPaperList setDelegate:self];
@@ -131,6 +148,8 @@
                                              animated:NO];
     [_profileImageView setImageWithURL:[[User currentUser] picture] withFadeIn:0.1f];
     [self refreshPaperList];
+    
+    [self scrollViewDidScroll:_paperScrollView];
 }
 
 - (IBAction)onTouchAddPaper:(id)sender
@@ -161,29 +180,18 @@
 #pragma UIScrollViewDelegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-//    CGFloat width = [scrollView frame].size.width;
-//    CGFloat x     = [scrollView contentOffset].x;
-//    [UIView animateWithDuration:0.1f animations:^{
-//        int index = 0;
-//        for (UIView *view in _buttonUnderlines) {
-//            if (index == (NSInteger)((x + width*0.5)/width)) {
-//                [view setAlpha:1.0f];
-//            } else {
-//                [view setAlpha:0.2f];
-//            }
-//            index++;
-//        }
-//    }];
-//    
-//    int index = 0;
-//    for (UIButton *button in _tabButtons) {
-//        if (index == (NSInteger)((x + width*0.5)/width)) {
-//            [button setSelected:YES];
-//        } else {
-//            [button setSelected:NO];
-//        }
-//        index++;
-//    }
+    CGFloat width = [scrollView frame].size.width;
+    CGFloat x     = [scrollView contentOffset].x;
+
+    int index = 0;
+    for (UIButton *button in _tabButtons) {
+        if (index == (NSInteger)((x + width*0.5)/width)) {
+            [button setSelected:YES];
+        } else {
+            [button setSelected:NO];
+        }
+        index++;
+    }
 }
 
 #pragma Rotation

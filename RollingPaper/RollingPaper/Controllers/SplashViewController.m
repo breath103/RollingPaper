@@ -40,9 +40,13 @@
             paperPlaneView.alpha = 0.0f;
         } completion:^(BOOL finished) {
             paperPlaneView.hidden = TRUE;
-            LoginViewController* loginViewController = [[LoginViewController alloc]init];
-            [[self navigationController] setViewControllers:@[loginViewController]
-                                                   animated:YES];
+            if (!FBSession.activeSession.isOpen){
+                LoginViewController* loginViewController = [[LoginViewController alloc]init];
+                [[self navigationController] setViewControllers:@[loginViewController]
+                                                       animated:YES];
+            } else {
+            
+            }
         }];
 }
 - (void)didReceiveMemoryWarning

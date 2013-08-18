@@ -91,7 +91,7 @@
 }
 - (void)initPaperCellPreview
 {
-    UIImage* mask_image = [ UIImage imageNamed:@"paper_cell_bg"];
+    UIImage* mask_image = [UIImage imageNamed:@"paper_cell_bg"];
     CGSize size = self.paperCellImage.frame.size;
     CALayer* maskLayer = [CALayer layer];
     maskLayer.frame = CGRectMake(0,0,size.width,size.height);

@@ -1,7 +1,7 @@
 #import <UIKit/UIKit.h>
 
 @interface PaperBackgroundCell : UICollectionViewCell
-
+@property (nonatomic, strong) IBOutlet UIImageView *paperImage;
 @end
 
 

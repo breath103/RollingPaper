@@ -20,6 +20,7 @@
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
         sharedAgent = [[FlowithAgent alloc]initWithBaseURL:[NSURL URLWithString:@"http://www.fbdiary.net/api"]];
+//        sharedAgent = [[FlowithAgent alloc]initWithBaseURL:[NSURL URLWithString:@"http://127.0.0.1:3000/api"]];
 	});
 	return sharedAgent;
 }

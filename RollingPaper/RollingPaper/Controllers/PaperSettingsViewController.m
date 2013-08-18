@@ -7,6 +7,7 @@
 #import "User.h"
 #import "UIImageView+Vingle.h"
 #import <MBProgressHUD/MBProgressHUD.h>
+#import <QuartzCore/QuartzCore.h>
 
 
 @interface PaperSettingsViewController()
@@ -52,6 +53,16 @@
     UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self
                                                                                        action:@selector(hideKeyboard)];
     [_containerView addGestureRecognizer:gestureRecognizer];
+    [[self view] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"background_pattern"]]];
+    
+    
+    UIImage* mask_image = [UIImage imageNamed:@"paper_cell_bg"];
+    CGSize size = _backgroundImageView.frame.size;
+    CALayer* maskLayer = [CALayer layer];
+    maskLayer.frame = CGRectMake(0,0,size.width,size.height);
+    maskLayer.contents = (__bridge id)[mask_image CGImage];
+    _backgroundImageView.layer.mask = maskLayer;
+    [_backgroundImageView setNeedsDisplay];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -262,7 +273,8 @@
 }
 
 #pragma mark PaperBackgroundPickerDelegate
-- (void)paperBackgroundPicker:(PaperBackgroundPicker *)picker didPickBackground:(NSString *)backgroundName
+- (void)paperBackgroundPicker:(PaperBackgroundPicker *)picker
+            didPickBackground:(NSString *)backgroundName
 {
     [self setBackground:backgroundName];
     [self dismissViewControllerAnimated:YES completion:^{ }];
@@ -345,6 +357,12 @@
                                       reuseIdentifier:CellIdentifier];
     }
     id data = [self friendList][indexPath.row];
+    UIImageView *backgroundView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"setting_img_textbox_middle"]];
+    backgroundView.contentMode = UIViewContentModeScaleToFill;
+    [backgroundView setWidth:[cell getWidth]];
+    [cell setBackgroundView:backgroundView];
+    [cell setBackgroundColor:[UIColor clearColor]];
+    [[cell textLabel] setBackgroundColor:[UIColor clearColor]];
     if ([data isMemberOfClass:[User class]]) {
         User * user = data;
         cell.textLabel.text = [user username];

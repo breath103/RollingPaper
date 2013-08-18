@@ -6,6 +6,7 @@
 #import "Notification.h"
 #import "Invitation.h"
 #import "UIAlertViewBlockDelegate.h"
+#import "PaperViewController.h"
 
 static NSString * const NotificationCellIdentifier = @"NotificationCellIdentifier";
 
@@ -72,6 +73,9 @@ imageNamed:@"alert_img_background"]]];
         [self setInLoading:NO];
         [_refreshControl endRefreshing];
         [[self tableView] reloadData];
+        
+        
+        [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
     } failure:^(NSError *error) {
         [self setInLoading:NO];
         [_refreshControl endRefreshing];
@@ -138,6 +142,17 @@ imageNamed:@"alert_img_background"]]];
             [invitation setId:[item sourceId]];
             if(clickedButtonIndex == 0) {
                 [invitation accept:^{
+                    RollingPaper *paper = [[RollingPaper alloc]init];
+                    [paper setId:[item sourceId]];
+                    PaperViewController *paperViewController = [[PaperViewController alloc]initWithEntity:paper];
+                    
+                    NSMutableArray *viewControllers =
+                    [[NSMutableArray alloc]initWithArray:[[self navigationController] viewControllers]];
+                    [viewControllers removeLastObject];
+                    [viewControllers addObject:paperViewController];
+                    
+                    [[self navigationController] setViewControllers:viewControllers animated:YES];
+                    
                     NSLog(@"accepted");
                 } failure:^(NSError *error) {
                     NSLog(@"%@",error);

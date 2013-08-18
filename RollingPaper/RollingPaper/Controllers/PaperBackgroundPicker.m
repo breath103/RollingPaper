@@ -9,11 +9,14 @@
 -(id) initWithFrame:(CGRect)frame{
     self = [super initWithFrame:frame];
     if(self){
-        self.selectedBackgroundView = [[UIView alloc]initWithFrame:
-                                       CGRectMake(0, 0, frame.size.width, frame.size.height)];
+        self.selectedBackgroundView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
         self.selectedBackgroundView.backgroundColor = [UIColor redColor];
     }
     return self;
+}
+- (void) awakeFromNib
+{
+    [super awakeFromNib];
 }
 @end
 
@@ -45,10 +48,8 @@
     [[FlowithAgent sharedAgent] getPath:@"papers/backgrounds.json"
     parameters:@{}
     success:^(AFHTTPRequestOperation *operation, NSArray* backgrounds) {
-        NSLog(@"%@",backgrounds);
         _backgroundList = backgrounds;
         [_collectionView reloadData];
-
         //기본 값을 선택
         for(int i=0;i<_backgroundList.count;i++){
             NSString* backgroundName = _backgroundList[i];
@@ -73,9 +74,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self.collectionView registerClass:[PaperBackgroundCell class]
+    [[self collectionView] registerNib:[UINib nibWithNibName:@"PaperBackgroundViewCell" bundle:nil]
             forCellWithReuseIdentifier:@"BackgroundCell"];
-   
+    [[self collectionView] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"background_pattern"]]];
     [self refreshBackgrounds];
 }
 
@@ -93,15 +94,10 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
                   cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"BackgroundCell"
+    PaperBackgroundCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"BackgroundCell"
                                                                            forIndexPath:indexPath];
-    UIImageView* tempImageView = [[UIImageView alloc]init];
-    [tempImageView setImageWithURL:_backgroundList[indexPath.item]
-    success:^(BOOL isCached, UIImage *image) {
-        cell.backgroundColor = [UIColor colorWithPatternImage:image];
-    } failure:^(NSError *error) {
-        
-    }];
+    [[cell paperImage] setImageWithURL:_backgroundList[indexPath.item]
+                            withFadeIn:0.1f];
     return cell;
 }
 
@@ -121,6 +117,6 @@ didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
                   layout:(UICollectionViewLayout*)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    return CGSizeMake(50,50);
+    return CGSizeMake(67, 67);
 }
 @end
