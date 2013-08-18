@@ -42,7 +42,7 @@
 }
 
 -(void) hide{
-    _isDockPoped = FALSE;
+    _isDockPoped = NO;
     [UIView animateWithDuration:0.1f animations:^{
         [self.view setLeft:-self.dockView.bounds.size.width];
     } completion:^(BOOL finished) {
@@ -52,16 +52,16 @@
     [UIView animateWithDuration:0.1f animations:^{
         [[self view] setLeft:0];
     } completion:^(BOOL finished) {
-        _isDockPoped = TRUE;
+        _isDockPoped = YES;
     }];
 }
 -(void) onDockGesture : (UIPanGestureRecognizer*) gestureRecognizer{
     CGRect frame = self.view.frame;
     CGPoint translation = [gestureRecognizer translationInView:nil];
     if(frame.origin.x >= 0)
-        _isDockPoped = TRUE;
+        _isDockPoped = YES;
     else
-        _isDockPoped = FALSE;
+        _isDockPoped = NO;
     frame.origin.x += translation.x;
     if(frame.origin.x <= -frame.size.width)
         frame.origin.x = -frame.size.width;

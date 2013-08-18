@@ -32,7 +32,7 @@
 	if(isSynchronized)
 	{
 		data = [NSData dataWithContentsOfURL:url];
-		isLoaded = TRUE;
+		isLoaded = YES;
 		if(data)
 			[delegate onLoadingComplete:self :data];
 		else
@@ -42,7 +42,7 @@
 	{
 		@autoreleasepool {
 			data = [NSData dataWithContentsOfURL:url];
-			isLoaded = TRUE;
+			isLoaded = YES;
 			if(data)
 				[delegate onLoadingComplete:self :data];
 			else

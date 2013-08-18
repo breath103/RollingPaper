@@ -34,9 +34,9 @@
 -(BOOL) isAppUsingFriend : (NSString*) friend_id{
     for(NSString* fb_id in self.appUsingFriends){
         if([fb_id compare:friend_id] == NSOrderedSame)
-            return TRUE;
+            return YES;
     }
-    return FALSE;
+    return NO;
 }
 -(BOOL) delegateFriendPickerViewController:(FBFriendPickerViewController *)friendPicker
                          shouldIncludeUser:(id<FBGraphUser>)user

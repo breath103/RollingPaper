@@ -667,6 +667,8 @@
 		A5AFF4CB17C0C06D00330EE0 /* edit_btn_setting.png in Resources */ = {isa = PBXBuildFile; fileRef = A5AFF4C817C0C06D00330EE0 /* edit_btn_setting.png */; };
 		A5AFF4CC17C0C06D00330EE0 /* edit_btn_back.png in Resources */ = {isa = PBXBuildFile; fileRef = A5AFF4C917C0C06D00330EE0 /* edit_btn_back.png */; };
 		A5AFF4CD17C0C06D00330EE0 /* edit_btn_back.png in Resources */ = {isa = PBXBuildFile; fileRef = A5AFF4C917C0C06D00330EE0 /* edit_btn_back.png */; };
+		A5F88EB117C0E41E008B1902 /* edit_img_bottom_bar.png in Resources */ = {isa = PBXBuildFile; fileRef = A5F88EB017C0E41E008B1902 /* edit_img_bottom_bar.png */; };
+		A5F88EB217C0E41E008B1902 /* edit_img_bottom_bar.png in Resources */ = {isa = PBXBuildFile; fileRef = A5F88EB017C0E41E008B1902 /* edit_img_bottom_bar.png */; };
 		F002B777080E4D9989F88184 /* libPods-Specs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E8BB0AF666644339D68CD04 /* libPods-Specs.a */; };
 /* End PBXBuildFile section */
 
@@ -1123,6 +1125,7 @@
 		A5A9AC951780B17E007044F7 /* SoundContentSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SoundContentSpec.mm; sourceTree = "<group>"; };
 		A5AFF4C817C0C06D00330EE0 /* edit_btn_setting.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = edit_btn_setting.png; sourceTree = "<group>"; };
 		A5AFF4C917C0C06D00330EE0 /* edit_btn_back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = edit_btn_back.png; sourceTree = "<group>"; };
+		A5F88EB017C0E41E008B1902 /* edit_img_bottom_bar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = edit_img_bottom_bar.png; sourceTree = "<group>"; };
 		B5742D1475594B17A7934904 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 		BD55E3AA3CF249618C4D1C46 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2070CBA92FF4201AB866B03 /* Pods-Specs.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Specs.xcconfig"; path = "Pods/Pods-Specs.xcconfig"; sourceTree = SOURCE_ROOT; };
@@ -1695,6 +1698,7 @@
 			children = (
 				A5AFF4C817C0C06D00330EE0 /* edit_btn_setting.png */,
 				A5AFF4C917C0C06D00330EE0 /* edit_btn_back.png */,
+				A5F88EB017C0E41E008B1902 /* edit_img_bottom_bar.png */,
 				0785EF0217BFCEA2008E2B27 /* background_pattern.png */,
 				0785EF0817BFEDBF008E2B27 /* selectpaper_img_paperthumbnail.png */,
 				073987D317AE423F00E453B3 /* appsetting_btn_facebook_unconnect.png */,
@@ -2152,6 +2156,7 @@
 				0785EF0417BFCEA2008E2B27 /* background_pattern.png in Resources */,
 				0785EF0717BFEC4B008E2B27 /* PaperBackgroundViewCell.xib in Resources */,
 				0785EF0A17BFEDBF008E2B27 /* selectpaper_img_paperthumbnail.png in Resources */,
+				A5F88EB217C0E41E008B1902 /* edit_img_bottom_bar.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2395,6 +2400,7 @@
 				0785EF0317BFCEA2008E2B27 /* background_pattern.png in Resources */,
 				0785EF0617BFEC4B008E2B27 /* PaperBackgroundViewCell.xib in Resources */,
 				0785EF0917BFEDBF008E2B27 /* selectpaper_img_paperthumbnail.png in Resources */,
+				A5F88EB117C0E41E008B1902 /* edit_img_bottom_bar.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -21,12 +21,12 @@
     if (!self.imagePickerController) {
         self.imagePickerController = [[UIImagePickerController alloc] init];
         self.imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-        self.imagePickerController.allowsEditing = TRUE;
+        self.imagePickerController.allowsEditing = YES;
         self.imagePickerController.delegate = self;
     }
-    self.definesPresentationContext = TRUE;
+    self.definesPresentationContext = YES;
     [self presentViewController:self.imagePickerController
-                                            animated:TRUE
+                                            animated:YES
                                           completion:^{
                                             
                                           }];
@@ -36,21 +36,20 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
--(BOOL) shouldAutorotate {return false;}
+-(BOOL) shouldAutorotate {return NO;}
 @end
 
 @implementation AlbumController (UIImagePickerControllerDelegate)
 -(void) imagePickerController:(UIImagePickerController *)picker
 didFinishPickingMediaWithInfo:(NSDictionary *)info{
-    NSLog(@"%@",info);
-    [self.parentViewController dismissViewControllerAnimated:TRUE completion:^{
+    [self.parentViewController dismissViewControllerAnimated:YES completion:^{
         [self.delegate albumController:self
                              pickImage:[info objectForKey:UIImagePickerControllerEditedImage]
                               withInfo:info ];
     }];
 }
 -(void) imagePickerControllerDidCancel:(UIImagePickerController *)picker{
-    [self.parentViewController dismissViewControllerAnimated:TRUE completion:^{
+    [self.parentViewController dismissViewControllerAnimated:YES completion:^{
         [self.delegate albumControllerCancelPickingImage:self];
     }];
 }

@@ -156,7 +156,7 @@
 {
     PaperSettingsViewController *controller = [[PaperSettingsViewController alloc]init];
     [self.navigationController pushViewController:controller
-                                         animated:TRUE];
+                                         animated:YES];
 }
 
 - (IBAction)onTouchRefresh:(id)sender
@@ -218,6 +218,6 @@
 - (void)paperListViewController:(PaperListViewController *)controller settingTouched:(RollingPaper *)paper
 {
     [[self navigationController] pushViewController:[[PaperSettingsViewController alloc]initWithPaper:paper]
-                                           animated:TRUE];
+                                           animated:YES];
 }
 @end

@@ -117,7 +117,7 @@
     }
     else{
         //2손가락 이상으로 터치하다가 몇개를 땐 경우
-        isTouchChanged = TRUE;
+        isTouchChanged = YES;
     }
 }
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event{

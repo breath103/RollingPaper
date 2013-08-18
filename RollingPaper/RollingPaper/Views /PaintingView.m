@@ -30,8 +30,8 @@
 @synthesize lineColor;
 @synthesize lineAlpha;
 -(void) drawInContext : (CGContextRef) context{
-    CGContextSetAllowsAntialiasing(context, TRUE);
-    CGContextSetShouldAntialias(context, TRUE);
+    CGContextSetAllowsAntialiasing(context, YES);
+    CGContextSetShouldAntialias(context, YES);
     CGContextSetStrokeColorWithColor(context,self.lineColor.CGColor);
     CGContextSetLineJoin(context, self.lineJoinStyle);
     CGContextSetLineCap (context, self.lineCapStyle);
@@ -84,8 +84,8 @@
                                            4 * self.bounds.size.width * APP_SCALE,
                                            CGColorSpaceCreateDeviceRGB(),
                                            kCGImageAlphaPremultipliedLast);
-    CGContextSetAllowsAntialiasing( drawingContext, true);
-    CGContextSetShouldAntialias( drawingContext, true);
+    CGContextSetAllowsAntialiasing( drawingContext, YES);
+    CGContextSetShouldAntialias( drawingContext, YES);
     CGContextScaleCTM(drawingContext, APP_SCALE, APP_SCALE);
     CGContextSetInterpolationQuality(drawingContext,kCGInterpolationHigh);
     
@@ -96,19 +96,19 @@
     
     CGContextRef layerContext = CGLayerGetContext(drawingLayer);
     
-    CGContextSetAllowsAntialiasing(layerContext, true);
-    CGContextSetShouldAntialias(layerContext,true);
+    CGContextSetAllowsAntialiasing(layerContext, YES);
+    CGContextSetShouldAntialias(layerContext,YES);
     //CGContextScaleCTM(layerContext, APP_SCALE, APP_SCALE);
     CGContextSetInterpolationQuality(layerContext,kCGInterpolationHigh);
     
-    self.opaque = FALSE;
+    self.opaque = NO;
     self.backgroundColor = [UIColor clearColor];
-    self.multipleTouchEnabled = TRUE;
+    self.multipleTouchEnabled = YES;
     pathArray = [NSMutableArray new];
     removedPathArray = [NSMutableArray new];
     
     self.toolType = NAMEPEN;
-    self.enablePainting = TRUE;
+    self.enablePainting = YES;
     
 }
 

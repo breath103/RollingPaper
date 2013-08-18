@@ -28,9 +28,12 @@
 
 - (NSDictionary *) recipientDictionary;
 - (void) setRecipient:(id<FBGraphUser>)recipient;
-
 - (NSString *) validate;
+@end
 
+@interface RollingPaper(Helper)
+- (CGSize)size;
+- (CGRect)bounds;
 @end
 
 @interface RollingPaper (NetworkingHelper)

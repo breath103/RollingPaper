@@ -107,8 +107,8 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     
-    [self.navigationController setNavigationBarHidden:FALSE
-                                             animated:TRUE];
+    [self.navigationController setNavigationBarHidden:NO
+                                             animated:YES];
     UIButton* leftButton = [UIButton buttonWithType:UIButtonTypeCustom];
     leftButton.frame = CGRectMake(0, 0, 24,24);
     [leftButton setImage:[UIImage imageNamed:@"previousArrow"]
@@ -119,7 +119,7 @@
     
     UIBarButtonItem* leftBarButton = [[UIBarButtonItem alloc]initWithCustomView:leftButton];
     [self.navigationItem setLeftBarButtonItem:leftBarButton
-                                     animated:TRUE];
+                                     animated:YES];
 }
 
 - (void)viewDidUnload {
@@ -152,14 +152,14 @@
 
 -(void) hideKeyboard
 {
-    [self.view endEditing:TRUE];
+    [self.view endEditing:YES];
 }
 
 -(void) _addButtonShadow : (UIButton*) button
 {
     button.layer.cornerRadius = 4;
     button.layer.shadowColor = [UIColor blackColor].CGColor;
-    button.layer.shouldRasterize = TRUE;
+    button.layer.shouldRasterize = YES;
     button.layer.shadowRadius = 1.0f;
     button.layer.shadowOpacity = 0.5;
     button.layer.shadowOffset  = CGSizeMake(3,3);
@@ -307,7 +307,7 @@
        if(clickedButtonIndex == 0) {
            [[FlowithAgent sharedAgent] quitPaper:self.entity
             success:^{
-                [self.navigationController popViewControllerAnimated:TRUE];
+                [self.navigationController popViewControllerAnimated:YES];
             } failure:^(NSError *error) {
                 [[[UIAlertView alloc] initWithTitle:@"에러"
                                             message:@"서버와의 통신에 실패했습니다.\n인터넷 연결 상태를 확인해주세요"
@@ -354,7 +354,7 @@
 }
 
 - (IBAction)onHideKeyboard:(id)sender {
-    [[self view] endEditing:TRUE];
+    [[self view] endEditing:YES];
 }
 
 - (NSString *)dateToString:(NSDate *)date{
@@ -398,7 +398,7 @@
     PaperBackgroundPicker *picker = [[PaperBackgroundPicker alloc]initWithInitialBackgroundName:[self selectedBackgroundName]
                                                                                        delegate:self];
     [self presentViewController:picker
-                       animated:TRUE
+                       animated:YES
                      completion:^{
                      }];
 }
@@ -520,14 +520,14 @@
             didPickBackground:(NSString *)backgroundName
 {
     self.selectedBackgroundName = backgroundName;
-    [self dismissViewControllerAnimated:TRUE
+    [self dismissViewControllerAnimated:YES
                              completion:^{
                                  
                              }];
 }
 -(void) paperBackgroundPickerDidCancelPicking:(PaperBackgroundPicker *)picker
 {
-    [self dismissViewControllerAnimated:TRUE
+    [self dismissViewControllerAnimated:YES
                              completion:^{
                                  
                              }];

@@ -107,7 +107,7 @@ NSString* TOOL_TYPE_STRING[TOOL_COUNT] = {
         TOOL_TYPE newTool = (TOOL_TYPE)((UIButton*)sender).tag;
         [self.paintingView setToolType:newTool];
         
-        self.paintingView.enablePainting = TRUE;
+        self.paintingView.enablePainting = YES;
         
         if(selectedButton){
             [UIView animateWithDuration:1.0f animations:^{
@@ -149,11 +149,11 @@ NSString* TOOL_TYPE_STRING[TOOL_COUNT] = {
                          } completion:^(BOOL finished) {
                              
                          }];
-        isInLeftPanningMode = FALSE;
+        isInLeftPanningMode = NO;
     }
     else{
         [self animateToLeftPanning];
-        self.paintingView.enablePainting = FALSE;
+        self.paintingView.enablePainting = NO;
     }
 }
 -(void) initToolButtons{
@@ -218,7 +218,7 @@ NSString* TOOL_TYPE_STRING[TOOL_COUNT] = {
       //  maskLayer.contentsRect = CGRectMake(0, 0 , size.width,size.height);
          */
         colorOverlayView.layer.mask = maskView.layer;
-        colorOverlayView.userInteractionEnabled = FALSE;
+        colorOverlayView.userInteractionEnabled = NO;
         colorOverlayView.tag = 1000;
         [button addSubview:colorOverlayView];
     }
@@ -279,11 +279,11 @@ NSString* TOOL_TYPE_STRING[TOOL_COUNT] = {
     [UIView animateWithDuration:0.3f animations:^{
         self.colorPalette.alpha = 0.0f;
     } completion:^(BOOL finished) {
-        self.colorPalette.hidden = TRUE;
+        self.colorPalette.hidden = YES;
     }];
 }
 -(void) showColorPalette{
-    self.colorPalette.hidden = FALSE;
+    self.colorPalette.hidden = NO;
     [UIView animateWithDuration:0.3f animations:^{
         self.colorPalette.alpha = 1.0f;
     } completion:^(BOOL finished) {
@@ -314,7 +314,7 @@ NSString* TOOL_TYPE_STRING[TOOL_COUNT] = {
 
 
 -(void) animateToLeftPanning{
-    isInLeftPanningMode = true;
+    isInLeftPanningMode = YES;
     int count = toolButtons.count;
     
     
@@ -324,7 +324,7 @@ NSString* TOOL_TYPE_STRING[TOOL_COUNT] = {
                      animations:^{
                          int index = 0;
                          for(UIButton* button in toolButtons){
-                             button.enabled   = TRUE;
+                             button.enabled   = YES;
                              float rotation = CC_DEGREES_TO_RADIANS( (index - count/2) * 60.0/(count-1));
                              button.center    = ccpAdd(leftOrigin,ccpMult(ccpForAngle(rotation),250));
                              button.transform = CGAffineTransformMakeRotation(rotation);
@@ -336,7 +336,7 @@ NSString* TOOL_TYPE_STRING[TOOL_COUNT] = {
                      }
                      completion:^(BOOL finished) {
                      }];
-    isInLeftPanningMode = TRUE;
+    isInLeftPanningMode = YES;
     
 }
 
@@ -347,7 +347,7 @@ NSString* TOOL_TYPE_STRING[TOOL_COUNT] = {
     [self.paintingView redo];
 }
 - (IBAction)onTouchClear:(id)sender {
-    [self.paintingView clearWithAnimation: TRUE];
+    [self.paintingView clearWithAnimation: YES];
 }
 
 

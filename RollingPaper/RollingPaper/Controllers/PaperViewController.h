@@ -15,7 +15,6 @@
 #import "UIFreeTransformGestureRecognizer.h"
 
 #import "DockController.h"
-//#import "CameraController.h"
 #import "AlbumController.h"
 #import "RecoderController.h"
 #import "TypewriterController.h"
@@ -39,7 +38,6 @@
 @property (nonatomic,weak) IBOutlet UIScrollView *contentsContainer;
 @property (nonatomic,strong) UIView* contentsScrollContainer;
 @property (nonatomic,strong) UIFreeTransformGestureRecognizer* freeTransformGestureRecognizer;
-@property (nonatomic,strong) DockController* dockController;
 @property (nonatomic,strong) UIViewController* currentEditingViewController;
 @property (nonatomic,readwrite) BOOL isEditingMode;
 @property (weak, nonatomic) IBOutlet UIButton *saveButton;

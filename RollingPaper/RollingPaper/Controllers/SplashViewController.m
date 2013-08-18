@@ -20,7 +20,7 @@
 {
     [super viewDidLoad];
     
-    self.navigationController.navigationBarHidden =TRUE;
+    self.navigationController.navigationBarHidden =YES;
     
     UIImageView* imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"nextArrow"]];
     imageView.frame = CGRectMake(0, 0, 32/2, 39/2);
@@ -28,7 +28,7 @@
     self.navigationItem.rightBarButtonItem = nextButton;
 }
 - (void)viewWillAppear:(BOOL)animated{
-    [self.navigationController setNavigationBarHidden:TRUE animated:TRUE];
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
 }
 - (void)viewDidAppear:(BOOL)animated
 {
@@ -39,7 +39,7 @@
             UIViewSetOrigin(paperPlaneView, CGPointMake(-134,347));
             paperPlaneView.alpha = 0.0f;
         } completion:^(BOOL finished) {
-            paperPlaneView.hidden = TRUE;
+            paperPlaneView.hidden = YES;
             if (!FBSession.activeSession.isOpen){
                 LoginViewController* loginViewController = [[LoginViewController alloc]init];
                 [[self navigationController] setViewControllers:@[loginViewController]

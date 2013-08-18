@@ -194,6 +194,6 @@ typedef void (^ImageHandler)(UIImage* image);
 
     NSData *imageData   = [NSData dataWithData:UIImageJPEGRepresentation(image, 1.0f)];
     [imageData writeToFile:filepath atomically:YES];
-    return TRUE;
+    return YES;
 }
 @end

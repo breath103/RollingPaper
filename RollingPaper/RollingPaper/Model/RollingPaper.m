@@ -186,12 +186,22 @@
                            @"picture" : @"https://photos-2.dropbox.com/t/0/AAD98gDYQvXuR5ilF9SDE_Gx3CdcRs35e6pAPueuGeB1tA/12/38281474/png/1024x768/3/1373061600/0/2/logo3.png/KCRsKl14p0JGsSEWdGh_5lz2zEWkzXqGmZhPnSXv8co",
                            @"to" : [self friend_facebook_id]
                            };
-    NSLog(@"%@",dict);
     [FBWebDialogs presentFeedDialogModallyWithSession:[FBSession activeSession]
     parameters:dict
     handler:^(FBWebDialogResult result, NSURL *resultURL, NSError *error) {
         NSLog(@"%@",resultURL);
     }];
+}
+@end
+
+@implementation RollingPaper(Helper)
+- (CGSize)size
+{
+    return CGSizeMake([[self width] floatValue], [[self height] floatValue]);
+}
+- (CGRect)bounds
+{
+    return CGRectMake(0, 0, [[self width] floatValue], [[self height] floatValue]);
 }
 @end
 

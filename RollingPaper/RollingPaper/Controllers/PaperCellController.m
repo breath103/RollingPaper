@@ -117,10 +117,10 @@
     
     if(self.entity.is_new.boolValue){
         NSLog(@"%@ 는 New",self.entity);
-        self.indicatorForNew.hidden = FALSE;
+        self.indicatorForNew.hidden = NO;
     }
     else{
-        self.indicatorForNew.hidden = TRUE;
+        self.indicatorForNew.hidden = YES;
     }
 }
 

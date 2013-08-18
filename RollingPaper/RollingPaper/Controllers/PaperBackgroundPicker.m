@@ -55,7 +55,7 @@
             NSString* backgroundName = _backgroundList[i];
             if ([backgroundName compare: _selectedBackgroundName] == NSOrderedSame) {
                 [_collectionView selectItemAtIndexPath:[NSIndexPath indexPathForItem:i inSection:0]
-                                              animated:TRUE
+                                              animated:YES
                                         scrollPosition:UICollectionViewScrollPositionCenteredVertically];
             }
         }

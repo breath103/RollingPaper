@@ -96,8 +96,8 @@ BOOL ccpFuzzyEqual(CGPoint a, CGPoint b, float var)
 {
 	if(a.x - var <= b.x && b.x <= a.x + var)
 		if(a.y - var <= b.y && b.y <= a.y + var)
-			return true;
-	return false;
+			return YES;
+	return NO;
 }
 
 CGPoint ccpCompMult(CGPoint a, CGPoint b)

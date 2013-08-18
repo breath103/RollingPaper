@@ -32,7 +32,7 @@
 -(id) initWithEntity : (TextContent*) aEntity{
     self = [self initWithFrame:CGRectMake(0, 0, 1, 1)];
     if(self){
-        self.autoresizesSubviews = TRUE;
+        self.autoresizesSubviews = YES;
         
         self.entity = aEntity; 
         self.textView = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];

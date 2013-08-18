@@ -30,63 +30,69 @@
 
 
 @implementation PaperViewController
-@synthesize entity;
-@synthesize contentsContainer;
-@synthesize transformTargetView = _transformTargetView;
-@synthesize dockController;
-@synthesize contentsScrollContainer;
-@synthesize isEditingMode;
 
--(id) initWithEntity : (RollingPaper*) aEntity{
+- (id)initWithEntity:(RollingPaper *)paper{
     self = [self init];
-    if(self){
-        self.entity = aEntity;
+    if( self) {
+        [self setEntity:paper];
     }
     return self;
 }
 
-
--(void) initContentsEditingToolControlers
+- (void)viewDidLoad
 {
-    self.freeTransformGestureRecognizer = [[UIFreeTransformGestureRecognizer alloc] initWithTarget:self
-                                                                                            action:@selector(onFreeTransformGesture)];
-    self.freeTransformGestureRecognizer.delegate = self.freeTransformGestureRecognizer;
-    [self.contentsContainer addGestureRecognizer:self.freeTransformGestureRecognizer];
-}
--(void) initLeftDockMenu{
-    self.dockController = [[DockController alloc]initWithDelegate:self];
-    [self addChildViewController:self.dockController];
+    [super viewDidLoad];
     
-}
--(void) initContentsScrollContainer{
-    self.contentsContainer.contentSize = CGSizeMake(self.entity.width.floatValue,
-                                                    self.entity.height.floatValue);
-    self.contentsScrollContainer = [[UIView alloc] initWithFrame:CGRectMake(0, 0,
-                                                                            self.entity.width.floatValue,
-                                                                            self.entity.height.floatValue)];
+    [self initContentsEditingToolControllers];
+    [self initLeftDockMenu];
+    [self initContentsScrollContainer];
 
-    [[[UIImageView alloc] init]setImageWithURL:entity.background
-    withFadeIn:-1
-    success:^(BOOL isCached, UIImage *image) {
-        self.contentsScrollContainer.backgroundColor = [UIColor colorWithPatternImage:image];
-        [self.contentsScrollContainer setNeedsDisplay];
-    } failure:^(NSError *error) {
-        
-    }];
+    [self loadAndShowContents];
     
-    self.contentsScrollContainer.userInteractionEnabled = TRUE;
+    [[_saveButton superview] bringSubviewToFront:_saveButton];
+    [[_refreshButton superview] bringSubviewToFront:_refreshButton];
+    [[_settingsButton superview] bringSubviewToFront:_settingsButton];
+    
+    [self onChangeToEditingMode];
+    [self setTransformTargetView:nil];
+}
+
+
+- (void)initContentsEditingToolControllers
+{
+    _freeTransformGestureRecognizer = [[UIFreeTransformGestureRecognizer alloc] initWithTarget:self
+                                                                                        action:@selector(onFreeTransformGesture)];
+    [_freeTransformGestureRecognizer setDelegate:_freeTransformGestureRecognizer];
+    [_contentsContainer addGestureRecognizer:_freeTransformGestureRecognizer];
+}
+- (void)initLeftDockMenu {}
+- (void)initContentsScrollContainer
+{
+    _contentsScrollContainer = [[UIView alloc]initWithFrame:[_entity bounds]];
+
+    [[[UIImageView alloc] init]setImageWithURL:[_entity background]
+    success:^(BOOL isCached, UIImage *image) {
+        [_contentsScrollContainer setBackgroundColor:[UIColor colorWithPatternImage:image]];
+        [_contentsScrollContainer setNeedsDisplay];
+    } failure:^(NSError *error) {}];
+    
     UILongPressGestureRecognizer* backFocus = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(onTapScrollBack:)];
     [backFocus setMinimumPressDuration:0.1f];
     self.backFocusTapGestureRecognizer = (UITapGestureRecognizer*)backFocus;
-   // [self.backFocusTapGestureRecognizer setNumberOfTouchesRequired:3];
     [self.contentsContainer addGestureRecognizer:self.backFocusTapGestureRecognizer];
- //   self.backFocusTapGestureRecognizer.delegate = self;
+    self.backFocusTapGestureRecognizer.delegate = self;
 
-    [self.contentsContainer addSubview:self.contentsScrollContainer];
+    [_contentsContainer addSubview:_contentsScrollContainer];
+    [_contentsContainer setContentSize:[_contentsScrollContainer frame].size];
     
-    self.contentsContainer.scrollEnabled = FALSE;
+    self.contentsContainer.scrollEnabled = YES;
+    self.contentsContainer.userInteractionEnabled = YES;
     self.contentsContainer.delegate = self;
+    self.contentsContainer.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"main_background"]];
+
 }
+
+
 -(void) onReceiveContentsResponse : (NSArray*) imageContents
                                   : (NSArray*) soundContents{
     
@@ -115,7 +121,8 @@
     }
     // 일단 받았음으로 받은 것을 현재 디바이스에 저장한다
 }
--(void)loadAndShowContents{
+-(void)loadAndShowContents
+{
     UIView* loadingOverView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     UIActivityIndicatorView* activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     loadingOverView.backgroundColor = [UIColor blackColor];
@@ -143,60 +150,17 @@
     }];
 }
 
--(void) viewWillAppear:(BOOL)animated
+- (void)viewWillAppear:(BOOL)animated
 {
-    [[self navigationController] setNavigationBarHidden:TRUE
-                                               animated:TRUE];
-    [self.dockController.view setHeight:[self.view getHeight]];
+    [super viewWillAppear:animated];
+    [[self navigationController] setNavigationBarHidden:YES
+                                               animated:YES];
 }
- 
-
-
--(void)viewDidLoad
+- (void)viewDidAppear:(BOOL)animated
 {
-    [super viewDidLoad];
-    
-    self.contentsContainer.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"main_background"]];
-    [self initContentsEditingToolControlers];
-    [self initLeftDockMenu];
-    [self initContentsScrollContainer];
-
-    [self loadAndShowContents];
-    
-    [_saveButton.superview bringSubviewToFront:_saveButton];
-    [_refreshButton.superview bringSubviewToFront:_refreshButton];
-    [_settingsButton.superview bringSubviewToFront:_settingsButton];
-    
-    [self onChangeToEditingMode];
-    
-    self.transformTargetView = NULL;
+    [super viewDidAppear:animated];
+    [_contentsContainer setContentSize:[_contentsScrollContainer frame].size];
 }
-
-- (IBAction)onTouchSaveAndQuit:(id)sender
-{
-    MBProgressHUD* view = [MBProgressHUD showHUDAddedTo:[self view] animated:YES];
-    [self saveToServer:^(NSMutableArray *syncSuccessedViews, NSMutableArray *syncFailedViews) {
-        [view hide:YES];
-        [[self navigationController] popViewControllerAnimated:YES];
-    }];
-}
-
-- (IBAction)onTouchRefresh:(id)sender
-{
-    [self saveToServer:^(NSMutableArray *syncSuccessedViews, NSMutableArray *syncFailedViews) {
-        self.contentsContainer.backgroundColor =
-            [UIColor colorWithPatternImage:[UIImage imageNamed:@"main_background"]];
-        [self loadAndShowContents];
-        self.transformTargetView = NULL;
-    }];    
-}
-
-- (IBAction)onTouchSettings:(id)sender {
-    PaperSettingsViewController *settingsViewController = [[PaperSettingsViewController alloc]initWithPaper:[self entity]];
-    [[self navigationController] pushViewController:settingsViewController
-                                           animated:YES];
-}
-
 
 - (void)onTapScrollBack:(UITapGestureRecognizer *)tap
 {
@@ -267,7 +231,7 @@
     self.freeTransformGestureRecognizer.rotation = 0.0f;
     
     if(self.transformTargetView){
-        self.transformTargetView.isNeedToSyncWithServer = TRUE;
+        self.transformTargetView.isNeedToSyncWithServer = YES;
     }
 }
 -(void) onTouchContentDeleteButton : (UITapGestureRecognizer*) recognizer{
@@ -290,9 +254,9 @@
         {
             _transformTargetView.layer.borderWidth = BORDER_WIDTH;
             _transformTargetView.layer.borderColor = BORDER_COLOR.CGColor;
-            self.freeTransformGestureRecognizer.enabled = TRUE;
-            self.dockController.panGestureRecognizer.enabled = FALSE;
-            self.contentsContainer.scrollEnabled = NO;
+            self.freeTransformGestureRecognizer.enabled = YES;
+//            self.dockController.panGestureRecognizer.enabled = NO;
+//            self.contentsContainer.scrollEnabled = NO;
             
             UIButton* deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
             deleteButton.tag = 6666;
@@ -312,7 +276,7 @@
             [_transformTargetView addSubview:deleteButton];
             [_transformTargetView bringSubviewToFront:deleteButton];
             
-            _transformTargetView.userInteractionEnabled = TRUE;
+            _transformTargetView.userInteractionEnabled = YES;
             NSLog(@"%@",_transformTargetView);
             NSLog(@"%@",deleteButton);
         }
@@ -321,8 +285,7 @@
         }
     }
     else {
-        self.freeTransformGestureRecognizer.enabled = FALSE;
-        self.dockController.panGestureRecognizer.enabled = TRUE;
+        self.freeTransformGestureRecognizer.enabled = NO;
         self.contentsContainer.scrollEnabled = YES;
     }
 }
@@ -343,7 +306,7 @@
 }
 -(void) addTransformTargetGestureToEntityView:(UIView *) view
 {
-    view.userInteractionEnabled = TRUE;
+    view.userInteractionEnabled = YES;
     UILongPressGestureRecognizer* longTapGestureRecognizer = [[UILongPressGestureRecognizer alloc]
                                                     initWithTarget:self
                                                             action:@selector(onLongPressContent:)];
@@ -364,7 +327,7 @@
     soundEntity.sound    = [file mutableCopy];
     
     SoundContentView* entityView = [[SoundContentView alloc] initWithEntity:soundEntity];
-    entityView.isNeedToSyncWithServer = TRUE;
+    entityView.isNeedToSyncWithServer = YES;
     [self.contentsScrollContainer addSubview:entityView];
     [self addTransformTargetGestureToEntityView:entityView];
     
@@ -390,7 +353,7 @@
     imageEntity.height   = @(height);
     
     ImageContentView* entityView = [[ImageContentView alloc] initWithEntity:imageEntity];
-    entityView.isNeedToSyncWithServer = TRUE;
+    entityView.isNeedToSyncWithServer = YES;
     entityView.imageView.image = image;
     [self.contentsScrollContainer addSubview:entityView];
     [self addTransformTargetGestureToEntityView:entityView];
@@ -398,15 +361,15 @@
     self.transformTargetView = entityView;
     return entityView;
 }
--(BOOL) canBecomeFirstResponder{
+- (BOOL)canBecomeFirstResponder{
     return YES;
 }
 
--(BOOL) gestureRecognizer : (UIGestureRecognizer *)gestureRecognizer
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer
 shouldRecognizeSimultaneouslyWithGestureRecognizer : (UIGestureRecognizer *)otherGestureRecognizer
 {
-    if (gestureRecognizer == [contentsScrollContainer.gestureRecognizers objectAtIndex:0] ||
-        otherGestureRecognizer == [contentsScrollContainer.gestureRecognizers objectAtIndex:0]) {
+    if (gestureRecognizer == [_contentsScrollContainer.gestureRecognizers objectAtIndex:0] ||
+        otherGestureRecognizer == [_contentsScrollContainer.gestureRecognizers objectAtIndex:0]) {
         return NO;
     }
     if(gestureRecognizer == self.freeTransformGestureRecognizer &&
@@ -430,11 +393,11 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer : (UIGestureRecognizer *)othe
 //    [entity presentFacebookDialog]
     [FBWebDialogs presentFeedDialogModallyWithSession:[FBSession activeSession]
                                            parameters:@{
-     @"name" : [entity title],
-     @"description" : [entity notice],
-     @"link" : [entity webViewURL],
+     @"name" : [_entity title],
+     @"description" : [_entity notice],
+     @"link" : [_entity webViewURL],
      @"picture" : @"https://photos-2.dropbox.com/t/0/AAD98gDYQvXuR5ilF9SDE_Gx3CdcRs35e6pAPueuGeB1tA/12/38281474/png/1024x768/3/1373061600/0/2/logo3.png/KCRsKl14p0JGsSEWdGh_5lz2zEWkzXqGmZhPnSXv8co",
-     @"to" : [entity friend_facebook_id]
+     @"to" : [_entity friend_facebook_id]
      }
     handler:^(FBWebDialogResult result, NSURL *resultURL, NSError *error) {
         [[[UIAlertView alloc] initWithTitle:nil
@@ -450,9 +413,8 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer : (UIGestureRecognizer *)othe
 #pragma mark DockControllerDelegate
 -(void) dockController:(DockController *)dock
               pickMenu:(DockMenuType)menuType
-              inButton:(UIButton *)button{
-    self.dockController.panGestureRecognizer.enabled = FALSE;
-    
+              inButton:(UIButton *)button
+{
     if(menuType != DockMenuTypeSetting &&
        menuType != DockMenuTypeCamera){
         [dock hide];
@@ -468,10 +430,10 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer : (UIGestureRecognizer *)othe
                 cameraController.sourceType = UIImagePickerControllerSourceTypeCamera;
                 cameraController.cameraCaptureMode = UIImagePickerControllerCameraCaptureModePhoto;
                 cameraController.cameraFlashMode = UIImagePickerControllerCameraFlashModeAuto;
-                cameraController.allowsEditing = TRUE;
+                cameraController.allowsEditing = YES;
                 cameraController.delegate = self;
                 [self presentViewController:cameraController
-                                   animated:TRUE
+                                   animated:YES
                                  completion:^{
                                      
                                  }];
@@ -544,23 +506,158 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer : (UIGestureRecognizer *)othe
 }
 
 -(void) onEditingViewDismissed{
-    [dockController showIndicator];
+//    [dockController showIndicator];
     [self showTopNavigationBar];
     self.currentEditingViewController = NULL;
 }
+
+
+/*
+     화면을 돌렸을때 프로그램의 모드가 바뀌는것에 관련된 함수들
+ */
+-(void) onChangeToInspectingMode{
+    _isEditingMode = NO;
+   
+    /* 일단 편집 제스쳐가 다 안먹히게 편집 */
+    self.freeTransformGestureRecognizer.enabled = NO;
+//    self.dockController.panGestureRecognizer.enabled = NO;
+    /******************************/
+    
+//    [self.dockController hide];
+//    [self.dockController hideIndicator];
+    
+    self.contentsContainer.maximumZoomScale = 1.0f;
+    CGSize contentSize = self.contentsContainer.contentSize;
+
+    self.contentsContainer.minimumZoomScale = 1.0/3;
+    self.contentsContainer.scrollEnabled = YES;
+    [self.contentsContainer zoomToRect:CGRectMake(0, 0, contentSize.width, contentSize.height)
+                              animated:YES];
+    [self.contentsContainer becomeFirstResponder];
+    
+    [[UIApplication sharedApplication] setStatusBarHidden:YES
+                                            withAnimation:UIStatusBarAnimationFade];
+}
+-(void) onChangeToEditingMode
+{
+    _isEditingMode = YES;
+    self.contentsContainer.scrollEnabled = YES;
+    self.transformTargetView = nil;
+    [self.contentsContainer becomeFirstResponder];
+   
+    [self.contentsContainer setZoomScale:1.0f animated:YES];
+    self.contentsContainer.minimumZoomScale = 2.0f;
+    self.contentsContainer.maximumZoomScale = 1.0f;
+   
+    // [self.dockController show];
+    // [self.dockController showIndicator];
+    
+    //self.contentsContainer.minimumZoomScale =
+    //self.contentsContainer.maximumZoomScale = 1.0f;
+    
+    /*
+    self.contentsContainer.maximumZoomScale = 1.0f;
+    CGSize scrollSize  = self.contentsContainer.frame.size;
+    CGSize contentSize = self.contentsContainer.contentSize;
+    self.contentsContainer.scrollEnabled = YES;
+    [self.contentsContainer zoomToRect:CGRectMake(0, 0, contentSize.width, contentSize.height)
+                              animated:YES];
+    */
+    [[UIApplication sharedApplication] setStatusBarHidden:NO
+                                            withAnimation:UIStatusBarAnimationFade];
+}
+
+#pragma mark IBOutletActions
+- (IBAction)onTouchSaveAndQuit:(id)sender
+{
+    MBProgressHUD* view = [MBProgressHUD showHUDAddedTo:[self view] animated:YES];
+    [self saveToServer:^(NSMutableArray *syncSuccessedViews, NSMutableArray *syncFailedViews) {
+        [view hide:YES];
+        [[self navigationController] popViewControllerAnimated:YES];
+    }];
+}
+- (IBAction)onTouchRefresh:(id)sender
+{
+    [self saveToServer:^(NSMutableArray *syncSuccessedViews, NSMutableArray *syncFailedViews) {
+        self.contentsContainer.backgroundColor =
+        [UIColor colorWithPatternImage:[UIImage imageNamed:@"main_background"]];
+        [self loadAndShowContents];
+        self.transformTargetView = NULL;
+    }];
+}
+- (IBAction)onTouchSettings:(id)sender {
+    PaperSettingsViewController *settingsViewController = [[PaperSettingsViewController alloc]initWithPaper:[self entity]];
+    [[self navigationController] pushViewController:settingsViewController
+                                           animated:YES];
+}
+
+
+#pragma mark UIViewController
+-(void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation{}
+-(void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+                                         duration:(NSTimeInterval)duration{}
+-(void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+                                duration:(NSTimeInterval)duration{
+    if( UIInterfaceOrientationIsPortrait(self.interfaceOrientation) &&
+        UIInterfaceOrientationIsLandscape(toInterfaceOrientation) ){
+        NSLog(@"TO Inspecting Mode");
+        [self onChangeToInspectingMode];
+    }
+    else if( UIInterfaceOrientationIsLandscape(self.interfaceOrientation) &&
+             UIInterfaceOrientationIsPortrait(toInterfaceOrientation)){
+        NSLog(@"TO Editing Mode");
+        [self onChangeToEditingMode];
+    }
+    else
+        NSLog(@"%d %d",self.interfaceOrientation,toInterfaceOrientation);
+}
+-(BOOL) shouldAutorotate{
+    return YES;
+}
+-(NSUInteger) supportedInterfaceOrientations
+{
+    if(self.currentEditingViewController){
+        return UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskPortraitUpsideDown;
+    }
+    else
+        return UIInterfaceOrientationMaskAll;
+}
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
+{
+    return UIInterfaceOrientationPortrait;
+}
+
+#pragma mark UIScrollViewDelegate
+
+//인스펙팅 모드로 넘어갔을때 아이폰 5등에서도 무조건 컨텐츠들이 스크롤뷰 중앙으로몰리게 
+-(void)scrollViewDidZoom:(UIScrollView *)scrollView{
+     
+}
+-(void) scrollViewDidEndZooming:(UIScrollView *)scrollView
+                       withView:(UIView *)view
+                        atScale:(float)scale{
+    if(_isEditingMode){
+        [scrollView setZoomScale:1.0f animated:YES];
+    }
+}
+- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView{
+    return self.contentsScrollContainer;
+}
+
+#pragma mark UIImagePickerControllerDelegate
 -(void) imagePickerController : (UIImagePickerController *)picker
 didFinishPickingMediaWithInfo : (NSDictionary *)info{
     ImageContentView *contentView = [self onCreateImage:info[UIImagePickerControllerEditedImage]];
     contentView.center = ccpAdd(ccp(self.view.frame.size.width/2 ,
                                     self.view.frame.size.height/2),self.contentsContainer.contentOffset);
     
-    [self dismissViewControllerAnimated:TRUE completion:^{
+    [self dismissViewControllerAnimated:YES completion:^{
         
     }];
     [self onEditingViewDismissed];
 }
 -(void) imagePickerControllerDidCancel : (UIImagePickerController *)picker{
-    [self dismissViewControllerAnimated:TRUE completion:^{
+    [self dismissViewControllerAnimated:YES completion:^{
         
     }];
     
@@ -653,114 +750,6 @@ didFinishPickingMediaWithInfo : (NSDictionary *)info{
     
     [self onEditingViewDismissed];
 }
-
-
-
-/*
-     화면을 돌렸을때 프로그램의 모드가 바뀌는것에 관련된 함수들
- */
--(void) onChangeToInspectingMode{
-    isEditingMode = FALSE;
-    /* 일단 편집 제스쳐가 다 안먹히게 편집 */
-    self.freeTransformGestureRecognizer.enabled = FALSE;
-    self.dockController.panGestureRecognizer.enabled = FALSE;
-    /******************************/
-    
-    [self.dockController hide];
-    [self.dockController hideIndicator];
-    
-    self.contentsContainer.maximumZoomScale = 1.0f;
-//  CGSize scrollSize  = self.contentsContainer.frame.size;
-    CGSize contentSize = self.contentsContainer.contentSize;
-
-    self.contentsContainer.minimumZoomScale = 1.0/3;
-    self.contentsContainer.scrollEnabled = TRUE;
-    [self.contentsContainer zoomToRect:CGRectMake(0, 0, contentSize.width, contentSize.height)
-                              animated:TRUE];
-    
-    [[UIApplication sharedApplication] setStatusBarHidden:TRUE
-                                            withAnimation:UIStatusBarAnimationFade];
-    
-    NSLog(@"%f",self.contentsContainer.zoomScale);
-}
--(void) onChangeToEditingMode {
-    isEditingMode = TRUE;
-    self.contentsContainer.scrollEnabled = FALSE;
-    self.transformTargetView = NULL;
-    [self.contentsContainer resignFirstResponder];
-   
-    [self.contentsContainer setZoomScale:1.0f animated:TRUE];
-    self.contentsContainer.minimumZoomScale = 1.0f;
-    self.contentsContainer.maximumZoomScale = 1.0f;
-   
-   // [self.dockController show];
-    [self.dockController showIndicator];
-    
-    //self.contentsContainer.minimumZoomScale =
-    //self.contentsContainer.maximumZoomScale = 1.0f;
-    
-    /*
-    self.contentsContainer.maximumZoomScale = 1.0f;
-    CGSize scrollSize  = self.contentsContainer.frame.size;
-    CGSize contentSize = self.contentsContainer.contentSize;
-    self.contentsContainer.scrollEnabled = TRUE;
-    [self.contentsContainer zoomToRect:CGRectMake(0, 0, contentSize.width, contentSize.height)
-                              animated:TRUE];
-    */
-    [[UIApplication sharedApplication] setStatusBarHidden:FALSE
-                                            withAnimation:UIStatusBarAnimationFade];
-}
--(void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation{}
--(void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
-                                         duration:(NSTimeInterval)duration{}
--(void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
-                                duration:(NSTimeInterval)duration{
-    if( UIInterfaceOrientationIsPortrait(self.interfaceOrientation) &&
-        UIInterfaceOrientationIsLandscape(toInterfaceOrientation) ){
-        NSLog(@"TO Inspecting Mode");
-        [self onChangeToInspectingMode];
-    }
-    else if( UIInterfaceOrientationIsLandscape(self.interfaceOrientation) &&
-             UIInterfaceOrientationIsPortrait(toInterfaceOrientation)){
-        NSLog(@"TO Editing Mode");
-        [self onChangeToEditingMode];
-    }
-    else
-        NSLog(@"%d %d",self.interfaceOrientation,toInterfaceOrientation);
-}
--(BOOL) shouldAutorotate{
-    return YES;
-}
--(NSUInteger) supportedInterfaceOrientations
-{
-    if(self.currentEditingViewController){
-        return UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskPortraitUpsideDown;
-    }
-    else
-        return UIInterfaceOrientationMaskAll;
-}
-- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
-{
-    return UIInterfaceOrientationPortrait;
-}
-
-#pragma mark UIScrollViewDelegate
-
-//인스펙팅 모드로 넘어갔을때 아이폰 5등에서도 무조건 컨텐츠들이 스크롤뷰 중앙으로몰리게 
--(void)scrollViewDidZoom:(UIScrollView *)scrollView{
-     
-}
--(void) scrollViewDidEndZooming:(UIScrollView *)scrollView
-                       withView:(UIView *)view  
-                        atScale:(float)scale{
-    if(isEditingMode){
-        [scrollView setZoomScale:1.0f animated:TRUE];
-    }
-}
--(UIView*) viewForZoomingInScrollView:(UIScrollView *)scrollView{
-    return self.contentsScrollContainer;
-}
-
 
 @end
 

@@ -18,7 +18,7 @@
     [super viewDidLoad];
 }
 -(void) viewDidAppear:(BOOL)animated{
-    self.navigationController.navigationBarHidden = FALSE;
+    self.navigationController.navigationBarHidden = NO;
 }
 
 - (void)didReceiveMemoryWarning
@@ -34,7 +34,7 @@
 - (IBAction)onTouchShowNotice:(id)sender {
     NoticeTableController* noticeTableController = [[NoticeTableController alloc] init];
     [self.navigationController pushViewController:noticeTableController
-                                         animated:TRUE];
+                                         animated:YES];
 }
 
 - (IBAction)onTouchFeedbackButton:(id)sender {
@@ -43,7 +43,7 @@
 
 - (IBAction)onTouchLogout:(id)sender {
     [[FlowithAgent sharedAgent] setUserInfo:NULL];
-    [self.navigationController popToRootViewControllerAnimated:TRUE];
+    [self.navigationController popToRootViewControllerAnimated:YES];
     
 }
 @end

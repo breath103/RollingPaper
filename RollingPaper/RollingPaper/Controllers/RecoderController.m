@@ -23,7 +23,7 @@
         
         [self.recodingCircle fadeIn:DEFAULT_DURATION];
         
-        self.recodingCircleGlow.hidden = FALSE;
+        self.recodingCircleGlow.hidden = NO;
         [UIView animateWithDuration:DEFAULT_DURATION * 2
                               delay:0
                             options:UIViewAnimationOptionAutoreverse | UIViewAnimationOptionRepeat
@@ -49,14 +49,14 @@
         self.endTimeLabel.text = [self getEndTime];
         
         [self.recodingCircle fadeOut:DEFAULT_DURATION];
-        self.recodingCircleGlow.hidden = FALSE;
+        self.recodingCircleGlow.hidden = NO;
         [UIView animateWithDuration:DEFAULT_DURATION
                               delay:0
                             options:UIViewAnimationOptionBeginFromCurrentState
                          animations:^{
                              self.recodingCircleGlow.alpha = 0.0f;
                          } completion:^(BOOL finished) {
-                             self.recodingCircleGlow.hidden = TRUE;
+                             self.recodingCircleGlow.hidden = YES;
                          }];
         
         [self.recodingButton fadeIn:DEFAULT_DURATION];
@@ -133,7 +133,7 @@
 }
 -(void) hideButton : (UIView*) view{
     view.alpha = 0.0f;
-    view.hidden = TRUE;
+    view.hidden = YES;
 }
 
 -(void) audioPlayerDidFinishPlaying:(AVAudioPlayer *)player

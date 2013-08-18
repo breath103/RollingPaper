@@ -113,7 +113,7 @@ int originalButtonTop;
     [super viewDidUnload];
 }
 -(void) textViewDidBeginEditing:(UITextView *)aTextView{
-    isInEditing = TRUE;
+    isInEditing = YES;
    
     [self.fontPalette           fadeOut:DEFAULT_DURATION];
     [self.colorPaletteContainer fadeOut:DEFAULT_DURATION];
@@ -127,7 +127,7 @@ int originalButtonTop;
     }];
 }
 -(void) textViewDidEndEditing:(UITextView *)aTextView{
-    isInEditing = FALSE;
+    isInEditing = NO;
     [UIView animateWithDuration:0.3 animations:^{
         UIViewSetY(self.doneButton,originalButtonTop);
         UIViewSetHeight(self.textView,originalTextViewHeight);
@@ -159,7 +159,7 @@ int originalButtonTop;
             totalTextRect.width = textRect.width;
         }
     }
-    view.editable = FALSE;
+    view.editable = NO;
     [view resignFirstResponder];
  //   totalTextRect.width += 20;
  //   totalTextRect.height += 20;

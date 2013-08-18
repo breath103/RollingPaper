@@ -95,7 +95,7 @@ static User *user = nil;
 -(NSNumber*) getUserIdx{
     return [self getUserInfo][@"id"];
 }
--(UIImage*) getImageFromPictrueURL{
+-(UIImage*) getImageFromPicYESURL{
     return [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[[self getUserInfo] objectForKey:@"picture"]]]];
 }
 

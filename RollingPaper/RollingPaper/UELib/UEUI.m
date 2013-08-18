@@ -230,10 +230,10 @@
 @implementation UIView(AnimationMacro)
 -(void) hideToTransparent{
     self.alpha = 0.0f;
-    self.hidden = TRUE;
+    self.hidden = YES;
 }
 -(void) fadeIn : (float) duration{
-    self.hidden = FALSE;
+    self.hidden = NO;
     [UIView animateWithDuration:duration animations:^{
         self.alpha = 1.0f;
     } completion:^(BOOL finished) {
@@ -242,7 +242,7 @@
 }
 -(void) fadeTo : (float) alpha
       duration : (float) duration{
-    self.hidden = FALSE;
+    self.hidden = NO;
     [UIView animateWithDuration:duration animations:^{
         self.alpha = alpha;
     } completion:^(BOOL finished) {
@@ -253,7 +253,7 @@
     [UIView animateWithDuration:duration animations:^{
         self.alpha = 0.0f;
     } completion:^(BOOL finished) {
-        self.hidden = TRUE;
+        self.hidden = YES;
     }];
 }
 //in이면 1 out이면 0

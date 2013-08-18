@@ -12,7 +12,7 @@
     self = [self initWithFrame:CGRectMake(0,0,1,1)];
     if(self){
         _entity = aEntity;
-        self.userInteractionEnabled = TRUE;
+        self.userInteractionEnabled = YES;
         self.frame = CGRectMake(0,0,SOUND_CONTENT_WIDTH,SOUND_CONTENT_HEIGHT);
         if([_entity sound]){
             self.image = [UIImage imageNamed:@"sound_icon.png"];

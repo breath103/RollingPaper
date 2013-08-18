@@ -15,7 +15,7 @@
         [self addSubview:_imageView];
         
         self.entity = entity;
-        self.userInteractionEnabled = TRUE;
+        self.userInteractionEnabled = YES;
         self.frame = CGRectMake(0,0,entity.width.floatValue , entity.height.floatValue);
         if(entity.image){
             [_imageView setImageWithURL:[entity image]
