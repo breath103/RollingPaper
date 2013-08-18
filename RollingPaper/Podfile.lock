@@ -1,28 +1,28 @@
 PODS:
-  - AFNetworking (1.3.1)
-  - Cedar (0.9.1)
-  - Facebook-iOS-SDK (3.5.3)
+  - AFNetworking (1.3.2)
+  - Cedar (0.9.3)
+  - Facebook-iOS-SDK (3.7.0)
   - JSONKit (1.5pre)
   - MBProgressHUD (0.7)
-  - OCMock (2.1.1)
-  - Underscore.m (0.2.0)
+  - OCMock (2.2)
+  - Underscore.m (0.2.1)
 
 DEPENDENCIES:
-  - AFNetworking
+  - AFNetworking (= 1.3.2)
   - Cedar
-  - Facebook-iOS-SDK
+  - Facebook-iOS-SDK (= 3.7.0)
   - JSONKit
   - MBProgressHUD
   - OCMock
   - Underscore.m
 
 SPEC CHECKSUMS:
-  AFNetworking: 9ec8aafb9269236a7630bd8d9838ce2ba30fa2a0
-  Cedar: a4181d8873d5049223c8511a50de4151ad603edc
-  Facebook-iOS-SDK: c11e851555d8cb8b55853ec2990b01d9e343d09e
+  AFNetworking: 7f9bcd7c287a75476cd5c61e82fd3380e93e4c54
+  Cedar: fc9baf5fd6b1dfa3330e06b77fa5d4d68510c125
+  Facebook-iOS-SDK: 39b55f6c2a8901df8ebcfa23b90c66da1c475f82
   JSONKit: 409734ab3407fce90ef7eaa95d7168f38d9a6601
   MBProgressHUD: 1fd8591a2216d5dec6de24e09187bb03bcbe9946
-  OCMock: 79212e5e328378af5cfd6edb5feacfd6c49cd8a3
-  Underscore.m: a1363c047e21e601dcabc16abd6faf9413cf4290
+  OCMock: 5300ae6b75398fc3ae6cbf9102191333d35f6852
+  Underscore.m: 593ea54a19d3cc4439387a83d36eb7ba6ffd1707
 
-COCOAPODS: 0.21.0
+COCOAPODS: 0.23.0

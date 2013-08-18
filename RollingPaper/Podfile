@@ -1,8 +1,8 @@
 xcodeproj 'RollingPaper.xcodeproj'
-platform :ios, '5.1'
+platform :ios, '6.0'
 
-pod 'AFNetworking'
-pod 'Facebook-iOS-SDK'
+pod 'AFNetworking', '1.3.2'
+pod 'Facebook-iOS-SDK', '3.7.0'
 pod 'JSONKit'
 pod 'MBProgressHUD'
 pod 'Underscore.m'
