@@ -163,8 +163,9 @@
 
     [self loadAndShowContents];
     
-    [_saveButton.superview bringSubviewToFront:self.saveButton];
-    [_refreshButton.superview bringSubviewToFront:self.refreshButton];
+    [_saveButton.superview bringSubviewToFront:_saveButton];
+    [_refreshButton.superview bringSubviewToFront:_refreshButton];
+    [_settingsButton.superview bringSubviewToFront:_settingsButton];
     
     [self onChangeToEditingMode];
     
@@ -188,6 +189,12 @@
         [self loadAndShowContents];
         self.transformTargetView = NULL;
     }];    
+}
+
+- (IBAction)onTouchSettings:(id)sender {
+    PaperSettingsViewController *settingsViewController = [[PaperSettingsViewController alloc]initWithPaper:[self entity]];
+    [[self navigationController] pushViewController:settingsViewController
+                                           animated:YES];
 }
 
 

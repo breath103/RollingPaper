@@ -663,6 +663,10 @@
 		A56DE71E17831CC900F3AD96 /* UserSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A56DE71D17831CC900F3AD96 /* UserSpec.mm */; };
 		A5A9AC971780B17E007044F7 /* SoundContentSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A5A9AC951780B17E007044F7 /* SoundContentSpec.mm */; };
 		A5A9ACA51780B28A007044F7 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 073CB53416D92729000EAFDD /* AVFoundation.framework */; };
+		A5AFF4CA17C0C06D00330EE0 /* edit_btn_setting.png in Resources */ = {isa = PBXBuildFile; fileRef = A5AFF4C817C0C06D00330EE0 /* edit_btn_setting.png */; };
+		A5AFF4CB17C0C06D00330EE0 /* edit_btn_setting.png in Resources */ = {isa = PBXBuildFile; fileRef = A5AFF4C817C0C06D00330EE0 /* edit_btn_setting.png */; };
+		A5AFF4CC17C0C06D00330EE0 /* edit_btn_back.png in Resources */ = {isa = PBXBuildFile; fileRef = A5AFF4C917C0C06D00330EE0 /* edit_btn_back.png */; };
+		A5AFF4CD17C0C06D00330EE0 /* edit_btn_back.png in Resources */ = {isa = PBXBuildFile; fileRef = A5AFF4C917C0C06D00330EE0 /* edit_btn_back.png */; };
 		F002B777080E4D9989F88184 /* libPods-Specs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E8BB0AF666644339D68CD04 /* libPods-Specs.a */; };
 /* End PBXBuildFile section */
 
@@ -1117,6 +1121,8 @@
 		79C1079E3D27429083B31B8B /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 		A56DE71D17831CC900F3AD96 /* UserSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = UserSpec.mm; sourceTree = "<group>"; };
 		A5A9AC951780B17E007044F7 /* SoundContentSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SoundContentSpec.mm; sourceTree = "<group>"; };
+		A5AFF4C817C0C06D00330EE0 /* edit_btn_setting.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = edit_btn_setting.png; sourceTree = "<group>"; };
+		A5AFF4C917C0C06D00330EE0 /* edit_btn_back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = edit_btn_back.png; sourceTree = "<group>"; };
 		B5742D1475594B17A7934904 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 		BD55E3AA3CF249618C4D1C46 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2070CBA92FF4201AB866B03 /* Pods-Specs.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Specs.xcconfig"; path = "Pods/Pods-Specs.xcconfig"; sourceTree = SOURCE_ROOT; };
@@ -1687,6 +1693,8 @@
 		07B3558A165A9B790094D7D7 /* resources */ = {
 			isa = PBXGroup;
 			children = (
+				A5AFF4C817C0C06D00330EE0 /* edit_btn_setting.png */,
+				A5AFF4C917C0C06D00330EE0 /* edit_btn_back.png */,
 				0785EF0217BFCEA2008E2B27 /* background_pattern.png */,
 				0785EF0817BFEDBF008E2B27 /* selectpaper_img_paperthumbnail.png */,
 				073987D317AE423F00E453B3 /* appsetting_btn_facebook_unconnect.png */,
@@ -2083,6 +2091,7 @@
 				0762F50717906B160028C6DB /* recoder_background@2x.png in Resources */,
 				0762F50817906B160028C6DB /* recoder_cancel_button.png in Resources */,
 				0762F50917906B160028C6DB /* recoder_cancel_button@2x.png in Resources */,
+				A5AFF4CB17C0C06D00330EE0 /* edit_btn_setting.png in Resources */,
 				0762F50A17906B160028C6DB /* recoder_ok_button.png in Resources */,
 				0762F50B17906B160028C6DB /* recoder_ok_button@2x.png in Resources */,
 				0762F50C17906B160028C6DB /* recoding_button.png in Resources */,
@@ -2092,6 +2101,7 @@
 				0762F51017906B160028C6DB /* recoding_circle_gradation.png in Resources */,
 				0762F51117906B160028C6DB /* recoding_circle_gradation@2x.png in Resources */,
 				0762F51217906B160028C6DB /* recoding_play.png in Resources */,
+				A5AFF4CD17C0C06D00330EE0 /* edit_btn_back.png in Resources */,
 				0762F51317906B160028C6DB /* recoding_play@2x.png in Resources */,
 				0762F51417906B160028C6DB /* recoding_stop.png in Resources */,
 				0762F51517906B160028C6DB /* recoding_stop@2x.png in Resources */,
@@ -2238,6 +2248,7 @@
 				07AAC53C16C4142200E1EBB0 /* orange_button@2x.png in Resources */,
 				07AAC53D16C4142200E1EBB0 /* paper_cell_bg_alpha.png in Resources */,
 				07AAC53E16C4142200E1EBB0 /* paper_cell_bg_alpha@2x.png in Resources */,
+				A5AFF4CC17C0C06D00330EE0 /* edit_btn_back.png in Resources */,
 				07AAC53F16C4142200E1EBB0 /* paper_cell_bg_shadow.png in Resources */,
 				07AAC54016C4142200E1EBB0 /* paper_cell_bg_shadow@2x.png in Resources */,
 				07AAC54116C4142200E1EBB0 /* paper_cell_bg.png in Resources */,
@@ -2289,6 +2300,7 @@
 				07AAC56F16C4142200E1EBB0 /* userlist_top.png in Resources */,
 				07AAC57016C4142200E1EBB0 /* userlist_top@2x.png in Resources */,
 				07AAC57116C4142200E1EBB0 /* sound_icon.png in Resources */,
+				A5AFF4CA17C0C06D00330EE0 /* edit_btn_setting.png in Resources */,
 				07AAC57216C4142200E1EBB0 /* sound_icon@2x.png in Resources */,
 				07AAC57316C4142200E1EBB0 /* status_bar.png in Resources */,
 				07AAC57416C4142200E1EBB0 /* status_bar@2x.png in Resources */,

@@ -29,7 +29,6 @@
                                                    UIScrollViewDelegate,
                                                    DockControllerDelegate,
                                                    TypewriterControllerDelegate,
-                                                //   CameraContorllerDelegate,
                                                    UINavigationControllerDelegate,
                                                    UIImagePickerControllerDelegate,
                                                    AlbumControllerDelegate,
@@ -45,14 +44,16 @@
 @property (nonatomic,readwrite) BOOL isEditingMode;
 @property (weak, nonatomic) IBOutlet UIButton *saveButton;
 @property (weak, nonatomic) IBOutlet UIButton *refreshButton;
+@property (weak, nonatomic) IBOutlet UIButton *settingsButton;
 @property (nonatomic,strong) UITapGestureRecognizer* backFocusTapGestureRecognizer;
 
--(void) hideTopNavigationBar;
--(void) showTopNavigationBar;
-- (IBAction)onTouchFB:(id)sender;
+-(void)hideTopNavigationBar;
+-(void)showTopNavigationBar;
+-(IBAction)onTouchFB:(id)sender;
 
-- (IBAction)onTouchSaveAndQuit:(id)sender;
+-(IBAction)onTouchSaveAndQuit:(id)sender;
 -(IBAction)onTouchRefresh:(id)sender;
+-(IBAction)onTouchSettings:(id)sender;
 -(ImageContentView *)onCreateImage:(UIImage *)image;
 -(id)initWithEntity:(RollingPaper *)entity;
 -(NSArray *)contentsViews;
